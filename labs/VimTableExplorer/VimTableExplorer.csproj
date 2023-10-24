@@ -18,7 +18,6 @@
 	<ItemGroup>
 	  <ProjectReference Include="..\..\Ara3D.Serialization\Ara3D.Serialization.VIM\Ara3D.Serialization.VIM.csproj" />
 	  <ProjectReference Include="..\..\Ara3D.Utility\Ara3D.Utils.Wpf\Ara3D.Utils.Wpf.csproj" />
-	  <ProjectReference Include="..\..\Ara3D.Utility\Ptarmigan.Utils.Wpf\Ptarmigan.Utils.Wpf.csproj" />
 	</ItemGroup>
 
 </Project>
