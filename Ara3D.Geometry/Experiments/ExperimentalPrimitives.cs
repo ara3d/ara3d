@@ -181,18 +181,5 @@ namespace Ara3D.Geometry.Experiments
         // https://github.com/prideout/par/blob/master/par_octasphere.h
 
         // https://prideout.net/blog/octasphere/
-        /*
-        public static TriMesh Tetrahedron(float radius)
-        {
-            float num = (float)Math.Sqrt(2.0);
-            return new TriMesh(ImmutableArray.Create<Vector3>(new Vector3(1f, 0.0f, -1f / num), new Vector3(-1f, 0.0f, -1f / num), new Vector3(0.0f, 1f, 1f / num), new Vector3(0.0f, -1f, 1f / num)).Select<Vector3, Vector3>((Func<Vector3, Vector3>)(pt => Vector3.Normalize(pt) * radius)), ImmutableArray.Create<int>(0, 1, 2, 1, 0, 3, 0, 2, 3, 1, 3, 2));
-        }
-
-        public static TriMesh Icosahedron(float radius)
-        {
-            float num = (float)((1.0 + Math.Sqrt(5.0)) / 2.0);
-            return new TriMesh(ImmutableArray.Create<Vector3>(new Vector3(-1f, num, 0.0f), new Vector3(1f, num, 0.0f), new Vector3(-1f, -num, 0.0f), new Vector3(1f, -num, 0.0f), new Vector3(0.0f, -1f, num), new Vector3(0.0f, 1f, num), new Vector3(0.0f, -1f, -num), new Vector3(0.0f, 1f, -num), new Vector3(num, 0.0f, -1f), new Vector3(num, 0.0f, 1f), new Vector3(-num, 0.0f, -1f), new Vector3(-num, 0.0f, 1f)).Select<Vector3, Vector3>((Func<Vector3, Vector3>)(pt => Vector3.Normalize(pt) * radius)), ImmutableArray.Create<int>(0, 11, 5, 0, 5, 1, 0, 1, 7, 0, 7, 10, 0, 10, 11, 1, 5, 9, 5, 11, 4, 11, 10, 2, 10, 7, 6, 7, 1, 8, 3, 9, 4, 3, 4, 2, 3, 2, 6, 3, 6, 8, 3, 8, 9, 4, 9, 5, 2, 4, 11, 6, 2, 10, 8, 6, 7, 9, 8, 1));
-        }
-        */
     }
 }

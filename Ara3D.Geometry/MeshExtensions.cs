@@ -82,7 +82,7 @@ namespace Ara3D.Geometry
             var midPoint = sum / pts.Count;
             pts.Add(midPoint);
 
-            return pts.ToIArray().TriMesh(idxs.ToIArray());
+            return pts.ToIArray().ToTriMesh(idxs.ToIArray());
         }
 
         /// <summary>

@@ -132,7 +132,7 @@ namespace Ara3D
         {
             var verts = self.Vertices().Select(ToAra3D).ToIArray();
             var indices = self.TrianglesBuffer.ToIArray();
-            return verts.TriMesh(indices);
+            return verts.ToTriMesh(indices);
         }
 
         public static Vector3d ToVector3D(this Vector3 self)

@@ -23,7 +23,7 @@ namespace Ara3D.Geometry
     {
         public static IMesh Faceted(this IMesh self)
             => self.Indices().Select(i => self.Vertices[i])
-                .TriMesh(self.Indices().Count.Range());
+                .ToTriMesh(self.Indices().Count.Range());
 
         public static Vector3 Skew(Vector3 v, Line line, Vector3 from, Vector3 to)
             => throw new NotImplementedException();

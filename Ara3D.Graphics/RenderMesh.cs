@@ -102,6 +102,6 @@ namespace Ara3D.Graphics
     public static class Extensions
     {
         public static IMesh ToIMesh(this IRenderMesh renderMesh)
-            => renderMesh.VertexBuffer.Array.TriMesh(renderMesh.IndexBuffer.Array);
+            => renderMesh.VertexBuffer.Array.ToTriMesh(renderMesh.IndexBuffer.Array);
     }
 }

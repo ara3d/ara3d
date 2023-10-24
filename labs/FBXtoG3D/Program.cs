@@ -9,7 +9,7 @@ namespace FBXtoG3D
     public static class Program
     {
         public static IMesh ToIMesh(this DotNetFbxMesh self)
-            => Primitives.TriMesh(self.Vertices.ToIArray(), self.Indices.ToIArray());
+            => Primitives.ToTriMesh(self.Vertices.ToIArray(), self.Indices.ToIArray());
 
         public static IArray<IMesh> GetMeshes(this DotNetFbxScene self)
             => self.Meshes.ToIArray().Select(m => m.ToIMesh());

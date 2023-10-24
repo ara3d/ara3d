@@ -2,7 +2,7 @@
 
 namespace Ara3D.Math
 {
-    public interface ITransformable<out TSelf>
+    public interface ITransformable<out TSelf> where TSelf: ITransformable<TSelf>
     {
         TSelf Transform(Matrix4x4 mat);
     }
@@ -39,7 +39,7 @@ namespace Ara3D.Math
         public static T ScaleZ<T>(this T self, float z) where T : ITransformable<T>
             => self.Scale(1, 1, z);
 
-        public static T LookAt<T>(this ITransformable<T> self, Vector3 cameraPosition, Vector3 cameraTarget, Vector3 cameraUpVector)
+        public static T LookAt<T>(this T self, Vector3 cameraPosition, Vector3 cameraTarget, Vector3 cameraUpVector) where T: ITransformable<T>
             => self.Transform(Matrix4x4.CreateLookAt(cameraPosition, cameraTarget, cameraUpVector));
 
         public static T RotateAround<T>(this T self, Vector3 axis, float angle) where T : ITransformable<T>
