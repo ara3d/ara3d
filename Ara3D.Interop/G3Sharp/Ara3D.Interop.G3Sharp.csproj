@@ -1,0 +1,17 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="geometry3Sharp" Version="1.0.324" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Ara3D.Collections\Ara3D.Collections.csproj" />
+    <ProjectReference Include="..\..\Ara3D.Geometry\Ara3D.Geometry.csproj" />
+    <ProjectReference Include="..\..\Ara3D.Math\Ara3D.Math.csproj" />
+  </ItemGroup>
+
+</Project>

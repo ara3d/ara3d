@@ -1,0 +1,17 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net6.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Ara3D.Geometry\Ara3D.Geometry.csproj" />
+    <ProjectReference Include="..\..\Ara3D.Math\Ara3D.Math.csproj" />
+    <ProjectReference Include="..\..\Ara3D.Serialization\Ara3D.Serialization.FBX\Ara3D.Serialization.FBX.vcxproj" />
+    <ProjectReference Include="..\..\Ara3D.Serialization\Ara3D.Serialization.G3D\Ara3D.Serialization.G3D.csproj" />
+  </ItemGroup>
+
+</Project>

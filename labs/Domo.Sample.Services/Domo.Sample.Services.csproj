@@ -1,0 +1,14 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Ara3D.Utility\Ara3D.Domo\Ara3D.Domo.csproj" />
+    <ProjectReference Include="..\Domo.SampleModels\Domo.SampleModels.csproj" />
+  </ItemGroup>
+
+</Project>

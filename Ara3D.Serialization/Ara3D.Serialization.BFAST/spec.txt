@@ -1,0 +1,100 @@
+﻿BFAST Specification Proposal
+June 23rd, 2020
+
+Summary
+
+BFAST is a simple high-performance general purpose method of packing and unpacking named
+arrays of binary data for serialization, deserialization, and transport in a cross-platform
+and language agnostic manner.
+
+Introduction
+
+Of the myriad standardized formats for binary representation of structured data most
+are very general and support nested data and schemas. 
+
+One of the most common use case for structured binary data are collections of key/value
+pairs where each key is a string and the value is an array of bytes. 
+An example of this are archive file formats like TAR and ZIP. Many 3D and image formats 
+data also follow this format. 
+
+When data conforms to this kind of schema, then most binary formats (e.g CBOR, FlatBuffers,
+ProtoBuf, Capnproto, etc.) introduce more overhead than is required, in terms of
+memory, performance, and code.
+
+Often developers encountering this scenario will write an ad-hoc serialization/deserialization
+protocol, which can lead to some problems:
+
+    * Endianness may or may not be considered
+    * When memory mapping the structure, O(1) random access to buffers might not possible
+    * Programs written by other developers cannot easily deduce the layout of the format
+    * Alignment of the buffers might not be suitable for fast processing of the data arrays
+    * Testing and validation of the protocol might not be suitably robust 
+
+The BFAST format is intended to provide a simple open standard that developers can use instead of
+rolling their own. We have used in production code in a multitude of scenarios on a wide range of
+devices and languages, and found it to be quite satsifactory in terms of efficiency and simplicity. 
+
+Like TAR, BFAST is explicitly not a compression format, and can be easily compressed using
+any compression algorithm. It is appropriate for use as an archive format, or as a container
+format for other more complex file formats that provide additional semantic requirements
+on the usage and naming of specific buffers. 
+
+Features
+
+    * The file format can be quickly detected reading the first 8 bytes
+    * Endianness of the writer can be detected from first 8 bytes, and compensated for by a reader 
+    * Buffers names are stored in the first buffer, and can be quickly retrieved
+    * Each data-buffer is aligned on 64 bytes (for easy SIMD register alignment)
+    * Buffer begin/end positions are stored in the beginning of the file for fast seeking to data
+    * Buffer names can be arbitrarily long sequences of Utf-8 characters
+    * Buffers can be over 2GB in length
+
+Header Layout
+
+    Preamble (bytes 0..32)
+        int64_t Magic;      
+        int64_t DataStart;  // The beginning position of the first data buffer, 64 byte aligned
+        int64_t DataEnd;    // The end position of the last data buffer 
+        int64_t Count;      // Number of all buffers, including name buffer. There should always be at least 1 buffer.
+
+    Ranges (bytes 32..32 + NumArray*16)
+        int64_t Begin;
+        int64_t End;  
+
+Requirements
+
+    * The first eight bytes are 0xBFA5
+    * The file can be encoded as big-endian or little-endian
+    * If the endianness of the reader is different then the writer, the eight bytes will apprea as 0xA5BF << 48; 
+    * Each DataBuffer starts on a 64 byte aligned buffer
+    * Buffer names are stored as null terminated Utf8 strings in the first buffer
+    * There are always exactly n-1 buffer names, where n is the number of buffers
+    * Buffer names can be empty (0 length strings)
+    * Multiple buffers can have the same name
+    * There is no padding between each range structure
+    * There is no padding between the header and the range
+    * The range struct is 16 bytes long
+    * The header struct is 32 bytes
+    * A data buffer could be empty, in which case, the begin and end is the same
+    * If a data buffer is empty, the the next data buffer will point to the data buffer beginning
+    * The DataStart can be computed by align(64, sizeof(Header) + sizeof(Range) * Header.NumArrays)
+    * Header.DataStart is equivalent to Range[0].Begin
+    * Header.DataEnd is equivalent to Range[N-1].End
+
+Related Information
+
+    * [Zip]https://en.wikipedia.org/wiki/Zip_(file_format)
+    * [Protcol Buffers](https://developers.google.com/protocol-buffers/)
+    * [FlatBuffers](https://github.com/google/flatbuffers)
+    * [BINN](https://github.com/liteserver/binn/)
+    * [BSON](http://bsonspec.org/)
+    * [UBJSON](http://ubjson.org/)
+    * [MessagePack](https://msgpack.org/)
+    * [CBOR](https://cbor.io/)
+    * [TAR](https://www.gnu.org/software/tar/manual/html_node/Standard.html)
+
+For a more comprehensive list see:
+
+    * [Comparison of Data Serialization Formats](https://en.wikipedia.org/wiki/Comparison_of_data-serialization_formats)
+    * [List of Archive Formats](https://en.wikipedia.org/wiki/List_of_archive_formats)
+

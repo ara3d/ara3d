@@ -1,0 +1,47 @@
+﻿Desired Features: 
+	* Editor for Color properites 
+	* Ability to use selected items properties as default
+	* Window visibility and position remembered
+	* Load SVG 
+	* Clipboard
+	* Layers
+	* Macro recorder
+	* Update shape with mouse
+	* Change the current shape color
+	* Ability to create special compound shapes 	
+	* List commands in a new view 
+	* Settings 
+	* Auto back-up. 
+	* Create and save color palettes 
+	* Transform a shape (or group of shapes)
+	* Grouping
+	* Rotating 
+	* Create a new command from a file. 
+	* Select a bunch of commands, and create a new command from it (Drawing commands?)
+	* Cursor mode .... move cursor (shows "current color, current transform")
+	* Run a command N times 
+	* Show grid
+	* Color picker. 
+	* Tiling 
+	* Randomness. 
+	* Infinity shape. 
+	* Create and save palettes 
+	* Fonts and text.
+	* Complex patterns along a shape (loops, fractals, emboridery)
+	* Plug-ins. 
+	* AI generation: 
+		* https://www.reddit.com/r/OpenAI/comments/z83dme/textdavinci003_can_now_generate_svg_images/
+		* https://github.com/PawanOsman/ChatGPT.Net
+		* https://medium.com/@devedium/how-to-use-chatgpt-api-in-c-d9133a3b8ef9
+		* https://neural.love/blog/chatgpt-svg
+	* Noise functions to create random images
+	* Shape modifiers with stacks 
+
+
+
+Known Issues:
+	* Slow start-up.
+	* It creates a default rectangle at the beginning
+	* Can't edit Left/Right/Top/Bottom
+	* Can't save commands. 
+	* Can't make a complex shape. 

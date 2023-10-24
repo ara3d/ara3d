@@ -1,0 +1,16 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>netstandard2.0</TargetFramework>
+        <RootNamespace>Ara3D.Bindings.Assimp</RootNamespace>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <ProjectReference Include="..\..\Ara3D.Serialization\Ara3D.Serialization.G3D\Ara3D.Serialization.G3D.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <PackageReference Include="AssimpNet" Version="5.0.0-beta1" />
+    </ItemGroup>
+
+</Project>

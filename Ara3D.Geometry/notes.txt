@@ -1,0 +1,16 @@
+﻿To-do:
+* Decide on what parts of the experiments to keep.
+* Finally remove the stuff that I am planning on removing.
+* Rearrange some of the code (e.g., line interesection stuff)
+* Remove dependency on G3D 
+* Come up with a good geometry definition 
+* Remove the dependencies on System.Collections 
+* Add new types: 
+	* Amount
+	* Angle
+	* Rotation
+	* Translation
+	* Scale 
+	* Transform
+	* Pose
+* Convert the Distance functions lab code from GLSL and bring it into here 
