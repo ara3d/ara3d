@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Ara3D.Buffers;
 
 namespace Ara3D.Serialization.VIM
 {

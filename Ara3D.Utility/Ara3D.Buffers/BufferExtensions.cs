@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 
-namespace Ara3D.Serialization.VIM
+namespace Ara3D.Buffers
 {
     /// <summary>
     /// Helper functions for working with buffers 
@@ -23,7 +23,7 @@ namespace Ara3D.Serialization.VIM
             => new NamedBuffer<T>(xs.GetTypedData(), name);
 
         public static IEnumerable<INamedBuffer> ToNamedBuffers(this IEnumerable<IBuffer> buffers, IEnumerable<string> names = null)
-            => names == null ? buffers.Select(b => b.ToNamedBuffer("")) : buffers.Zip(names, ToNamedBuffer);
+            => names == null ? buffers.Select(b => ToNamedBuffer(b, "")) : buffers.Zip(names, ToNamedBuffer);
 
         public static IDictionary<string, INamedBuffer> ToDictionary(this IEnumerable<INamedBuffer> buffers)
             => buffers.ToDictionary(b => b.Name, b => b);

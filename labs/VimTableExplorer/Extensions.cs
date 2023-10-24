@@ -1,4 +1,5 @@
 ﻿
+using Ara3D.Buffers;
 using Ara3D.Serialization.VIM;
 
 namespace VimTableExplorer

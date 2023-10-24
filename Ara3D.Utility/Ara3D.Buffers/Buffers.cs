@@ -1,23 +1,26 @@
 ﻿using System;
 using System.IO;
 
-namespace Ara3D.Serialization.VIM
+namespace Ara3D.Buffers
 {
     /// <summary>
     /// Provides an interface to an object that manages a potentially large array of elements all of the same unmanaged type.
     /// </summary>
     public interface IBuffer
     {
+        // TODO: make this a pointer 
         Array Data { get; }
         int ElementSize { get; }
+        // TODO: why would this be required as part of the interface?
         void Write(Stream stream);
     }
 
     /// <summary>
     /// A version of the IBuffer interface when the element types are known
     /// </summary>
-    public interface IBuffer<T> : IBuffer
+    public interface IBuffer<out T> : IBuffer
     {
+        // TODO: Shouldn't this be an extension method on IBuffer?
         T[] GetTypedData();
     }
 

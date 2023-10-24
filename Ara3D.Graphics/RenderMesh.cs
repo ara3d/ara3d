@@ -2,9 +2,11 @@
 using Ara3D.Collections;
 using Ara3D.Geometry;
 using Ara3D.Math;
+using Ara3D.Buffers;
 
 namespace Ara3D.Graphics
 {
+    /*
     public unsafe interface IBuffer
     {
         byte* Data { get; }
@@ -26,6 +28,7 @@ namespace Ara3D.Graphics
     public interface INamedBuffer : INamed, IBuffer { }
     
     public interface INamedTypedBuffer : INamed, IBuffer { }
+    */
 
     public enum ElementAssociation
     {
@@ -40,7 +43,7 @@ namespace Ara3D.Graphics
         Model,
     }
 
-    public interface IRenderBuffer : INamedTypedBuffer 
+    public interface IRenderBuffer : INamedBuffer 
     {
         ElementAssociation Association { get; }
         int Arity { get; }

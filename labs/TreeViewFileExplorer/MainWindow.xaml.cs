@@ -4,6 +4,7 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media.Imaging;
+using Ara3D.Buffers;
 using Ara3D.Serialization.VIM;
 using Ara3D.Utils;
 using TreeViewFileExplorer.ShellClasses;

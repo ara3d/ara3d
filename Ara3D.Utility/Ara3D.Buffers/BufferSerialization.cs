@@ -1,10 +1,10 @@
 ﻿using System;
 using System.IO;
 
-namespace Ara3D.Serialization.VIM
+namespace Ara3D.Buffers
 {
     /// <summary>
-    /// This class would benefit from being in a generic utilities class, however, having it here allows BFAST to be a standalone without dependencies.
+    /// Helper functions for reading and writing buffers to streams
     /// </summary>
     public static class BufferSerialization
     {
@@ -54,11 +54,11 @@ namespace Ara3D.Serialization.VIM
 
         /// <summary>
         /// Helper for reading arrays of arbitrary unmanaged types from a Stream, that might be over 2GB of size.
-        /// That said, in C#, you can never load more int.MaxValue numbers of items.
-        /// NOTE: Arrays are still limited to 2gb in size unless gcAllowVeryLargeObjects is set to true
+        /// Arrays are limited to 2gb in size unless gcAllowVeryLargeObjects is set to true
         /// in the runtime environment.
         /// https://docs.microsoft.com/en-us/dotnet/api/system.array?redirectedfrom=MSDN&view=netframework-4.7.2#remarks
-        /// Alternatively, we could convert to .Net Core
+        /// That said, in C#, you can still never load more int.MaxValue (approx 2billion)
+        /// numbers of items.
         /// </summary>
         public static unsafe T[] ReadArray<T>(this Stream stream, int count) where T : unmanaged
         {

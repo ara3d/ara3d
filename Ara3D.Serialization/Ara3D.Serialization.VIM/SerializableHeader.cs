@@ -7,7 +7,6 @@ namespace Ara3D.Serialization.VIM
 {
     public struct SerializableHeader
     {
-       
         public const string FormatVersionField = "vim";
         public const string IdField = "id";
         public const string RevisionField = "revision";
@@ -95,10 +94,6 @@ namespace Ara3D.Serialization.VIM
         /// <summary>
         /// Parses the input. Throws exceptions if the input does not define a correctly formatted header.
         /// </summary>
-        /// <exception cref="VimHeaderTokenizationException"></exception>
-        /// <exception cref="VimHeaderDuplicateFieldException"></exception>
-        /// <exception cref="VimHeaderFieldParsingException"></exception>
-        /// <exception cref="VimHeaderRequiredFieldsNotFoundException"></exception>
         public static SerializableHeader Parse(string input)
         {
             var lines = input.Split(EndOfLineChar)
@@ -124,7 +119,7 @@ namespace Ara3D.Serialization.VIM
                     continue;
 
                 if (numTokens != 2)
-                    throw new VimHeaderTokenizationException(line, numTokens);
+                    throw ParsingException.TokenizationException(line, numTokens);
 
                 var fieldName = tokens[0];
                 var fieldValue = tokens[1];
@@ -136,20 +131,20 @@ namespace Ara3D.Serialization.VIM
                     case FormatVersionField:
                         {
                             if (fileFormatVersion != null)
-                                throw new VimHeaderDuplicateFieldException(fieldName);
+                                throw ParsingException.DuplicateField(fieldName);
 
                             if (!SerializableVersion.TryParse(fieldValue, out fileFormatVersion))
-                                throw new VimHeaderFieldParsingException(fieldName, fieldValue);
+                                throw ParsingException.ParsingField(fieldName, fieldValue);
 
                             break;
                         }
                     case IdField:
                         {
                             if (id != null)
-                                throw new VimHeaderDuplicateFieldException(fieldName);
+                                throw ParsingException.DuplicateField(fieldName);
 
                             if (!Guid.TryParse(fieldValue, out var result))
-                                throw new VimHeaderFieldParsingException(fieldName, fieldValue);
+                                throw ParsingException.ParsingField(fieldName, fieldValue);
 
                             id = result;
 
@@ -158,19 +153,18 @@ namespace Ara3D.Serialization.VIM
                     case RevisionField:
                         {
                             if (revision != null)
-                                throw new VimHeaderDuplicateFieldException(fieldName);
+                                throw ParsingException.DuplicateField(fieldName);
 
                             if (!Guid.TryParse(fieldValue, out var result))
-                                throw new VimHeaderFieldParsingException(fieldName, fieldValue);
+                                throw ParsingException.ParsingField(fieldName, fieldValue);
 
                             revision = result;
-
                             break;
                         }
                     case GeneratorField:
                         {
                             if (generator != null)
-                                throw new VimHeaderDuplicateFieldException(fieldName);
+                                throw ParsingException.DuplicateField(fieldName);
 
                             generator = fieldValue;
 
@@ -179,7 +173,7 @@ namespace Ara3D.Serialization.VIM
                     case CreationDateField:
                         {
                             if (creationDate != null)
-                                throw new VimHeaderDuplicateFieldException(fieldName);
+                                throw ParsingException.DuplicateField(fieldName);
 
                             try
                             {
@@ -188,7 +182,7 @@ namespace Ara3D.Serialization.VIM
                             }
                             catch
                             {
-                                throw new VimHeaderFieldParsingException(fieldName, fieldValue);
+                                throw ParsingException.ParsingField(fieldName, fieldValue);
                             }
 
                             break;
@@ -196,10 +190,10 @@ namespace Ara3D.Serialization.VIM
                     case SchemaField:
                         {
                             if (schema != null)
-                                throw new VimHeaderDuplicateFieldException(fieldName);
+                                throw ParsingException.DuplicateField(fieldName);
 
                             if (!SerializableVersion.TryParse(fieldValue, out schema))
-                                throw new VimHeaderFieldParsingException(fieldName, fieldValue);
+                                throw ParsingException.ParsingField(fieldName, fieldValue);
 
                             break;
                         }
@@ -212,7 +206,7 @@ namespace Ara3D.Serialization.VIM
 
             // Ensure all required fields have been accounted for.
             if (requiredSet.Count > 0)
-                throw new VimHeaderRequiredFieldsNotFoundException(requiredSet.ToArray());
+                throw ParsingException.MissingFields(requiredSet.ToArray());
 
             return new SerializableHeader(
                 fileFormatVersion,
