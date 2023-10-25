@@ -289,8 +289,32 @@ namespace Ara3D.Serialization.G3D
             return r;
         }
 
+        public static G3D ReadFromGeometryBufferIfPossible(BFastReader reader)
+        {
+            // Check if there is a geometry buffer (e.g., as in a VIM file)
+            try
+            {
+                var tmp = reader.BufferNames.ToList().IndexOf("geometry");
+                if (tmp < 0) return null;
+                var (name, range) = reader.GetNameAndRange(tmp);
+                using (var subView = reader.View.CreateSubView(range.Begin, range.Count))
+                {
+                    return Read(subView);
+                }
+            }
+            catch 
+            {
+                return null;
+            }
+        }
+
         public static G3D Read(MemoryMappedView view)
         {
+            var reader = new BFastReader(view);
+            var r = ReadFromGeometryBufferIfPossible(reader);
+            if (r != null) 
+                return r;
+
             var header = new G3dHeader();
             var attributes = new List<GeometryAttribute>();
 
@@ -311,7 +335,8 @@ namespace Ara3D.Serialization.G3D
                 attributes.Add(geometryAttribute);
             }
 
-            BFastReader.Read(view, OnBuffer);
+            // Assume it is a normal G3D
+            reader.Read(OnBuffer);
             return new G3D(attributes, header);
         }
         

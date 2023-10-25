@@ -5,7 +5,7 @@ namespace Ara3D.Serialization.BFAST
     public class BFastReader
     {
         public BFastPreamble Preamble { get; }
-        public BFastRange[] Ranges { get; } = Array.Empty<BFastRange>();
+        public BFastRange[] Ranges { get; }
         public string[] BufferNames { get; } = Array.Empty<string>();
         public MemoryMappedView View { get; }
         

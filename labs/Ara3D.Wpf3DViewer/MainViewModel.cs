@@ -174,19 +174,8 @@ namespace ModelViewer
 
         private async Task<Model3DGroup> LoadAsync(string model3DPath, bool freeze)
         {
-            return await Task.Factory.StartNew(() =>
-            {
-                var mi = new ModelImporter();
-
-                if (freeze)
-                {
-                    // Alt 1. - freeze the model 
-                    return mi.Load(model3DPath, null, true);
-                }
-
-                // Alt. 2 - create the model on the UI dispatcher
-                return mi.Load(model3DPath, this.dispatcher);
-            });
+            return await Task.Factory.StartNew(() => 
+                ModelLoader.Load(model3DPath, freeze ? null : dispatcher, freeze));
         }
     }
 }

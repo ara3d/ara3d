@@ -45,12 +45,36 @@ namespace Ara3D.Utils
         public static string GetTimeStamp()
             => DateTime.Now.ToNormalizedString();
 
+        public static string GetFileName(this FilePath filePath)
+            => Path.GetFileName(filePath);
+
+        public static string GetFileNameWithoutExtension(this FilePath filePath)
+            => Path.GetFileNameWithoutExtension(filePath);
+
+        public static string GetExtension(this FilePath filePath)
+            => Path.GetExtension(filePath);
+
+        public static bool HasExtension(this FilePath filePath, string extension)
+            => filePath.Value.ToLowerInvariant().EndsWith(extension.ToLowerInvariant());
+
+        public static string GetExtensionLower(this FilePath filePath)
+            => Path.GetExtension(filePath).ToLowerInvariant();
+
+        public static FilePath ChangeBaseName(this FilePath filePath, Func<string, string> f)
+            => filePath.GetDirectory().RelativeFile(
+                f(filePath.GetFileNameWithoutExtension()) + f(filePath.GetExtension()));
+
         /// <summary>
-        /// Returns the time stamped filename and extension.
+        /// Appends a time stamp to the time stamped filename and extension.
         /// </summary>
-        public static string TimeStampedFileName(this string path)
-            => Path.Combine(Path.GetDirectoryName(path),
-                $"{Path.GetFileNameWithoutExtension(path)}-{GetTimeStamp()}{Path.GetExtension(path)}");
+        public static string TimeStampedFileName(this FilePath filePath)
+            => ChangeBaseName(filePath, name => $"{name}-{GetTimeStamp()}");
+
+        public static FilePath Move(this FilePath filePath, FilePath destination)
+        {
+            File.Move(filePath, destination);
+            return destination;
+        }
 
         public static string CopyToFolder(this string path, string dir, bool dontCreate = false)
         {
@@ -310,8 +334,8 @@ namespace Ara3D.Utils
         /// <summary>
         /// Returns true if the string has any invalid file name chars
         /// </summary>
-        public static bool HasInvalidFileNameChars(this string s)
-            => InvalidFileNameRegex.Match(s).Success;
+        public static bool HasInvalidFileNameChas(this FilePath filePath)
+            => InvalidFileNameRegex.Match(filePath).Success;
 
         /// <summary>
         /// Returns the name of the outer most folder given a file path or a directory path
@@ -331,6 +355,15 @@ namespace Ara3D.Utils
         /// </summary>
         public static string ChangeDirectory(string filePath, string newFolder)
             => Path.Combine(newFolder, Path.GetFileName(filePath));
+
+        public static FilePath ChangeExtension(this FilePath filePath, string ext)
+            => Path.ChangeExtension(filePath, ext);
+
+        public static FilePath StripExtension(this FilePath filePath)
+            => Path.ChangeExtension(filePath, null);
+
+        public static DirectoryPath GetDirectory(this FilePath filePath)
+            => DirectoryName(filePath);
 
         /// <summary>
         /// Finds an a parent (or ancestor) directory that satisfies the criteria
@@ -548,12 +581,6 @@ namespace Ara3D.Utils
         /// </summary>
         public static void CreateEmptyFile(string filePath)
             => File.CreateText(filePath).Close();
-
-        /// <summary>
-        /// Gets the directory that contains the file path.
-        /// </summary>
-        public static DirectoryPath GetDirectory(this FilePath filePath)
-            => Path.GetDirectoryName(filePath);
 
         public static IEnumerable<FilePath> GetFiles(this DirectoryPath directoryPath, string searchPattern,
             bool recurse = false)
