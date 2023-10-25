@@ -102,19 +102,19 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Ara3D.Collections\Ara3D.Collections.csproj">
+    <ProjectReference Include="..\..\src\Ara3D.Collections\Ara3D.Collections.csproj">
       <Project>{31E7BD94-C662-4A29-8048-9801742E0A9A}</Project>
       <Name>Ara3D.Collections</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\Ara3D.Math\Ara3D.Math.csproj">
+    <ProjectReference Include="..\..\src\Ara3D.Math\Ara3D.Math.csproj">
       <Project>{9ddeb13c-a6d4-49e6-8e50-21a3c5931414}</Project>
       <Name>Ara3D.Math</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\Ara3D.Serialization\Ara3D.Serialization.BFAST\Ara3D.Serialization.BFAST.csproj">
+    <ProjectReference Include="..\..\src\Ara3D.Serialization.BFAST\Ara3D.Serialization.BFAST.csproj">
       <Project>{a763689e-d5c2-4a25-8a3f-9ceaf8bb3132}</Project>
       <Name>Ara3D.Serialization.BFAST</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\Ara3D.Serialization\Ara3D.Serialization.G3D\Ara3D.Serialization.G3D.csproj">
+    <ProjectReference Include="..\..\src\Ara3D.Serialization.G3D\Ara3D.Serialization.G3D.csproj">
       <Project>{c2a1f310-166f-49b4-b9b9-ecb937d53fe2}</Project>
       <Name>Ara3D.Serialization.G3D</Name>
     </ProjectReference>

@@ -6,9 +6,9 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\Ara3D.Collections\Ara3D.Collections.csproj" />
-    <ProjectReference Include="..\..\Ara3D.Math\Ara3D.Math.csproj" />
-    <ProjectReference Include="..\..\Ara3D.Utility\Ara3D.Buffers\Ara3D.Buffers.csproj" />
+    <ProjectReference Include="..\Ara3D.Collections\Ara3D.Collections.csproj" />
+    <ProjectReference Include="..\Ara3D.Math\Ara3D.Math.csproj" />
+    <ProjectReference Include="..\Ara3D.Buffers\Ara3D.Buffers.csproj" />
     <ProjectReference Include="..\Ara3D.Serialization.BFAST\Ara3D.Serialization.BFAST.csproj" />
     <ProjectReference Include="..\Ara3D.Serialization.G3D\Ara3D.Serialization.G3D.csproj" />
   </ItemGroup>

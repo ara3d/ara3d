@@ -12,6 +12,9 @@ namespace Ara3D.Geometry
         public static IArray<int> Indices(this IMesh mesh)
             => mesh.Faces.SelectMany(f => LinqArray.Create(f.X, f.Y, f.Z));
 
+        public static IArray<float> VerticesAsFloats(this IMesh mesh)
+            => mesh.Vertices.SelectMany(v => Tuple.Create(v.X, v.Y, v.Z));
+
         // TODO: this should be in IArray
         public static IArray<float> SampleFloats(this int n, float max = 1f)
             => n == 1 ? 0f.Unit() : n.Select(i => i * max / (n - 1));

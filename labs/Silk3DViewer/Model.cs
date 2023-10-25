@@ -8,6 +8,7 @@ using System.Diagnostics;
 using System.Numerics;
 using Ara3D.Serialization.VIM;
 using Ara3D.Collections;
+using Ara3D.Geometry;
 
 namespace Tutorial
 {
@@ -37,7 +38,16 @@ namespace Tutorial
             Console.WriteLine($"number of instances {g.InstanceMeshes.Count}");
             Console.WriteLine($"number of materials {g.Materials.Count}");
 
-            Meshes.Add(ToMesh(g.Vertices, g.Indices));
+            // Meshes.Add(ToMesh(g.Vertices, g.Indices));
+
+            Meshes.Add(ToMesh(Primitives.TorusMesh(20, 5, 100, 20)));
+        }
+
+        public Mesh ToMesh(IMesh mesh)
+        {
+            var indices = mesh.Indices().ToArray();
+            var vertices = mesh.VerticesAsFloats().ToArray();
+            return new Mesh(_gl, vertices, indices);
         }
 
         public static Random Random = new Random();
@@ -59,7 +69,7 @@ namespace Tutorial
             for (var i = 0; i < vertices.Count; i++)
             {
                 // TODO: 
-                if (i % 100 == 0)
+                if (i % 1000 == 0)
                     c = NewRandomColor();
 
                 var vert = vertices[i];
@@ -71,7 +81,7 @@ namespace Tutorial
                 vertData[i * 6 + 4] = c.Y;
                 vertData[i * 6 + 5] = c.Z;
             }
-            var indexData = indices.Select(i => (uint)i).ToArray();
+            var indexData = indices.ToArray();
             return new Mesh(_gl, vertData, indexData);
         }
     }

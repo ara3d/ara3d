@@ -94,7 +94,7 @@ namespace Ara3D.Geometry
             => new ParametricSurface(f, closedX, closedY).Tesselate(uSegs, vSegs);
 
         public static ParametricSurface Torus(float radius, float tubeRadius)
-            => new ParametricSurface(uv => TorusFunction(uv, radius, tubeRadius), true, true);
+            => new ParametricSurface(uv => TorusFunction(uv, radius, tubeRadius), false, false);
 
         public static QuadMesh TorusMesh(float radius, float tubeRadius, int uSegs, int vSegs)
             => Torus(radius, tubeRadius).Tesselate(uSegs, vSegs);

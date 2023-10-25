@@ -16,8 +16,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\Ara3D.Serialization\Ara3D.Serialization.BFAST\Ara3D.Serialization.BFAST.csproj" />
-    <ProjectReference Include="..\..\Ara3D.Serialization\Ara3D.Serialization.VIM\Ara3D.Serialization.VIM.csproj" />
+    <ProjectReference Include="..\..\src\Ara3D.Serialization.BFAST\Ara3D.Serialization.BFAST.csproj" />
+    <ProjectReference Include="..\..\src\Ara3D.Serialization.VIM\Ara3D.Serialization.VIM.csproj" />
   </ItemGroup>
 
 </Project>

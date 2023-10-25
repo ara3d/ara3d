@@ -104,12 +104,12 @@
     <Reference Include="System" />
     <Reference Include="System.Core" />
   </ItemGroup>
-  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
-  <ImportGroup Label="ExtensionTargets">
-  </ImportGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Ara3D.Math\Ara3D.Math.csproj">
+    <ProjectReference Include="..\Ara3D.Math\Ara3D.Math.csproj">
       <Project>{9ddeb13c-a6d4-49e6-8e50-21a3c5931414}</Project>
     </ProjectReference>
   </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
 </Project>

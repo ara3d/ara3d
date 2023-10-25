@@ -9,7 +9,7 @@ namespace Tutorial
 {
     public class Mesh : IDisposable
     {
-        public Mesh(GL gl, float[] vertices, uint[] indices)
+        public Mesh(GL gl, float[] vertices, int[] indices)
         {
             GL = gl;
             Vertices = vertices;
@@ -19,7 +19,7 @@ namespace Tutorial
         }
 
         public float[] Vertices { get; }
-        public uint[] Indices { get; }
+        public int[] Indices { get; }
         public OpenGLVertexArrayObject VAO { get; set; }
         public GL GL { get; }
 

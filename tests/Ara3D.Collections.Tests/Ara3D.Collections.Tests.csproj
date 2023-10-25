@@ -12,7 +12,7 @@
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\..\Ara3D.Collections\Ara3D.Collections.csproj" />
+      <ProjectReference Include="..\..\src\Ara3D.Collections\Ara3D.Collections.csproj" />
     </ItemGroup>
 
 </Project>
