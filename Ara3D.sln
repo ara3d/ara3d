@@ -112,6 +112,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ara3D.Parsing", "Ara3D.Pars
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ara3D.Parsing.Grammars", "Ara3D.Parsing\Ara3D.Parsing.Grammars\Ara3D.Parsing.Grammars.csproj", "{5D48DE90-27BA-4F76-9DDD-34A79F80176A}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SilkTutorialHelloQuad", "labs\SilkTutorialHelloQuad\SilkTutorialHelloQuad.csproj", "{236177DA-978B-4EEB-98C3-D15DB2D5B94D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -650,6 +652,18 @@ Global
 		{5D48DE90-27BA-4F76-9DDD-34A79F80176A}.Release|x64.Build.0 = Release|Any CPU
 		{5D48DE90-27BA-4F76-9DDD-34A79F80176A}.Release|x86.ActiveCfg = Release|Any CPU
 		{5D48DE90-27BA-4F76-9DDD-34A79F80176A}.Release|x86.Build.0 = Release|Any CPU
+		{236177DA-978B-4EEB-98C3-D15DB2D5B94D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{236177DA-978B-4EEB-98C3-D15DB2D5B94D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{236177DA-978B-4EEB-98C3-D15DB2D5B94D}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{236177DA-978B-4EEB-98C3-D15DB2D5B94D}.Debug|x64.Build.0 = Debug|Any CPU
+		{236177DA-978B-4EEB-98C3-D15DB2D5B94D}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{236177DA-978B-4EEB-98C3-D15DB2D5B94D}.Debug|x86.Build.0 = Debug|Any CPU
+		{236177DA-978B-4EEB-98C3-D15DB2D5B94D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{236177DA-978B-4EEB-98C3-D15DB2D5B94D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{236177DA-978B-4EEB-98C3-D15DB2D5B94D}.Release|x64.ActiveCfg = Release|Any CPU
+		{236177DA-978B-4EEB-98C3-D15DB2D5B94D}.Release|x64.Build.0 = Release|Any CPU
+		{236177DA-978B-4EEB-98C3-D15DB2D5B94D}.Release|x86.ActiveCfg = Release|Any CPU
+		{236177DA-978B-4EEB-98C3-D15DB2D5B94D}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -706,6 +720,7 @@ Global
 		{B63C9616-A04F-41D3-9632-567E3389F87A} = {8C9F014E-97FC-4A6E-9C4D-05DF71C3B209}
 		{92F24B11-B5CE-4B4F-810E-8B544AE22ACB} = {AEC2C4D7-9837-4EC3-BFBE-DF975FACB351}
 		{5D48DE90-27BA-4F76-9DDD-34A79F80176A} = {AEC2C4D7-9837-4EC3-BFBE-DF975FACB351}
+		{236177DA-978B-4EEB-98C3-D15DB2D5B94D} = {29056796-3D9B-4DD1-A99F-93063C26D60D}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {890503B7-C3A0-410B-A932-A031A4552050}

@@ -1,4 +1,6 @@
-﻿namespace Ara3D.Utils
+﻿using System.IO;
+
+namespace Ara3D.Utils
 {
     public readonly struct FilePath
     {

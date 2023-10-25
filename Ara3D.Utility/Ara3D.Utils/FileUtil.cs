@@ -566,6 +566,21 @@ namespace Ara3D.Utils
         public static FileInfo Info(this FilePath filePath)
             => new FileInfo(filePath);
 
+        public static string ReadAllText(this FilePath self)
+            => File.ReadAllText(self);
+
+        public static byte[] ReadAllBytes(this FilePath self)
+            => File.ReadAllBytes(self);
+
+        public static string[] ReadAllLines(this FilePath self)
+            => File.ReadAllLines(self);
+
+        public static void Delete(this FilePath self)
+            => File.Delete(self);
+
+        public static void Create(this FilePath self)
+            => File.Create(self);
+
         public static void CopyToStreamAndClose(this FilePath filePath, Stream outputStream)
         {
             if (filePath.Exists())

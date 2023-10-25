@@ -9,13 +9,15 @@ using PrimitiveType = Silk.NET.OpenGL.PrimitiveType;
 
 namespace Tutorial
 {
+    // https://dotnet.github.io/Silk.NET/docs/opengl/c1/2-hello-quad.html
+
     class Program
     {
         private static IWindow window;
         private static GL Gl;
         private static IKeyboard primaryKeyboard;
         
-        private static Shader Shader;
+        private static OpenGLShaderProgram _openGlShaderProgram;
         private static Model Model;
 
         //Setup the camera's location, directions, and movement speed
@@ -64,7 +66,7 @@ namespace Tutorial
 
             Gl = GL.GetApi(window);
 
-            Shader = new Shader(Gl, "shader.vert", "shader.frag");
+            _openGlShaderProgram = OpenGLShaderProgram.CreateFromFiles(Gl, "shader.vert", "shader.frag");
             //var f = @"C:\Users\cdigg\git\ara3d\CSharp\3D\Silk.NET\examples\CSharp\OpenGL Tutorials\Tutorial 4.1 - Model Loading\cube.model";
             //var f = @"C:\Users\cdigg\git\3d-format-shootout\data\submodules\common-3d-test-models\data\stanford-bunny.obj";
             //var f = @"C:\Users\cdigg\git\ara3d\Cpp\draco\testdata\bunny_norm.obj";
@@ -114,7 +116,7 @@ namespace Tutorial
             Gl.Enable(EnableCap.DepthTest);
             Gl.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
 
-            Shader.Use();
+            _openGlShaderProgram.Use();
             //Shader.SetUniform("uTexture0", 0);
 
             //Use elapsed time to convert to radians to allow our cube to rotate over time
@@ -133,13 +135,12 @@ namespace Tutorial
             // https://registry.khronos.org/OpenGL-Refpages/gl4/html/glDrawArraysIndirect.xhtml 
             
             foreach (var mesh in Model.Meshes)
-            {
+            {   
                 mesh.Bind();
-                Shader.Use();
-                //Shader.SetUniform("uTexture0", 0);
-                Shader.SetUniform("uModel", model);
-                Shader.SetUniform("uView", view);
-                Shader.SetUniform("uProjection", projection);
+                _openGlShaderProgram.Use();
+                _openGlShaderProgram.SetUniform("uModel", model);
+                _openGlShaderProgram.SetUniform("uView", view);
+                _openGlShaderProgram.SetUniform("uProjection", projection);
 
                 Gl.DrawArrays(PrimitiveType.Triangles, 0, (uint)mesh.Vertices.Length);
             }
@@ -188,7 +189,7 @@ namespace Tutorial
 
         private static void OnClose()
         {
-            Shader.Dispose();
+            _openGlShaderProgram.Dispose();
         }
 
         private static void KeyDown(IKeyboard keyboard, Key key, int arg3)

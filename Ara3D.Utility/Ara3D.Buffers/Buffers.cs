@@ -8,8 +8,8 @@ namespace Ara3D.Buffers
     /// </summary>
     public interface IBuffer
     {
-        // TODO: make this a pointer 
         Array Data { get; }
+        void WithPointer(Action<IntPtr> action);
         int ElementSize { get; }
         // TODO: why would this be required as part of the interface?
         void Write(Stream stream);
@@ -44,10 +44,20 @@ namespace Ara3D.Buffers
     /// </summary>
     public unsafe class Buffer<T> : IBuffer<T> where T : unmanaged
     {
-        public Buffer(T[] data) => Data = data;
+        public Buffer(T[] data) => _data = data;
+
+        public void WithPointer(Action<IntPtr> action)
+        {
+            fixed (T* p = _data)
+            {
+                action((IntPtr)p);
+            }
+        }
+
         public int ElementSize => sizeof(T);
-        public Array Data { get; }
-        public T[] GetTypedData() => Data as T[];
+        public Array Data => _data;
+        private readonly T[] _data;
+        public T[] GetTypedData() => _data;
         public void Write(Stream stream) => stream.Write(GetTypedData());
     }
 
@@ -59,6 +69,7 @@ namespace Ara3D.Buffers
         public NamedBuffer(IBuffer buffer, string name) => (Buffer, Name) = (buffer, name);
         public IBuffer Buffer { get; }
         public string Name { get; }
+        public void WithPointer(Action<IntPtr> action) => Buffer.WithPointer(action);
         public int ElementSize => Buffer.ElementSize;
         public Array Data => Buffer.Data;
         public void Write(Stream stream) => Buffer.Write(stream);
@@ -67,14 +78,9 @@ namespace Ara3D.Buffers
     /// <summary>
     /// A concrete implementation of INamedBuffer with a specific type.
     /// </summary>
-    public class NamedBuffer<T> : INamedBuffer<T> where T : unmanaged
+    public class NamedBuffer<T> : Buffer<T>, INamedBuffer<T> where T : unmanaged
     {
-        public NamedBuffer(T[] data, string name) => (Array, Name) = (data, name);
+        public NamedBuffer(T[] data, string name) : base(data) => Name = name;
         public string Name { get; }
-        public unsafe int ElementSize => sizeof(T);
-        public readonly T[] Array;
-        public Array Data => Array;
-        public T[] GetTypedData() => Array;
-        public void Write(Stream stream) => stream.Write(Array);
     }
 }
