@@ -15,6 +15,7 @@ namespace Tutorial
             ElementBufferObject = new OpenGLBuffer(Context, BufferTargetARB.ElementArrayBuffer);
             VertexBufferObject= new OpenGLBuffer(Context, BufferTargetARB.ArrayBuffer);
             Bind();
+
             Context.EnableVertexAttribArray(0);
             VertexAttributePointer(0, 3, 6 * 4, 0 * 4);
             Context.EnableVertexAttribArray(1);

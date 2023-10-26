@@ -45,9 +45,10 @@ namespace Tutorial
 
         public Mesh ToMesh(IMesh mesh)
         {
-            var indices = mesh.Indices().ToArray();
-            var vertices = mesh.VerticesAsFloats().ToArray();
-            return new Mesh(_gl, vertices, indices);
+            return ToMesh(mesh.Vertices, mesh.Indices());
+            //var indices = mesh.Indices().ToArray();
+            //var vertices = mesh.VerticesAsFloats().ToArray();
+            //return new Mesh(_gl, vertices, indices);
         }
 
         public static Random Random = new Random();
@@ -69,7 +70,7 @@ namespace Tutorial
             for (var i = 0; i < vertices.Count; i++)
             {
                 // TODO: 
-                if (i % 1000 == 0)
+                if (i % 10 == 0)
                     c = NewRandomColor();
 
                 var vert = vertices[i];
