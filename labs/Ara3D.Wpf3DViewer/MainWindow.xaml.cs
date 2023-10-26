@@ -16,8 +16,13 @@ namespace ModelViewer
         /// </summary>
         public Window1()
         {
-            this.InitializeComponent();
-            this.DataContext = new MainViewModel(new FileDialogService(), view1);
+            InitializeComponent();
+            DataContext = new MainViewModel(new FileDialogService(), view1);
+        }
+
+        private void MenuItem_Click(object sender, System.Windows.RoutedEventArgs e)
+        {
+
         }
     }
 }

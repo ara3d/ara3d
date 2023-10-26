@@ -4,6 +4,10 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
+using System.Windows.Media;
+using Ara3D.Geometry;
+using Ara3D.Interop.WPF;
+
 namespace ModelViewer
 {
     using System;
@@ -20,11 +24,11 @@ namespace ModelViewer
     [SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1600:ElementsMustBeDocumented", Justification = "Reviewed. Suppression is OK here.")]
     public class MainViewModel : Observable
     {
-        private const string OpenFileFilter = "3D model files (*.3ds;*.obj;*.lwo;*.stl;*.ply;)|*.3ds;*.obj;*.objz;*.lwo;*.stl;*.ply;";
+        private const string OpenFileFilter = "3D model files (*.vim;*.g3d;*.3ds;*.obj;*.lwo;*.stl;*.ply;)|*.vim;*.g3d;*.3ds;*.obj;*.objz;*.lwo;*.stl;*.ply;|All files(*.*)|*.*";
 
         private const string TitleFormatString = "3D model viewer - {0}";
 
-        private readonly IFileDialogService fileDialogService;
+        private readonly IFileDialogService fileDialogService;  
 
         private readonly IHelixViewport3D viewport;
 
@@ -45,48 +49,43 @@ namespace ModelViewer
                 throw new ArgumentNullException("viewport");
             }
 
-            this.dispatcher = Dispatcher.CurrentDispatcher;
-            this.Expansion = 1;
-            this.fileDialogService = fds;
+            dispatcher = Dispatcher.CurrentDispatcher;
+            Expansion = 1;
+            fileDialogService = fds;
             this.viewport = viewport;
-            this.FileOpenCommand = new DelegateCommand(this.FileOpen);
-            this.FileExportCommand = new DelegateCommand(this.FileExport);
-            this.FileExitCommand = new DelegateCommand(FileExit);
-            this.ViewZoomExtentsCommand = new DelegateCommand(this.ViewZoomExtents);
-            this.EditCopyXamlCommand = new DelegateCommand(this.CopyXaml);
-            this.ApplicationTitle = "3D Model viewer";
-            this.Elements = new List<VisualViewModel>();
+            FileOpenCommand = new DelegateCommand(FileOpen);
+            FileExportCommand = new DelegateCommand(FileExport);
+            FileExitCommand = new DelegateCommand(FileExit);
+            ViewZoomExtentsCommand = new DelegateCommand(ViewZoomExtents);
+            EditCopyXamlCommand = new DelegateCommand(CopyXaml);
+            TorusCommand = new DelegateCommand(CreateTorus);
+            ApplicationTitle = "3D Model viewer";
+            Elements = new List<VisualViewModel>();
             foreach (var c in viewport.Children)
             {
-                this.Elements.Add(new VisualViewModel(c));
+                Elements.Add(new VisualViewModel(c));
             }
         }
 
         public string CurrentModelPath
         {
-            get
-            {
-                return this.currentModelPath;
-            }
+            get => currentModelPath;
 
             set
             {
-                this.currentModelPath = value;
-                this.RaisePropertyChanged("CurrentModelPath");
+                currentModelPath = value;
+                RaisePropertyChanged("CurrentModelPath");
             }
         }
 
         public string ApplicationTitle
         {
-            get
-            {
-                return this.applicationTitle;
-            }
+            get => applicationTitle;
 
             set
             {
-                this.applicationTitle = value;
-                this.RaisePropertyChanged("ApplicationTitle");
+                applicationTitle = value;
+                RaisePropertyChanged("ApplicationTitle");
             }
         }
 
@@ -94,32 +93,26 @@ namespace ModelViewer
 
         public double Expansion
         {
-            get
-            {
-                return this.expansion;
-            }
+            get => expansion;
 
             set
             {
-                if (!this.expansion.Equals(value))
+                if (!expansion.Equals(value))
                 {
-                    this.expansion = value;
-                    this.RaisePropertyChanged("Expansion");
+                    expansion = value;
+                    RaisePropertyChanged("Expansion");
                 }
             }
         }
 
         public Model3D CurrentModel
         {
-            get
-            {
-                return this.currentModel;
-            }
+            get => currentModel;
 
             set
             {
-                this.currentModel = value;
-                this.RaisePropertyChanged("CurrentModel");
+                currentModel = value;
+                RaisePropertyChanged("CurrentModel");
             }
         }
 
@@ -135,6 +128,8 @@ namespace ModelViewer
 
         public ICommand EditCopyXamlCommand { get; set; }
 
+        public ICommand TorusCommand { get; set; }
+
         private static void FileExit()
         {
             Application.Current.Shutdown();
@@ -142,40 +137,41 @@ namespace ModelViewer
 
         private void FileExport()
         {
-            var path = this.fileDialogService.SaveFileDialog(null, null, Exporters.Filter, ".png");
+            var path = fileDialogService.SaveFileDialog(null, null, Exporters.Filter, ".png");
             if (path == null)
             {
                 return;
             }
 
-            this.viewport.Export(path);
+            viewport.Export(path);
+        }
+
+        public void CreateTorus()
+        {
+            var torus = Primitives.TorusMesh(20, 5, 100, 20);
+            var material = new DiffuseMaterial(Brushes.ForestGreen);
+            CurrentModel = torus.ToMeshGeometry3D().ToWpfModel3D(material);
         }
 
         private void CopyXaml()
         {
-            if (this.CurrentModel is null)
+            if (CurrentModel is null)
                 return;
-            var rd = XamlExporter.WrapInResourceDictionary(this.CurrentModel);
+            var rd = XamlExporter.WrapInResourceDictionary(CurrentModel);
             Clipboard.SetText(XamlHelper.GetXaml(rd));
         }
 
         private void ViewZoomExtents()
         {
-            this.viewport.ZoomExtents(500);
+            viewport.ZoomExtents(500);
         }
 
-        private async void FileOpen()
+        private void FileOpen()
         {
-            this.CurrentModelPath = this.fileDialogService.OpenFileDialog("models", null, OpenFileFilter, ".3ds");
-            this.CurrentModel = await this.LoadAsync(this.CurrentModelPath, true);
-            this.ApplicationTitle = string.Format(TitleFormatString, this.CurrentModelPath);
-            this.viewport.ZoomExtents(0);
+            CurrentModelPath = fileDialogService.OpenFileDialog("models", null, OpenFileFilter, ".3ds");
+            CurrentModel = ModelLoader.Load(CurrentModelPath);
+            ApplicationTitle = string.Format(TitleFormatString, CurrentModelPath);
+            viewport.ZoomExtents(0);
         }
-
-        private async Task<Model3DGroup> LoadAsync(string model3DPath, bool freeze)
-        {
-            return await Task.Factory.StartNew(() => 
-                ModelLoader.Load(model3DPath, freeze ? null : dispatcher, freeze));
-        }
-    }
+   }
 }

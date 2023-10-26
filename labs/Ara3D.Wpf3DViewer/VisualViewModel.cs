@@ -19,7 +19,7 @@ namespace ModelViewer
         {
             get
             {
-                var mv = this.element as ModelVisual3D;
+                var mv = element as ModelVisual3D;
                 if (mv != null)
                 {
                     if (mv.Content != null)
@@ -33,7 +33,7 @@ namespace ModelViewer
                     }
                 }
 
-                var mg = this.element as Model3DGroup;
+                var mg = element as Model3DGroup;
                 if (mg != null)
                 {
                     foreach (var mc in mg.Children)
@@ -42,7 +42,7 @@ namespace ModelViewer
                     }
                 }
 
-                var gm = this.element as GeometryModel3D;
+                var gm = element as GeometryModel3D;
                 if (gm != null)
                 {
                     yield return new VisualViewModel(gm.Geometry);
@@ -51,42 +51,30 @@ namespace ModelViewer
                 //int n = VisualTreeHelper.GetChildrenCount(element);
                 //for (int i = 0; i < n; i++)
                 //    yield return new VisualViewModel(VisualTreeHelper.GetChild(element, i));
-                foreach (DependencyObject c in LogicalTreeHelper.GetChildren(this.element))
+                foreach (DependencyObject c in LogicalTreeHelper.GetChildren(element))
                 {
                     yield return new VisualViewModel(c);
                 }
             }
         }
 
-        public string Name
-        {
-            get
-            {
-                return this.element.GetName();
-            }
-        }
+        public string Name => element.GetName();
 
-        public string TypeName
-        {
-            get
-            {
-                return this.element.GetType().Name;
-            }
-        }
+        public string TypeName => element.GetType().Name;
 
         public Brush Brush
         {
             get
             {
-                if (this.element.GetType() == typeof(ModelVisual3D))
+                if (element.GetType() == typeof(ModelVisual3D))
                     return Brushes.Orange;
-                if (this.element.GetType() == typeof(GeometryModel3D))
+                if (element.GetType() == typeof(GeometryModel3D))
                     return Brushes.Green;
-                if (this.element.GetType() == typeof(Model3DGroup))
+                if (element.GetType() == typeof(Model3DGroup))
                     return Brushes.Blue;
-                if (this.element.GetType() == typeof(Visual3D))
+                if (element.GetType() == typeof(Visual3D))
                     return Brushes.Gray;
-                if (this.element.GetType() == typeof(Model3D))
+                if (element.GetType() == typeof(Model3D))
                     return Brushes.Black;
                 return null;
             }
@@ -94,14 +82,14 @@ namespace ModelViewer
 
         public override string ToString()
         {
-            return this.element.GetType().ToString();
+            return element.GetType().ToString();
         }
 
         private DependencyObject element;
 
         public VisualViewModel(DependencyObject e)
         {
-            this.element = e;
+            element = e;
         }
     }
 }

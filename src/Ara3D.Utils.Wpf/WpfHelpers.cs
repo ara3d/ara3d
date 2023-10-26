@@ -7,7 +7,6 @@ using TabControl = System.Windows.Controls.TabControl;
 
 namespace Ara3D.Utils.Wpf
 {
-
     public static class WpfHelpers
     {
         // TODO: this stuff could be interesting if ported to 

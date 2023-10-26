@@ -65,9 +65,9 @@
                 <Separator/>
                 <MenuItem Header="E_xit" Command="{Binding FileExitCommand}"/>
             </MenuItem>
-            <MenuItem Header="_Edit">
-                <MenuItem Header="_Copy XAML" Command="{Binding EditCopyXamlCommand}"/>
-            </MenuItem>
+	        <MenuItem Header="_Create">
+		        <MenuItem Header="_Torus" Command="{Binding TorusCommand}"/>
+	        </MenuItem>
             <MenuItem Header="_View">
                 <MenuItem Header="_Zoom extents" Command="{Binding ViewZoomExtentsCommand}"/>
             </MenuItem>
@@ -76,7 +76,7 @@
             </MenuItem>
         </Menu>
 
-        <helix:HelixViewport3D x:Name="view1" CameraRotationMode="Trackball" ModelUpDirection="0,1,0">
+        <helix:HelixViewport3D x:Name="view1" CameraRotationMode="Trackball" ModelUpDirection="0,1,0" Width="642">
             <ModelVisual3D x:Name="root1">
                 <!--<helix:CubeVisual3D Fill="Red"/> 
                 <helix:GridLinesVisual3D/>-->
