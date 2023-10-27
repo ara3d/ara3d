@@ -42,16 +42,18 @@ namespace Tutorial
             Console.WriteLine($"number of materials {g.Materials.Count}");
 
 
-            //var mesh = Primitives.TorusMesh(20, 5, 100, 20);
+            var mesh = Primitives.TorusMesh(20, 5, 100, 20);
+            //var mesh = Primitives.TorusMesh(20, 5, 100, 20).Scale(2);
             //var mesh = Primitives.TorusMesh(20, 5, 10, 5);
-            var mesh = Primitives.TorusMesh(20, 5, 4, 4);
+            //var mesh = Primitives.TorusMesh(20, 5, 4, 4);
             //var mesh = Primitives.SquareMesh;
+            //var mesh = Primitives.SquareMesh.Scale(3, 4, 5);
             //var mesh = Primitives.Tetrahedron;
             //var mesh = Primitives.Cube;
             //var mesh = Primitives.Dodecahedron;
             //var mesh = Primitives.Icosahedron;
             //var mesh = Primitives.Cylinder(10, 5).Scale(10);
-
+            //var mesh = Primitives.Pl
             Meshes.Add(ToVAO(mesh));
         }
 

@@ -186,6 +186,7 @@ namespace Ara3D.Geometry
                     (4, 9, 5), (2, 4, 11), (6, 2, 10), (8, 6, 7), (9, 8, 1)));
 
         public static QuadMesh Cylinder(int usegs, int vsegs)
-            => PrimitiveFunctions.Cylinder.ToSurface(true, false).Tesselate(usegs, vsegs);    
+            => PrimitiveFunctions.Cylinder.ToSurface(true, false).Tesselate(usegs, vsegs);
+
     }
 }
