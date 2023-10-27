@@ -18,6 +18,7 @@
 
     <ItemGroup>
       <ProjectReference Include="..\..\src\Ara3D.Geometry\Ara3D.Geometry.csproj" />
+      <ProjectReference Include="..\..\src\Ara3D.Graphics\Ara3D.Graphics.csproj" />
       <ProjectReference Include="..\..\src\Ara3D.Serialization.BFAST\Ara3D.Serialization.BFAST.csproj" />
       <ProjectReference Include="..\..\src\Ara3D.Serialization.G3D\Ara3D.Serialization.G3D.csproj" />
       <ProjectReference Include="..\..\src\Ara3D.Serialization.VIM\Ara3D.Serialization.VIM.csproj" />

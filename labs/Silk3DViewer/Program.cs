@@ -142,7 +142,7 @@ namespace Tutorial
                 _openGlShaderProgram.SetUniform("uView", view);
                 _openGlShaderProgram.SetUniform("uProjection", projection);
 
-                Gl.DrawArrays(PrimitiveType.Triangles, 0, (uint)mesh.Vertices.Length);
+                Gl.DrawArrays(PrimitiveType.Triangles, 0, (uint)mesh.NumFaces);
             }
 
             //foreach (var mesh in Model.InstancedMeshes)

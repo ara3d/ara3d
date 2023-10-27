@@ -72,9 +72,9 @@ namespace Ara3D.Geometry
         public static IArray<Vector3> To3D(this IArray<Vector2> self)
             => self.Select(x => x.ToVector3());
 
-        public static readonly IMesh SquareMesh = SquarePoints.To3D().ToQuadMesh();
+        public static readonly QuadMesh SquareMesh = SquarePoints.To3D().ToQuadMesh();
 
-        public static readonly IMesh Octahedron
+        public static readonly TriMesh Octahedron
             = SquareMesh.Vertices.Append(Vector3.UnitZ / 2, -Vector3.UnitZ / 2).Normalize().ToTriMesh(
                 LinqArray.Create<Int3>(
                     (0, 1, 4), (1, 2, 4), (2, 3, 4),
@@ -111,8 +111,6 @@ namespace Ara3D.Geometry
 
         public static QuadMesh SphereMesh(float radius, int segs)
             => Sphere(radius).Tesselate(segs, segs);
-
-        // TODO: Icosahedron, Dodecahedron,
 
         /// <summary>
         /// Returns a collection of circular points.
@@ -186,5 +184,8 @@ namespace Ara3D.Geometry
                     (1, 5, 9), (5, 11, 4), (11, 10, 2), (10, 7, 6), (7, 1, 8), 
                     (3, 9, 4), (3, 4, 2), (3, 2, 6), (3, 6, 8), (3, 8, 9), 
                     (4, 9, 5), (2, 4, 11), (6, 2, 10), (8, 6, 7), (9, 8, 1)));
+
+        public static QuadMesh Cylinder(int usegs, int vsegs)
+            => PrimitiveFunctions.Cylinder.ToSurface(true, false).Tesselate(usegs, vsegs);    
     }
 }

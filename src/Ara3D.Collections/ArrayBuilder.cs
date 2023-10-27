@@ -72,7 +72,7 @@ namespace Ara3D.Collections
 
         public IArray<T> ToIArray()
         {
-            var r = _array.ToIArray();
+            var r = _array.ToIArray().Take(Count);
             _array = null;
             return r;
         }

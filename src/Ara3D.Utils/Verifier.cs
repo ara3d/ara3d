@@ -34,10 +34,10 @@ namespace Ara3D.Utils
             }
         }
 
-        public static void AssertEquals(object value, object expected, [CallerMemberName] string memberName = "",
+        public static void AssertEquals(object value, object expected, string message = "", [CallerMemberName] string memberName = "",
             [CallerFilePath] string fileName = "", [CallerLineNumber] int lineNumber = 0)
         {
-            Assert(value?.Equals(expected) == true, () => $"Value {value} not equal to expected {expected}", memberName, fileName, lineNumber);
+            Assert(value?.Equals(expected) == true, () => $"Value {value} not equal to expected {expected}: {message}", memberName, fileName, lineNumber);
         }
 
         public static void AssertNotNull(object obj, string name,

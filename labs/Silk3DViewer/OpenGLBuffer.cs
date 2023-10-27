@@ -15,11 +15,12 @@ namespace Tutorial
         public BufferTargetARB Target { get; }
         public BufferUsageARB Usage { get; }
 
-        public OpenGLBuffer(GL context, BufferTargetARB target, BufferUsageARB usage = BufferUsageARB.StaticDraw)
+        public OpenGLBuffer(GL context, IBuffer buffer, BufferTargetARB target, BufferUsageARB usage = BufferUsageARB.StaticDraw)
             : base(context, context.GenBuffer())
         {
             Target = target;
             Usage = usage;
+            SetData(buffer);
         }
 
         public void Bind()

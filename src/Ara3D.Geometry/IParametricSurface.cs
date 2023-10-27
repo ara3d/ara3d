@@ -16,24 +16,19 @@ namespace Ara3D.Geometry
     public interface IGraph2D : IProcedural<Vector2, float>
     { }
 
-    public class ParametricSurface : IParametricSurface
+    public class ParametricSurface : Procedural<Vector2, Vector3>, IParametricSurface
     {
         public bool ClosedX { get; }
         public bool ClosedY { get; }
 
-        public Func<Vector2, Vector3> Func { get; }
-
         public ParametricSurface(Func<Vector2, Vector3> func, bool closedX, bool closedY)
-            => (Func, ClosedX, ClosedY) = (func, closedX, closedY);
+            : base(func) => (ClosedX, ClosedY) = (closedX, closedY);
 
         public IParametricSurface TransformInput(Func<Vector2, Vector2> f)
             => new ParametricSurface(x => Eval(f(x)), ClosedX, ClosedY);
 
         public IParametricSurface TransformOutput(Func<Vector3, Vector3> f)
             => new ParametricSurface(x => f(Eval(x)), ClosedX, ClosedY);
-
-        public Vector3 Eval(Vector2 uv)
-            => Func(uv);
 
         public IGeometry Transform(Matrix4x4 mat)
             => Deform(v => v.Transform(mat));

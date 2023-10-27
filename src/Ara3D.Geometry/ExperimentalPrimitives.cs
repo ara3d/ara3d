@@ -21,7 +21,7 @@ using Ara3D.Math;
 // https://www.boristhebrave.com/2018/04/15/dual-contouring-tutorial/
 // https://github.com/Lin20/isosurface
 
-namespace Ara3D.Geometry.Experiments
+namespace Ara3D.Geometry
 {
     using Polygon = PolyLine<Vector2>;
 
@@ -38,39 +38,6 @@ namespace Ara3D.Geometry.Experiments
 
         public static float HalfTurns(this float t)
             => Pi / t;
-    }
-
-    public static class PrimitiveFunctions
-    {
-        // https://en.wikipedia.org/wiki/Trefoil_knot
-        public static Func<float, Vector3> Trefoil = t => (
-            t.Turns().Sin() + (2f * t).Turns().Sin() * 2f,
-            t.Turns().Cos() + (2f * t).Turns().Cos() * 2f,
-            -(t * 3f).Turns().Sin());
-
-        public static Func<float, Vector2> Circle = t => 
-            (t.Turns().Sin(), t.Turns().Cos());
-
-        public static Func<Vector2, Vector3> Sphere = uv => (
-            uv.X.Turns().Cos() * uv.Y.HalfTurns().Sin(),
-            uv.Y.HalfTurns().Cos(),
-            uv.X.Turns().Cos() * uv.Y.HalfTurns().Sin());
-
-        // see: https://github.com/mrdoob/three.js/blob/9ef27d1af7809fa4d9943f8d4c4644e365ab6d2d/src/geometries/TorusBufferGeometry.js#L52
-        public static Func<Vector2, Vector3> Torus = uv => (
-            uv.Y.Turns().Cos() * uv.X.Turns().Cos(),
-            uv.Y.Turns().Cos() * uv.X.Turns().Sin(),
-            uv.Y.Sin().Divide(2));
-
-        // https://en.wikipedia.org/wiki/Monkey_saddle
-        public static Func<Vector2, float> MonkeySaddle = uv => 
-            uv.X.Cube() - 3 * uv.X * uv.Y.Sqr();
-
-        public static Func<Vector2, Vector3> Plane = uv =>
-            uv.ToVector3();
-
-        public static Func<Vector2, Vector3> Cylinder = uv =>
-            uv.X.Circle().ToVector3().SetZ(uv.Y);
     }
 
     public static class FunctionExtensions
@@ -157,8 +124,8 @@ namespace Ara3D.Geometry.Experiments
     public static class Surfaces
     {
         public static IParametricSurface Plane = PrimitiveFunctions.Plane.ToSurface();
-        public static IParametricSurface Cylinder = PrimitiveFunctions.Cylinder.ToSurface();
-        public static IParametricSurface Sphere = PrimitiveFunctions.Sphere.ToSurface();
+        public static IParametricSurface Cylinder = PrimitiveFunctions.Cylinder.ToSurface(true);
+        public static IParametricSurface Sphere = PrimitiveFunctions.Sphere.ToSurface(true, true);
         public static IParametricSurface MonkeySaddle = PrimitiveFunctions.MonkeySaddle.ToSurface();
         public static IParametricSurface TorusKnot = PrimitiveFunctions.Torus.ToSurface();
 
@@ -169,17 +136,13 @@ namespace Ara3D.Geometry.Experiments
             => new ParametricSurface(uv => new Vector3(uv.X, uv.Y, func(uv)), closedX, closedY);
     }
 
-    public static class Primitives
-    {
-       
+        
+    // http://paulbourke.net/geometry/mecon/
 
-        // http://paulbourke.net/geometry/mecon/
+    // https://stackoverflow.com/questions/69856578/how-to-move-along-a-bezier-curve-with-a-constant-velocity-without-a-costly-preco
+    // https://mathworld.wolfram.com/Dodecahedron.
+    // 
+    // https://github.com/prideout/par/blob/master/par_octasphere.h
 
-        // https://stackoverflow.com/questions/69856578/how-to-move-along-a-bezier-curve-with-a-constant-velocity-without-a-costly-preco
-        // https://mathworld.wolfram.com/Dodecahedron.
-        // 
-        // https://github.com/prideout/par/blob/master/par_octasphere.h
-
-        // https://prideout.net/blog/octasphere/
-    }
+    // https://prideout.net/blog/octasphere/
 }

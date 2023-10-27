@@ -4,7 +4,7 @@ using Silk.NET.Windowing;
 
 namespace SilkTutorialHelloQuad;
 
-public class Program
+public class HelloQuadProgram
 {
     private static IWindow _window;
     private static GL _gl;

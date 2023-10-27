@@ -5,10 +5,13 @@ using Silk.NET.OpenGL;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Numerics;
 using Ara3D.Serialization.VIM;
 using Ara3D.Collections;
 using Ara3D.Geometry;
+using Ara3D.Graphics;
+using Ara3D.Math;
+using Silk.NET.Assimp;
+using Vector4 = System.Numerics.Vector4;
 
 namespace Tutorial
 {
@@ -21,7 +24,7 @@ namespace Tutorial
         }
 
         private readonly GL _gl;
-        public List<Mesh> Meshes { get; protected set; } = new List<Mesh>();
+        public List<OpenGLVAO> Meshes { get; protected set; } = new List<OpenGLVAO>();
         
         private void LoadModel(string path)
         {
@@ -38,17 +41,18 @@ namespace Tutorial
             Console.WriteLine($"number of instances {g.InstanceMeshes.Count}");
             Console.WriteLine($"number of materials {g.Materials.Count}");
 
-            // Meshes.Add(ToMesh(g.Vertices, g.Indices));
 
-            Meshes.Add(ToMesh(Primitives.TorusMesh(20, 5, 100, 20)));
-        }
+            //var mesh = Primitives.TorusMesh(20, 5, 100, 20);
+            //var mesh = Primitives.TorusMesh(20, 5, 10, 5);
+            var mesh = Primitives.TorusMesh(20, 5, 4, 4);
+            //var mesh = Primitives.SquareMesh;
+            //var mesh = Primitives.Tetrahedron;
+            //var mesh = Primitives.Cube;
+            //var mesh = Primitives.Dodecahedron;
+            //var mesh = Primitives.Icosahedron;
+            //var mesh = Primitives.Cylinder(10, 5).Scale(10);
 
-        public Mesh ToMesh(IMesh mesh)
-        {
-            return ToMesh(mesh.Vertices, mesh.Indices());
-            //var indices = mesh.Indices().ToArray();
-            //var vertices = mesh.VerticesAsFloats().ToArray();
-            //return new Mesh(_gl, vertices, indices);
+            Meshes.Add(ToVAO(mesh));
         }
 
         public static Random Random = new Random();
@@ -59,31 +63,12 @@ namespace Tutorial
                 Random.NextSingle(), Random.NextSingle(),
                 Random.NextSingle(), Random.NextSingle());
         }
-        
-        public Mesh ToMesh(
-            IArray<Ara3D.Math.Vector3> vertices, 
-            IArray<int> indices)
+
+        public OpenGLVAO ToVAO(IMesh mesh)
         {
             var c = NewRandomColor();
-            var vertData = new float[vertices.Count * 6];
-            
-            for (var i = 0; i < vertices.Count; i++)
-            {
-                // TODO: 
-                if (i % 10 == 0)
-                    c = NewRandomColor();
-
-                var vert = vertices[i];
-                vertData[i * 6 + 0] = vert.X;
-                vertData[i * 6 + 1] = vert.Y;
-                vertData[i * 6 + 2] = vert.Z;
-
-                vertData[i * 6 + 3] = c.X;
-                vertData[i * 6 + 4] = c.Y;
-                vertData[i * 6 + 5] = c.Z;
-            }
-            var indexData = indices.ToArray();
-            return new Mesh(_gl, vertData, indexData);
+            var rm = mesh.ToRenderMesh();
+            return new OpenGLVAO(_gl, rm);
         }
     }
 }

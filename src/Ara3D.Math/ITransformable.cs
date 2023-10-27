@@ -30,6 +30,9 @@ namespace Ara3D.Math
         public static T Scale<T>(this T self, float x, float y, float z) where T: ITransformable<T>
             => self.Scale((x, y, z));
 
+        public static T Scale<T>(this T self, float x) where T : ITransformable<T>
+            => self.Scale((x, x, x));
+
         public static T ScaleX<T>(this T self, float x) where T : ITransformable<T>
             => self.Scale(x, 1, 1);
 
