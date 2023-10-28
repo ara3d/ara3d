@@ -23,7 +23,7 @@ namespace Ara3D.Geometry
         public static IArray<V> CartesianProduct<T, U, V>(this IArray<T> self, IArray<U> other, Func<T, U, V> func)
             => self.SelectMany(x => other.Select(y => func(x, y)));
 
-        public static QuadMesh Tesselate(this IParametricSurface parametricSurface, int cols, int rows = 0)
+        public static Surface Tesselate(this IParametricSurface parametricSurface, int cols, int rows = 0)
         {
             if (cols <= 0) throw new ArgumentOutOfRangeException(nameof(cols));
             if (rows <= 0) rows = cols;
@@ -32,7 +32,7 @@ namespace Ara3D.Geometry
             var us = nx.SampleFloats();
             var vs = ny.SampleFloats();
             var uvs = vs.CartesianProduct(us, (v, u) => new Vector2(u, v));
-            var vertices = uvs.Select(parametricSurface.Eval);
+            var vertices = uvs.Select(parametricSurface.GetPoint);
 
             Int4 QuadMeshFaceVertices(int row, int col)
             {
@@ -44,7 +44,7 @@ namespace Ara3D.Geometry
             }
 
             var faceVertices = (rows - 1).Range().CartesianProduct((cols - 1).Range(), QuadMeshFaceVertices);
-            return new QuadMesh(vertices, faceVertices);
+            return new Surface(vertices, faceVertices);
         }
 
         // Computes the topology: this is a slow O(N) operation

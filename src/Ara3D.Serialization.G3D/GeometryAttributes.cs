@@ -114,7 +114,6 @@ namespace Ara3D.Serialization.G3D
             // Now we create the public ordered list of attributes 
             Attributes = Lookup.Values.OrderBy(attr => attr.Name).ToIArray();
 
-
             // If the number of corner and faces are observed, one has to be a multiple of the other
             if (NumCorners > 0 && NumFaces > 0)
             {

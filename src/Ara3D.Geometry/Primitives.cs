@@ -90,13 +90,10 @@ namespace Ara3D.Geometry
                 tube * uv.Y.Sin());
         }
 
-        public static QuadMesh QuadMesh(Func<Vector2, Vector3> f, int uSegs, int vSegs, bool closedX = true, bool closedY = true)
-            => new ParametricSurface(f, closedX, closedY).Tesselate(uSegs, vSegs);
-
         public static ParametricSurface Torus(float radius, float tubeRadius)
             => new ParametricSurface(uv => TorusFunction(uv, radius, tubeRadius), false, false);
 
-        public static QuadMesh TorusMesh(float radius, float tubeRadius, int uSegs, int vSegs)
+        public static Surface TorusMesh(float radius, float tubeRadius, int uSegs, int vSegs)
             => Torus(radius, tubeRadius).Tesselate(uSegs, vSegs);
 
         // see: https://github.com/mrdoob/three.js/blob/9ef27d1af7809fa4d9943f8d4c4644e365ab6d2d/src/geometries/SphereBufferGeometry.js#L76
@@ -109,7 +106,7 @@ namespace Ara3D.Geometry
         public static ParametricSurface Sphere(float radius)
             => new ParametricSurface(uv => SphereFunction(uv, radius), true, true);
 
-        public static QuadMesh SphereMesh(float radius, int segs)
+        public static Surface SphereMesh(float radius, int segs)
             => Sphere(radius).Tesselate(segs, segs);
 
         /// <summary>
@@ -185,8 +182,24 @@ namespace Ara3D.Geometry
                     (3, 9, 4), (3, 4, 2), (3, 2, 6), (3, 6, 8), (3, 8, 9), 
                     (4, 9, 5), (2, 4, 11), (6, 2, 10), (8, 6, 7), (9, 8, 1)));
 
-        public static QuadMesh Cylinder(int usegs, int vsegs)
+        public static Surface Cylinder(int usegs, int vsegs)
             => PrimitiveFunctions.Cylinder.ToSurface(true, false).Tesselate(usegs, vsegs);
 
+        public static Curve<Vector3> TorusKnotCurve(int p, int q)
+            => new Curve<Vector3>(TorusKnotFunction(p,q), true);
+
+        // https://en.wikipedia.org/wiki/Trefoil_knot
+        public static Func<float, Vector3> TrefoilKnotFunction => TorusKnotFunction(2, 3);
+
+        // https://en.wikipedia.org/wiki/Torus_knot
+        public static Func<float, Vector3> TorusKnotFunction(int p, int q)
+            => t =>
+            {
+                var r = (q * t.Turns()).Cos() + 2;
+                var x = r * (p * t.Turns()).Cos();
+                var y = r * (p * t.Turns()).Sin();
+                var z = -(q * t.Turns()).Sin();
+                return (x, y, z);
+            };
     }
 }

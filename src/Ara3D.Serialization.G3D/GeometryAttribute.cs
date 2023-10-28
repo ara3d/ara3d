@@ -202,6 +202,7 @@ namespace Ara3D.Serialization.G3D
         
         public override GeometryAttribute Read(MemoryMappedView view)
         {
+            // TODO: make this a buffer 
             var data = view.ReadArray<T>();
             return new GeometryAttribute<T>(data.ToIArray(), Descriptor);
         }

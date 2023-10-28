@@ -13,6 +13,9 @@ namespace Ara3D.Geometry
     {
         IArray<Int3> Faces { get; }
         IArray<Vector3> Vertices { get; }
+
+        IArray<Vector3> Normals { get;}
+        IArray<Vector2> UVs { get; }
     }
 
     public abstract class MeshImpl<TFace, TVertex, TMesh> :  
@@ -26,6 +29,8 @@ namespace Ara3D.Geometry
 
         public abstract IArray<Int3> Faces { get; }
         public abstract IArray<Vector3> Vertices { get; }
+        public abstract IArray<Vector2> UVs { get; }
+        public abstract IArray<Vector3> Normals { get; }
 
         public virtual TMesh Transform(Matrix4x4 mat)
             => Deform(v => v.Transform(mat));
@@ -52,6 +57,8 @@ namespace Ara3D.Geometry
 
         public override IArray<Int3> Faces => FaceData;
         public override IArray<Vector3> Vertices => VertexData;
+        public override IArray<Vector2> UVs => null;
+        public override IArray<Vector3> Normals => null;
 
         public override TriMesh Deform(Func<Vector3, Vector3> deform)
             => new TriMesh(Vertices.Select(deform), FaceData);
@@ -66,28 +73,32 @@ namespace Ara3D.Geometry
            new Tuple<Int3, Int3>((f.X, f.Y, f.Z), (f.Z, f.W, f.X)));
 
         public override IArray<Vector3> Vertices => VertexData;
+        public override IArray<Vector2> UVs => null;
+        public override IArray<Vector3> Normals => null;
 
         public override QuadMesh Deform(Func<Vector3, Vector3> deform)
             => new QuadMesh(Vertices.Select(deform), FaceData);
     }
 
-    public class TessellatedSurface : MeshImpl<Int4, SurfacePoint, TessellatedSurface>, IMesh, ITransformable<TessellatedSurface>, IDeformable<TessellatedSurface>
+    public class Surface : MeshImpl<Int4, SurfacePoint, Surface>, IMesh, ITransformable<Surface>, IDeformable<Surface>
     {
-        public TessellatedSurface(IArray<SurfacePoint> vertices, IArray<Int4> faces)
+        public Surface(IArray<SurfacePoint> vertices, IArray<Int4> faces)
             : base(vertices, faces) { }
 
         public override IArray<Int3> Faces => FaceData.SelectMany(f =>
             new Tuple<Int3, Int3>((f.X, f.Y, f.Z), (f.Z, f.W, f.X)));
 
         public override IArray<Vector3> Vertices => VertexData.Select(v => v.Position);
+        public override IArray<Vector2> UVs => VertexData.Select(v => v.UV);
+        public override IArray<Vector3> Normals => VertexData.Select(v => v.Normal);
 
-        public override TessellatedSurface Transform(Matrix4x4 mat)
-            => new TessellatedSurface(VertexData.Select(sp =>
+        public override Surface Transform(Matrix4x4 mat)
+            => new Surface(VertexData.Select(sp =>
                     new SurfacePoint(sp.UV, sp.Position.Transform(mat), sp.Normal.TransformNormal(mat))),
                 FaceData);
 
-        public override TessellatedSurface Deform(Func<Vector3, Vector3> f)
-            => new TessellatedSurface(VertexData.Select(sp =>
+        public override Surface Deform(Func<Vector3, Vector3> f)
+            => new Surface(VertexData.Select(sp =>
                     new SurfacePoint(sp.UV, f(sp.Position), sp.Normal)),
                 FaceData);
     }
