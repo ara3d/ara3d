@@ -1,22 +1,19 @@
 ﻿using System;
 using System.IO;
 
-namespace Ara3D.Buffers
+namespace Ara3D.Utils.Unsafe
 {
-    /// <summary>
-    /// Helper functions for reading and writing buffers to streams
-    /// </summary>
-    public static class BufferSerialization
+    public static unsafe class UnsafeUtil
     {
         /// <summary>
         /// Helper for reading arbitrary unmanaged types from a Stream. 
         /// </summary>
-        public static unsafe void ReadBytesBuffered(this Stream stream, byte* dest, long count, int bufferSize = 4096)
+        public static void ReadBytesBuffered(this Stream stream, byte* dest, long count, int bufferSize = 4096)
         {
             var buffer = new byte[bufferSize];
-            int bytesRead;
             fixed (byte* pBuffer = buffer)
             {
+                int bytesRead;
                 while ((bytesRead = stream.Read(buffer, 0, (int)System.Math.Min(buffer.Length, count))) > 0)
                 {
                     if (dest != null)
@@ -30,7 +27,7 @@ namespace Ara3D.Buffers
         /// <summary>
         /// Helper for writing arbitrary large numbers of bytes 
         /// </summary>
-        public static unsafe void WriteBytesBuffered(this Stream stream, byte* src, long count, int bufferSize = 4096)
+        public static void WriteBytesBuffered(this Stream stream, byte* src, long count, int bufferSize = 4096)
         {
             var buffer = new byte[bufferSize];
             fixed (byte* pBuffer = buffer)
@@ -49,7 +46,7 @@ namespace Ara3D.Buffers
         /// <summary>
         /// Helper for reading arbitrary unmanaged types from a Stream. 
         /// </summary>
-        public static unsafe void Read<T>(this Stream stream, T* dest) where T : unmanaged
+        public static void Read<T>(this Stream stream, T* dest) where T : unmanaged
             => stream.ReadBytesBuffered((byte*)dest, sizeof(T));
 
         /// <summary>
@@ -60,7 +57,7 @@ namespace Ara3D.Buffers
         /// That said, in C#, you can still never load more int.MaxValue (approx 2billion)
         /// numbers of items.
         /// </summary>
-        public static unsafe T[] ReadArray<T>(this Stream stream, int count) where T : unmanaged
+        public static T[] ReadArray<T>(this Stream stream, int count) where T : unmanaged
         {
             var r = new T[count];
             fixed (T* pDest = r)
@@ -69,6 +66,7 @@ namespace Ara3D.Buffers
                 var pBytes = (byte*)pDest;
                 stream.ReadBytesBuffered(pBytes, (long)count * sizeof(T));
             }
+
             return r;
         }
 
@@ -82,30 +80,31 @@ namespace Ara3D.Buffers
         /// Helper for reading arrays of arbitrary unmanaged types from a Stream, that might be over 2GB of size.
         /// That said, in C#, you can never load more int.MaxValue numbers of items. 
         /// </summary>
-        public static unsafe T[] ReadArrayFromNumberOfBytes<T>(this Stream stream, long numBytes) where T : unmanaged
+        public static T[] ReadArrayFromNumberOfBytes<T>(this Stream stream, long numBytes) where T : unmanaged
         {
             var count = numBytes / sizeof(T);
             if (numBytes % sizeof(T) != 0)
-                throw new Exception($"The number of bytes {numBytes} is not divisible by the size of the type {sizeof(T)}");
+                throw new Exception(
+                    $"The number of bytes {numBytes} is not divisible by the size of the type {sizeof(T)}");
             if (count >= int.MaxValue)
-                throw new Exception($"{count} exceeds the maximum number of items that can be read into an array {int.MaxValue}");
+                throw new Exception(
+                    $"{count} exceeds the maximum number of items that can be read into an array {int.MaxValue}");
             return stream.ReadArray<T>((int)count);
         }
 
         /// <summary>
         /// Helper for writing arbitrary unmanaged types 
         /// </summary>
-        public static unsafe void WriteValue<T>(this Stream stream, T x) where T : unmanaged
+        public static void WriteValue<T>(this Stream stream, T x) where T : unmanaged
         {
             var p = &x;
             stream.WriteBytesBuffered((byte*)p, sizeof(T));
         }
-            
 
         /// <summary>
         /// Helper for writing arrays of unmanaged types 
         /// </summary>
-        public static unsafe void Write<T>(this Stream stream, T[] xs) where T : unmanaged
+        public static void Write<T>(this Stream stream, T[] xs) where T : unmanaged
         {
             fixed (T* p = xs)
             {

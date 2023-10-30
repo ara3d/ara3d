@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using Ara3D.Utils.Unsafe;
 
 namespace Ara3D.Buffers
 {
@@ -36,7 +37,7 @@ namespace Ara3D.Buffers
 
         public static Array CopyBytes(this IBuffer src, Array dst, int srcOffset = 0, int destOffset = 0)
         {
-            Buffer.BlockCopy(src.Data, srcOffset, dst, destOffset, (int)src.NumBytes());
+            Buffer.BlockCopy(src.Data, srcOffset, dst, destOffset, (int)src.GetNumBytes());
             return dst;
         }
 
@@ -53,7 +54,7 @@ namespace Ara3D.Buffers
         /// Accepts an array of the given type, or creates one if necessary, copy the buffer data into it 
         /// </summary>
         public static unsafe T[] ToArray<T>(this IBuffer buffer, T[] dest = null) where T : unmanaged
-            => (T[])buffer.CopyBytes(dest ?? new T[buffer.NumBytes() / sizeof(T)]);
+            => (T[])buffer.CopyBytes(dest ?? new T[buffer.GetNumBytes() / sizeof(T)]);
 
         /// <summary>
         /// Returns the array in the buffer, if it is of the correct type, or creates a new array of the create type and copies
@@ -71,7 +72,7 @@ namespace Ara3D.Buffers
         public static int NumElements(this IBuffer buffer)
             => buffer.Data.Length;
 
-        public static long NumBytes(this IBuffer buffer)
+        public static long GetNumBytes(this IBuffer buffer)
             => (long)buffer.NumElements() * buffer.ElementSize;
 
         public static Buffer<T> ReadBufferFromNumberOfBytes<T>(this Stream stream, long numBytes) where T : unmanaged

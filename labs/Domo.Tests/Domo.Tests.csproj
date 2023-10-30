@@ -14,7 +14,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\Ara3D.Utility\Ara3D.Domo\Ara3D.Domo.csproj" />
+    <ProjectReference Include="..\..\src\Ara3D.Domo\Ara3D.Domo.csproj" />
   </ItemGroup>
 
 </Project>

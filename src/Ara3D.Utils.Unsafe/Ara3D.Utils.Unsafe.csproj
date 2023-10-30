@@ -5,8 +5,4 @@
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\Ara3D.Utils.Unsafe\Ara3D.Utils.Unsafe.csproj" />
-  </ItemGroup>
-
 </Project>

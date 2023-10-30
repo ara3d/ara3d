@@ -36,7 +36,7 @@ namespace Tutorial
         public unsafe void SetData(IBuffer buffer)
         {
             Bind();
-            var size = (nuint)buffer.NumBytes();
+            var size = (nuint)buffer.GetNumBytes();
             buffer.WithPointer(ptr => Context.BufferData(Target, size, (void*)ptr, Usage));
         }
 

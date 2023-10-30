@@ -41,8 +41,8 @@
     <PackageReference Include="System.Drawing.Common" Version="6.0.0" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Ara3D.Serialization\Ara3D.Serialization.BFAST\Ara3D.Serialization.BFAST.csproj" />
-    <ProjectReference Include="..\..\Ara3D.Serialization\Ara3D.Serialization.VIM\Ara3D.Serialization.VIM.csproj" />
-    <ProjectReference Include="..\..\Ara3D.Utility\Ara3D.Utils\Ara3D.Utils.csproj" />
+    <ProjectReference Include="..\..\src\Ara3D.Buffers\Ara3D.Buffers.csproj" />
+    <ProjectReference Include="..\..\src\Ara3D.Serialization.VIM\Ara3D.Serialization.VIM.csproj" />
+    <ProjectReference Include="..\..\src\Ara3D.Utils\Ara3D.Utils.csproj" />
   </ItemGroup>
 </Project>

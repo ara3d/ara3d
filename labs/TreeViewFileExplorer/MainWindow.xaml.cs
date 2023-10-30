@@ -49,7 +49,7 @@ namespace TreeViewFileExplorer
 
             if (fsi is FileInfo fi)
             {
-                label.Content += $"\nSize = {FileUtil.BytesToString(fi.Length)}";
+                label.Content += $"\nSize = {FilePathUtil.BytesToString(fi.Length)}";
             }
 
             if (File.Exists(fsi.FullName) && Path.GetExtension(fsi.FullName).ToLowerInvariant() == ".vim")

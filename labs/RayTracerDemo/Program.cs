@@ -1,7 +1,7 @@
-﻿    using System.Drawing;
-using System.Text;
+﻿using System.Diagnostics;
 using Ara3D.Math;
 using Ara3D.Utils;
+using Ara3D.Graphics;
 
 // https://gist.github.com/mattwarren/d17a0c356bd6fdb9f596bee6b9a5e63c
 // https://fabiensanglard.net/postcard_pathtracer/index.html
@@ -10,15 +10,6 @@ using Ara3D.Utils;
 
 namespace PathTracer
 {
-    public static class BitmapSerialization
-    {
-        public static void Output(byte[] bytes, string filePath)
-        {
-            using MemoryStream ms = new(bytes);
-            using Image img = Bitmap.FromStream(ms);
-            img.Save(filePath);
-        }
-    }
 
     public readonly struct Vector
     {
@@ -38,7 +29,7 @@ namespace PathTracer
 
     public static class Program
     {
-        private static Random _random = new();
+        private static readonly Random _random = new();
         public static Vector Vector(float a, float b, float c = 0) => new(a, b, c);
         public static float Min(float l, float r) => Math.Min(l, r);
         public static float randomVal() => (float)_random.NextDouble();
@@ -63,7 +54,7 @@ namespace PathTracer
         const int HIT_WALL = 2;
         const int HIT_SUN = 3;
 
-        static char[] letters =              // 15 two points lines
+        static readonly char[] letters =              // 15 two points lines
                ("5O5_" + "5W9W" + "5_9_" +        // P (without curve)
                 "AOEO" + "COC_" + "A_E_" +        // I
                 "IOQ_" + "I_QO" +               // X
@@ -205,47 +196,90 @@ namespace PathTracer
             return color;
         }
 
+        const int Divisor = 1;
+        const int SamplesCount = 24;
+        const int Width = 960 / Divisor;
+        const int Height = 540 / Divisor;
+
+        static readonly Vector position = Vector(-22, 5, 25);
+        static readonly Vector goal = !(Vector(-3, 4, 0) + position * -1);
+        static readonly Vector left = !Vector(goal.Z, 0, -goal.X) * (1.0f / Width);
+
+        // Cross-product to get the up vector
+        static readonly Vector up = Vector(
+            goal.Y * left.Z - goal.Z * left.Y,
+            goal.Z * left.X - goal.X * left.Z,
+            goal.X * left.Y - goal.Y * left.X);
+
+        public static ColorRGBA Eval(int x, int y)
+        {
+            Vector color = 0;
+            for (var p = SamplesCount - 1; p >= 0; p--)
+            {
+                color += Trace(position, !(goal + left * (x - Width / 2 + randomVal()) + up * (y - Height / 2 + randomVal())));
+            }
+
+            // Reinhard tone mapping
+            color = color * (1.0f / SamplesCount) + 14.0f / 241;
+            var o = color + 1;
+            color = Vector(color.X / o.X, color.Y / o.Y, color.Z / o.Z) * 255;
+            return ((byte)color.X, (byte)color.Y, (byte)color.Z, 0xFF);
+        }
+
+        public static void ParallelForLoop(int count, Action<int> processItem)
+        {
+            ParallelForLoop(count, (from, to) =>
+            {
+                for (var i = from; i < to; ++i)
+                    processItem(i);
+            });
+        }
+
+        public static void ParallelForLoop(int count, Action<int, int> processRange)
+        {
+            void DoWork(object? obj)
+            {
+                var range = obj as Tuple<int, int>;
+                processRange(range.Item1, range.Item2);
+            }
+
+            const int MaxThreads = 32;
+            int RangeSize = count / MaxThreads;
+            var threads = new List<Thread>();
+            
+            for (var i = 0; i < MaxThreads; ++i)
+            {
+                var start = i * RangeSize;
+                var end = Math.Min(start + RangeSize, count);
+                var thread = new Thread(DoWork);
+                threads.Add(thread);
+                thread.Start(Tuple.Create(start, end));
+            }
+
+            foreach (var thread in threads)
+                thread.Join();
+        }
+
         static void Main(string[] args)
         {
-            const int w = 960 / 8; 
-            const int h = 540 / 8; 
+            var sw = Stopwatch.StartNew();
 
-            const int samplesCount = 4; //8; 
-            var position = Vector(-22, 5, 25);
-            var goal = !(Vector(-3, 4, 0) + position * -1);
-            var left = !Vector(goal.Z, 0, -goal.X) * (1.0f / w);    
+            var bitmap = new Ara3D.Graphics.Bitmap(Width, Height);
 
-            // Cross-product to get the up vector
-            var up = Vector(
-                goal.Y * left.Z - goal.Z * left.Y,
-                goal.Z * left.X - goal.X * left.Z,
-                goal.X * left.Y - goal.Y * left.X);
-
-            var bitmap = new Bitmap(w, h);
-            for (var y = (h - 1); y >= 0; y--)
+            ParallelForLoop(Width * Height, i =>
             {
-                for (var x = (w - 1); x >= 0; x--)
-                {
-                    Vector color = 0;
-                    for (var p = samplesCount - 1; p >= 0; p--)
-                    {
-                        color += Trace(position, !(goal + left * (x - w / 2 + randomVal()) + up * (y - h / 2 + randomVal())));
-                    }
-
-                    // Reinhard tone mapping
-                    color = color * (1.0f / samplesCount) + 14.0f / 241;
-                    var o = color + 1;
-                    color = Vector(color.X / o.X, color.Y / o.Y, color.Z / o.Z) * 255;
-                    var rgb = Color.FromArgb((byte)color.X, (byte)color.Y, (byte)color.Z);
-                    bitmap.SetPixel(x, y, rgb);
-                }
-            }
+                var x = i % Width;
+                var y = i / Width;
+                var rgb = Eval(x, y);
+                bitmap.SetPixel(Width - 1 - x, y, rgb);
+            });
+                
+            sw.OutputTimeElapsed("Creating timer");
 
             var file = new FilePath(Path.GetTempFileName());
             file = file.ChangeExtension("bmp");
-            bitmap.Save(file);
-
-            ProcessUtil.OpenFile(file);
+            bitmap.Save(file); 
+            file.OpenFile();
         }
     }
 }
