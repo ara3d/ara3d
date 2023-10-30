@@ -8,6 +8,12 @@ namespace Ara3D.Math
 
     public static partial class MathOps
     {
+        public static float Ln(this float x)
+            => (float)System.Math.Log(x);
+
+        public static double Ln(this double x)
+            => System.Math.Log(x);
+
         /// <summary>
         /// Expresses two vlaues as a ratio
         /// </summary>

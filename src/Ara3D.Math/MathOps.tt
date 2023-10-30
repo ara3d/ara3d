@@ -21,7 +21,7 @@ var araBinaryOps = new[] { "Add", "Subtract", "Multiply", "Divide" };
 var araCompOps = new[] { "Gt", "Lt", "GtEq", "LtEq", "Eq", "NEq" };
 var sysBinaryOps = new[] { "Atan2", "Log", "Pow" };
 var araUnaryOps = new[] { "Inverse", "Ceiling", "Floor", "Round", "Truncate", "Sqr", "Cube", "ToRadians", "ToDegrees" };
-var sysUnaryOps = new[] { "Abs", "Acos", "Asin", "Atan", "Cos", "Cosh", "Exp", "Log", "Log10", "Sin", "Sinh", "Sqrt", "Tan", "Tanh" };
+var sysUnaryOps = new[] { "Abs", "Acos", "Asin", "Atan", "Cos", "Cosh", "Exp", "Log10", "Sin", "Sinh", "Sqrt", "Tan", "Tanh" };
 var allUnaryOps = sysUnaryOps.Concat(araUnaryOps);
 #>
 using System;
@@ -37,13 +37,25 @@ namespace Ara3D.Math
 <#
 foreach (var op in sysUnaryOps) {
 #>
-        [MethodImpl(MethodImplOptions.AggressiveInlining)] public static double <#= op #>(this double x) => Math.<#= op #>(x);
+        [MethodImpl(MethodImplOptions.AggressiveInlining)] public static double <#= op #>(this double x) => System.Math.<#= op #>(x);
 <# } #>
 
 <#
 foreach (var op in sysUnaryOps) {
 #>
-        [MethodImpl(MethodImplOptions.AggressiveInlining)] public static float <#= op #>(this float x) => (float)Math.<#= op #>(x);
+        [MethodImpl(MethodImplOptions.AggressiveInlining)] public static float <#= op #>(this float x) => (float)System.Math.<#= op #>(x);
+<# } #>
+
+<#
+foreach (var op in sysBinaryOps) {
+#>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)] public static double <#= op #>(this double x, double y) => System.Math.<#= op #>(x, y);
+<# } #>
+
+<#
+foreach (var op in sysBinaryOps) {
+#>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)] public static float <#= op #>(this float x, float y) => (float)System.Math.<#= op #>(x, y);
 <# } #>
 
 <#
@@ -53,9 +65,9 @@ foreach (var t in floatTypes) {
         [MethodImpl(MethodImplOptions.AggressiveInlining)] public static <#= t #> Magnitude(this <#= t #> x) => x;
         [MethodImpl(MethodImplOptions.AggressiveInlining)] public static <#= t #> MagnitudeSquared(this <#= t #> x) => x * x;
         [MethodImpl(MethodImplOptions.AggressiveInlining)] public static <#= t #> Inverse (this <#= t #> x) => (<#= t #>)1 / x;
-        [MethodImpl(MethodImplOptions.AggressiveInlining)] public static <#= t #> Truncate (this <#= t #> x) => (<#= t #>)Math.Truncate(x);
-        [MethodImpl(MethodImplOptions.AggressiveInlining)] public static <#= t #> Ceiling (this <#= t #> x) => (<#= t #>)Math.Ceiling(x);
-        [MethodImpl(MethodImplOptions.AggressiveInlining)] public static <#= t #> Floor (this <#= t #> x) => (<#= t #>)Math.Floor(x);
+        [MethodImpl(MethodImplOptions.AggressiveInlining)] public static <#= t #> Truncate (this <#= t #> x) => (<#= t #>)System.Math.Truncate(x);
+        [MethodImpl(MethodImplOptions.AggressiveInlining)] public static <#= t #> Ceiling (this <#= t #> x) => (<#= t #>)System.Math.Ceiling(x);
+        [MethodImpl(MethodImplOptions.AggressiveInlining)] public static <#= t #> Floor (this <#= t #> x) => (<#= t #>)System.Math.Floor(x);
         [MethodImpl(MethodImplOptions.AggressiveInlining)] public static <#= t #> Round (this <#= t #> x) => (<#= t #>)System.Math.Round(x);
         [MethodImpl(MethodImplOptions.AggressiveInlining)] public static <#= t #> ToRadians(this <#= t #> x) => (<#= t #>)(x * Constants.DegreesToRadians);
         [MethodImpl(MethodImplOptions.AggressiveInlining)] public static <#= t #> ToDegrees(this <#= t #> x) => (<#= t #>)(x * Constants.RadiansToDegrees);
@@ -83,8 +95,8 @@ foreach (var t in nonVectorTypes) {
         [MethodImpl(MethodImplOptions.AggressiveInlining)] public static bool Within(this <#= t #> v, <#= t #> min, <#= t #> max) => v >= min && v < max;
         [MethodImpl(MethodImplOptions.AggressiveInlining)] public static <#= t #> Sqr (this <#= t #> x) => x * x;
         [MethodImpl(MethodImplOptions.AggressiveInlining)] public static <#= t #> Cube (this <#= t #> x) => x * x * x;
-        [MethodImpl(MethodImplOptions.AggressiveInlining)] public static <#= t #> Min (this <#= t #> v1, <#= t #> v2) => Math.Min(v1, v2);
-        [MethodImpl(MethodImplOptions.AggressiveInlining)] public static <#= t #> Max (this <#= t #> v1, <#= t #> v2) => Math.Max(v1, v2);
+        [MethodImpl(MethodImplOptions.AggressiveInlining)] public static <#= t #> Min (this <#= t #> v1, <#= t #> v2) => System.Math.Min(v1, v2);
+        [MethodImpl(MethodImplOptions.AggressiveInlining)] public static <#= t #> Max (this <#= t #> v1, <#= t #> v2) => System.Math.Max(v1, v2);
 <# } #>
 
 <#
@@ -118,7 +130,7 @@ foreach (var t in intTypes) {
         [MethodImpl(MethodImplOptions.AggressiveInlining)] public static <#= t #> XOr (this <#= t #> a, <#= t #> b) => a | b & ~(a & b);
         [MethodImpl(MethodImplOptions.AggressiveInlining)] public static <#= t #> NOr (this <#= t #> a, <#= t #> b) => ~(a | b);
         [MethodImpl(MethodImplOptions.AggressiveInlining)] public static <#= t #> Not (this <#= t #> a) => ~a;
-        [MethodImpl(MethodImplOptions.AggressiveInlining)] public static <#= t #> Abs (this <#= t #> a) => Math.Abs(a);
+        [MethodImpl(MethodImplOptions.AggressiveInlining)] public static <#= t #> Abs (this <#= t #> a) => System.Math.Abs(a);
         [MethodImpl(MethodImplOptions.AggressiveInlining)] public static <#= t #> DivideRoundUp (this <#= t #> a, <#= t #> b) => a / b + (a % b > 0 ? 1 : 0);
         [MethodImpl(MethodImplOptions.AggressiveInlining)] public static bool IsEven (this <#= t #> n) => n % 2 == 0;
         [MethodImpl(MethodImplOptions.AggressiveInlining)] public static bool IsOdd (this <#= t #> n) => n % 2 == 1;

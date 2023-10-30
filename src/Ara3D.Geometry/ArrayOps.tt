@@ -16,7 +16,7 @@ var types = nonVectorTypes.Concat(vectorTypes);
 var intTypes = new[] { "int", "long" };
 var araBinaryOps = new[] { "Add", "Sub", "Mul", "Div" };
 var araCompOps = new[] { "Gt", "Lt", "GtEq", "LtEq", "Eq", "NEq" };
-var sysUnaryOps = new[] { "Abs", "Acos", "Asin", "Atan", "Cos", "Cosh", "Exp", "Log", "Log10", "Sin", "Sinh", "Sqrt", "Tan", "Tanh" };
+var sysUnaryOps = new[] { "Abs", "Acos", "Asin", "Atan", "Cos", "Cosh", "Exp", "Ln", "Log10", "Sin", "Sinh", "Sqrt", "Tan", "Tanh" };
 var araUnaryOps = new[] { "Sqr", "Inverse", "Ceiling", "Floor", "Round", "Truncate" };
 var allUnaryOps = sysUnaryOps.Concat(araUnaryOps);
 #>

@@ -138,11 +138,8 @@ namespace Ara3D.Geometry
         public static IArray<Vector3> Exp (this IArray< Vector3 > self) => self.Select(MathOps.Exp); 
         public static IArray<Vector4> Exp (this IArray< Vector4 > self) => self.Select(MathOps.Exp); 
 
-        public static IArray<double> Log (this IArray< double > self) => self.Select(MathOps.Log); 
-        public static IArray<float> Log (this IArray< float > self) => self.Select(MathOps.Log); 
-        public static IArray<Vector2> Log (this IArray< Vector2 > self) => self.Select(MathOps.Log); 
-        public static IArray<Vector3> Log (this IArray< Vector3 > self) => self.Select(MathOps.Log); 
-        public static IArray<Vector4> Log (this IArray< Vector4 > self) => self.Select(MathOps.Log); 
+        public static IArray<double> Ln (this IArray< double > self) => self.Select(MathOps.Ln); 
+        public static IArray<float> Ln (this IArray< float > self) => self.Select(MathOps.Ln); 
 
         public static IArray<double> Log10 (this IArray< double > self) => self.Select(MathOps.Log10); 
         public static IArray<float> Log10 (this IArray< float > self) => self.Select(MathOps.Log10); 

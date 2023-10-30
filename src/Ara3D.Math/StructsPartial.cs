@@ -11,6 +11,9 @@ namespace Ara3D.Math
        public static readonly ColorRGBA DarkGreen = new ColorRGBA(0, 255, 0, 255);
        public static readonly ColorRGBA LightBlue = new ColorRGBA(128, 128, 255, 255);
        public static readonly ColorRGBA DarkBlue = new ColorRGBA(0, 0, 255, 255);
+
+       public static ColorRGBA FromVector(Vector3 v)
+           => ((byte)(v.X * 255), (byte)(v.Y * 255), (byte)(v.Z * 255), 0xFF);
     }
 
     public partial struct Vector4 : ITransformable<Vector4>
