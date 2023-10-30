@@ -85,4 +85,6 @@ namespace Ara3D.Bowerbird.Core
         Guid Id { get; }
         string Description { get; }
     }
+
+    // Something that is run every X minutes, 
 }

@@ -4,15 +4,14 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace ModelViewer
+using System.Collections.Generic;
+using System.Windows;
+using System.Windows.Media;
+using System.Windows.Media.Media3D;
+using HelixToolkit.Wpf;
+
+namespace Wpf3DViewer
 {
-    using System.Collections.Generic;
-    using System.Windows;
-    using System.Windows.Media;
-    using System.Windows.Media.Media3D;
-
-    using HelixToolkit.Wpf;
-
     public class VisualViewModel
     {
         public IEnumerable<VisualViewModel> Children

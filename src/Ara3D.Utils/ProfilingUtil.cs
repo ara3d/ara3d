@@ -56,7 +56,7 @@ namespace Ara3D.Utils
                 GC.Collect();
                 GC.WaitForPendingFinalizers();
                 var memConsumption = GC.GetTotalMemory(true) - memBefore;
-                Console.WriteLine($"Approximate memory consumption = {FileUtil.BytesToString(memConsumption)}");
+                Console.WriteLine($"Approximate memory consumption = {FilePathUtil.BytesToString(memConsumption)}");
             });
         }
 
@@ -80,7 +80,7 @@ namespace Ara3D.Utils
 
             // TODO: remove all console references
             Console.WriteLine(
-                $"Loading {fileName}\nof size {FileUtil.FileSizeAsString(fileName)}\ntakes {TimingUtils.MSecToSecondsString(msec)}\nconsumes {FileUtil.BytesToString(mem)}");
+                $"Loading {fileName}\nof size {FilePathUtil.FileSizeAsString(fileName)}\ntakes {TimingUtils.MSecToSecondsString(msec)}\nconsumes {FilePathUtil.BytesToString(mem)}");
             return file;
         }
     }

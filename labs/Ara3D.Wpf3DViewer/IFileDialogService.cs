@@ -4,7 +4,7 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace ModelViewer
+namespace Wpf3DViewer
 {
     public interface IFileDialogService
     {

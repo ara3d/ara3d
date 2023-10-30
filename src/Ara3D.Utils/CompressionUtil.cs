@@ -27,7 +27,6 @@ namespace Ara3D.Utils
             return bytes != null && bytes.Length > 2 && bytes[0] == GzipMagicByte0 && bytes[1] == GzipMagicByte1;
         }
 
-
         /// <summary>
         /// Zips a file and places the result into a newly created file in the temporary directory
         /// </summary>
@@ -72,7 +71,6 @@ namespace Ara3D.Utils
         public static string UnzipFile(string zipFilePath)
             => UnzipFile(zipFilePath, Path.GetTempFileName());
 
-
         public static StreamWriter CreateAndOpenEntry(this ZipArchive archive, string entryName)
         {
             var entry = archive.CreateEntry(entryName);
@@ -89,7 +87,5 @@ namespace Ara3D.Utils
                 sw.Close();
             }
         }
-
-
     }
 }

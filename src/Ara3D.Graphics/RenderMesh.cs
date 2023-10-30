@@ -110,10 +110,10 @@ namespace Ara3D.Graphics
 
         public RenderMesh(IArray<IRenderBuffer> buffers)
         {
-            Buffers = buffers;
+            Buffers = buffers.Where(b => b != null).ToIArray();
             var uvs = new ArrayBuilder<IRenderBuffer<Vector2>>();
 
-            foreach (var buffer in buffers.Enumerate())
+            foreach (var buffer in Buffers.Enumerate())
             {
                 switch (buffer.Semantic)
                 {

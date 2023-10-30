@@ -1,55 +1,59 @@
-    using System;
-    using System.IO;
+using System;
+using System.IO;
 
-    namespace Ara3D.Utils
+namespace Ara3D.Utils
 {
+    // https://learn.microsoft.com/en-us/previous-versions/visualstudio/visual-studio-2010/s2esdf4x(v=vs.100)?redirectedfrom=MSDN
     public static class SpecialFolders
     {
-        public static DirectoryPath AdminTools => Environment.GetFolderPath(Environment.SpecialFolder.AdminTools);
-        public static DirectoryPath ApplicationData => Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
-        public static DirectoryPath CDBurning => Environment.GetFolderPath(Environment.SpecialFolder.CDBurning);
-        public static DirectoryPath Windows => Environment.GetFolderPath(Environment.SpecialFolder.Windows);
-        public static DirectoryPath UserProfile => Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
-        public static DirectoryPath Templates => Environment.GetFolderPath(Environment.SpecialFolder.Templates);
-        public static DirectoryPath SystemX86 => Environment.GetFolderPath(Environment.SpecialFolder.SystemX86);
-        public static DirectoryPath System => Environment.GetFolderPath(Environment.SpecialFolder.System);
-        public static DirectoryPath StartMenu => Environment.GetFolderPath(Environment.SpecialFolder.StartMenu);
-        public static DirectoryPath SendTo => Environment.GetFolderPath(Environment.SpecialFolder.SendTo);
-        public static DirectoryPath Resources => Environment.GetFolderPath(Environment.SpecialFolder.Resources);
-        public static DirectoryPath Recent => Environment.GetFolderPath(Environment.SpecialFolder.Recent);
-        public static DirectoryPath Programs => Environment.GetFolderPath(Environment.SpecialFolder.Programs);
-        public static DirectoryPath ProgramFilesX86 => Environment.GetFolderPath(Environment.SpecialFolder.ProgramFilesX86);
-        public static DirectoryPath ProgramFiles => Environment.GetFolderPath(Environment.SpecialFolder.ProgramFiles);
-        public static DirectoryPath PrinterShortcuts => Environment.GetFolderPath(Environment.SpecialFolder.PrinterShortcuts);
-        public static DirectoryPath Personal => Environment.GetFolderPath(Environment.SpecialFolder.Personal);
-        public static DirectoryPath NetworkShortcuts => Environment.GetFolderPath(Environment.SpecialFolder.NetworkShortcuts);
-        public static DirectoryPath MyVideos => Environment.GetFolderPath(Environment.SpecialFolder.MyVideos);
-        public static DirectoryPath MyPictures => Environment.GetFolderPath(Environment.SpecialFolder.MyPictures);
-        public static DirectoryPath MyDocuments => Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
-        public static DirectoryPath LocalizedResources => Environment.GetFolderPath(Environment.SpecialFolder.LocalizedResources);
-        public static DirectoryPath LocalApplicationData => Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
-        public static DirectoryPath InternetCache => Environment.GetFolderPath(Environment.SpecialFolder.InternetCache);
-        public static DirectoryPath History => Environment.GetFolderPath(Environment.SpecialFolder.History);
-        public static DirectoryPath Fonts => Environment.GetFolderPath(Environment.SpecialFolder.Fonts);
-        public static DirectoryPath Favorites => Environment.GetFolderPath(Environment.SpecialFolder.Favorites);
-        public static DirectoryPath DesktopDirectory => Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory);
-        public static DirectoryPath Desktop => Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
-        public static DirectoryPath Cookies => Environment.GetFolderPath(Environment.SpecialFolder.Cookies);
-        public static DirectoryPath CommonVideos => Environment.GetFolderPath(Environment.SpecialFolder.CommonVideos);
-        public static DirectoryPath CommonTemplates => Environment.GetFolderPath(Environment.SpecialFolder.CommonTemplates);
-        public static DirectoryPath CommonStartup => Environment.GetFolderPath(Environment.SpecialFolder.CommonStartup);
-        public static DirectoryPath CommonStartMenu => Environment.GetFolderPath(Environment.SpecialFolder.CommonStartMenu);
-        public static DirectoryPath CommonPrograms => Environment.GetFolderPath(Environment.SpecialFolder.CommonPrograms);
-        public static DirectoryPath CommonProgramFilesX86 => Environment.GetFolderPath(Environment.SpecialFolder.CommonProgramFilesX86);
-        public static DirectoryPath CommonProgramFiles => Environment.GetFolderPath(Environment.SpecialFolder.CommonProgramFiles);
-        public static DirectoryPath CommonPictures => Environment.GetFolderPath(Environment.SpecialFolder.CommonPictures);
-        public static DirectoryPath CommonOemLinks => Environment.GetFolderPath(Environment.SpecialFolder.CommonOemLinks);
-        public static DirectoryPath CommonMusic => Environment.GetFolderPath(Environment.SpecialFolder.CommonMusic);
-        public static DirectoryPath CommonDocuments => Environment.GetFolderPath(Environment.SpecialFolder.CommonDocuments);
-        public static DirectoryPath CommonDesktopDirectory => Environment.GetFolderPath(Environment.SpecialFolder.CommonDesktopDirectory);
-        public static DirectoryPath CommonApplicationData => Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData);
-        public static DirectoryPath CommonAdminTools => Environment.GetFolderPath(Environment.SpecialFolder.CommonAdminTools);
-
+        public static DirectoryPath AdminTools => Environment.SpecialFolder.AdminTools.GetDir();
+        public static DirectoryPath ApplicationData => Environment.SpecialFolder.ApplicationData.GetDir();
+        public static DirectoryPath CDBurning => Environment.SpecialFolder.CDBurning.GetDir();
+        public static DirectoryPath Windows => Environment.SpecialFolder.Windows.GetDir();
+        public static DirectoryPath UserProfile => Environment.SpecialFolder.UserProfile.GetDir();
+        public static DirectoryPath Templates => Environment.SpecialFolder.Templates.GetDir();
+        public static DirectoryPath SystemX86 => Environment.SpecialFolder.SystemX86.GetDir();
+        public static DirectoryPath System => Environment.SpecialFolder.System.GetDir();
+        public static DirectoryPath StartMenu => Environment.SpecialFolder.StartMenu.GetDir();
+        public static DirectoryPath SendTo => Environment.SpecialFolder.SendTo.GetDir();
+        public static DirectoryPath Resources => Environment.SpecialFolder.Resources.GetDir();
+        public static DirectoryPath Recent => Environment.SpecialFolder.Recent.GetDir();
+        public static DirectoryPath Programs => Environment.SpecialFolder.Programs.GetDir();
+        public static DirectoryPath ProgramFilesX86 => Environment.SpecialFolder.ProgramFilesX86.GetDir();
+        public static DirectoryPath ProgramFiles => Environment.SpecialFolder.ProgramFiles.GetDir();
+        public static DirectoryPath PrinterShortcuts => Environment.SpecialFolder.PrinterShortcuts.GetDir();
+        public static DirectoryPath Personal => Environment.SpecialFolder.Personal.GetDir();
+        public static DirectoryPath NetworkShortcuts => Environment.SpecialFolder.NetworkShortcuts.GetDir();
+        public static DirectoryPath MyVideos => Environment.SpecialFolder.MyVideos.GetDir();
+        public static DirectoryPath MyPictures => Environment.SpecialFolder.MyPictures.GetDir();
+        public static DirectoryPath MyDocuments => Environment.SpecialFolder.MyDocuments.GetDir();
+        public static DirectoryPath LocalizedResources => Environment.SpecialFolder.LocalizedResources.GetDir();
+        public static DirectoryPath LocalApplicationData => Environment.SpecialFolder.LocalApplicationData.GetDir();
+        public static DirectoryPath InternetCache => Environment.SpecialFolder.InternetCache.GetDir();
+        public static DirectoryPath History => Environment.SpecialFolder.History.GetDir();
+        public static DirectoryPath Fonts => Environment.SpecialFolder.Fonts.GetDir();
+        public static DirectoryPath Favorites => Environment.SpecialFolder.Favorites.GetDir();
+        public static DirectoryPath DesktopDirectory => Environment.SpecialFolder.DesktopDirectory.GetDir();
+        public static DirectoryPath Desktop => Environment.SpecialFolder.Desktop.GetDir();
+        public static DirectoryPath Cookies => Environment.SpecialFolder.Cookies.GetDir();
+        public static DirectoryPath CommonVideos => Environment.SpecialFolder.CommonVideos.GetDir();
+        public static DirectoryPath CommonTemplates => Environment.SpecialFolder.CommonTemplates.GetDir();
+        public static DirectoryPath CommonStartup => Environment.SpecialFolder.CommonStartup.GetDir();
+        public static DirectoryPath CommonStartMenu => Environment.SpecialFolder.CommonStartMenu.GetDir();
+        public static DirectoryPath CommonPrograms => Environment.SpecialFolder.CommonPrograms.GetDir();
+        public static DirectoryPath CommonProgramFilesX86 => Environment.SpecialFolder.CommonProgramFilesX86.GetDir();
+        public static DirectoryPath CommonProgramFiles => Environment.SpecialFolder.CommonProgramFiles.GetDir();
+        public static DirectoryPath CommonPictures => Environment.SpecialFolder.CommonPictures.GetDir();
+        public static DirectoryPath CommonOemLinks => Environment.SpecialFolder.CommonOemLinks.GetDir();
+        public static DirectoryPath CommonMusic => Environment.SpecialFolder.CommonMusic.GetDir();
+        public static DirectoryPath CommonDocuments => Environment.SpecialFolder.CommonDocuments.GetDir();
+        public static DirectoryPath CommonDesktopDirectory => Environment.SpecialFolder.CommonDesktopDirectory.GetDir();
+        public static DirectoryPath CommonApplicationData => Environment.SpecialFolder.CommonApplicationData.GetDir();
+        public static DirectoryPath CommonAdminTools => Environment.SpecialFolder.CommonAdminTools.GetDir();
+            
         public static DirectoryPath Temp => Path.GetTempPath();
+
+        public static DirectoryPath GetDir(this Environment.SpecialFolder folder)
+            => Environment.GetFolderPath(folder);
     }
 }

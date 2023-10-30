@@ -95,8 +95,6 @@ namespace Ara3D.Utils
             return items?.Count == 1 ? items[0] : default;
         }
 
-
-
         /// <summary>
         /// Generic depth first traversal. Improved answer over:
         /// https://stackoverflow.com/questions/5804844/implementing-depth-first-search-into-c-sharp-using-list-and-stack

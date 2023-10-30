@@ -1,14 +1,13 @@
 ﻿using System.Linq;
 using System.Windows.Media;
 using System.Windows.Media.Media3D;
-using System.Windows.Threading;
 using Ara3D.Collections;
 using Ara3D.Interop.WPF;
 using Ara3D.Serialization.G3D;
 using Ara3D.Utils;
 using HelixToolkit.Wpf;
 
-namespace ModelViewer;
+namespace Wpf3DViewer;
 
 public static class ModelLoader
 {

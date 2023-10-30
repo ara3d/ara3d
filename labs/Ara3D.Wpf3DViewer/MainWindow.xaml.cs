@@ -7,7 +7,7 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace ModelViewer
+namespace Wpf3DViewer
 {
     public partial class Window1
     {

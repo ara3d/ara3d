@@ -6,7 +6,7 @@ using System.Windows.Media;
 using System.Windows.Media.Media3D;
 using HelixToolkit.Wpf;
 
-namespace G3DViewer
+namespace Wpf3DViewer
 {
     public static class HelixUtil
     {

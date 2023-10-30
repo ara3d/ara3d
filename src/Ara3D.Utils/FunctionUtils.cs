@@ -26,7 +26,7 @@ namespace Ara3D.Utils
         /// Improved answer over:
         /// https://stackoverflow.com/questions/11911660/redirect-console-writeline-from-windows-application-to-a-string
         /// </summary>
-        public static string RunCodeReturnConsoleOut(Action action)
+        public static string CaptureConsoleOut(Action action)
         {
             var originalConsoleOut = Console.Out;
             using (var writer = new StringWriter())

@@ -29,17 +29,34 @@ namespace Ara3D.Graphics
         public static IRenderBuffer<Vector3> ToVertexBuffer(this IBuffer<Vector3> points)
             => points.ToRenderBuffer(Semantics.Position);
 
+        public static IRenderBuffer<Vector3> ToNormalBuffer(this IBuffer<Vector3> points)
+            => points.ToRenderBuffer(Semantics.Normal);
+
+        public static IRenderBuffer<Vector2> ToUvBuffer(this IBuffer<Vector2> points)
+            => points.ToRenderBuffer(Semantics.UV);
+
         public static IRenderBuffer<Int3> ToIndexBuffer(this IBuffer<Int3> indices)
             => indices.ToRenderBuffer(Semantics.Index);
 
         public static IRenderBuffer<Vector3> ToVertexBuffer(this IArray<Vector3> points)
             => points.ToBuffer().ToVertexBuffer();
 
+        public static IRenderBuffer<Vector3> ToNormalBuffer(this IArray<Vector3> points)
+            => points.ToRenderBuffer(Semantics.Normal);
+
+        public static IRenderBuffer<Vector2> ToUvBuffer(this IArray<Vector2> points)
+            => points.ToRenderBuffer(Semantics.UV);
+
         public static IRenderBuffer ToIndexBuffer(this IArray<Int3> indices)
             => indices.ToBuffer().ToIndexBuffer();
 
         public static IRenderMesh ToRenderMesh(this IMesh mesh)
-            => new RenderMesh(LinqArray.Create(mesh.Vertices.ToVertexBuffer(), mesh.Faces.ToIndexBuffer()));
+            => new RenderMesh(
+                LinqArray.Create(
+                    mesh.Vertices?.ToVertexBuffer(), 
+                    mesh.Faces?.ToIndexBuffer(),
+                    mesh.Normals?.ToNormalBuffer(),
+                    mesh.UVs?.ToUvBuffer()));
 
         public static IMesh ToIMesh(this IRenderMesh renderMesh)
             => renderMesh.PositionBuffer.Array.ToTriMesh(renderMesh.IndexBuffer.Array);

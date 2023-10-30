@@ -1,4 +1,7 @@
-﻿using System.Text;
+﻿    using System.Drawing;
+using System.Text;
+using Ara3D.Math;
+using Ara3D.Utils;
 
 // https://gist.github.com/mattwarren/d17a0c356bd6fdb9f596bee6b9a5e63c
 // https://fabiensanglard.net/postcard_pathtracer/index.html
@@ -7,6 +10,16 @@
 
 namespace PathTracer
 {
+    public static class BitmapSerialization
+    {
+        public static void Output(byte[] bytes, string filePath)
+        {
+            using MemoryStream ms = new(bytes);
+            using Image img = Bitmap.FromStream(ms);
+            img.Save(filePath);
+        }
+    }
+
     public readonly struct Vector
     {
         public readonly float X, Y, Z;
@@ -208,15 +221,7 @@ namespace PathTracer
                 goal.Z * left.X - goal.X * left.Z,
                 goal.X * left.Y - goal.Y * left.X);
 
-            var fileName = Path.Combine(Path.GetTempPath(), "output.ppm");
-            Console.WriteLine($"Width = {w}, Height = {h}, Samples = {samplesCount}");
-            Console.WriteLine($"Writing data to {fileName}", fileName);
-
-            if (File.Exists(fileName))
-                File.Delete(fileName);
-            using var fileStream = File.Open(fileName, FileMode.CreateNew, FileAccess.Write);
-            using var writer = new BinaryWriter(fileStream, Encoding.ASCII);
-            writer.Write(Encoding.ASCII.GetBytes($"P6 {w} {h} 255 ")); // trailing space!!!
+            var bitmap = new Bitmap(w, h);
             for (var y = (h - 1); y >= 0; y--)
             {
                 for (var x = (w - 1); x >= 0; x--)
@@ -231,10 +236,16 @@ namespace PathTracer
                     color = color * (1.0f / samplesCount) + 14.0f / 241;
                     var o = color + 1;
                     color = Vector(color.X / o.X, color.Y / o.Y, color.Z / o.Z) * 255;
-
-                    writer.Write(new[] { (byte)(int)color.X, (byte)(int)color.Y, (byte)(int)color.Z });
+                    var rgb = Color.FromArgb((byte)color.X, (byte)color.Y, (byte)color.Z);
+                    bitmap.SetPixel(x, y, rgb);
                 }
             }
+
+            var file = new FilePath(Path.GetTempFileName());
+            file = file.ChangeExtension("bmp");
+            bitmap.Save(file);
+
+            ProcessUtil.OpenFile(file);
         }
     }
 }

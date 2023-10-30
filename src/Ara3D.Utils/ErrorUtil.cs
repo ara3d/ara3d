@@ -1,4 +1,5 @@
 using System;
+using System.Diagnostics;
 using System.Runtime.ExceptionServices;
 
 namespace Ara3D.Utils
@@ -11,5 +12,7 @@ namespace Ara3D.Utils
         public static void SetUnhandledExceptionCallback(Action<object, UnhandledExceptionEventArgs> handler)
             => AppDomain.CurrentDomain.UnhandledException += (sender, args) => handler(sender, args);
 
+        public static ErrorData ToErrorData(this Exception exception, bool caught = true)
+            => new ErrorData(exception, caught);
     }
 }

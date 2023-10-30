@@ -11,5 +11,14 @@ namespace Ara3D.Utils
 
         public void Dispose()
             => OnDispose();
+
+        public static Disposer Create(Action action)
+            => new Disposer(action);
+
+        public static Disposer Create(Action beforeAction, Action afterAction)
+        {
+            beforeAction();
+            return new Disposer(afterAction);
+        }
     }
 }

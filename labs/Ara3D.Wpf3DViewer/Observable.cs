@@ -6,7 +6,7 @@
 
 using System.ComponentModel;
 
-namespace ModelViewer
+namespace Wpf3DViewer
 {
     public class Observable : INotifyPropertyChanged
     {

@@ -25,10 +25,10 @@ namespace Ara3D.Utils
         public static ProcessData ToProcessData(this Process process)
             => new ProcessData(process);
 
-        public static Process OpenFolderInExplorer(string folderPath)
+        public static Process OpenFolderInExplorer(this DirectoryPath folderPath)
             => Process.Start("explorer.exe", folderPath);
 
-        public static Process SelectFileInExplorer(string filePath)
+        public static Process SelectFileInExplorer(this FilePath filePath)
             => Process.Start(new ProcessStartInfo
             {
                 FileName = "explorer.exe",
@@ -36,21 +36,24 @@ namespace Ara3D.Utils
                 UseShellExecute = false
             });
 
-        public static Process ShellExecute(string filePath)
+        public static Process ShellExecute(this FilePath filePath)
             => Process.Start(new ProcessStartInfo { FileName = filePath, UseShellExecute = true });
 
-        public static Process OpenFile(string filePath)
+        public static Process StartDefaultProcess(this FilePath filePath)
+            => Process.Start(filePath);
+
+        public static Process OpenFile(this FilePath filePath)
         {
-            if (!File.Exists(filePath))
+            if (!filePath.Exists())
                 throw new FileNotFoundException("", filePath);
 
             // Expand the file name
-            filePath = new FileInfo(filePath).FullName;
+            filePath = filePath.GetFullPath();
 
             // Open the file with the default file extension handler.
             try
             {
-                return Process.Start(filePath);
+                return filePath.StartDefaultProcess();
             }
             catch (Exception e)
             {
@@ -60,7 +63,7 @@ namespace Ara3D.Utils
             // If there is no default file extension handler, use shell execute
             try
             {
-                return ShellExecute(filePath);
+                return filePath.ShellExecute();
             }
             catch (Exception e)
             {
@@ -68,19 +71,17 @@ namespace Ara3D.Utils
             }
 
             // If that didn't work, show the file in explorer.
-            return SelectFileInExplorer(filePath);
+            return filePath.SelectFileInExplorer();
         }
 
         /// <summary>
-        /// Closes a process if it isin't null and hasn't already exited.
+        /// Closes a process if it isn't null and hasn't already exited.
         /// </summary>
-        /// <param name="process"></param>
         public static void SafeClose(this Process process)
         {
             if (process != null && !process.HasExited)
                 process.CloseMainWindow();
         }
-
 
         public static string ReadOneLine(this ProcessStartInfo psi)
         {
@@ -92,5 +93,10 @@ namespace Ara3D.Utils
             }
         }
 
+        public static void SetProcessExitCallback(Action<object, EventArgs> handler)
+            => Process.GetCurrentProcess().Exited += (sender, args) => handler(sender, args);
+
+        public static void SetProcessExitCallbackCurrentDomain(Action<object, EventArgs> handler)
+            => AppDomain.CurrentDomain.ProcessExit += (sender, args) => handler(sender, args);
     }
 }

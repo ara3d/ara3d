@@ -1,6 +1,6 @@
 ﻿using System.Windows;
 
-namespace Ara3D.Wpf3DViewer
+namespace Wpf3DViewer
 {
     /// <summary>
     /// Interaction logic for App.xaml

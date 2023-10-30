@@ -1,6 +1,6 @@
 namespace Ara3D.Utils
 {
-    public static class EnvironmentVariableNames
+    public static class CommonEnvironmentVariables
     {
         public const string AllUsersProfile = "ALLUSERSPROFILE";
         public const string AppData = "APPDATA";

@@ -4,23 +4,20 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
+using System;
+using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
+using System.Windows;
+using System.Windows.Input;
 using System.Windows.Media;
+using System.Windows.Media.Media3D;
+using System.Windows.Threading;
 using Ara3D.Geometry;
 using Ara3D.Interop.WPF;
+using HelixToolkit.Wpf;
 
-namespace ModelViewer
+namespace Wpf3DViewer
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Diagnostics.CodeAnalysis;
-    using System.Threading.Tasks;
-    using System.Windows;
-    using System.Windows.Input;
-    using System.Windows.Media.Media3D;
-    using System.Windows.Threading;
-
-    using HelixToolkit.Wpf;
-
     [SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1600:ElementsMustBeDocumented", Justification = "Reviewed. Suppression is OK here.")]
     public class MainViewModel : Observable
     {

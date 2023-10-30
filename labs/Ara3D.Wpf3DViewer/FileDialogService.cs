@@ -4,10 +4,10 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace ModelViewer
-{
-    using Microsoft.Win32;
+using Microsoft.Win32;
 
+namespace Wpf3DViewer
+{
     public class FileDialogService : IFileDialogService
     {
         public string OpenFileDialog(string initialDirectory, string defaultPath, string filter, string defaultExtension)
