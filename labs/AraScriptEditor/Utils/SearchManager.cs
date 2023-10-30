@@ -1,6 +1,7 @@
 ﻿using System.Windows.Forms;
+using ScintillaNET;
 
-namespace ScintillaNET.Demo.Utils {
+namespace Ara3D.ScriptEditor.Utils {
 	internal class SearchManager {
 
 		public static Scintilla TextArea;
@@ -11,7 +12,7 @@ namespace ScintillaNET.Demo.Utils {
 		public static int LastSearchIndex;
 
 		public static void Find(bool next, bool incremental) {
-			bool first = LastSearch != SearchBox.Text;
+			var first = LastSearch != SearchBox.Text;
 
 			LastSearch = SearchBox.Text;
 			if (LastSearch.Length > 0) {

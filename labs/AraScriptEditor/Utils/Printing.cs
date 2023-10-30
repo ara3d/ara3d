@@ -3,7 +3,7 @@ using System.ComponentModel;
 using System.Windows.Forms;
 using ScintillaNET;
 
-namespace ScintillaPrinting
+namespace Ara3D.ScriptEditor.Utils
 {
 	[TypeConverter(typeof(ExpandableObjectConverter))]
 	public class Printing 
@@ -30,7 +30,7 @@ namespace ScintillaPrinting
             {
                 if (showPrintDialog)
                 {
-                    PrintDialog pd = new PrintDialog();
+                    var pd = new PrintDialog();
                     pd.Document = _printDocument;
                     pd.UseEXDialog = true;
                     pd.AllowCurrentPage = true;
@@ -61,7 +61,7 @@ namespace ScintillaPrinting
 
 		public DialogResult PrintPreview()
 		{
-			PrintPreviewDialog ppd = new PrintPreviewDialog();
+			var ppd = new PrintPreviewDialog();
 			ppd.WindowState = FormWindowState.Maximized;
 
 			ppd.Document = _printDocument;
@@ -70,7 +70,7 @@ namespace ScintillaPrinting
 
 		public DialogResult PrintPreview(IWin32Window owner)
 		{
-			PrintPreviewDialog ppd = new PrintPreviewDialog();
+			var ppd = new PrintPreviewDialog();
 			ppd.WindowState = FormWindowState.Maximized;
 
 			if (owner is Form)
@@ -82,7 +82,7 @@ namespace ScintillaPrinting
 
 		public DialogResult ShowPageSetupDialog()
 		{
-			PageSetupDialog psd = new PageSetupDialog();
+			var psd = new PageSetupDialog();
 			psd.PageSettings = PageSettings;
 			psd.PrinterSettings = PageSettings.PrinterSettings;
 			return psd.ShowDialog();
@@ -90,7 +90,7 @@ namespace ScintillaPrinting
 
 		public DialogResult ShowPageSetupDialog(IWin32Window owner)
 		{
-			PageSetupDialog psd = new PageSetupDialog();
+			var psd = new PageSetupDialog();
 			psd.AllowPrinter = true;
 			psd.PageSettings = PageSettings;
 			psd.PrinterSettings = PageSettings.PrinterSettings;

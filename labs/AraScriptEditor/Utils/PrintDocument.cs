@@ -1,12 +1,12 @@
 using System;
+using System.ComponentModel;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Drawing.Printing;
-using System.ComponentModel;
-using ScintillaNET;
 using System.Runtime.InteropServices;
+using ScintillaNET;
 
-namespace ScintillaPrinting
+namespace Ara3D.ScriptEditor.Utils
 {
 	/// <summary>
 	/// ScintillaNET derived class for handling printing of source code from a Scintilla control.
@@ -126,10 +126,10 @@ namespace ScintillaPrinting
 			base.OnPrintPage(e);
 
 			PageSettings oPageSettings = null;
-			HeaderInformation oHeader = ((PageSettings)DefaultPageSettings).Header;
-			FooterInformation oFooter = ((PageSettings)DefaultPageSettings).Footer;
-			Rectangle oPrintBounds = e.MarginBounds;
-			bool bIsPreview = this.PrintController.IsPreview;
+			var oHeader = ((PageSettings)DefaultPageSettings).Header;
+			var oFooter = ((PageSettings)DefaultPageSettings).Footer;
+			var oPrintBounds = e.MarginBounds;
+			var bIsPreview = this.PrintController.IsPreview;
 
 			// When not in preview mode, adjust graphics to account for hard margin of the printer
 			if (!bIsPreview)
@@ -181,7 +181,7 @@ namespace ScintillaPrinting
 		{
 			if (oHeader.Display)
 			{
-				Rectangle oHeaderBounds = new Rectangle(oBounds.Left, oBounds.Top, oBounds.Width, oHeader.Height);
+				var oHeaderBounds = new Rectangle(oBounds.Left, oBounds.Top, oBounds.Width, oHeader.Height);
 
 				oHeader.Draw(oGraphics, oHeaderBounds, this.DocumentName, m_iCurrentPage);
 
@@ -200,8 +200,8 @@ namespace ScintillaPrinting
 		{
 			if (oFooter.Display)
 			{
-				int iHeight = oFooter.Height;
-				Rectangle oFooterBounds = new Rectangle(oBounds.Left, oBounds.Bottom - iHeight, oBounds.Width, iHeight);
+				var iHeight = oFooter.Height;
+				var oFooterBounds = new Rectangle(oBounds.Left, oBounds.Bottom - iHeight, oBounds.Width, iHeight);
 
 				oFooter.Draw(oGraphics, oFooterBounds, this.DocumentName, m_iCurrentPage);
 
@@ -224,9 +224,9 @@ namespace ScintillaPrinting
                 };
 			oGraphics.TransformPoints(CoordinateSpace.Device, CoordinateSpace.Page, oPoints);
             
-			PrintRectangle oPrintRectangle = new PrintRectangle(oPoints[0].X, oPoints[0].Y, oPoints[1].X, oPoints[1].Y);
+			var oPrintRectangle = new PrintRectangle(oPoints[0].X, oPoints[0].Y, oPoints[1].X, oPoints[1].Y);
 
-			RangeToFormat oRangeToFormat = new RangeToFormat();
+			var oRangeToFormat = new RangeToFormat();
 			oRangeToFormat.hdc = oRangeToFormat.hdcTarget = oGraphics.GetHdc();
 			oRangeToFormat.rc = oRangeToFormat.rcPage = oPrintRectangle;
 			oRangeToFormat.chrg.cpMin = m_iPosition;
@@ -237,10 +237,10 @@ namespace ScintillaPrinting
         }
         private int FormatRange(bool bDraw, ref RangeToFormat pfr)
         {
-            GCHandle handle = GCHandle.Alloc(pfr, GCHandleType.Pinned);
+            var handle = GCHandle.Alloc(pfr, GCHandleType.Pinned);
             try
             {
-                IntPtr pointer = handle.AddrOfPinnedObject();
+                var pointer = handle.AddrOfPinnedObject();
                 const int SCI_FORMATRANGE = 2151;
 
                 return m_oScintillaControl.DirectMessage(SCI_FORMATRANGE, new IntPtr(bDraw ? 1 : 0), pointer).ToInt32(); ;

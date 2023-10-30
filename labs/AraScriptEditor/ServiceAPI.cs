@@ -15,7 +15,7 @@ using System.Windows.Forms;
 // https://dopeydev.com/wcf-interprocess-communication/
 // https://docs.microsoft.com/en-us/dotnet/api/system.runtime.remoting.channels.ipc.ipcchannel?view=netframework-4.7.2
 
-namespace Ara3D
+namespace Ara3D.ScriptEditor
 {
     /// <summary>
     /// The editor will call these methods depending on what the user does. 
@@ -89,12 +89,14 @@ namespace Ara3D
 
         public static IpcChannel CreateChannel(string portName)
         {
-            Hashtable properties = new Hashtable();
+            var properties = new Hashtable();
             if (!string.IsNullOrEmpty(portName))
                 properties["portName"] = portName;
 
-            var serverProvider = new BinaryServerFormatterSinkProvider();
-            serverProvider.TypeFilterLevel = TypeFilterLevel.Full;
+            var serverProvider = new BinaryServerFormatterSinkProvider
+            {
+                TypeFilterLevel = TypeFilterLevel.Full
+            };
 
             var clientProvider = new BinaryClientFormatterSinkProvider();
             var r = new IpcChannel(properties, clientProvider, serverProvider);

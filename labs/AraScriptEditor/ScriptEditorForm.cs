@@ -1,14 +1,13 @@
 ﻿using System;
 using System.ComponentModel;
 using System.Drawing;
-using System.Windows.Forms;
 using System.IO;
-using ScintillaNET;
-using ScintillaNET.Demo.Utils;
 using System.Linq;
-using Ara3D.ScriptEditor;
+using System.Windows.Forms;
+using Ara3D.ScriptEditor.Utils;
+using ScintillaNET;
 
-namespace Ara3D
+namespace Ara3D.ScriptEditor
 {
     /// <summary>
     /// TODO: Menu hot keys don't seem to be supported automatically. 
@@ -295,10 +294,10 @@ namespace Ara3D
 				// get file drop
 				if (e.Data.GetDataPresent(DataFormats.FileDrop)) {
 
-					Array a = (Array)e.Data.GetData(DataFormats.FileDrop);
+					var a = (Array)e.Data.GetData(DataFormats.FileDrop);
 					if (a != null) {
 
-						string path = a.GetValue(0).ToString();
+						var path = a.GetValue(0).ToString();
 
 						LoadDataFromFile(path);
 
@@ -445,8 +444,8 @@ namespace Ara3D
         {
 
             // save the selection
-            int start = TextArea.SelectionStart;
-            int end = TextArea.SelectionEnd;
+            var start = TextArea.SelectionStart;
+            var end = TextArea.SelectionEnd;
 
             // modify the selected text
             TextArea.ReplaceSelection(TextArea.GetTextRange(start, end - start).ToLower());
@@ -459,8 +458,8 @@ namespace Ara3D
         {
 
             // save the selection
-            int start = TextArea.SelectionStart;
-            int end = TextArea.SelectionEnd;
+            var start = TextArea.SelectionStart;
+            var end = TextArea.SelectionEnd;
 
             // modify the selected text
             TextArea.ReplaceSelection(TextArea.GetTextRange(start, end - start).ToUpper());
@@ -659,10 +658,12 @@ namespace Ara3D
 
         void printToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            var printer = new ScintillaPrinting.Printing(TextArea);
-            printer.PageSettings = new ScintillaPrinting.PageSettings
+            var printer = new Printing(TextArea)
             {
-                ColorMode = ScintillaPrinting.PageSettings.PrintColorMode.BlackOnWhite
+                PageSettings = new PageSettings
+                {
+                    ColorMode = PageSettings.PrintColorMode.BlackOnWhite
+                }
             };
             printer.Print();
         }

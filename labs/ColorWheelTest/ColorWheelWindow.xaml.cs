@@ -11,9 +11,9 @@ namespace ColorWheelTest
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
-    public partial class MainWindow : Window
+    public partial class ColorWheelWindow : Window
     {
-        public MainWindow()
+        public ColorWheelWindow()
         {
             InitializeComponent();
             Recompute();

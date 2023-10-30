@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Windows.Forms;
 
-namespace ScintillaNET.Demo.Utils {
+namespace Ara3D.ScriptEditor.Utils {
 	internal class HotKeyManager {
 
 		public static bool Enable = true;

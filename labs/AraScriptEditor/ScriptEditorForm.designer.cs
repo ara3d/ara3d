@@ -1,4 +1,4 @@
-﻿namespace Ara3D
+﻿namespace Ara3D.ScriptEditor
 {
 	partial class ScriptEditorForm {
 		/// <summary>

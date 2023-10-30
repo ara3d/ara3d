@@ -1,8 +1,8 @@
+using System.ComponentModel;
 using System.Drawing;
 using System.Drawing.Printing;
-using System.ComponentModel;
 
-namespace ScintillaPrinting
+namespace Ara3D.ScriptEditor.Utils
 {
 	
 	/// <summary>

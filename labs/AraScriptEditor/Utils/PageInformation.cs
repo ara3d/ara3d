@@ -1,7 +1,7 @@
-using System.Drawing;
 using System.ComponentModel;
+using System.Drawing;
 
-namespace ScintillaPrinting
+namespace Ara3D.ScriptEditor.Utils
 {
 	/// <summary>
 	/// Type of border to print for a Page Information section
@@ -184,7 +184,7 @@ namespace ScintillaPrinting
 		{
 			get
 			{
-				int iHeight = Font.Height;
+				var iHeight = Font.Height;
 
 				switch (m_eBorder)
 				{
@@ -215,9 +215,9 @@ namespace ScintillaPrinting
 		/// <param name="iPageNumber"></param>
 		public void Draw(Graphics oGraphics, Rectangle oBounds, string strDocumentName, int iPageNumber)
 		{
-			StringFormat oFormat = new StringFormat(StringFormat.GenericDefault);
-			Pen oPen = Pens.Black;
-			Brush oBrush = Brushes.Black;
+			var oFormat = new StringFormat(StringFormat.GenericDefault);
+			var oPen = Pens.Black;
+			var oBrush = Brushes.Black;
 
 			// Draw border
 			switch (m_eBorder)
