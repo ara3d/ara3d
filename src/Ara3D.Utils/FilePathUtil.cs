@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Security.Cryptography;
 using System.Text.RegularExpressions;
 
@@ -527,5 +528,8 @@ namespace Ara3D.Utils
         public static bool IsEncrypted(this FilePath filePath) => filePath.HasAttribute(FileAttributes.Encrypted);
         public static bool IsIntegrityStream(this FilePath filePath) => filePath.HasAttribute(FileAttributes.IntegrityStream);
         public static bool IsNoScrubData(this FilePath filePath) => filePath.HasAttribute(FileAttributes.NoScrubData);
+
+        public static DirectoryPath GetCallerSourceFolder([CallerFilePath] string filePath = "")
+            => new FilePath(filePath).GetDirectory();
     }
 }

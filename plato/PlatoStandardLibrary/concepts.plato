@@ -1,0 +1,125 @@
+concept Any
+{ 
+    FieldNames(): Array<String>;     
+    FieldValues(x: Self): Array<Any>;
+    FieldTypes(x: Self): Array<Type>;
+    TypeOf(): Type;
+}
+
+concept Value 
+    inherits Any
+{
+    Default(): Self;
+}
+
+concept Array<T: Any>
+    inherits Any
+{
+    Count(xs: Self): Integer;
+    At(xs: Self, n: Integer): T;
+}
+
+concept Vector<T: Numerical>
+    inherits Array<T>, Numerical
+{
+}
+
+concept Measure
+    inherits Value, ScalarArithmetic, Equatable, Comparable, Magnitudinal
+{ 
+    Value(x: Self): Number
+        => x.FieldValues[0];
+}
+
+concept Numerical 
+    inherits Value, Arithmetic, ScalarArithmetic, Equatable, Comparable, Magnitudinal
+{
+    Zero(): Self;
+    One(): Self;
+    MinValue(): Self;
+    MaxValue(): Self;
+}
+
+concept Magnitudinal
+    inherits Value
+{
+    Magnitude(x: Self): Number
+        => x.FieldValues.Square.Sum.SquareRoot;
+}
+
+concept Comparable
+    inherits Value
+{
+    Compare(x: Self, y: Self): Integer;
+}
+
+concept Equatable
+    inherits Value
+{
+    Equals(a: Self, b: Self): Boolean
+        => a.FieldValues.Equals(b.FieldValues).All;
+}
+
+concept Arithmetic
+    inherits Value
+{ 
+    Add(self: Self, other: Self): Self
+        => self.FieldValues + other.FieldValues;
+
+    Subtract(self: Self, other: Self): Self
+        => self.FieldValues - other.FieldValues;
+
+    Negative(self: Self): Self
+        => -self.FieldValues;
+
+    Reciprocal(self: Self): Self
+        => self.FieldValues.Reciprocal;
+    
+    Multiply(self: Self, other: Self): Self
+        => self.FieldValues + other.FieldValues;
+
+    Divide(self: Self, other: Self): Self
+        => self.FieldValues / other.FieldValues;
+
+    Modulo(self: Self, other: Self): Self
+        => self.FieldValues % other.FieldValues;
+}
+
+concept ScalarArithmetic
+    inherits Value
+{
+    Add(self: Self, scalar: Number): Self
+        => self.FieldValues + scalar;
+    
+    Subtract(self: Self, scalar: Number): Self
+        => self.FieldValues - scalar;
+
+    Multiply(self: Self, scalar: Number): Self
+        => self.FieldValues * scalar;
+    
+    Divide(self: Self, scalar: Number): Self
+        => self.FieldValues / scalar;
+
+    Modulo(self: Self, scalar: Number): Self
+        => self.FieldValues % scalar;
+}
+
+concept BooleanOperations
+    inherits Value
+{
+    And(a: Self, b: Self): Self 
+        => a.FieldValues && b.FieldValues;
+
+    Or(a: Self, b: Self): Self
+        => a.FieldValues || b.FieldValues;
+    
+    Not(a: Self): Self 
+        => a.FieldValues;
+}
+
+concept Interval<T: Numerical>
+    inherits Vector<T>
+{
+    Min(x: Self): T;
+    Max(x: Self): T;
+}

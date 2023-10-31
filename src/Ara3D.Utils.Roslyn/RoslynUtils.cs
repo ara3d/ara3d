@@ -92,7 +92,7 @@ namespace Ara3D.Utils.Roslyn
         public static Compilation CompileSource(string source, CompilerOptions options = null)
         {
             var inputFile = WriteToTempFile(source);
-            var c = Compilation.Create(new[] {inputFile}, options);
+            var c = Compilation.Create(new[] {inputFile.Value}, options);
             return c.Emit();
         }
     }
