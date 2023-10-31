@@ -12,7 +12,7 @@ namespace Ara3D.Utils
     /// <summary>
     /// Todo: we need to replace strings with FilePath and DirectoryPath
     /// </summary>
-    public static class FilePathUtil
+    public static class PathUtil
     {
         public static FileVersionInfo GetVersionInfo(this FilePath filePath)
             => FileVersionInfo.GetVersionInfo(filePath);
@@ -87,7 +87,7 @@ namespace Ara3D.Utils
         {
             if (!dontCreate)
                 Directory.CreateDirectory(dir);
-            var newPath = Path.Combine(dir, Path.GetFileName(path));
+            var newPath = path.ChangeDirectory(dir);
             path.Copy(newPath);
             return newPath;
         }
@@ -96,7 +96,7 @@ namespace Ara3D.Utils
         {
             if (!dontCreate)
                 Directory.CreateDirectory(dir);
-            var newPath = Path.Combine(dir, Path.GetFileName(path));
+            var newPath = path.ChangeDirectory(dir);
             path.Move(newPath);
             return newPath;
         }
@@ -210,7 +210,7 @@ namespace Ara3D.Utils
         }
 
         public static IEnumerable<DirectoryPath> GetSubFolders(this DirectoryPath path)
-            => path.GetInfo().GetDirectories().Select(d => (DirectoryPath)d.FullName); 
+            => path.GetInfo().GetDirectories().Select(d => (DirectoryPath)d.FullName);
 
         public static bool Exists(this DirectoryPath folderPath)
             => Directory.Exists(folderPath);
@@ -227,7 +227,7 @@ namespace Ara3D.Utils
         }
 
         /// <summary>
-        /// Creates a directory if needed, or clears all of its contents otherwise
+        /// Creates a directory if it doesn't exist
         /// </summary>
         public static DirectoryPath Create(this DirectoryPath dirPath)
         {
@@ -248,7 +248,8 @@ namespace Ara3D.Utils
         public static DirectoryPath CreateAndClearDirectory(this DirectoryPath dirPath)
         {
             if (!dirPath.Exists())
-                dirPath.Create(); else
+                dirPath.Create();
+            else
                 dirPath.DeleteFolderContents();
             return dirPath;
         }
@@ -256,7 +257,7 @@ namespace Ara3D.Utils
         /// <summary>
         /// Returns true if the given directory contains no files or if the directory does not exist.
         /// </summary>
-        public static bool IsEmpty(this DirectoryPath dirPath) 
+        public static bool IsEmpty(this DirectoryPath dirPath)
             => !dirPath.Exists() || dirPath.GetAllFilesRecursively().Any();
 
         /// <summary>
@@ -330,9 +331,18 @@ namespace Ara3D.Utils
         public static DirectoryPath? GetParent(this DirectoryPath path)
             => path.GetInfo().Parent?.FullName;
 
+        public static DirectoryPath? GetParent(this FilePath path)
+            => path.GetDirectory().GetParent();
+
+        public static DirectoryPath? Up(this DirectoryPath path)
+            => path.GetParent();
+
+        public static DirectoryPath? Up(this FilePath path)
+            => path.GetParent();
+
         public static IEnumerable<DirectoryPath> GetSelfAndAncestors(this DirectoryPath? current)
         {
-            for (; current != null; current = current?.GetParent()) 
+            for (; current != null; current = current?.GetParent())
                 yield return current.Value;
         }
 
@@ -464,28 +474,44 @@ namespace Ara3D.Utils
         public static string[] ReadAllLines(this FilePath self)
             => File.ReadAllLines(self);
 
-        public static void WriteAllText(this FilePath self, string contents)
-            => File.WriteAllText(self, contents);
-
-        public static void WriteAllBytes(this FilePath self, byte[] bytes)
-            => File.WriteAllBytes(self, bytes);
-
-        public static void WriteAllLines(this FilePath self, IEnumerable<string> lines)
-            => File.WriteAllLines(self, lines);
-
-        public static void Delete(this FilePath self)
-            => File.Delete(self);
-
-        public static void Create(this FilePath self)
-            => File.Create(self);
-
-        public static void CopyToStreamAndClose(this FilePath filePath, Stream outputStream)
+        public static FilePath WriteAllText(this FilePath self, string contents)
         {
-            if (!filePath.Exists()) return;
+            File.WriteAllText(self, contents);
+            return self;
+        }
+
+        public static FilePath WriteAllBytes(this FilePath self, byte[] bytes)
+        {
+            File.WriteAllBytes(self, bytes);
+            return self;
+        }
+
+        public static FilePath WriteAllLines(this FilePath self, IEnumerable<string> lines)
+        {
+            File.WriteAllLines(self, lines);
+            return self;
+        }
+
+        public static FilePath Delete(this FilePath self)
+        {
+            File.Delete(self);
+            return self;
+        }
+
+        public static FilePath Create(this FilePath self)
+        {
+            File.Create(self);
+            return self;
+        }
+
+        public static FilePath CopyToStreamAndClose(this FilePath filePath, Stream outputStream)
+        {
+            if (!filePath.Exists()) return filePath;
             using (var inputStream = File.OpenRead(filePath))
             {
                 inputStream.CopyTo(outputStream);
             }
+            return filePath;
         }
 
         public static FilePath GetFullPath(this FilePath self)
@@ -494,8 +520,19 @@ namespace Ara3D.Utils
         public static FilePath CreateTempFile()
             => Path.GetTempFileName();
 
-        public static FilePath CreateTempFileWithExtension(string extension)
+        public static FilePath CreateTempFileWithContents(string text)
+            => CreateTempFile().WriteAllText(text);
+
+        // There exist better solutions. See:
+        // https://stackoverflow.com/questions/581570/how-can-i-create-a-temp-file-with-a-specific-extension-with-net
+        public static FilePath CreateTempFile(string extension)
             => CreateTempFile().ChangeExtension(extension);
+
+        public static FilePath MoveToRelativeFolder(this FilePath filePath, string subFolder)
+            => filePath.MoveToFolder(filePath.RelativeFolder(subFolder));
+
+        public static FilePath CreateTempFile(string subFolder, string extension)
+            => CreateTempFile(extension).MoveToRelativeFolder(subFolder);
 
         public static FilePath Touch(this FilePath filePath)
         {
@@ -531,5 +568,17 @@ namespace Ara3D.Utils
 
         public static DirectoryPath GetCallerSourceFolder([CallerFilePath] string filePath = "")
             => new FilePath(filePath).GetDirectory();
+
+        public static DirectoryPath RelativeFolder(this DirectoryPath path, params string[] parts) 
+            => Path.Combine(parts.Prepend(path).ToArray());
+
+        public static DirectoryPath RelativeFolder(this FilePath path, params string[] parts)
+            => Path.Combine(parts.Prepend(path).ToArray());
+
+        public static FilePath RelativeFile(this DirectoryPath path, params string[] parts)
+            => Path.Combine(parts.Prepend(path).ToArray());
+
+        public static FilePath RelativeFile(this FilePath path, params string[] parts)
+            => Path.Combine(parts.Prepend(path).ToArray());
     }
 }

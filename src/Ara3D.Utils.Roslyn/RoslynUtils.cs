@@ -8,7 +8,7 @@ using Microsoft.CodeAnalysis.Emit;
 
 namespace Ara3D.Utils.Roslyn
 {
-    public static class RoslynUtils
+    public static partial class RoslynUtils
     {
         public static IEnumerable<MetadataReference> ReferencesFromFiles(IEnumerable<string> files)
             => files.Select(x => MetadataReference.CreateFromFile(x));
@@ -22,65 +22,14 @@ namespace Ara3D.Utils.Roslyn
         public static string ToPackageReference(this AssemblyIdentity asm)
             => $"<PackageReference Include=\"{asm.Name}\" Version=\"{asm.Version}\" />";
 
-        public static Compilation UpdateInputFiles(this Compilation self, IEnumerable<string> inputFiles = null, CancellationToken token = default)
-            => self.UpdateInputFiles((inputFiles ?? Array.Empty<string>()).Select(f => ScriptFile.Create(f, self.Options.ParseOptions, token)));
-
-        public static Compilation UpdateInputFiles(this Compilation self, IEnumerable<ScriptFile> inputs)
-            => self.UpdateInputFiles(inputs.ToArray());
-
-        public static Compilation UpdateInputFiles(this Compilation self, ScriptFile[] inputs)
-            => new Compilation(inputs, self.Options, self.Compiler.RemoveAllSyntaxTrees().AddSyntaxTrees(inputs.Select(x => x.SyntaxTree)));
-
-        public static Compilation UpdateOutputFile(this Compilation self, string outputFilePath = null)
-            => new Compilation(self.InputFileLookup.Values, self.Options.WithNewOutputFilePath(outputFilePath), self.Compiler);
-
-        public static CompilerOptions AddReferences(this CompilerOptions self, IEnumerable<string> refs)
-            => self.UpdateReferences(self.FileReferences.Concat(refs));
-
-        public static CompilerOptions UpdateReferences(this CompilerOptions self, IEnumerable<string> refs)
-            => new CompilerOptions(refs, self.OutputFileName, self.Debug);
-
-        public static Compilation UpdateReferences(this Compilation self, IEnumerable<string> refs)
-            => self.UpdateOptions(self.Options.UpdateReferences(refs));
-
-        public static Compilation AddReferences(this Compilation self, IEnumerable<string> refs) 
-            => self.UpdateOptions(self.Options.AddReferences(refs));
-
-        public static Compilation UpdateOptions(this Compilation self, CompilerOptions options) 
-            => new Compilation(self.InputFileLookup.Values, options);
-
-        public static Compilation Emit(this Compilation self, CancellationToken token = default)
-        {
-            // Create the output directory, and delete the old DLL and PDB             
-            // We do this early to fast exit on error
-            var outputPath = self.Options.OutputFileName;
-            var pdbPath = Path.ChangeExtension(outputPath, "pdb");
-
-            Directory.CreateDirectory(Path.GetDirectoryName(outputPath));
-            File.Delete(outputPath);
-            File.Delete(pdbPath);
-
-            using (var peStream = File.OpenWrite(outputPath))
-            using (var pdbStream = File.OpenWrite(pdbPath))
-            {
-                // TODO: if the embedded debug information is good enough, leave it. 
-                //var emitOptions = new EmitOptions(false, DebugInformationFormat.Pdb, pdbPath);
-                var emitOptions = new EmitOptions(false, DebugInformationFormat.Embedded);
-                var embeddedTexts = self.InputFileLookup.Values.Select(f => f.EmbeddedText);
-                //var result = self.Compiler.Emit(peStream, pdbStream, null, null, null, emitOptions, null, null, embeddedTexts, token);
-                var result = self.Compiler.Emit(peStream, null, null, null, null, emitOptions, null, null, embeddedTexts, token);
-                return new Compilation(self.InputFileLookup.Values, self.Options, self.Compiler, result);
-            }
-        }
-
         public static string GetOrCreateDir(string path)
             => Directory.Exists(path) ? path : Directory.CreateDirectory(path).FullName;
 
         public static string GenerateNewDllFileName()
-            => FilePathUtil.CreateTempFileWithExtension("dll");
+            => PathUtil.CreateTempFile("dll");
 
         public static string GenerateNewSourceFileName()
-            => FilePathUtil.CreateTempFileWithExtension("cs");
+            => PathUtil.CreateTempFile("cs");
 
         public static FilePath WriteToTempFile(string source)
         {
@@ -89,11 +38,13 @@ namespace Ara3D.Utils.Roslyn
             return path;
         }
 
-        public static Compilation CompileSource(string source, CompilerOptions options = null)
-        {
-            var inputFile = WriteToTempFile(source);
-            var c = Compilation.Create(new[] {inputFile.Value}, options);
-            return c.Emit();
-        }
+        public static Compilation CompileSource(string source, CompilerOptions options = default, CancellationToken token = default)
+            => ParseCSharp(source).ToCompilerInput(options).Compile(default, token);
+
+        public static Compilation Compile(this ParsedSourceFile inputFile, CompilerOptions options = default, CancellationToken token = default)
+            => inputFile.ToCompilerInput(options).Compile(default, token);
+
+        public static Compilation Compile(this IEnumerable<ParsedSourceFile> inputFiles, CompilerOptions options = default, CancellationToken token = default)
+            => inputFiles.ToCompilerInput(options).Compile(default, token);
     }
 }

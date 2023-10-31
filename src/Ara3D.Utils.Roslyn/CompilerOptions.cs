@@ -12,18 +12,18 @@ namespace Ara3D.Utils.Roslyn
             => (FileReferences, OutputFileName, Debug) = 
                 ((fileReferences ?? RoslynUtils.LoadedAssemblyLocations()).ToArray(), outputFileName ?? RoslynUtils.GenerateNewDllFileName(), debug);
 
-        public string OutputFileName { get; }
+        public FilePath OutputFileName { get; }
         public bool Debug { get; }
         public IReadOnlyList<string> FileReferences { get; }
 
         public string AssemblyName
-            => Path.GetFileNameWithoutExtension(OutputFileName);
+            => OutputFileName.GetFileNameWithoutExtension();
 
         public LanguageVersion Language
         {
             get;
             set; 
-        } = LanguageVersion.CSharp10;
+        } = LanguageVersion.CSharp7_3;
 
         public CSharpParseOptions ParseOptions
             => new CSharpParseOptions(Language);

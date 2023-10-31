@@ -27,8 +27,8 @@ namespace Ara3D.ScriptPaint
             Writeable = new WriteableBitmap(Bitmap.Width, Bitmap.Height, 96, 96, PixelFormats.Bgr32, null);
             MyImage.Source = Writeable;
             Recompute().FireAndForget();
-
-
+            var sourceFile = PathUtil.GetCallerSourceFolder().RelativeFile("..", "PathTracer", "DemoPathTracer.cs");
+            var compiler = new CompilerService();
         }
 
         public Task Recompute()

@@ -12,7 +12,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\RayTracerDemo\PathTracer.csproj" />
+    <ProjectReference Include="..\PathTracer\PathTracer.csproj" />
   </ItemGroup>
 
 </Project>
