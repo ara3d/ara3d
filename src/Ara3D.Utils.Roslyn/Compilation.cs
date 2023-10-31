@@ -7,18 +7,6 @@ using Microsoft.CodeAnalysis.Emit;
 
 namespace Ara3D.Utils.Roslyn
 {
-    public class CompilationAnalyzer
-    {
-        public IReadOnlyList<(CSharpSyntaxTree, SemanticModel)> TreesAndModels { get; }
-        public Compilation Compilation { get; }
-
-        public CompilationAnalyzer(Compilation compilation)
-        {
-            Compilation = compilation;
-            TreesAndModels = new List<(CSharpSyntaxTree, SemanticModel)>();
-        }
-    }
-
     public class Compilation
     {
         public IReadOnlyDictionary<string, ScriptFile> InputFileLookup { get; }

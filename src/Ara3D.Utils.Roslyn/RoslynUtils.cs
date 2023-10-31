@@ -73,37 +73,16 @@ namespace Ara3D.Utils.Roslyn
             }
         }
 
-        public static string PlatoDir
-            => Path.Combine(Path.GetTempPath(), "Plato");
-
-        public static string GetOrCreatePlatoDirectory()
-            => GetOrCreateDir(PlatoDir);
-
         public static string GetOrCreateDir(string path)
             => Directory.Exists(path) ? path : Directory.CreateDirectory(path).FullName;
 
-        public static string ChangeDirectory(string filePath, string dirPath)
-            => Path.Combine(dirPath, Path.GetFileName(filePath));
-
-        public static string Move(string srcPath, string destPath)
-        {
-            File.Move(srcPath, destPath);
-            return destPath;
-        }
-
-        public static string ChangeDirectoryToPlato(string filePath)
-            => ChangeDirectory(filePath, GetOrCreatePlatoDirectory());
-
-        public static string GenerateNewFileName(string ext)
-            => ChangeDirectoryToPlato(Path.ChangeExtension(Path.GetTempFileName(), ext));
-
         public static string GenerateNewDllFileName()
-            => GenerateNewFileName("dll");
+            => FilePathUtil.CreateTempFileWithExtension("dll");
 
         public static string GenerateNewSourceFileName()
-            => GenerateNewFileName("cs");
+            => FilePathUtil.CreateTempFileWithExtension("cs");
 
-        public static string WriteToTempFile(string source)
+        public static FilePath WriteToTempFile(string source)
         {
             var path = GenerateNewSourceFileName();
             File.WriteAllText(path, source);

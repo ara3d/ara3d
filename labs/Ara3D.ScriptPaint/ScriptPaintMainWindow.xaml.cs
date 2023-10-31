@@ -27,6 +27,8 @@ namespace Ara3D.ScriptPaint
             Writeable = new WriteableBitmap(Bitmap.Width, Bitmap.Height, 96, 96, PixelFormats.Bgr32, null);
             MyImage.Source = Writeable;
             Recompute().FireAndForget();
+
+
         }
 
         public Task Recompute()
