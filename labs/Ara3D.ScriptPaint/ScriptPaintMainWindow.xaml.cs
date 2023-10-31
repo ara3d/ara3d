@@ -22,9 +22,10 @@ namespace Ara3D.ScriptPaint
         public ScriptPaintMainWindow()
         {
             InitializeComponent();
-            Renderer = new DemoPathTracer();
+            Renderer = new DemoPathTracer(0);
             Bitmap = new Bitmap(Renderer.Width, Renderer.Height);
             Writeable = new WriteableBitmap(Bitmap.Width, Bitmap.Height, 96, 96, PixelFormats.Bgr32, null);
+            MyImage.Source = Writeable;
             Recompute().FireAndForget();
         }
 
@@ -35,10 +36,10 @@ namespace Ara3D.ScriptPaint
 
             return Task.Run(() =>
             {
-                for (var i = 1; i < 2048; i *= 2)
+                for (var i = 0; i < Renderer.MaxIterations; i++)
                 {
-                    Renderer.SamplesCount = i;
-                    Renderer.EvaluateInParallel(Bitmap);
+                    var stage = Renderer.GetIteration(i);
+                    stage.EvaluateInParallel(Bitmap);
                     var r = new Int32Rect(0, 0, Bitmap.Width, Bitmap.Height);
                     var stride = Bitmap.Width * 4;
                     var numBytes = (int)Bitmap.PixelBuffer.GetNumBytes();
@@ -48,7 +49,7 @@ namespace Ara3D.ScriptPaint
                         // Write the pixels on the main thread
                         Bitmap.PixelBuffer.WithPointer(ptr =>
                             Writeable.WritePixels(r, ptr, numBytes, stride));
-                        MyImage.Source = Writeable;
+
                     });
                 }
             });

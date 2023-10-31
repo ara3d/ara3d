@@ -24,7 +24,7 @@ namespace PathTracer
         public static void Main(string[] args)
         {
             var sw = Stopwatch.StartNew();
-            var img = new DemoPathTracer();
+            var img = new DemoPathTracer(5);
             var bmp = img.EvaluateInParallel();
             sw.OutputTimeElapsed("Creating bitmap");
             var file = new FilePath(Path.GetTempFileName());

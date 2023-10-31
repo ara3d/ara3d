@@ -4,21 +4,23 @@ using Ara3D.Math;
 
 namespace PathTracer;
 
-public interface IProgressiveRenderer : IBitmap
-{
-    int MaxIterations { get; }
-    IBitmap GetIteration(int iteration);
-}
-
-public class DemoPathTracer : IBitmap
+public class DemoPathTracer : IProgressiveRenderer
 {
     // https://fabiensanglard.net/postcard_pathtracer/index.html
     // 2 minutes, 58 seconds in C++.
     // divisor = 1, samplesCount = 16;
 
-    public const int Divisor = 2;
-    
-    public int SamplesCount = 8;
+    public const int Divisor = 1;
+
+    public int Iteration;
+    public int SamplesCount => 1 << Iteration;
+
+    public DemoPathTracer(int iteration)
+        => Iteration = Math.Clamp(iteration, 0, MaxIterations); 
+
+    public int MaxIterations => 16;
+    public IBitmap GetIteration(int iteration)
+        => new DemoPathTracer(iteration);
 
     public const int ConstWidth = 960 / Divisor;
     public const int ConstHeight = 540 / Divisor;
@@ -26,7 +28,7 @@ public class DemoPathTracer : IBitmap
     public int Width => ConstWidth;
     public int Height => ConstHeight;
         
-    public const int BounceCount = 3; // 
+    public const int BounceCount = 4; // 
     public const int MinNoHitCount = 99;
     public const float SkyHeight = 19.9f;
     public const float AttenuationFactor = 0.2f;
@@ -64,7 +66,6 @@ public class DemoPathTracer : IBitmap
                 Min(lowerLeft.Y, upperRight.Y)),
             Min(lowerLeft.Z, upperRight.Z));
     }
-
 
     // Two Curves (for P and R in PixaR) with hard-coded locations.
     public static readonly Vector3[] Curves =
@@ -129,18 +130,15 @@ public class DemoPathTracer : IBitmap
         for (var i = 1; i >= 0; i--)
         {
             var o = f - Curves[i];
-            float temp;
             if (o.X > 0)
             {
-                temp = (o.Dot(o).Sqrt() - 2).Abs();
+                distance = Min(distance, (o.Dot(o).Sqrt() - 2).Abs());
             }
             else
             {
                 o = o.SetY(o.Y > 0 ? o.Y - 2 : o.Y + 2);
-                temp = o.Dot(o).Sqrt();
+                distance = Min(distance, o.Dot(o).Sqrt());
             }
-
-            distance = Min(distance, temp);
         }
 
         distance = (distance.Pow(8) + position.Z.Pow(8)).Pow(0.125f) - 0.5f;
