@@ -54,9 +54,11 @@ namespace Ara3D.Services
 
             if (!string.IsNullOrWhiteSpace(options.ScriptsDirectory))
             {
-                CompilerService = new CompilerService(null, options.ScriptsDirectory, options.InputDlls);
+                // TODO: we need to create this from the options passed to the PLugin service
+                var compilerOptions = new CompilerOptions();
+                CompilerService = new CompilerService(null, compilerOptions, options.ScriptsDirectory);
                 CompilerService.RecompileEvent += Controller_RecompileEvent;
-                CompilerService.ViewModel.AutoCompile = true;
+                CompilerService.AutoRecompile = true;
                 CompilerService.Recompile();
             }
 
@@ -109,15 +111,18 @@ namespace Ara3D.Services
             ScriptedPlugins.Clear();
 
             CompilerRepo.Model.Update(x =>
+                // TODO: 
                 new CompilerState()
                 {
-                    Diagnostics = CompilerService.ViewModel.Diagnostics.ToArray(),
-                    InputDirectory = CompilerService.ScriptDirectory,
-                    InputFiles = CompilerService.ViewModel.InputFiles.ToArray(),
-                    OutputDll = CompilerService.ViewModel.OutputDll,
-                    Success = CompilerService.ViewModel.Compiled
+                    Diagnostics = CompilerService.Compilation.Diagnostics.Select(s => s.ToString()).ToArray(),
+                    InputDirectory = CompilerService.Watcher.Directory,
+                    InputFiles = CompilerService.Compilation.Input.SourceFiles.Select(s => s.FilePath.Value).ToArray(),
+                    OutputDll = CompilerService.Compilation.Options.OutputFile,
+                    Success = CompilerService.Compilation.EmitResult.Success,
                 });
 
+            //throw new NotImplementedException();
+            /*
             var model = CompilerService.Model;
             if (model.Compiled)
             {
@@ -132,7 +137,7 @@ namespace Ara3D.Services
 
                     ScriptedPlugins.AddRange(plugins);
                 }
-            }
+            }*/
         }
 
         public static bool IsPluginType(Type t)

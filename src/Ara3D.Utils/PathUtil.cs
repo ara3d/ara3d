@@ -305,7 +305,7 @@ namespace Ara3D.Utils
         /// https://stackoverflow.com/questions/3736462/getting-the-folder-name-from-a-path
         /// </summary>
         public static DirectoryPath GetDirectory(this FilePath filePath)
-            => new DirectoryInfo(filePath).Name;
+            => Path.GetDirectoryName(filePath.GetFullPath());
 
         /// <summary>
         /// Changes the directory and the extension of a file
@@ -570,15 +570,15 @@ namespace Ara3D.Utils
             => new FilePath(filePath).GetDirectory();
 
         public static DirectoryPath RelativeFolder(this DirectoryPath path, params string[] parts) 
-            => Path.Combine(parts.Prepend(path).ToArray());
+            => Path.Combine(parts.Prepend(path.Value).ToArray());
 
         public static DirectoryPath RelativeFolder(this FilePath path, params string[] parts)
-            => Path.Combine(parts.Prepend(path).ToArray());
+            => Path.Combine(parts.Prepend(path.Value).ToArray());
 
         public static FilePath RelativeFile(this DirectoryPath path, params string[] parts)
-            => Path.Combine(parts.Prepend(path).ToArray());
+            => Path.Combine(parts.Prepend(path.Value).ToArray());
 
         public static FilePath RelativeFile(this FilePath path, params string[] parts)
-            => Path.Combine(parts.Prepend(path).ToArray());
+            => Path.Combine(parts.Prepend(path.Value).ToArray());
     }
 }

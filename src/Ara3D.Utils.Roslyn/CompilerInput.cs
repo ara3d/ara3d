@@ -27,7 +27,7 @@ namespace Ara3D.Utils.Roslyn
         public static CompilerInput ToCompilerInput(this IEnumerable<ParsedSourceFile> sourceFiles,
             CompilerOptions options = default)
         {
-            options = options ?? new CompilerOptions(RoslynUtils.LoadedAssemblyLocations());
+            options = options ?? new CompilerOptions(LoadedAssemblyLocations());
             return new CompilerInput(sourceFiles, options);
         }
     }

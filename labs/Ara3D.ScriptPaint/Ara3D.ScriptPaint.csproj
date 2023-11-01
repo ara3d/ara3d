@@ -12,6 +12,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\src\Ara3D.Utils.Roslyn\Ara3D.Utils.Roslyn.csproj" />
     <ProjectReference Include="..\PathTracer\PathTracer.csproj" />
   </ItemGroup>
 

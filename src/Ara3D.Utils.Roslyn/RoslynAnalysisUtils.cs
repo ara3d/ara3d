@@ -45,12 +45,12 @@ namespace Ara3D.Utils.Roslyn
             => compilation.GetAllLinkedNamespacesAndTypes().OfType<ITypeSymbol>();
 
         public static IEnumerable<ICompilationUnitSyntax> GetCompilationUnits(this Compilation compilation)
-            => compilation.SyntaxTrees.Select(st => st.GetRoot() as CompilationUnitSyntax);
+            => compilation.Input.SyntaxTrees.Select(st => st.GetRoot() as CompilationUnitSyntax);
         
         public static IEnumerable<(TypeDeclarationSyntax, INamedTypeSymbol)> GetTypeDeclarationsWithSymbols(
             this Compilation compilation)
         {
-            foreach (var st in compilation.SyntaxTrees)
+            foreach (var st in compilation.Input.SyntaxTrees)
             {
                 var model = compilation.Compiler.GetSemanticModel(st);
                 foreach (var n in st.GetRoot().DescendantNodesAndSelf().OfType<TypeDeclarationSyntax>())
@@ -74,7 +74,7 @@ namespace Ara3D.Utils.Roslyn
 
         public static IEnumerable<ISymbol> GetExpressionAndTypeSymbols(this Compilation compilation)
         {
-            foreach (var st in compilation.SyntaxTrees)
+            foreach (var st in compilation.Input.SyntaxTrees)
             {
                 var model = compilation.Compiler.GetSemanticModel(st);
                 foreach (var node in st.GetRoot().DescendantNodesAndSelf())
@@ -174,13 +174,13 @@ namespace Ara3D.Utils.Roslyn
         }
 
         public static IEnumerable<SyntaxNode> GetAllNodes(this Compilation compilation)
-            => compilation.SyntaxTrees.SelectMany(st => st.GetRoot().DescendantNodesAndSelf());
+            => compilation.Input.SyntaxTrees.SelectMany(st => st.GetRoot().DescendantNodesAndSelf());
 
         public static IEnumerable<(SemanticModel, SyntaxTree)> GetModelsAndTrees(this Compilation compilation)
         {
-            for (var i = 0; i < compilation.SyntaxTrees.Count; i++)
+            for (var i = 0; i < compilation.Input.SourceFiles.Count; i++)
             {
-                yield return (compilation.SemanticModels[i], compilation.SyntaxTrees[i]);
+                yield return (compilation.SemanticModels[i], compilation.Input.SourceFiles[i].SyntaxTree);
             }
         }
 

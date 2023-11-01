@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 
@@ -7,87 +6,85 @@ namespace Ara3D.Utils.Roslyn
 {
     public class CompilerService
     {
-        public CompilerModel Model { get; private set; }
-        public CompilerViewModel ViewModel { get; } = new CompilerViewModel();
-        public object CompilationLock { get; } = new object();
-
         public ILogger Logger { get; }
-
         public DirectoryWatcher Watcher;
-        public Compilation Compilation = new Compilation();
-        public string ScriptDirectory => Watcher.Watcher.Path;
+        public Compilation Compilation { get; set; }
+        public CompilerOptions Options { get; set; }
+        public bool AutoRecompile { get; set; } = true;
         public CancellationTokenSource TokenSource = new CancellationTokenSource();
-
-        public static string AssemblyDirectory
-            = AssemblyData.Current.LocationDir;
 
         public void Log(string s)
             => Logger?.Log(s);
 
         public event EventHandler RecompileEvent;
         
-        public CompilerService(ILogger logger, string dir, IEnumerable<string> inputDlls)
+        public CompilerService(ILogger logger, CompilerOptions options, DirectoryPath dir)
         {
-            Logger = logger.Create("CompilerService");
-            Compilation = Compilation.UpdateReferences(inputDlls);
+            Logger = logger.Create($"CompilerService: {dir}");
             Watcher = new DirectoryWatcher(dir, "*.cs", false, OnChange, null);
+            Recompile();
         }
 
         public void OnChange()            
         {
-            ViewModel.Changed = true;
-            if (ViewModel.AutoCompile)
+            if (AutoRecompile)
                 Recompile();
         }
 
-        public void Reset()
+        public void Recompile()
         {
-            lock (CompilationLock)
-            {
-                Model = null;
-                ViewModel.Model = null;
-            }
-        }
-        
-        public CompilerModel Recompile()
-        {
-            Reset();
-            Compilation = Compilation?.UpdateOutputFile();
-
             try
             {
                 Log("Requesting cancel of existing work...");
                 TokenSource.Cancel();
                 TokenSource = new CancellationTokenSource();
+                var token = TokenSource.Token;
 
-                Log("Compilation task Started");
+                Log("Compilation task started");
+
+                // TODO: get the input reference files from somewhere 
+                Options = Options?.WithNewOutputFilePath() ?? new CompilerOptions();
+                Log($"Chosen output file = {Options.OutputFile}");
+                Log($"References:");
+                foreach (var f in Options.MetadataReferences)
+                    Log($"  Reference: {f.Display}");
+
                 var inputFiles = Watcher.GetFiles().ToArray();
                 foreach (var f in inputFiles)
                     Log($"  Input file {f}");
 
-                Log("Updating input files");
-                Compilation = Compilation.UpdateInputFiles(inputFiles, TokenSource.Token);
+                Log("Parsing input files");
+                var sourceFiles = inputFiles.ParseCSharp(Options, token);
+                
+                if (token.IsCancellationRequested)
+                {
+                    Log($"Compilation canceled");
+                    return;
+                }
 
-                Log("Emitting project file");
-                Compilation = Compilation.Emit(TokenSource.Token);
+                Log("Generating compiler input");
+                var input = sourceFiles.ToCompilerInput(Options);
 
-                Log($"Emitted assembly success = {Compilation.EmitResult.Success} output = {Compilation.Options.OutputFileName}");
+                Log("Compiling");
+                Compilation = input.CompileCSharpStandard(Compilation?.Compiler, token);
+                if (token.IsCancellationRequested)
+                {
+                    Log($"Canceled");
+                    return;
+                }
 
-                Log($"Diagnostics");
-                foreach (var x in Compilation.EmitResult.Diagnostics)
-                    Log($"Diagnostic: {x}");
+                Log($"Emitted assembly success = {Compilation.EmitResult?.Success}");
 
-                Log("Creating a new model");
-                Model = new CompilerModel(Compilation, ScriptDirectory);
+                Log($"Output file {Options.OutputFile} exists {Options.OutputFile.Exists()}");
 
-                Log("Inform the view model of a change to the model");
-                ViewModel.Model = Model;
+                Log($"Diagnostics:");
+                foreach (var x in Compilation.Diagnostics)
+                    Log($"  Diagnostic: {x}");
 
-                return Model;
+                Log($"Completed compilation");
             }
             finally
             {
-                ViewModel.Changed = false;
                 RecompileEvent?.Invoke(this, EventArgs.Empty);
             }
         }

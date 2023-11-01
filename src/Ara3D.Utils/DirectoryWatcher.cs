@@ -9,16 +9,15 @@ namespace Ara3D.Utils
     public class DirectoryWatcher
     {
         public FileSystemWatcher Watcher;
-        public IEnumerable<string> GetFiles()
-        {
-            return Directory.GetFiles(Watcher.Path, Watcher.Filter, Watcher.IncludeSubdirectories
-                           ? SearchOption.AllDirectories : SearchOption.TopDirectoryOnly);
-        }
+        public DirectoryPath Directory => Watcher.Path;
+
+        public IEnumerable<FilePath> GetFiles()
+            => Directory.GetFiles(Watcher.Path, Watcher.IncludeSubdirectories);
 
         private Action OnChange { get; }
 
-        public DirectoryWatcher(string dir, Action onChange, ISynchronizeInvoke syncObject = null)
-            : this(dir, null, false, onChange, syncObject) { }
+        public DirectoryWatcher(string dir, string filter, Action onChange, ISynchronizeInvoke syncObject = null)
+            : this(dir, filter, false, onChange, syncObject) { }
 
         public DirectoryWatcher(string dir, string filter, bool subDirectories, Action onChange, ISynchronizeInvoke syncObject = null)
         {
@@ -50,7 +49,7 @@ namespace Ara3D.Utils
 
         private void Watcher_Renamed(object sender, RenamedEventArgs e)
         {
-            // TODO: this was triggering a double error.
+            // TODO: this was triggering a double event.
             //Debug.WriteLine($"Renamed file from {e.OldName} to {e.Name}");
             //OnChange();
         }

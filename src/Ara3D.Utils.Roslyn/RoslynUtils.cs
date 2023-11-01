@@ -38,13 +38,5 @@ namespace Ara3D.Utils.Roslyn
             return path;
         }
 
-        public static Compilation CompileSource(string source, CompilerOptions options = default, CancellationToken token = default)
-            => ParseCSharp(source).ToCompilerInput(options).Compile(default, token);
-
-        public static Compilation Compile(this ParsedSourceFile inputFile, CompilerOptions options = default, CancellationToken token = default)
-            => inputFile.ToCompilerInput(options).Compile(default, token);
-
-        public static Compilation Compile(this IEnumerable<ParsedSourceFile> inputFiles, CompilerOptions options = default, CancellationToken token = default)
-            => inputFiles.ToCompilerInput(options).Compile(default, token);
     }
 }

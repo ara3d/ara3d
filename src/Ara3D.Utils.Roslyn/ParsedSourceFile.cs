@@ -45,7 +45,7 @@ namespace Ara3D.Utils.Roslyn
 
         public static ParsedSourceFile CreateFromSource(string source, CSharpParseOptions options, CancellationToken token = default)
         {
-            var newSource = SourceText.From(source);
+            var newSource = SourceText.From(source, Encoding.UTF8);
             var filePath = PathUtil.CreateTempFileWithContents(source);
             var newTree = CSharpSyntaxTree.ParseText(newSource, options, filePath, token);
             return new ParsedSourceFile(newSource, newTree, filePath);
@@ -54,31 +54,16 @@ namespace Ara3D.Utils.Roslyn
 
     public static partial class RoslynUtils
     {
-        public static CSharpParseOptions CSharpLatestParseOptions = new CSharpParseOptions(LanguageVersion.Latest);
-        public static CSharpParseOptions CSharpStandardParseOptions = new CSharpParseOptions(LanguageVersion.CSharp7_3);
+        public static CSharpParseOptions CSharpStandardParseOptions 
+            = new CSharpParseOptions(LanguageVersion.CSharp7_3);
 
-        public static ParsedSourceFile ParseCSharp(string source, CSharpParseOptions options = default, CancellationToken token = default)
-            => ParsedSourceFile.CreateFromSource(source, options, token);
+        public static ParsedSourceFile ParseCSharp(string source, CompilerOptions options = default, CancellationToken token = default)
+            => ParsedSourceFile.CreateFromSource(source, options?.ParseOptions ?? CSharpStandardParseOptions, token);
+        
+        public static IReadOnlyList<ParsedSourceFile> ParseCSharp(this IEnumerable<FilePath> files, CompilerOptions options = default, CancellationToken token = default)
+            => files.Select(f => ParseCSharp(f, options, token)).ToList();
 
-        public static ParsedSourceFile ParseCSharpStandard(string source, CancellationToken token = default)
-            => ParsedSourceFile.CreateFromSource(source, CSharpStandardParseOptions, token);
-
-        public static ParsedSourceFile ParseCSharpLatest(string source, CancellationToken token = default)
-            => ParsedSourceFile.CreateFromSource(source, CSharpLatestParseOptions, token);
-
-        public static IEnumerable<ParsedSourceFile> ParseCSharpStandard(this IEnumerable<FilePath> files, CancellationToken token )
-            => files.Select(f => ParseCSharpStandard(f, token));
-
-        public static IEnumerable<ParsedSourceFile> ParseCSharpLatest(this IEnumerable<FilePath> files, CancellationToken token)
-            => files.Select(f => ParseCSharpLatest(f, token));
-
-        public static ParsedSourceFile ParseCSharp(this FilePath filePath, CSharpParseOptions options = null, CancellationToken token = default)
-            => ParsedSourceFile.Create(filePath, options ?? CSharpStandardParseOptions, token);
-
-        public static ParsedSourceFile ParseCSharpStandard(this FilePath filePath, CancellationToken token = default)
-            => filePath.ParseCSharp(CSharpStandardParseOptions, token);
-
-        public static ParsedSourceFile ParseCSharpLatest(this FilePath filePath, CancellationToken token = default)
-            => filePath.ParseCSharp(CSharpLatestParseOptions, token);
+        public static ParsedSourceFile ParseCSharp(this FilePath filePath, CompilerOptions options = null, CancellationToken token = default)
+            => ParsedSourceFile.Create(filePath, options?.ParseOptions ?? CSharpStandardParseOptions ?? CSharpStandardParseOptions, token);
     }
 }

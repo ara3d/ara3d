@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Media;
@@ -6,6 +7,7 @@ using System.Windows.Media.Imaging;
 using Ara3D.Buffers;
 using Ara3D.Graphics;
 using Ara3D.Utils;
+using Ara3D.Utils.Roslyn;
 using PathTracer;
 
 namespace Ara3D.ScriptPaint
@@ -26,9 +28,15 @@ namespace Ara3D.ScriptPaint
             Bitmap = new Bitmap(Renderer.Width, Renderer.Height);
             Writeable = new WriteableBitmap(Bitmap.Width, Bitmap.Height, 96, 96, PixelFormats.Bgr32, null);
             MyImage.Source = Writeable;
-            Recompute().FireAndForget();
+            
             var sourceFile = PathUtil.GetCallerSourceFolder().RelativeFile("..", "PathTracer", "DemoPathTracer.cs");
-            var compiler = new CompilerService();
+            var compilation = sourceFile.CompileCSharpStandard();
+            //var logger = new StdLogger();
+            //var options = new CompilerOptions();
+            //var service = new CompilerService(logger, options, )
+            Debug.WriteLine(compilation.EmitResult.Success);
+
+            Recompute().FireAndForget();
         }
 
         public Task Recompute()

@@ -49,9 +49,9 @@ namespace PathTracer
 
         public static readonly Vector3 LightDirection = MakeVector(.6f, .6f, 1f).Normalize();
 
-        private static readonly Random _random = new();
+        private static readonly Random _random = new Random();
 
-        public static Vector3 MakeVector(float a, float b, float c = 0) => new(a, b, c);
+        public static Vector3 MakeVector(float a, float b, float c = 0) => new Vector3(a, b, c);
         public static float Min(float l, float r) => Math.Min(l, r);
         public static float RandomVal() => (float)_random.NextDouble();
 
