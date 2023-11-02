@@ -19,13 +19,16 @@ namespace Ara3D.ScriptPaint
         public IProgressiveRenderer Renderer { get; }
         public Bitmap Bitmap { get; }
         public WriteableBitmap Writeable { get; }
+        public EditorWindow Editor = new EditorWindow();
 
         public ScriptPaintMainWindow()
         {
             InitializeComponent();
 
+            Editor.Show();
             AssemblyUtil.LoadAllAssembliesInCurrentDomainBaseDirectory();
 
+            
             var sourceFile = PathUtil.GetCallerSourceFolder().RelativeFile("..", "PathTracer", "DemoPathTracer.cs");
             var compilation = sourceFile.CompileCSharpStandard();
 

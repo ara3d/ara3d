@@ -19,6 +19,7 @@ namespace Ara3D.Utils
             => AppDomain.CurrentDomain.GetAssemblies().Any(asm => asmName.FullName == asm.FullName);
 
         // https://stackoverflow.com/questions/2384592/is-there-a-way-to-force-all-referenced-assemblies-to-be-loaded-into-the-app-doma
+        // https://github.com/microsoft/vs-mef/blob/main/doc/hosting.md#hosting-mef-in-an-extensible-application
         public static void LoadAllAssembliesInFolder(DirectoryPath directory)
         {
             foreach (var path in directory.GetFiles("*.dll"))
