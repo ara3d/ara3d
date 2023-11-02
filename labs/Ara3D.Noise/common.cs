@@ -32,11 +32,11 @@ namespace Unity.Mathematics
 
         static float4 grad4(float j, float4 ip)
         {
-            float4 ones = float4(1.0f, 1.0f, 1.0f, -1.0f);
-            float3 pxyz = floor(frac(float3(j) * ip.xyz) * 7.0f) * ip.z - 1.0f;
-            float  pw   = 1.5f - dot(abs(pxyz), ones.xyz);
-            float4 p = float4(pxyz, pw);
-            float4 s = float4(p < 0.0f);
+            var ones = float4(1.0f, 1.0f, 1.0f, -1.0f);
+            var pxyz = floor(frac(float3(j) * ip.xyz) * 7.0f) * ip.z - 1.0f;
+            var  pw   = 1.5f - dot(abs(pxyz), ones.xyz);
+            var p = float4(pxyz, pw);
+            var s = float4(p.x < 0f ? 1f : 0f, p.y < 0f ? 1f : 0f, p.z < 0f ? 1f : 0f, p.w < 0f ? 1f : 0f);
             p.xyz = p.xyz + (s.xyz*2.0f - 1.0f) * s.www;
             return p;
         }
@@ -46,7 +46,7 @@ namespace Unity.Mathematics
         static float2 rgrad2(float2 p, float rot)
         {
             // For more isotropic gradients, math.sin/math.cos can be used instead.
-            float u = permute(permute(p.x) + p.y) * 0.0243902439f + rot; // Rotate by shift
+            var u = permute(permute(p.x) + p.y) * 0.0243902439f + rot; // Rotate by shift
             u = frac(u) * 6.28318530718f; // 2*pi
             return float2(cos(u), sin(u));
         }
