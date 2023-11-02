@@ -4,11 +4,11 @@
 // See LICENSE file for details.
 // https://github.com/stegu/webgl-noise
 
-using static Unity.Mathematics.math;
+using static Ara3D.Noise.math;
 
-namespace Unity.Mathematics
+namespace Ara3D.Noise
 {
-    public static partial class noise
+    public static partial class Noise
     {
         /// <summary>
         /// 3D Cellular noise ("Worley noise") with 3x3x3 search region for good F2 everywhere, but a lot slower than the 2x2x2 version.
@@ -19,7 +19,6 @@ namespace Unity.Mathematics
         // but it has at least half decent performance on a
         // math.modern GPU. In any case, it beats any software
         // implementation of Worley noise hands down.
-
         public static float2 cellular(float3 P)
         {
             const float K = 0.142857142857f; // 1/7
@@ -156,8 +155,8 @@ namespace Unity.Mathematics
             d21 = max(d11, d21);
             d11 = min(da, d31); // Smallest now in d11
             d31 = max(da, d31); // 2nd smallest now not in d31
-            d11.xy = (d11.x < d11.y) ? d11.xy : d11.yx;
-            d11.xz = (d11.x < d11.z) ? d11.xz : d11.zx; // d11.x now smallest
+            d11.xy = d11.x < d11.y ? d11.xy : d11.yx;
+            d11.xz = d11.x < d11.z ? d11.xz : d11.zx; // d11.x now smallest
             d12 = min(d12, d21); // 2nd smallest now not in d21
             d12 = min(d12, d22); // nor in d22
             d12 = min(d12, d31); // nor in d31

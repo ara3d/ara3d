@@ -12,11 +12,11 @@
 // https://github.com/stegu/webgl-noise
 //
 
-using static Unity.Mathematics.math;
+using static Ara3D.Noise.math;
 
-namespace Unity.Mathematics
+namespace Ara3D.Noise
 {
-    public static partial class noise
+    public static partial class Noise
     {
         /// <summary>
         /// Classic Perlin noise
@@ -38,7 +38,7 @@ namespace Unity.Mathematics
             var gx = frac(i * (1.0f / 41.0f)) * 2.0f - 1.0f;
             var gy = abs(gx) - 0.5f;
             var tx = floor(gx + 0.5f);
-            gx = gx - tx;
+            gx -= tx;
 
             var g00 = float2(gx.x, gy.x);
             var g10 = float2(gx.y, gy.y);
@@ -84,7 +84,7 @@ namespace Unity.Mathematics
             var gx = frac(i * (1.0f / 41.0f)) * 2.0f - 1.0f;
             var gy = abs(gx) - 0.5f;
             var tx = floor(gx + 0.5f);
-            gx = gx - tx;
+            gx -= tx;
 
             var g00 = float2(gx.x, gy.x);
             var g10 = float2(gx.y, gy.y);

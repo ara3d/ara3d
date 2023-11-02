@@ -12,11 +12,11 @@
 // https://github.com/stegu/webgl-noise
 //
 
-using static Unity.Mathematics.math;
+using static Ara3D.Noise.math;
 
-namespace Unity.Mathematics
+namespace Ara3D.Noise
 {
-    public static partial class noise
+    public static partial class Noise
     {
         /// <summary>
         /// Classic Perlin noise
@@ -107,25 +107,29 @@ namespace Unity.Mathematics
             var g0111 = float4(gx11.z, gy11.z, gz11.z, gw11.z);
             var g1111 = float4(gx11.w, gy11.w, gz11.w, gw11.w);
 
-            var norm00 = taylorInvSqrt(float4(dot(g0000, g0000), dot(g0100, g0100), dot(g1000, g1000), dot(g1100, g1100)));
+            var norm00 =
+                taylorInvSqrt(float4(dot(g0000, g0000), dot(g0100, g0100), dot(g1000, g1000), dot(g1100, g1100)));
             g0000 *= norm00.x;
             g0100 *= norm00.y;
             g1000 *= norm00.z;
             g1100 *= norm00.w;
 
-            var norm01 = taylorInvSqrt(float4(dot(g0001, g0001), dot(g0101, g0101), dot(g1001, g1001), dot(g1101, g1101)));
+            var norm01 =
+                taylorInvSqrt(float4(dot(g0001, g0001), dot(g0101, g0101), dot(g1001, g1001), dot(g1101, g1101)));
             g0001 *= norm01.x;
             g0101 *= norm01.y;
             g1001 *= norm01.z;
             g1101 *= norm01.w;
 
-            var norm10 = taylorInvSqrt(float4(dot(g0010, g0010), dot(g0110, g0110), dot(g1010, g1010), dot(g1110, g1110)));
+            var norm10 =
+                taylorInvSqrt(float4(dot(g0010, g0010), dot(g0110, g0110), dot(g1010, g1010), dot(g1110, g1110)));
             g0010 *= norm10.x;
             g0110 *= norm10.y;
             g1010 *= norm10.z;
             g1110 *= norm10.w;
 
-            var norm11 = taylorInvSqrt(float4(dot(g0011, g0011), dot(g0111, g0111), dot(g1011, g1011), dot(g1111, g1111)));
+            var norm11 =
+                taylorInvSqrt(float4(dot(g0011, g0011), dot(g0111, g0111), dot(g1011, g1011), dot(g1111, g1111)));
             g0011 *= norm11.x;
             g0111 *= norm11.y;
             g1011 *= norm11.z;
@@ -247,25 +251,29 @@ namespace Unity.Mathematics
             var g0111 = float4(gx11.z, gy11.z, gz11.z, gw11.z);
             var g1111 = float4(gx11.w, gy11.w, gz11.w, gw11.w);
 
-            var norm00 = taylorInvSqrt(float4(dot(g0000, g0000), dot(g0100, g0100), dot(g1000, g1000), dot(g1100, g1100)));
+            var norm00 =
+                taylorInvSqrt(float4(dot(g0000, g0000), dot(g0100, g0100), dot(g1000, g1000), dot(g1100, g1100)));
             g0000 *= norm00.x;
             g0100 *= norm00.y;
             g1000 *= norm00.z;
             g1100 *= norm00.w;
 
-            var norm01 = taylorInvSqrt(float4(dot(g0001, g0001), dot(g0101, g0101), dot(g1001, g1001), dot(g1101, g1101)));
+            var norm01 =
+                taylorInvSqrt(float4(dot(g0001, g0001), dot(g0101, g0101), dot(g1001, g1001), dot(g1101, g1101)));
             g0001 *= norm01.x;
             g0101 *= norm01.y;
             g1001 *= norm01.z;
             g1101 *= norm01.w;
 
-            var norm10 = taylorInvSqrt(float4(dot(g0010, g0010), dot(g0110, g0110), dot(g1010, g1010), dot(g1110, g1110)));
+            var norm10 =
+                taylorInvSqrt(float4(dot(g0010, g0010), dot(g0110, g0110), dot(g1010, g1010), dot(g1110, g1110)));
             g0010 *= norm10.x;
             g0110 *= norm10.y;
             g1010 *= norm10.z;
             g1110 *= norm10.w;
 
-            var norm11 = taylorInvSqrt(float4(dot(g0011, g0011), dot(g0111, g0111), dot(g1011, g1011), dot(g1111, g1111)));
+            var norm11 =
+                taylorInvSqrt(float4(dot(g0011, g0011), dot(g0111, g0111), dot(g1011, g1011), dot(g1111, g1111)));
             g0011 *= norm11.x;
             g0111 *= norm11.y;
             g1011 *= norm11.z;

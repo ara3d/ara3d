@@ -12,11 +12,11 @@
 // https://github.com/stegu/webgl-noise
 //
 
-using static Unity.Mathematics.math;
+using static Ara3D.Noise.math;
 
-namespace Unity.Mathematics
+namespace Ara3D.Noise
 {
-    public static partial class noise
+    public static partial class Noise
     {
         /// <summary>
         /// Classic Perlin noise

@@ -4,11 +4,11 @@
 // See LICENSE file for details.
 // https://github.com/stegu/webgl-noise
 
-using static Unity.Mathematics.math;
+using static Ara3D.Noise.math;
 
-namespace Unity.Mathematics
+namespace Ara3D.Noise
 {
-    public static partial class noise
+    public static partial class Noise
     {
         /// <summary>
         /// 2D Cellular noise ("Worley noise") with a 2x2 search window.
@@ -37,9 +37,9 @@ namespace Unity.Mathematics
             var d = dx * dx + dy * dy; // d11, d12, d21 and d22, squared
             // Sort out the two smallest distances
             // Do it right and find both F1 and F2
-            d.xy = (d.x < d.y) ? d.xy : d.yx; // Swap if smaller
-            d.xz = (d.x < d.z) ? d.xz : d.zx;
-            d.xw = (d.x < d.w) ? d.xw : d.wx;
+            d.xy = d.x < d.y ? d.xy : d.yx; // Swap if smaller
+            d.xz = d.x < d.z ? d.xz : d.zx;
+            d.xw = d.x < d.w ? d.xw : d.wx;
             d.y = min(d.y, d.z);
             d.y = min(d.y, d.w);
             return sqrt(d.xy);

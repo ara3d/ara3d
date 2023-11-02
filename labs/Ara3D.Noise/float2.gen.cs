@@ -9,16 +9,14 @@
 using System;
 using System.Runtime.CompilerServices;
 using System.Diagnostics;
-using Unity.IL2CPP.CompilerServices;
 
 #pragma warning disable 0660, 0661
 
-namespace Unity.Mathematics
+namespace Ara3D.Noise
 {
     /// <summary>A 2 component vector of floats.</summary>
     [DebuggerTypeProxy(typeof(float2.DebuggerProxy))]
     [System.Serializable]
-    [Il2CppEagerStaticClassConstruction]
     public partial struct float2 : System.IEquatable<float2>, IFormattable
     {
         /// <summary>x component of the vector.</summary>
@@ -550,11 +548,6 @@ namespace Unity.Mathematics
         /// <returns>The result of the equality comparison.</returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public bool Equals(float2 rhs) { return x == rhs.x && y == rhs.y; }
-
-        /// <summary>Returns true if the float2 is equal to a given float2, false otherwise.</summary>
-        /// <param name="o">Right hand side argument to compare equality with.</param>
-        /// <returns>The result of the equality comparison.</returns>
-        public override bool Equals(object o) { return o is float2 converted && Equals(converted); }
 
 
         /// <summary>Returns a string representation of the float2.</summary>

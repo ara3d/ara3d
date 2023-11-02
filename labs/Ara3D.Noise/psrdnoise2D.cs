@@ -67,11 +67,11 @@
 // (If you run into problems with this, please let me know.)
 //
 
-using static Unity.Mathematics.math;
+using static Ara3D.Noise.math;
 
-namespace Unity.Mathematics
+namespace Ara3D.Noise
 {
-    public static partial class noise
+    public static partial class Noise
     {
         /// <summary>
         /// 2-D tiling simplex noise with rotating gradients and analytical derivative.
@@ -90,7 +90,7 @@ namespace Unity.Mathematics
             var i0 = floor(uv);
             var f0 = frac(uv);
             // Traversal order
-            var i1 = (f0.x > f0.y) ? float2(1.0f, 0.0f) : float2(0.0f, 1.0f);
+            var i1 = f0.x > f0.y ? float2(1.0f, 0.0f) : float2(0.0f, 1.0f);
 
             // Unskewed grid points in (x,y) space
             var p0 = float2(i0.x - i0.y * 0.5f, i0.y);
@@ -108,12 +108,11 @@ namespace Unity.Mathematics
             var xw = fmod(float3(p0.x, p1.x, p2.x), per.x);
             var yw = fmod(float3(p0.y, p1.y, p2.y), per.y);
             var iuw = xw + 0.5f * yw;
-            var ivw = yw;
 
             // Create gradients from indices
-            var g0 = rgrad2(float2(iuw.x, ivw.x), rot);
-            var g1 = rgrad2(float2(iuw.y, ivw.y), rot);
-            var g2 = rgrad2(float2(iuw.z, ivw.z), rot);
+            var g0 = rgrad2(float2(iuw.x, yw.x), rot);
+            var g1 = rgrad2(float2(iuw.y, yw.y), rot);
+            var g2 = rgrad2(float2(iuw.z, yw.z), rot);
 
             // Gradients math.dot vectors to corresponding corners
             // (The derivatives of this are simply the gradients)
@@ -135,12 +134,14 @@ namespace Unity.Mathematics
                 dtdy.x = 0.0f;
                 t.x = 0.0f;
             }
+
             if (t.y < 0.0f)
             {
                 dtdx.y = 0.0f;
                 dtdy.y = 0.0f;
                 t.y = 0.0f;
             }
+
             if (t.z < 0.0f)
             {
                 dtdx.z = 0.0f;
@@ -196,7 +197,7 @@ namespace Unity.Mathematics
             var i0 = floor(uv);
             var f0 = frac(uv);
             // Traversal order
-            var i1 = (f0.x > f0.y) ? float2(1.0f, 0.0f) : float2(0.0f, 1.0f);
+            var i1 = f0.x > f0.y ? float2(1.0f, 0.0f) : float2(0.0f, 1.0f);
 
             // Unskewed grid points in (x,y) space
             var p0 = float2(i0.x - i0.y * 0.5f, i0.y);
@@ -272,7 +273,7 @@ namespace Unity.Mathematics
             var i0 = floor(uv);
             var f0 = frac(uv);
             // Traversal order
-            var i1 = (f0.x > f0.y) ? float2(1.0f, 0.0f) : float2(0.0f, 1.0f);
+            var i1 = f0.x > f0.y ? float2(1.0f, 0.0f) : float2(0.0f, 1.0f);
 
             // Unskewed grid points in (x,y) space
             var p0 = float2(i0.x - i0.y * 0.5f, i0.y);
@@ -319,12 +320,14 @@ namespace Unity.Mathematics
                 dtdy.x = 0.0f;
                 t.x = 0.0f;
             }
+
             if (t.y < 0.0f)
             {
                 dtdx.y = 0.0f;
                 dtdy.y = 0.0f;
                 t.y = 0.0f;
             }
+
             if (t.z < 0.0f)
             {
                 dtdx.z = 0.0f;
@@ -378,7 +381,7 @@ namespace Unity.Mathematics
             var i0 = floor(uv);
             var f0 = frac(uv);
             // Traversal order
-            var i1 = (f0.x > f0.y) ? float2(1.0f, 0.0f) : float2(0.0f, 1.0f);
+            var i1 = f0.x > f0.y ? float2(1.0f, 0.0f) : float2(0.0f, 1.0f);
 
             // Unskewed grid points in (x,y) space
             var p0 = float2(i0.x - i0.y * 0.5f, i0.y);

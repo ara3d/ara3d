@@ -4,11 +4,11 @@
 // See LICENSE file for details.
 // https://github.com/stegu/webgl-noise
 
-using static Unity.Mathematics.math;
+using static Ara3D.Noise.math;
 
-namespace Unity.Mathematics
+namespace Ara3D.Noise
 {
-    public static partial class noise
+    public static partial class Noise
     {
         /// <summary>
         /// 3D Cellular noise ("Worley noise") with a 2x2x2 search window.
@@ -18,7 +18,7 @@ namespace Unity.Mathematics
         /// </remarks>
         /// <param name="P">A point in 3D space.</param>
         /// <returns>Feature points. F1 is in the x component, F2 in the y component.</returns>
-        public static float2 cellular2x2x2(float3 P)
+        public static float2 Cellular2X2X2(float3 P)
         {
             const float K = 0.142857142857f; // 1/7
             const float Ko = 0.428571428571f; // 1/2-K/2
@@ -34,7 +34,7 @@ namespace Unity.Mathematics
             var p = permute(Pi.x + float4(0.0f, 1.0f, 0.0f, 1.0f));
             p = permute(p + Pi.y + float4(0.0f, 0.0f, 1.0f, 1.0f));
             var p1 = permute(p + Pi.z); // z+0
-            var p2 = permute(p + Pi.z + float4(1.0f,1.0f,1.0f,1.0f)); // z+1
+            var p2 = permute(p + Pi.z + float4(1.0f, 1.0f, 1.0f, 1.0f)); // z+1
             var ox1 = frac(p1 * K) - Ko;
             var oy1 = mod7(floor(p1 * K)) * K - Ko;
             var oz1 = floor(p1 * K2) * Kz - Kzo; // p1 < 289 guaranteed
@@ -53,11 +53,11 @@ namespace Unity.Mathematics
             // Sort out the two smallest distances (F1, F2)
 
             // Do it right and sort out both F1 and F2
-            var d = min(d1,d2); // F1 is now in d
-            d2 = max(d1,d2); // Make sure we keep all candidates for F2
-            d.xy = (d.x < d.y) ? d.xy : d.yx; // Swap smallest to d.x
-            d.xz = (d.x < d.z) ? d.xz : d.zx;
-            d.xw = (d.x < d.w) ? d.xw : d.wx; // F1 is now in d.x
+            var d = min(d1, d2); // F1 is now in d
+            d2 = max(d1, d2); // Make sure we keep all candidates for F2
+            d.xy = d.x < d.y ? d.xy : d.yx; // Swap smallest to d.x
+            d.xz = d.x < d.z ? d.xz : d.zx;
+            d.xw = d.x < d.w ? d.xw : d.wx; // F1 is now in d.x
             d.yzw = min(d.yzw, d2.yzw); // F2 now not in d2.yzw
             d.y = min(d.y, d.z); // nor in d.z
             d.y = min(d.y, d.w); // nor in d.w

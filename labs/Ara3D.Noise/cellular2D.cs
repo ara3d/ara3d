@@ -4,11 +4,11 @@
 // See LICENSE file for details.
 // https://github.com/stegu/webgl-noise
 
-using static Unity.Mathematics.math;
+using static Ara3D.Noise.math;
 
-namespace Unity.Mathematics
+namespace Ara3D.Noise
 {
-    public static partial class noise
+    public static partial class Noise
     {
         /// <summary>
         /// 2D Cellular noise ("Worley noise") with standard 3x3 search window for good feature point values.
@@ -50,8 +50,8 @@ namespace Unity.Mathematics
             d2 = min(d2, d3); // neither F1 nor F2 are now in d3
             d1 = min(d1a, d2); // F1 is now in d1
             d2 = max(d1a, d2); // Swap to keep candidates for F2
-            d1.xy = (d1.x < d1.y) ? d1.xy : d1.yx; // Swap if smaller
-            d1.xz = (d1.x < d1.z) ? d1.xz : d1.zx; // F1 is in d1.x
+            d1.xy = d1.x < d1.y ? d1.xy : d1.yx; // Swap if smaller
+            d1.xz = d1.x < d1.z ? d1.xz : d1.zx; // F1 is in d1.x
             d1.yz = min(d1.yz, d2.yz); // F2 is now not in d2.yz
             d1.y = min(d1.y, d1.z); // nor in  d1.z
             d1.y = min(d1.y, d2.x); // F2 is in d1.y, we're done.

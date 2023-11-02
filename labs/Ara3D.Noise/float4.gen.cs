@@ -9,16 +9,14 @@
 using System;
 using System.Runtime.CompilerServices;
 using System.Diagnostics;
-using Unity.IL2CPP.CompilerServices;
 
 #pragma warning disable 0660, 0661
 
-namespace Unity.Mathematics
+namespace Ara3D.Noise
 {
     /// <summary>A 4 component vector of floats.</summary>
     [DebuggerTypeProxy(typeof(float4.DebuggerProxy))]
     [System.Serializable]
-    [Il2CppEagerStaticClassConstruction]
     public partial struct float4 : System.IEquatable<float4>, IFormattable
     {
         /// <summary>x component of the vector.</summary>
@@ -3515,18 +3513,10 @@ namespace Unity.Mathematics
         {
             get
             {
-#if ENABLE_UNITY_COLLECTIONS_CHECKS
-                if ((uint)index >= 4)
-                    throw new System.ArgumentException("index must be between[0...3]");
-#endif
                 fixed (float4* array = &this) { return ((float*)array)[index]; }
             }
             set
             {
-#if ENABLE_UNITY_COLLECTIONS_CHECKS
-                if ((uint)index >= 4)
-                    throw new System.ArgumentException("index must be between[0...3]");
-#endif
                 fixed (float* array = &x) { array[index] = value; }
             }
         }
@@ -3536,14 +3526,7 @@ namespace Unity.Mathematics
         /// <returns>The result of the equality comparison.</returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public bool Equals(float4 rhs) { return x == rhs.x && y == rhs.y && z == rhs.z && w == rhs.w; }
-
-        /// <summary>Returns true if the float4 is equal to a given float4, false otherwise.</summary>
-        /// <param name="o">Right hand side argument to compare equality with.</param>
-        /// <returns>The result of the equality comparison.</returns>
-        public override bool Equals(object o) { return o is float4 converted && Equals(converted); }
-
-
-
+        
         /// <summary>Returns a string representation of the float4.</summary>
         /// <returns>String representation of the value.</returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -3576,7 +3559,6 @@ namespace Unity.Mathematics
                 w = v.w;
             }
         }
-
     }
 
     public static partial class math

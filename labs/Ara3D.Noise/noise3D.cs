@@ -10,11 +10,11 @@
 //               https://github.com/stegu/webgl-noise
 //
 
-using static Unity.Mathematics.math;
+using static Ara3D.Noise.math;
 
-namespace Unity.Mathematics
+namespace Ara3D.Noise
 {
-    public static partial class noise
+    public static partial class Noise
     {
         /// <summary>
         /// Simplex noise.
@@ -91,7 +91,7 @@ namespace Unity.Mathematics
 
             // Mix final noise value
             var m = max(0.6f - float4(dot(x0, x0), dot(x1, x1), dot(x2, x2), dot(x3, x3)), 0.0f);
-            m = m * m;
+            m *= m;
             return 42.0f * dot(m * m, float4(dot(p0, x0), dot(p1, x1), dot(p2, x2), dot(p3, x3)));
         }
     }
