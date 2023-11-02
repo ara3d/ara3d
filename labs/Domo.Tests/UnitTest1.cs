@@ -110,7 +110,9 @@ namespace Ara3D.Domo.Tests
                     var d = JsonSerializer.Deserialize<IDictionary<Guid, T>>(ref reader);
                     foreach (var kv in d)
                     {
-                        repo.Add(kv.Key, kv.Value);
+                        // TODO: Serialization is not properly implemented in Domo anymore. 
+                        throw new NotImplementedException();
+                        // repo.Add(kv.Key, kv.Value);
                     }
                 }
 

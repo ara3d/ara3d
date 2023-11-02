@@ -1,4 +1,5 @@
-﻿using Ara3D.Collections;
+﻿using System;
+using Ara3D.Collections;
 using Ara3D.Graphics;
 using Ara3D.Math;
 
@@ -10,10 +11,14 @@ namespace PathTracer
         // 2 minutes, 58 seconds in C++.
         // divisor = 1, samplesCount = 16;
 
-        public const int Divisor = 1;
+        public const int Divisor = 4;
 
         public int Iteration;
         public int SamplesCount => 1 << Iteration;
+
+        public DemoPathTracer()
+            : this(0)
+        { }
 
         public DemoPathTracer(int iteration)
             => Iteration = Math.Clamp(iteration, 0, MaxIterations); 

@@ -15,7 +15,6 @@ namespace Ara3D.Services
         public DateTimeOffset Created;
     }
 
-
     public class LogRepo : AggregateRepository<LogEntry>
     {
     }
@@ -25,18 +24,20 @@ namespace Ara3D.Services
         public LogRepo Repo { get; set; }
         public Stopwatch Stopwatch { get; } = Stopwatch.StartNew();
 
-        public LoggingService(IApi api, LogRepo repo)
+        public LoggingService(string category, IApi api, LogRepo repo)
             : base(api)
-            => Repo = repo;
+        {
+            Category = category;
+            Repo = repo;
+        }
 
         public ILogger Log(string message, LogLevel level)
         {
-            Repo.Add(Guid.NewGuid(), new LogEntry(message, (int)level, DateTime.Now));
+            Repo.Add(new LogEntry(message, (int)level, DateTime.Now));
             Debug.WriteLine(Stopwatch.Elapsed.ToString("hh\\:mm\\:ss\\.ff") + " - " + message);
             return this;
         }
 
-        // TODO: maybe multiple logging services can exist, each with their own repo
-        public string Category => "LoggingService";
+        public string Category { get; }
     }
 }

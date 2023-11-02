@@ -7,6 +7,8 @@ namespace Ara3D.Utils.Roslyn
     public class CompilerService
     {
         public ILogger Logger { get; }
+        // TODO: a compiler service might create assemblies in sub-folders.
+        // We would only want one watcher for the whole application. 
         public DirectoryWatcher Watcher;
         public Compilation Compilation { get; set; }
         public CompilerOptions Options { get; set; }

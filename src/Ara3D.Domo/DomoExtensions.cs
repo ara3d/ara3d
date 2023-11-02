@@ -96,7 +96,7 @@ namespace Ara3D.Domo
             => r.GetModels().ToDictionary(m => m.Id, m => m.Value);
 
         public static IModel<T> Add<T>(this IRepository<T> repo, T value)
-            => repo.Add(Guid.NewGuid(), value);
+            => repo.Add(value);
 
         public static IEnumerable<T> GetValues<T>(this IRepository<T> repo)
             => repo.GetModels().Select(m => m.Value);

@@ -87,7 +87,7 @@ namespace Ara3D.Services
                     throw new Exception("Plugin does not return the API: probably forgot to call base.Initialize");
                 Api.EventBus.AddSubscriberUsingReflection(plugin);
                 var id = Guid.NewGuid();
-                PluginRepo.Add(id, new PluginRecord(plugin.Name));
+                PluginRepo.Add(new PluginRecord(plugin.Name));
                 CommandService.AddAttributeCommands(plugin); 
                 plugin.Disposing += (_sender, _args) => PluginRepo.Delete(id);
                 return true;
@@ -95,8 +95,7 @@ namespace Ara3D.Services
             catch (Exception e)
             {
                 Logger.LogError(e);
-                var id = Guid.NewGuid();
-                PluginRepo.Add(id, new PluginRecord(plugin.Name, false, e.Message));
+                PluginRepo.Add(new PluginRecord(plugin.Name, false, e.Message));
                 return false;
             }
         }
@@ -110,19 +109,19 @@ namespace Ara3D.Services
 
             ScriptedPlugins.Clear();
 
+            //throw new NotImplementedException();
+            /*
+
             CompilerRepo.Model.Update(x =>
                 // TODO: 
-                new CompilerState()
+                new CompilationModel()
                 {
                     Diagnostics = CompilerService.Compilation.Diagnostics.Select(s => s.ToString()).ToArray(),
-                    InputDirectory = CompilerService.Watcher.Directory,
                     InputFiles = CompilerService.Compilation.Input.SourceFiles.Select(s => s.FilePath.Value).ToArray(),
                     OutputDll = CompilerService.Compilation.Options.OutputFile,
                     Success = CompilerService.Compilation.EmitResult.Success,
                 });
 
-            //throw new NotImplementedException();
-            /*
             var model = CompilerService.Model;
             if (model.Compiled)
             {

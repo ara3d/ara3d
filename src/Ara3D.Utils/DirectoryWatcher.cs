@@ -6,7 +6,7 @@ using System.IO;
 
 namespace Ara3D.Utils
 {
-    public class DirectoryWatcher
+    public class DirectoryWatcher : IDisposable
     {
         public FileSystemWatcher Watcher;
         public DirectoryPath Directory => Watcher.Path;
@@ -40,6 +40,21 @@ namespace Ara3D.Utils
             Watcher.Error += Watcher_Error;
             Watcher.EnableRaisingEvents = true;
             OnChange = onChange;
+        }
+
+        public void DisconnectEvents()
+        {
+            Watcher.EnableRaisingEvents = false;
+            Watcher.Changed -= Watcher_Changed;
+            Watcher.Created -= Watcher_Created;
+            Watcher.Deleted -= Watcher_Deleted;
+            Watcher.Renamed -= Watcher_Renamed;
+            Watcher.Error -= Watcher_Error;
+        }
+
+        public void Dispose()
+        {
+            DisconnectEvents();
         }
 
         private void Watcher_Error(object sender, ErrorEventArgs e)

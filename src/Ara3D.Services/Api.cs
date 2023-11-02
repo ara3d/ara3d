@@ -47,13 +47,5 @@ namespace Ara3D.Services
             EventBus.AddRepositoryAsPublisher(repository);
             EventBus.Publish(new RepositoryRegisteredEvent<T>(repository));
         }
-
-        public ILogger Log(string message, LogLevel level)
-        {
-            this.GetService<LoggingService>()?.Log(message, level);
-            return this;
-        }
-        
-        public string Category => this.GetService<LoggingService>().Category;
     }
 }

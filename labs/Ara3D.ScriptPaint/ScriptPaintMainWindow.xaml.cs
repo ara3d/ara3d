@@ -1,5 +1,5 @@
 ﻿using System;
-using System.Diagnostics;
+using System.Reflection;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Media;
@@ -8,7 +8,6 @@ using Ara3D.Buffers;
 using Ara3D.Graphics;
 using Ara3D.Utils;
 using Ara3D.Utils.Roslyn;
-using PathTracer;
 
 namespace Ara3D.ScriptPaint
 {
@@ -17,24 +16,35 @@ namespace Ara3D.ScriptPaint
     /// </summary>
     public partial class ScriptPaintMainWindow : Window
     {
-        public DemoPathTracer Renderer { get; }
+        public IProgressiveRenderer Renderer { get; }
         public Bitmap Bitmap { get; }
         public WriteableBitmap Writeable { get; }
 
         public ScriptPaintMainWindow()
         {
             InitializeComponent();
-            Renderer = new DemoPathTracer(0);
+
+            AssemblyUtil.LoadAllAssembliesInCurrentDomainBaseDirectory();
+
+            var sourceFile = PathUtil.GetCallerSourceFolder().RelativeFile("..", "PathTracer", "DemoPathTracer.cs");
+            var compilation = sourceFile.CompileCSharpStandard();
+
+            var logger = new LoggingWindowService();
+            logger.Logger.Log($"Compilation success = {compilation.EmitResult.Success}");
+            foreach (var d in compilation.EmitResult.Diagnostics)
+                logger.Logger.Log($"{d}");
+
+            if (!compilation.EmitResult.Success)
+                return;
+
+            var assembly = Assembly.LoadFrom(compilation.OutputFile);
+            var type = assembly.GetType("PathTracer.DemoPathTracer");
+
+            var obj = Activator.CreateInstance(type);
+            Renderer = obj as IProgressiveRenderer;
             Bitmap = new Bitmap(Renderer.Width, Renderer.Height);
             Writeable = new WriteableBitmap(Bitmap.Width, Bitmap.Height, 96, 96, PixelFormats.Bgr32, null);
             MyImage.Source = Writeable;
-            
-            var sourceFile = PathUtil.GetCallerSourceFolder().RelativeFile("..", "PathTracer", "DemoPathTracer.cs");
-            var compilation = sourceFile.CompileCSharpStandard();
-            //var logger = new StdLogger();
-            //var options = new CompilerOptions();
-            //var service = new CompilerService(logger, options, )
-            Debug.WriteLine(compilation.EmitResult.Success);
 
             Recompute().FireAndForget();
         }

@@ -27,7 +27,7 @@ namespace Ara3D.Services
                 repo.Clear();
                 for (var i = 0; i < tmp.Length; ++i)
                 {
-                    repo.Add(Guid.NewGuid(), tmp.GetValue(i));
+                    repo.Add(tmp.GetValue(i));
                 }
             }
 

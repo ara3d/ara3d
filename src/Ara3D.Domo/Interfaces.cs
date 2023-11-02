@@ -101,7 +101,7 @@ namespace Ara3D.Domo
         /// <summary>
         /// Creates a new domain model given the existing state and adds it to the repository.
         /// </summary>
-        IModel Add(Guid id, object state);
+        IModel Add(object state);
 
         /// <summary>
         /// Deletes the specified domain model.  
@@ -185,7 +185,7 @@ namespace Ara3D.Domo
         /// Adds a new value to the repository and returns the model.
         /// The value is forced to valid.
         /// </summary>
-        IModel<TValue> Add(Guid id, TValue value = default);
+        IModel<TValue> Add(TValue value = default);
 
         /// <summary>
         /// Returns a list of models 

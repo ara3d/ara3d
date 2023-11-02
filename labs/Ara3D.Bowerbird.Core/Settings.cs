@@ -12,21 +12,7 @@ namespace Ara3D.Bowerbird.Core
     public class Constants
     {
         public const string ReferenceFilesName = "references.txt";
-    }
-    
-    public interface ILoggingService
-    {
-
-    }
-
-    public class CompilerError
-    {
-        public string ErrorType { get; }
-        public string Message { get; }
-        public string FilePath { get; }
-        public int LineNumber { get; }
-        public int ColumnNumber { get; }
-    }
+    }   
 
     public interface ICompilerService 
     { }
@@ -74,7 +60,6 @@ namespace Ara3D.Bowerbird.Core
     public interface IBowerbirdService
     {
         ICommandService CommandService { get; }
-        ILoggingService LoggingService { get; }
         IPluginService PluginService { get; }
         IHostService HostService { get; }
     }

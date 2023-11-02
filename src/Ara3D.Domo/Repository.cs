@@ -113,8 +113,9 @@ namespace Ara3D.Domo
         public bool Validate(object state)
             => Validate((T)state);
 
-        public IModel<T> Add(Guid id, T state = default)
+        public IModel<T> Add(T state = default)
         {
+            var id = Guid.NewGuid();
             state = ForceValid(state);
             if (IsSingleton && _dict.Count != 0)
                 throw new Exception("Singleton repository cannot have more than one model");
@@ -136,8 +137,8 @@ namespace Ara3D.Domo
         public bool Update(Guid modelId, Func<object, object> updateFunc)
             => Update(modelId, x => (T)updateFunc(x));
 
-        public IModel Add(Guid id, object state)
-            => Add(id, (T)state);
+        public IModel Add(object state)
+            => Add((T)state);
 
         public virtual void Delete(Guid id)
         {
@@ -179,7 +180,7 @@ namespace Ara3D.Domo
             while (i < values.Count)
             {
                 Debug.Assert(i >= ids.Count);
-                Add(Guid.NewGuid(), values[i]);
+                Add(values[i]);
                 i++;
             }
 
@@ -213,7 +214,7 @@ namespace Ara3D.Domo
     {
         public SingletonRepository(T value = default)
             : base(value)
-            => Model = Add(Guid.NewGuid(), DefaultValue);
+            => Model = Add(DefaultValue);
         
         public override bool IsSingleton => true;
 

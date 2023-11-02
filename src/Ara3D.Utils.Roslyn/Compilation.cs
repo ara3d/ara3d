@@ -19,6 +19,7 @@ namespace Ara3D.Utils.Roslyn
         public EmitResult EmitResult { get; }
         public CSharpCompilation Compiler { get; }
         public CompilerOptions Options => Input.Options;
+        public FilePath OutputFile => Input.Options.OutputFile;
         public IReadOnlyList<SemanticModel> SemanticModels { get; }
         public IEnumerable<Diagnostic> Diagnostics => Compiler.GetDiagnostics();
 
