@@ -1,17 +1,20 @@
-﻿using System.Diagnostics;
+﻿using System;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.IO;
 using System.Linq;
-using System.Runtime.CompilerServices;
-using System.Security.Cryptography;
-using System.Text.Json;
+using System.Text;
+using System.Threading.Tasks;
 using Ara3D.Collections;
 using Ara3D.Math;
 using Ara3D.Serialization.G3D;
-using Microsoft.VisualBasic.CompilerServices;
+using Ara3D.Utils;
 using Rhino.FileIO;
 using Rhino.Geometry;
 
-namespace Ara3D.RhinoReader
+namespace Ezrx.Rhino.ConsoleApp
 {
+
     // https://github.com/rgl-epfl/rhino-exporter/blob/master/MeshStore.cs
     // https://github.com/meliharvey/threejs-exporter/blob/master/threejs-exporter/Mesh.cs
     // https://discourse.mcneel.com/t/get-geometries-transformation-matrix/116651
@@ -174,17 +177,16 @@ namespace Ara3D.RhinoReader
     {
         public static string WorkingDir => Environment.CurrentDirectory;
         public static string ProjectDir => Path.Combine(WorkingDir, "..", "..", "..");
-        public static string RepoDir => Path.Combine(ProjectDir, "..", "..", "..");        
+        public static string RepoDir => Path.Combine(ProjectDir, "..", "..", "..");
         public static string DataDir => Path.Combine(RepoDir, "revit-test-datasets", "rhino");
 
         static void Main(string[] args)
         {
-            Debug.Assert(Directory.Exists(WorkingDir));
-            Debug.Assert(Directory.Exists(ProjectDir));
-            Debug.Assert(Directory.Exists(DataDir));
-            var file3dm = File3dm.Read(Path.Combine(DataDir, "Facade.3dm"));
-            //var tmp = JsonSerializer.Serialize(file3dm, new JsonSerializerOptions() { WriteIndented = true });
-            //File.WriteAllText(Path.Combine(ProjectDir, "test.json"), tmp);
+            var codePath = PathUtil.GetCallerSourceFolder().RelativeFile("facade.3dm");
+            var file3dm = File3dm.Read(codePath);
+
+            var tmp = Evaluator.MakeCubeViaEval();
+
             Console.WriteLine("Number of objects in file {0}", file3dm.Objects.Count);
 
             var outputFolder = Path.Combine(ProjectDir, "output");
@@ -214,8 +216,8 @@ namespace Ara3D.RhinoReader
 
             Console.WriteLine($"# views = {file3dm.AllViews.Count}");
             foreach (var material in file3dm.AllViews)
-            { } 
-            
+            { }
+
             Console.WriteLine("Number of objects in file {0}", file3dm.Objects.Count);
             foreach (var obj in file3dm.Objects)
             {
@@ -232,7 +234,7 @@ namespace Ara3D.RhinoReader
                 Console.WriteLine(obj.Attributes.LayerIndex);
                 Console.WriteLine(obj.Attributes.Name);
                 Console.WriteLine(obj.Attributes.GroupCount);
-                
+
                 if (mesh == null)
                     continue;
                 var g3d = mesh.ToG3D();
