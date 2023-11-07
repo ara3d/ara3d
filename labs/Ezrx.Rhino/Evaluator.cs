@@ -33,7 +33,7 @@ namespace Ezrx.Rhino
             var type = assembly.GetType("Test.TestClass");
 
             dynamic obj = Activator.CreateInstance(type);
-            return obj.CreateCube();
+            return obj.CreateMesh();
         }
         
         public static Mesh MakeCubeViaEval()
@@ -42,7 +42,7 @@ namespace Ezrx.Rhino
 using Rhino.Geometry; 
 namespace Test {{
     public class TestClass {{
-        public Mesh CreateCube() {{
+        public Mesh CreateMesh() {{
             var mesh = new Mesh();
             mesh.Vertices.Add(new Point3d(0.5, 0.5, 0.5));
             mesh.Vertices.Add(new Point3d(0.5, 0.5, -0.5));
