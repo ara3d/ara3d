@@ -60,6 +60,7 @@
   <ItemGroup>
     <Compile Include="BowerbirdApp.cs" />
     <Compile Include="BowerbirdExternalCommand.cs" />
+    <Compile Include="Services.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Ara3D.Bowerbird.Revit2023.addin" />
@@ -70,6 +71,12 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="notes.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\Ara3D.Utils\Ara3D.Utils.csproj">
+      <Project>{6B8EA878-A82D-43AF-BFEF-0E5106117F55}</Project>
+      <Name>Ara3D.Utils</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

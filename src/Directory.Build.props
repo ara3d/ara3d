@@ -1,0 +1,5 @@
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Target Name="CopyNupkg" AfterTargets="Pack">
+      <Copy SourceFiles="$(OutputPath)..\$(PackageId).$(PackageVersion).nupkg" DestinationFolder="$(ProjectDir)..\..\output" />
+  </Target>
+</Project>
