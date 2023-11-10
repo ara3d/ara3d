@@ -8,7 +8,6 @@ namespace Ara3D.Services
             => Api = api;
 
         public IApi Api { get; }
-        public IEventBus EventBus => Api.EventBus;
 
         public void Dispose()
         {

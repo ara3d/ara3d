@@ -55,7 +55,7 @@ namespace Ara3D.Services
             if (!string.IsNullOrWhiteSpace(options.ScriptsDirectory))
             {
                 // TODO: we need to create this from the options passed to the PLugin service
-                var compilerOptions = new CompilerOptions();
+                var compilerOptions = CompilerOptions.CreateDefault();
                 CompilerService = new CompilerService(null, compilerOptions, options.ScriptsDirectory);
                 CompilerService.RecompileEvent += Controller_RecompileEvent;
                 CompilerService.AutoRecompile = true;

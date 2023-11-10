@@ -1,11 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Ara3D.Utils;
 
-namespace Ara3D.Bowerbird.Revit
+namespace Ara3D.Bowerbird.Core
 {
 
     public class AssemblyLoadingService
@@ -64,20 +61,5 @@ namespace Ara3D.Bowerbird.Revit
     // Saved whenever it changes 
     public class ApplicationStateService
     {
-    }
-
-    public class CompilationState
-    {
-    }
-
-    public class CompilerResult 
-    { }
-
-    public class Compiler
-    {
-        public CompilerResult Compile(DirectoryPath path)
-        {
-            throw new NotImplementedException();
-        }
     }
 }

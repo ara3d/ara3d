@@ -193,16 +193,16 @@ namespace Ara3D.Domo
         }
     }
 
-    public class AggregateRepository<T> : Repository<T>, IAggregateRepository<T>
-        where T : new()
+    public class AggregateRepository<TModel> : Repository<TModel>, IAggregateRepository<TModel>
+        where TModel : new()
     {
-        public AggregateRepository(T value = default)
+        public AggregateRepository(TModel value = default)
             : base(value)
         { }
 
         public override bool IsSingleton => false;
 
-        public IReadOnlyList<T> Values
+        public IReadOnlyList<TModel> Values
         {
             get => GetModels().Select(m => m.Value).ToList();
             set => SetModelValues(value);

@@ -10,25 +10,27 @@ namespace Ara3D.Utils.Roslyn
 {
     public static partial class RoslynUtils
     {
-        public static IEnumerable<MetadataReference> ReferencesFromFiles(IEnumerable<string> files)
+        public static IEnumerable<MetadataReference> ReferencesFromFiles(IEnumerable<FilePath> files)
             => files.Select(x => MetadataReference.CreateFromFile(x));
 
         public static IEnumerable<MetadataReference> ReferencesFromLoadedAssemblies()
             => ReferencesFromFiles(LoadedAssemblyLocations());
 
-        public static IEnumerable<string> LoadedAssemblyLocations(AppDomain domain = null)
-            => (domain ?? AppDomain.CurrentDomain).GetAssemblies().Where(x => !x.IsDynamic).Select(x => x.Location);
+        public static IEnumerable<FilePath> LoadedAssemblyLocations(AppDomain domain = null)
+            => (domain ?? AppDomain.CurrentDomain).GetAssemblies().Where(x => !x.IsDynamic).Select(x => new FilePath(x.Location));
 
         public static string ToPackageReference(this AssemblyIdentity asm)
             => $"<PackageReference Include=\"{asm.Name}\" Version=\"{asm.Version}\" />";
 
-        public static string GetOrCreateDir(string path)
-            => Directory.Exists(path) ? path : Directory.CreateDirectory(path).FullName;
+        public static DirectoryPath GetOrCreateDir(DirectoryPath path)
+            => Directory.Exists(path) 
+                ? path 
+                : new DirectoryPath(Directory.CreateDirectory(path).FullName);
 
-        public static string GenerateNewDllFileName()
+        public static FilePath GenerateNewDllFileName()
             => PathUtil.CreateTempFile("dll");
 
-        public static string GenerateNewSourceFileName()
+        public static FilePath GenerateNewSourceFileName()
             => PathUtil.CreateTempFile("cs");
 
         public static FilePath WriteToTempFile(string source)

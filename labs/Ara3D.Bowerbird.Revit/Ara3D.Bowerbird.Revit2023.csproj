@@ -44,6 +44,9 @@
     <AssemblyName>Ara3D.Bowerbird.Revit2023</AssemblyName>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Microsoft.CodeAnalysis.CSharp">
+      <HintPath>..\..\..\..\.nuget\packages\microsoft.codeanalysis.csharp\4.4.0\lib\netcoreapp3.1\Microsoft.CodeAnalysis.CSharp.dll</HintPath>
+    </Reference>
     <Reference Include="RevitAPI">
       <HintPath>$(ProgramW6432)\Autodesk\Revit 2023\RevitAPI.dll</HintPath>
       <Private>False</Private>
@@ -60,7 +63,6 @@
   <ItemGroup>
     <Compile Include="BowerbirdApp.cs" />
     <Compile Include="BowerbirdExternalCommand.cs" />
-    <Compile Include="Services.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Ara3D.Bowerbird.Revit2023.addin" />
@@ -73,6 +75,10 @@
     <Content Include="notes.txt" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\src\Ara3D.Utils.Roslyn\Ara3D.Utils.Roslyn.csproj">
+      <Project>{7A9E158E-3F00-431B-A8A6-BE3D6E6989E6}</Project>
+      <Name>Ara3D.Utils.Roslyn</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\src\Ara3D.Utils\Ara3D.Utils.csproj">
       <Project>{6B8EA878-A82D-43AF-BFEF-0E5106117F55}</Project>
       <Name>Ara3D.Utils</Name>

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Windows.Input;
 
-namespace Ara3D.Domo
+namespace Ara3D.Utils
 {
     /// <summary>
     /// A command represents a single executable action.

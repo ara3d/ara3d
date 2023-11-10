@@ -45,7 +45,7 @@ namespace Ara3D.Utils.Roslyn
                 Log("Compilation task started");
 
                 // TODO: get the input reference files from somewhere 
-                Options = Options?.WithNewOutputFilePath() ?? new CompilerOptions();
+                Options = Options?.WithNewOutputFilePath() ?? CompilerOptions.CreateDefault();
                 Log($"Chosen output file = {Options.OutputFile}");
                 Log($"References:");
                 foreach (var f in Options.MetadataReferences)

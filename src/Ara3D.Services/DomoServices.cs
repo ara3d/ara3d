@@ -3,18 +3,11 @@ using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Linq;
+using Ara3D.Domo;
+using Ara3D.Utils;
 
-namespace Ara3D.Domo
+namespace Ara3D.Services
 {
-    /// <summary>
-    /// A Service in Domo has the same life length as the application.
-    /// It is started when it is created, and terminates when the application does.
-    /// </summary>
-    public interface IService
-    {
-        IReadOnlyList<INamedCommand> GetCommands();
-    }
-
     public interface ISingletonModelBackedService<T> : IService, INotifyPropertyChanged
     {
         ISingletonRepository<T> Repository { get; }
@@ -27,12 +20,17 @@ namespace Ara3D.Domo
         IReadOnlyList<IModel<T>> Models { get; }
     }
 
-    public class Service : IService
+    // TODO: this used to be in IService
+    public interface ICommandable
     {
-        public Service(IRepositoryManager store)
-            => Store = store;
+        IReadOnlyList<INamedCommand> GetCommands();
+    }
 
-        public IRepositoryManager Store { get; }
+    public class DomoService : BaseService
+    {
+        public DomoService(IApi api)
+            : base(api)
+        { }
 
         public Dictionary<string, INamedCommand> Commands = new Dictionary<string, INamedCommand>();
 
@@ -54,12 +52,13 @@ namespace Ara3D.Domo
             => Commands.Values.ToList();
     }
 
-    public class SingletonModelBackedService<T> : Service, ISingletonModelBackedService<T>
+    public class SingletonModelBackedService<TModel> : DomoService, ISingletonModelBackedService<TModel>
+        where TModel: new()
     {
-        public SingletonModelBackedService(IRepositoryManager store)
-            : base(store)
+        public SingletonModelBackedService(IApi api)
+            : base(api)
         {
-            Repository = store.GetSingletonRepository<T>();
+            Repository = new SingletonRepository<TModel>();
             Repository.RepositoryChanged += OnRepositoryChanged;
         }
 
@@ -72,22 +71,23 @@ namespace Ara3D.Domo
             remove => Model.PropertyChanged -= value;
         }
 
-        public ISingletonRepository<T> Repository { get; }
-        public IModel<T> Model => Repository.Model;
+        public ISingletonRepository<TModel> Repository { get; }
+        public IModel<TModel> Model => Repository.Model;
 
-        public T Value
+        public TModel Value
         {
             get => Model.Value;
             set => Model.Value = value;
         }
     }
 
-    public class AggregateModelBackedService<T> : Service, IAggregateModelBackedService<T>
+    public class AggregateModelBackedService<TModel> : DomoService, IAggregateModelBackedService<TModel>
+        where TModel : new()
     {
-        public AggregateModelBackedService(IRepositoryManager store)
-            : base(store)
+        public AggregateModelBackedService(IApi api)
+            : base(api)
         {
-            Repository = store.GetAggregateRepository<T>();
+            Repository = new AggregateRepository<TModel>();
             Repository.RepositoryChanged += OnRepositoryChanged;
         }
 
@@ -100,8 +100,8 @@ namespace Ara3D.Domo
         protected virtual void OnRepositoryChanged(object sender, RepositoryChangeArgs e)
         { }
 
-        public IAggregateRepository<T> Repository { get; }
-        public IReadOnlyList<IModel<T>> Models => Repository.GetModels();
+        public IAggregateRepository<TModel> Repository { get; }
+        public IReadOnlyList<IModel<TModel>> Models => Repository.GetModels();
     }
 
 }

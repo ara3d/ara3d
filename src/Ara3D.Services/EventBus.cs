@@ -27,7 +27,7 @@ namespace Ara3D.Services
     /// Events must have distinct type names.
     /// This decouples event publishers from subscribers.
     /// If a publisher is disposed, events are simply no longer published.
-    /// If a subscriber is disposed, it is automatically unsubscribed. 
+    /// If a subscriber is disposed, it is automatically unsubscribed.
     /// </summary>
     public interface IEventBus
     {

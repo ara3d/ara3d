@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Ara3D.Utils;
 
 namespace Ara3D.Bowerbird.Core
 {
@@ -24,7 +25,7 @@ namespace Ara3D.Bowerbird.Core
 
     public interface ICommandService
     {
-        IReadOnlyList<ICommand> GetCommands();
+        IReadOnlyList<INamedCommand> GetCommands();
     }
 
     public interface IPlugin
@@ -64,7 +65,7 @@ namespace Ara3D.Bowerbird.Core
         IHostService HostService { get; }
     }
 
-    public interface ICommand
+    public interface IPluginCommand : INamedCommand
     {
         string Name { get; }
         Guid Id { get; }

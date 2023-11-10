@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using Microsoft.CodeAnalysis;
@@ -8,14 +9,12 @@ namespace Ara3D.Utils.Roslyn
 {
     public class CompilerOptions
     {
-        public CompilerOptions(IEnumerable<string> fileReferences = null, string outputFileName = null, bool debug = true)
-            => (FileReferences, OutputFile, Debug) = 
-                ((fileReferences ?? RoslynUtils.LoadedAssemblyLocations()).ToArray(), 
-                    outputFileName ?? RoslynUtils.GenerateNewDllFileName(), debug);
+        public CompilerOptions(IEnumerable<FilePath> fileReferences, FilePath outputFileName, bool debug)
+            => (FileReferences, OutputFile, Debug) = (fileReferences.ToList(), outputFileName, debug);
 
         public FilePath OutputFile { get; }
         public bool Debug { get; }
-        public IReadOnlyList<string> FileReferences { get; }
+        public IReadOnlyList<FilePath> FileReferences { get; }
 
         public string AssemblyName
             => OutputFile.GetFileNameWithoutExtension();
@@ -36,5 +35,9 @@ namespace Ara3D.Utils.Roslyn
 
         public CompilerOptions WithNewOutputFilePath(string fileName = null)
             => new CompilerOptions(FileReferences, fileName, Debug);
+
+        public static CompilerOptions CreateDefault()
+            => new CompilerOptions(RoslynUtils.LoadedAssemblyLocations(), 
+                RoslynUtils.GenerateNewDllFileName(), true);
     }
 }
