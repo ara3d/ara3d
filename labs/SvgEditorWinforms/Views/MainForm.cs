@@ -78,10 +78,12 @@ namespace SvgDemoWinForms
             LogView.PreventFormDisposal();
 
             // Show all of the forms initially. 
+            /*
             SvgView.Show();
             JsonView.Show();
             TreeView.Show();
             LogView.Show();
+            */
 
             // Every time a menu event happens I want to log it
             foreach (var m in AllMenuItems())
@@ -261,7 +263,7 @@ namespace SvgDemoWinForms
 
         public SvgDocument GetSvgDocument()
         {
-            return Model.ToSvg();
+            return Model.ToSvgDocument ();
         }
 
         private void pictureBox1_MouseDown(object sender, MouseEventArgs e)
@@ -529,6 +531,24 @@ namespace SvgDemoWinForms
             {
                 CancelDrawingShape();
             }
+        }
+
+        private void menuStrip1_ItemClicked(object sender, ToolStripItemClickedEventArgs e)
+        {
+
+        }
+
+        private void MainForm_Load(object sender, EventArgs e)
+        {
+
+        }
+
+        private void customToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            // TODO: create a saw blade.
+            // Add it to the models. 
+            Model.Elements.Add(new CircularSaw());
+            DocumentChanged();
         }
     }
 }

@@ -36,6 +36,9 @@ namespace Ara3D.Utils.Roslyn
         public CompilerOptions WithNewOutputFilePath(string fileName = null)
             => new CompilerOptions(FileReferences, fileName, Debug);
 
+        public CompilerOptions WithNewReferences(IEnumerable<FilePath> fileReferences)
+            => new CompilerOptions(fileReferences, OutputFile, Debug);
+
         public static CompilerOptions CreateDefault()
             => new CompilerOptions(RoslynUtils.LoadedAssemblyLocations(), 
                 RoslynUtils.GenerateNewDllFileName(), true);

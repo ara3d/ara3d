@@ -4,7 +4,7 @@ using Ara3D.Utils;
 
 namespace Ara3D.Bowerbird.Core
 {
-
+    
     public class AssemblyLoadingService
     { }
 

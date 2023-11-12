@@ -42,6 +42,8 @@ namespace Ara3D.Utils
         public static double ElapsedMSec()
             => (InitializedTime - JanFirst1970).TotalMilliseconds;
 
+        public static string ToLoggingTimeStamp(this DateTimeOffset dto)
+            => dto.ToString($"hh:mm:ss");
 
         public static long GetMSecElapsed(Action action)
         {

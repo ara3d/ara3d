@@ -13,4 +13,8 @@
     <PackageReference Include="Svg" Version="3.4.4" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\Ara3D.Geometry\Ara3D.Geometry.csproj" />
+  </ItemGroup>
+
 </Project>

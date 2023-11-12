@@ -1,8 +1,17 @@
 ﻿using Newtonsoft.Json;
+using Svg;
+using SvgDemoWinForms;
 
 namespace SvgEditorWinForms.Models
 {
-    public class ElementModel
+    public interface IElementModel
+    {
+        string Id { get; }
+        string Name { get; }
+        SvgElement ToSvg();
+    }
+
+    public abstract class ElementModel : IElementModel
     {
         public string Name { get; set; }
         public string Id { get; set; }
@@ -12,14 +21,25 @@ namespace SvgEditorWinForms.Models
             Id = new object().GetHashCode().ToString();
             Name = GetType().Name;
         }
+
+        public abstract SvgElement ToSvg();
     }
 
     public class GroupModel : ElementModel
     {
         public List<ElementModel> Elements { get; set; }
             = new();
-    }
 
+        public override SvgElement ToSvg()
+        {
+            var r = new SvgGroup();
+            foreach (var e in Elements)
+                r.Children.Add(e.ToSvg());
+            return r;
+        }
+    }
+    
+    /*
     public class DefModel : ElementModel
     { }
 
@@ -47,11 +67,27 @@ namespace SvgEditorWinForms.Models
     {
         public List<GradientStopModel> Stops { get; set; } = new();
     }
+    */
 
     public class LineModel : SimpleShapeModel
     {
         public PointModel Start { get; set; }
         public PointModel End { get; set; }
+
+        public override SvgElement ToSvg()
+        {
+            return new SvgLine()
+            {
+                StartX = (float)Left,
+                StartY = (float)Top,
+                EndX = (float)Right,
+                EndY = (float)Bottom,
+                Stroke = StrokeColor.ToSvg(),
+                StrokeWidth = (float)StrokeWidth,
+                Fill = SvgPaintServer.None,
+            };
+
+        }
     }
 
     public enum LineCapEnum
@@ -68,7 +104,7 @@ namespace SvgEditorWinForms.Models
         Bevel,
     }
 
-    public class ColorModel
+    public class ColorModel 
     {
         public byte R { get; set; }
         public byte G { get; set; }
@@ -92,14 +128,14 @@ namespace SvgEditorWinForms.Models
         public double Height { get; set; }
     }
 
-    public class ShapeModel : ElementModel
+    public abstract class ShapeModel : ElementModel
     {
         public ColorModel StrokeColor { get; set; } = ColorModel.Black;
         public double StrokeWidth { get; set; } = 3;
         public ColorModel FillColor { get; set; } = ColorModel.White;
     }
 
-    public class SimpleShapeModel : ShapeModel
+    public abstract class SimpleShapeModel : ShapeModel
     {
         public double Left => Math.Min(Position.X, Position.X + Size.Width);
         public double Right => Math.Max(Position.X, Position.X + Size.Width);
@@ -118,20 +154,72 @@ namespace SvgEditorWinForms.Models
 
     public class EllipseModel : SimpleShapeModel
     {
+        public override SvgElement ToSvg()
+        {
+            return new SvgEllipse()
+            {
+                CenterX = (float)CenterX,
+                CenterY = (float)CenterY,
+                RadiusX = (float)Width / 2,
+                RadiusY = (float)Height / 2,
+                Stroke = StrokeColor.ToSvg(),
+                StrokeWidth = (float)StrokeWidth,
+                Fill = SvgPaintServer.None,
+            };
+        }
     }
 
     public class RectModel : SimpleShapeModel
     {
+        public override SvgElement ToSvg()
+        {
+            return new SvgRectangle()
+            {
+                X = (float)Left,
+                Y = (float)Top,
+                Width = (float)Width,
+                Height = (float)Height,
+                Stroke = StrokeColor.ToSvg(),
+                StrokeWidth = (float)StrokeWidth,
+                Fill = SvgPaintServer.None,
+            };
+        }
     }
 
     public class CircleModel : SimpleShapeModel
     {
+        public override SvgElement ToSvg()
+        {
+            return new SvgCircle()
+            {
+                CenterX = (float)CenterX,
+                CenterY = (float)CenterY,
+                Radius = (float)Radius,
+                Stroke = StrokeColor.ToSvg(),
+                StrokeWidth = (float)StrokeWidth,
+                Fill = SvgPaintServer.None,
+            };
+        }
     }
 
     public class SquareModel : SimpleShapeModel
     {
+        public override SvgElement ToSvg()
+        {
+            return new SvgRectangle()
+            {
+                X = (float)Left,
+                Y = (float)Top,
+                Width = (float)Width,
+                Height = (float)Height,
+                Stroke = StrokeColor.ToSvg(),
+                StrokeWidth = (float)StrokeWidth,
+                Fill = SvgPaintServer.None,
+            };
+        }
     }
 
+    /*
     public class PolyLineModel : ShapeModel
     {
         public List<PointModel> Points { get; set; } = new();
@@ -149,6 +237,7 @@ namespace SvgEditorWinForms.Models
         public string Text { get; set; } = "";
         public double Size { get; set; } = 12;
     }
+    */
 
     public class Viewport
     {
@@ -205,6 +294,22 @@ namespace SvgEditorWinForms.Models
             {
                 Elements.Remove(e);
             }
+        }
+
+        public SvgDocument ToSvgDocument()
+        {
+            var r = new SvgDocument();
+            foreach (var e in Elements)
+            {
+                r.Children.Add(e.ToSvg());
+            }
+
+            return r;
+        }
+
+        public override SvgElement ToSvg()
+        {
+            return ToSvgDocument();
         }
     }
 

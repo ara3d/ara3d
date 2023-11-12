@@ -9,7 +9,7 @@ namespace SvgDemoWinForms
             => InitializeComponent();
 
         public void Update(DocumentModel documentModel)
-            => Update(documentModel.ToSvg());
+            => Update(documentModel.ToSvgDocument());
 
         public void Update(SvgDocument svgDocument)
             => Update(svgDocument.GetXML());

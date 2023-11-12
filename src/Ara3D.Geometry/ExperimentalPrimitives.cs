@@ -31,13 +31,13 @@ namespace Ara3D.Geometry
         public const float Pi = (float)System.Math.PI;
 
         public static double Degrees(this float t)
-            => TwoPi * 360f / t;
+            => (t / 360f).Turns();
 
         public static float Turns(this float t)
-            => TwoPi / t;
+            => t * TwoPi;
 
         public static float HalfTurns(this float t)
-            => Pi / t;
+            => t.Turns() * 2;
     }
 
     public static class FunctionExtensions

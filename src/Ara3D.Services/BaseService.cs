@@ -2,7 +2,7 @@
 
 namespace Ara3D.Services
 {
-    public class BaseService : IService
+    public class BaseService : IService, IDisposable
     {
         public BaseService(IApi api)
             => Api = api;
