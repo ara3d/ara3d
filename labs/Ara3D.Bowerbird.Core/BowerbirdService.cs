@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Reflection;
 using System.Threading;
 using Ara3D.Services;
 using Ara3D.Utils;
@@ -12,6 +13,7 @@ namespace Ara3D.Bowerbird.Core
         public ILogger Logger { get; }
         public CancellationTokenSource TokenSource { get; private set; }
         public BowerbirdOptions Options { get; }
+        public Assembly Assembly { get; private set; }
 
         public BowerbirdService(IApi api, ILogger logger, BowerbirdOptions options)
             : base(api)
@@ -32,6 +34,8 @@ namespace Ara3D.Bowerbird.Core
 
         public void Recompile()
         {
+            Assembly = null;
+
             TokenSource?.Cancel();
             TokenSource = new CancellationTokenSource();
 
@@ -46,6 +50,17 @@ namespace Ara3D.Bowerbird.Core
             var succeeded = FolderCompilation.Compilation.EmitResult.Success ? "succeeded" : "failed";
             Logger.Log($"Compilation {succeeded}");
 
+            var outputFile = FolderCompilation.CompilerOptions.OutputFile;
+            if (outputFile.Exists())
+            {
+                Logger.Log($"Loading assembly from {outputFile}");
+                Assembly = Assembly.LoadFile(outputFile);
+                Logger.Log($"Loaded assembly");
+            }
+            else
+            {
+                Logger.Log($"No assembly to load");
+            }
         }
     }
 }

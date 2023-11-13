@@ -31,7 +31,7 @@ public class BowerBirdDemoApp
 
     public void OnLogEntry(LogEntry logEntry)
     {
-        // TODO: consider coloring different categories.
-        Window.TextBoxLog.AppendText($"{logEntry.Created.ToLoggingTimeStamp()} {logEntry.Text} {Environment.NewLine}");
+        Window.TextBoxLog.Dispatcher.Invoke(() =>
+            Window.TextBoxLog.AppendText($"{logEntry.Created.ToLoggingTimeStamp()} {logEntry.Text} {Environment.NewLine}"));
     }
 }

@@ -25,11 +25,11 @@ namespace Ara3D.Utils.Roslyn
 
         public Compilation(CompilerInput input,
             CSharpCompilation compiler,
-            EmitResult result)
+            EmitResult emitResult)
         {
             Input = input;
             Compiler = compiler;
-            EmitResult = result;
+            EmitResult = emitResult;
             SemanticModels = input.SourceFiles.Select(sf => Compiler?.GetSemanticModel(sf.SyntaxTree)).ToList();
         }
     }
@@ -49,12 +49,16 @@ namespace Ara3D.Utils.Roslyn
             var outputPath = input.Options.OutputFile;
             outputPath.DeleteAndCreateDirectory();
 
+            EmitResult emitResult;
             using (var peStream = File.OpenWrite(outputPath))
             {
                 var emitOptions = new EmitOptions(false, DebugInformationFormat.Embedded);
-                var result = compiler.Emit(peStream, null, null, null, null, emitOptions, null, null, input.EmbeddedTexts, token);
-                return new Compilation(input, compiler, result);
+                emitResult = compiler.Emit(peStream, null, null, null, null, emitOptions, 
+                    null, null, input.EmbeddedTexts, token);
             }
+            if (!emitResult.Success)
+                outputPath.Delete();
+            return new Compilation(input, compiler, emitResult);
         }
 
         public static Compilation CompileCSharpStandard(this FilePath path, CompilerOptions options = default, CancellationToken token = default)
