@@ -10,7 +10,7 @@ namespace Ara3D.Services
         public LogEntry(string text, int category, DateTimeOffset created)
             => (Text, Category, Created) = (text, category, created);
         public LogEntry() {}
-        public string Text;
+        public readonly string Text;
         public int Category;
         public DateTimeOffset Created;
     }
@@ -31,7 +31,7 @@ namespace Ara3D.Services
             Repo = repo;
         }
 
-        public ILogger Log(string message, LogLevel level)
+        public ILogger Log(string message, LogLevel level = LogLevel.None)
         {
             Repo.Add(new LogEntry(message, (int)level, DateTime.Now));
             Debug.WriteLine(Stopwatch.Elapsed.ToString("hh\\:mm\\:ss\\.ff") + " - " + message);

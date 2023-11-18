@@ -23,7 +23,7 @@ namespace Ara3D.Utils.Roslyn
         public CompilerService(ILogger logger, CompilerOptions options, DirectoryPath dir)
         {
             Logger = logger.Create($"CompilerService: {dir}");
-            Watcher = new DirectoryWatcher(dir, "*.cs", false, OnChange, null);
+            Watcher = new DirectoryWatcher(dir, "*.cs", false, OnChange);
             Recompile();
         }
 

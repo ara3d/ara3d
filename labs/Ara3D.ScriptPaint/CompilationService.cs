@@ -10,10 +10,8 @@ public class CompilationService
     {
         var sourceFile = PathUtil.GetCallerSourceFolder().RelativeFile("..", "PathTracer", "DemoPathTracer.cs");
         var compilation = sourceFile.CompileCSharpStandard();
-        var logger = new StdLogger();
         //var options = new CompilerOptions();
         //var service = new CompilerService(logger, options, )
         Debug.WriteLine(compilation.EmitResult.Success);
-
     }
 }

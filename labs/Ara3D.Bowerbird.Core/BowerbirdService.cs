@@ -24,43 +24,53 @@ namespace Ara3D.Bowerbird.Core
                 CreateInitialFolders();
             Watcher = new DirectoryWatcher(Options.ScriptFolder, "*.*", Recompile);
         }
-
+        
         public void CreateInitialFolders()
         {
             Options.ScriptFolder.Create();
             Options.LibFolder.Create();
             Options.LogFolder.Create();
         }
-
+        
         public void Recompile()
         {
             Assembly = null;
-
             TokenSource?.Cancel();
-            TokenSource = new CancellationTokenSource();
-
-            Logger.Log($"Starting compilation");
-            FolderCompilation = new FolderCompilation(Options.ScriptFolder);
-            FolderCompilation.Compile(Logger, TokenSource.Token);
-            foreach (var d in FolderCompilation.Compilation.Diagnostics)
+            using (TokenSource = new CancellationTokenSource())
             {
-                Logger.Log($"{d}");
+                var token = TokenSource.Token;
+
+                Logger.Log($"Starting compilation");
+                FolderCompilation = new FolderCompilation(Options.ScriptFolder);
+                FolderCompilation.Compile(Logger, token);
+                foreach (var d in FolderCompilation.Compilation.Diagnostics)
+                {
+                    Logger.Log($"{d}");
+                }
+
+                if (token.IsCancellationRequested)
+                {
+                    Logger.Log($"Compilation cancelled");
+                    return;
+                }
+
+                var succeeded = FolderCompilation.Compilation.EmitResult.Success ? "succeeded" : "failed";
+                Logger.Log($"Compilation {succeeded}");
+
+                var outputFile = FolderCompilation.CompilerOptions.OutputFile;
+                if (outputFile.Exists())
+                {
+                    Logger.Log($"Loading assembly from {outputFile}");
+                    Assembly = Assembly.LoadFile(outputFile);
+                    Logger.Log($"Loaded assembly");
+                }
+                else
+                {
+                    Logger.Log($"No assembly to load");
+                }
             }
 
-            var succeeded = FolderCompilation.Compilation.EmitResult.Success ? "succeeded" : "failed";
-            Logger.Log($"Compilation {succeeded}");
-
-            var outputFile = FolderCompilation.CompilerOptions.OutputFile;
-            if (outputFile.Exists())
-            {
-                Logger.Log($"Loading assembly from {outputFile}");
-                Assembly = Assembly.LoadFile(outputFile);
-                Logger.Log($"Loaded assembly");
-            }
-            else
-            {
-                Logger.Log($"No assembly to load");
-            }
+            TokenSource = null;
         }
     }
 }

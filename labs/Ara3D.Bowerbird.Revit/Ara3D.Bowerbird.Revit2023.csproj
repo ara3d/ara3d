@@ -75,6 +75,14 @@
     <Content Include="notes.txt" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\src\Ara3D.Domo\Ara3D.Domo.csproj">
+      <Project>{CE773588-717C-401F-8612-0760B27CDD34}</Project>
+      <Name>Ara3D.Domo</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\src\Ara3D.Services\Ara3D.Services.csproj">
+      <Project>{54EDAD8E-0960-462B-A4F1-4E82C9F8275F}</Project>
+      <Name>Ara3D.Services</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\src\Ara3D.Utils.Roslyn\Ara3D.Utils.Roslyn.csproj">
       <Project>{7A9E158E-3F00-431B-A8A6-BE3D6E6989E6}</Project>
       <Name>Ara3D.Utils.Roslyn</Name>
@@ -82,6 +90,10 @@
     <ProjectReference Include="..\..\src\Ara3D.Utils\Ara3D.Utils.csproj">
       <Project>{6B8EA878-A82D-43AF-BFEF-0E5106117F55}</Project>
       <Name>Ara3D.Utils</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Ara3D.Bowerbird.Core\Ara3D.Bowerbird.Core.csproj">
+      <Project>{C2989064-7468-4173-ADB5-8E935274CDCC}</Project>
+      <Name>Ara3D.Bowerbird.Core</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

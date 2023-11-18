@@ -15,7 +15,7 @@ public class BowerBirdDemoApp
     public LogRepo LogRepo { get; } 
     public BowerbirdCompilationWindow Window { get; }
 
-    public BowerbirdOptions Options = BowerbirdOptions
+    public readonly BowerbirdOptions Options = BowerbirdOptions
         .CreateFromName("Bowerbird WPF Demo");
 
     public BowerBirdDemoApp()
