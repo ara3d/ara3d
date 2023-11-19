@@ -19,8 +19,11 @@ namespace Ara3D.Bowerbird.Wpf
     /// </summary>
     public partial class BowerbirdCompilationWindow : Window
     {
+        public BowerbirdWindowViewModel ViewModel { get; }
+
         public BowerbirdCompilationWindow()
         {
+            DataContext = ViewModel;
             InitializeComponent();
         }
     }

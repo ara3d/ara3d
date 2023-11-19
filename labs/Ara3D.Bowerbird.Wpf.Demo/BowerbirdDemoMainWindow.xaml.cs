@@ -1,17 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Collections.ObjectModel;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
+using Ara3D.Bowerbird.Core;
+using Ara3D.Domo;
 
 namespace Ara3D.Bowerbird.Wpf.Demo
 {
@@ -20,12 +12,24 @@ namespace Ara3D.Bowerbird.Wpf.Demo
     /// </summary>
     public partial class BowerbirdDemoMainWindow : Window
     {
-        public BowerBirdDemoApp App { get; }
-
+        public BowerBirdDemoApp App { get; } = new();
+    
         public BowerbirdDemoMainWindow()
         {
-            InitializeComponent();
             App = new BowerBirdDemoApp();
+            var repo = App.Service.Repo;
+            DataContext = repo;
+            InitializeComponent();
+            ConsoleListBox.ItemsSource = App.LogRepo.GetModels();
+            App.Service.Repo.OnModelChanged(model => ModelChanged(model.Value));
+            App.Service.Compile();
+        }
+
+        public void ModelChanged(BowerbirdDataModel dataModel)
+        {
+            TypeListBox.ItemsSource = dataModel.Types;
+            DiagnosticsListBox.ItemsSource = dataModel.Diagnostics;
+            FileListBox.ItemsSource = dataModel.Files;
         }
     }
 }

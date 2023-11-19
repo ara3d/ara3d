@@ -8,7 +8,7 @@ namespace Ara3D.Bowerbird.Wpf;
 public class BowerbirdWindowViewModel : INotifyPropertyChanged
 {
     public ObservableCollection<string> LogMessages { get; } = new();
-    public ObservableCollection<string> PluginCommands { get; } = new();
+    public ObservableCollection<string> Commands { get; } = new();
     public ObservableCollection<string> Files { get; } = new();
 
     public event PropertyChangedEventHandler? PropertyChanged;

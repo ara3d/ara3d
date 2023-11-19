@@ -1,5 +1,8 @@
 ﻿using System.Diagnostics;
+using System.Drawing;
+using System.IO;
 using System.Reflection;
+using System.Windows.Media.Imaging;
 using Ara3D.Bowerbird.Core;
 using Ara3D.Domo;
 using Ara3D.Services;
@@ -18,6 +21,21 @@ namespace Ara3D.Bowerbird.Revit
             return Result.Succeeded;
         }
 
+        private BitmapImage BitmapToImageSource(Bitmap bitmap)
+        {
+            using (var memory = new MemoryStream())
+            {
+                bitmap.Save(memory, System.Drawing.Imaging.ImageFormat.Bmp);
+                memory.Position = 0;
+                var bitmapimage = new BitmapImage();
+                bitmapimage.BeginInit();
+                bitmapimage.StreamSource = memory;
+                bitmapimage.CacheOption = BitmapCacheOption.OnLoad;
+                bitmapimage.EndInit();
+                return bitmapimage;
+            }
+        }
+
         public Result OnStartup(UIControlledApplication application)
         {
             UicApp = application;
@@ -26,9 +44,11 @@ namespace Ara3D.Bowerbird.Revit
             var pushButtonData = new PushButtonData("Bowerbird", "Bowerbird", 
                 Assembly.GetExecutingAssembly().Location,
                 typeof(BowerbirdExternalCommand).FullName);
+            // https://www.revitapidocs.com/2020/544c0af7-6124-4f64-a25d-46e81ac5300f.htm
             if (!(rvtRibbonPanel.AddItem(pushButtonData) is PushButton runButton))
                 return Result.Failed;
-            runButton.ToolTip = "Create and run dynamic commands";
+            runButton.LargeImage = BitmapToImageSource(Resources.Bowerbird_32x32);
+            runButton.ToolTip = "Compile and Load C# Scripts";
             return Result.Succeeded;
         }
 
@@ -44,7 +64,7 @@ namespace Ara3D.Bowerbird.Revit
             LogRepo = new LogRepo();
             Logger = new LoggingService("Bowerbird", Api, LogRepo);
             LogRepo.OnModelAdded(model => OnLogEntry(model.Value));
-            Options = BowerbirdOptions.CreateFromName("Bowerbird for Revit");
+            Options = BowerbirdOptions.CreateFromName("Ara 3D", "Bowerbird for Revit");
             Service = new BowerbirdService(Api, Logger, Options);
         }
 
@@ -56,7 +76,8 @@ namespace Ara3D.Bowerbird.Revit
         public void Run(UIApplication application)
         {
             Logger.Log("Running command");
-            Service.Recompile();
+            var window = new BowerbirdCompilationWindow();
+            Service.Compile();
         }
     }
 }

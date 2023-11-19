@@ -54,7 +54,6 @@ namespace Ara3D.Domo
             Value = (TValue)newState;
         }
 
-
         public object GetPropertyValue(string name)
         {
             var prop = ValueType.GetProperty(name);

@@ -14,9 +14,6 @@ namespace Ara3D.Bowerbird.Revit
     [Regeneration(RegenerationOption.Manual)]
     public class BowerbirdExternalCommand : IExternalCommand
     {
-        public readonly BowerbirdOptions Options = BowerbirdOptions
-            .CreateFromName("Bowerbird for Revit");
-
         public Result Execute(ExternalCommandData commandData, ref string message, ElementSet elements)
         {
             try

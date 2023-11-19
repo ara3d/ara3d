@@ -3,8 +3,11 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:Ara3D.Bowerbird.Wpf.Demo"
-        mc:Ignorable="d"
+        xmlns:local="clr-namespace:Ara3D.Bowerbird.Wpf.Demo" 
+        xmlns:wpf="clr-namespace:Ara3D.Bowerbird.Wpf;assembly=Ara3D.Bowerbird.Wpf"
+        xmlns:core="clr-namespace:Ara3D.Bowerbird.Core;assembly=Ara3D.Bowerbird.Core"
+        d:DataContext="{d:DesignInstance Type=core:BowerbirdDataModel}"
+		mc:Ignorable="d"
         Title="MainWindow" Height="171" Width="509">
 	<DockPanel>
 		<!-- Menu -->
@@ -12,5 +15,22 @@
 			<MenuItem Header="_File">
 			</MenuItem>
 		</Menu>
+		<Grid>
+			<Grid.RowDefinitions>
+				<RowDefinition Height="*"></RowDefinition>
+				<RowDefinition Height="*"></RowDefinition>
+			</Grid.RowDefinitions>
+			<!-- Define Columns -->
+			<Grid.ColumnDefinitions>
+				<ColumnDefinition Width="*" />
+				<ColumnDefinition Width="*" />
+			</Grid.ColumnDefinitions>
+
+			<ListBox Grid.Column="0" Grid.Row="0" x:Name="ConsoleListBox"></ListBox>
+			<ListBox Grid.Column="1" Grid.Row="0" x:Name="TypeListBox"></ListBox>
+			<ListBox Grid.Column="0" Grid.Row="1" x:Name="DiagnosticsListBox"></ListBox>
+			<ListBox Grid.Column="1" Grid.Row="1" x:Name="FileListBox"></ListBox>
+
+		</Grid>
 	</DockPanel>
 </Window>

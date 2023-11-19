@@ -20,6 +20,8 @@ namespace Ara3D.Bowerbird.Core
         public CompilerInput CompilerInput { get; private set; }
         public Compilation Compilation { get; private set; }
 
+        public bool Success => Compilation.EmitResult.Success;
+
         public FolderCompilation(DirectoryPath path)
         {
             Directory = path;

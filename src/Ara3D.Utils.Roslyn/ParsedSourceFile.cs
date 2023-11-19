@@ -21,6 +21,8 @@ namespace Ara3D.Utils.Roslyn
         public readonly EmbeddedText EmbeddedText;
         public ParseOptions ParseOptions => SyntaxTree.Options;
         public IEnumerable<Diagnostic> Diagnostics => SyntaxTree.GetDiagnostics();
+        public bool HasErrors => Diagnostics.Any(st => st.WarningLevel == 0);
+        public bool Success => SyntaxTree != null && !HasErrors;
 
         public ParsedSourceFile(SourceText source, SyntaxTree tree, FilePath filePath)
         {

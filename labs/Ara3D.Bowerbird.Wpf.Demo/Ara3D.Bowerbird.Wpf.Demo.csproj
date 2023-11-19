@@ -9,7 +9,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Ara3D.Bowerbird.Core\Ara3D.Bowerbird.Core.csproj" />
-    <ProjectReference Include="..\Ara3D.Bowerbird.Wpf\Ara3D.Bowerbird.Wpf.csproj" />
   </ItemGroup>
 
 </Project>
