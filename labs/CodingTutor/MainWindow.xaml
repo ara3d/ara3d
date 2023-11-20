@@ -1,0 +1,22 @@
+﻿<Window x:Class="CodingTutor.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:CodingTutor"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="640" Width="618">
+	<DockPanel>
+		<Menu DockPanel.Dock="Top">
+			<MenuItem Header="Query" Click="MenuItem_Click"></MenuItem>
+		</Menu>
+		<Grid>
+			<Grid.RowDefinitions>
+				<RowDefinition Height="*"></RowDefinition>
+				<RowDefinition Height="*"></RowDefinition>
+			</Grid.RowDefinitions>
+			<TextBox TextWrapping="Wrap" Grid.Row="0" x:Name="textPrompt" ></TextBox>
+			<TextBox TextWrapping="Wrap" Grid.Row="1" x:Name="textResponse" ></TextBox>
+		</Grid>
+	</DockPanel>
+</Window>
