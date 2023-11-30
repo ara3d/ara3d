@@ -10,6 +10,13 @@ namespace Ara3D.Services
             => Service = service;
     }
 
+    public class ServiceDisposingEvent : IEvent
+    {
+        public IService Service { get; }
+        public ServiceDisposingEvent(IService service)
+            => Service = service;
+    }
+
     public sealed class Api : IApi
     {
         private readonly List<IService> _services = new List<IService>();
@@ -23,8 +30,6 @@ namespace Ara3D.Services
         public void AddService(IService service) 
         {
             _services.Add(service);
-            // TODO: register commands 
-            // TODO: add as subscriber ... if necessary 
             EventBus.Publish(new ServiceRegisteredEvent(service));
         }
 

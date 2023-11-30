@@ -24,7 +24,6 @@ namespace Ara3D.Services
 
     /// <summary>
     /// Used to subscribe to, and publish events between services.
-    /// Events must have distinct type names.
     /// This decouples event publishers from subscribers.
     /// If a publisher is disposed, events are simply no longer published.
     /// If a subscriber is disposed, it is automatically unsubscribed.
@@ -54,9 +53,6 @@ namespace Ara3D.Services
             => _dictionary.Keys.ToArray();
     }
 
-    /// <summary>
-    /// <inheritdoc cref="IEventBus"/>
-    /// </summary>
     public class EventBus : IEventBus
     {
         public ConcurrentDictionary<Type, ConcurrentSet<object>> Subscribers = new ConcurrentDictionary<Type, ConcurrentSet<object>>();

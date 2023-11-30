@@ -50,33 +50,6 @@ namespace Ara3D.Utils.Wpf
                 }), disposing);
         */
 
-        public static WindowDisposingAdapter CreateDisposedAdpater(Window window) => new(window);
-
-        public class WindowDisposingAdapter : IDisposingNotifier
-        {
-            public WindowDisposingAdapter(Window window)
-            {
-                Window = window;
-                Window.Closed += Window_Closed;
-            }
-
-            private void Window_Closed(object sender, EventArgs e)
-            {
-                Disposing?.Invoke(sender, null);
-                Window = null;
-            }
-
-            public Window Window { get; private set; }
-
-            public event EventHandler Disposing;
-
-            public void Dispose()
-            {
-                Window?.Close();
-                Window = null;
-            }
-        }
-
         public static bool ShiftDown
             => (Keyboard.Modifiers & ModifierKeys.Shift) == ModifierKeys.Shift;
 

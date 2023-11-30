@@ -2,10 +2,13 @@
 
 namespace Ara3D.Services
 {
-    public class BaseService : IService, IDisposable
+    public class BaseService : IService
     {
-        public BaseService(IApi api)
-            => Api = api;
+        protected BaseService(IApi api)
+        {
+            Api = api;
+            api.AddService(this);
+        }
 
         public IApi Api { get; }
 
