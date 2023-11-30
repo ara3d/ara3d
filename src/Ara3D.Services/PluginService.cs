@@ -89,7 +89,6 @@ namespace Ara3D.Services
                 var id = Guid.NewGuid();
                 PluginRepo.Add(new PluginRecord(plugin.Name));
                 CommandService.AddAttributeCommands(plugin); 
-                plugin.Disposing += (_sender, _args) => PluginRepo.Delete(id);
                 return true;
             }
             catch (Exception e)
@@ -102,11 +101,6 @@ namespace Ara3D.Services
 
         private void Controller_RecompileEvent(object sender, EventArgs e)
         {
-            foreach (var p in ScriptedPlugins)
-            {
-                p.Dispose();
-            }
-
             ScriptedPlugins.Clear();
 
             //throw new NotImplementedException();

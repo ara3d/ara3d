@@ -1,12 +1,10 @@
 ﻿using System;
-using Ara3D.Utils;
 
 namespace Ara3D.Services
 {
-    public class Subscriber<T> : DisposingNotifier, ISubscriber<T>
+    public class Subscriber<T> : ISubscriber<T>
     {
-        public Subscriber(Action<T> action, IDisposingNotifier notifier = null)
-            : base(notifier)
+        public Subscriber(Action<T> action)
         {
             Action = action;
         }

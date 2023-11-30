@@ -1,8 +1,6 @@
-﻿using Ara3D.Utils;
-
-namespace Ara3D.Services
+﻿namespace Ara3D.Services
 {
-    public interface IPlugin : IDisposingNotifier
+    public interface IPlugin 
     {
         string Name { get; }
         void Initialize(IApi api);

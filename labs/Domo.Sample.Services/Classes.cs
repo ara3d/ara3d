@@ -136,17 +136,19 @@ namespace Ara3D.Domo.Sample.Services
         INamedCommand RedoCommand { get; }
     }
 
-    public class UndoService : SingletonModelBackedService<UndoState>, IUndoService
+    public class UndoService : SingletonModelBackedService<UndoState>, 
+        IUndoService, 
+        ISubscriber<RepositoryChangedEvent>
     {
         public UndoService(IApi api)
             : base(api)
         {
-            api.EventBus.Subscribe<RepositoryChangedEvent>(RepositoryChanged, this);
+            api.EventBus.Subscribe<RepositoryChangedEvent>(this);
             RegisterCommand(Undo, () => CanUndo, Repository);
             RegisterCommand(Redo, () => CanRedo, Repository);
         }
 
-        private void RepositoryChanged(RepositoryChangedEvent e)
+        public void OnEvent(RepositoryChangedEvent e)
         {
             // TODO: store the appropriate change. 
             if (CanRedo)
@@ -179,15 +181,18 @@ namespace Ara3D.Domo.Sample.Services
     {
     }
 
-    public class ChangeService : AggregateModelBackedService<ChangeRecord>, IChangeService
+    public class ChangeService : 
+        AggregateModelBackedService<ChangeRecord>, 
+        IChangeService, 
+        ISubscriber<RepositoryChangedEvent>
     {
         public ChangeService(IApi api)
             : base(api)
         {
-            api.EventBus.Subscribe<RepositoryChangedEvent>(OnRepoChange, this);
+            api.EventBus.Subscribe<RepositoryChangedEvent>(this);
         }
 
-        public void OnRepoChange(RepositoryChangedEvent e)
+        public void OnEvent(RepositoryChangedEvent e)
         {
             var args = e.Args;
             switch (args.ChangeType)

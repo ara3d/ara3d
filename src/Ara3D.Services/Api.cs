@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using Ara3D.Domo;
+using Ara3D.Utils;
 
 namespace Ara3D.Services
 {
@@ -9,14 +10,7 @@ namespace Ara3D.Services
         public ServiceRegisteredEvent(IService service)
             => Service = service;
     }
-
-    public class ServiceDisposingEvent : IEvent
-    {
-        public IService Service { get; }
-        public ServiceDisposingEvent(IService service)
-            => Service = service;
-    }
-
+    
     public sealed class Api : IApi
     {
         private readonly List<IService> _services = new List<IService>();
@@ -25,7 +19,14 @@ namespace Ara3D.Services
         public IEnumerable<IService> GetServices() => _services;
         public IEnumerable<IRepository> GetRepositories() => _repositories;
         
-        public IEventBus EventBus { get; } = new EventBus();
+        public IEventBus EventBus { get; } 
+        public Synchronizer Synchronizer { get; } 
+
+        public Api()
+        {
+            Synchronizer = Synchronizer.Create();
+            EventBus = new EventBus(Synchronizer);
+        }
 
         public void AddService(IService service) 
         {

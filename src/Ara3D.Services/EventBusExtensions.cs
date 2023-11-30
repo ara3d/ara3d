@@ -22,25 +22,6 @@ namespace Ara3D.Services
             repo.RepositoryChanged += (_, args) => bus.Publish(new ModelChangedEvent<T>(args));
         }
 
-        public static void Subscribe<T>(this IEventBus bus, Action<T> action, IDisposingNotifier notifier = null) where T: IEvent
-            => bus.Subscribe(new Subscriber<T>(action, notifier ?? DefaultDisposingNotifier));
-
-        public class GlobalDisposingNotifier : IDisposingNotifier
-        {
-            public void Dispose() { }
-            public event EventHandler Disposing;
-        }
-
-        public static IDisposingNotifier DefaultDisposingNotifier = new GlobalDisposingNotifier();
-
-        public static void OnModelChanged<T>(this IEventBus bus, Action<IModel<T>> action,
-            IDisposingNotifier notifier = null)
-            => bus.Subscribe<ModelChangedEvent<T>>(evt => action(evt.Model), notifier);
-
-        public static void OnModelsChanged<T>(this IEventBus bus, Action<IReadOnlyList<IModel<T>>> action,
-            IDisposingNotifier notifier = null)
-            => bus.Subscribe<ModelChangedEvent<T>>(evt => action(evt.Models), notifier);
-
         /// <summary>
         /// Given a dynamic object, which potentially implements many ISubscriber interfaces,
         /// connect up to it, and inform it when the object happens first.  
