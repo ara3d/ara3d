@@ -6,7 +6,6 @@ using System.Windows.Media.Imaging;
 using Ara3D.Bowerbird.Core;
 using Ara3D.Domo;
 using Ara3D.Services;
-using Autodesk.Revit.Creation;
 using Autodesk.Revit.UI;
 
 namespace Ara3D.Bowerbird.Revit

@@ -1,6 +1,4 @@
-﻿using System.Threading;
-using System.Windows;
-using System.Windows.Input;
+﻿using System.Windows;
 using Emu.Controls;
 using Peacock;
 

@@ -1,9 +1,7 @@
 using Silk.NET.OpenGL;
 using System;
 using System.Diagnostics;
-using Ara3D.Buffers;
 using Ara3D.Graphics;
-using Ara3D.Math;
 
 namespace Tutorial
 {

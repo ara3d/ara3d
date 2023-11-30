@@ -1,5 +1,4 @@
-﻿using System.Runtime.CompilerServices;
-using Ara3D.Utils;
+﻿using Ara3D.Utils;
 using Parakeet.Tests;
 using Parakeet;
 using Parakeet.Demos;

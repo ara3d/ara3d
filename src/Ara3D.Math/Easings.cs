@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Ara3D.Math
+﻿namespace Ara3D.Math
 {
     public static class Easings
     {

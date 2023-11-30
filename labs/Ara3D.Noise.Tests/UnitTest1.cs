@@ -1,6 +1,3 @@
-using System.Runtime.InteropServices;
-using Ara3D.Noise;
-
 namespace Ara3D.Noise.Tests
 {
     public class Tests

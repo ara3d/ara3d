@@ -1,6 +1,4 @@
-﻿using System;
-using Ara3D.Collections;
-using Ara3D.Graphics;
+﻿using Ara3D.Graphics;
 using Ara3D.Math;
 
 namespace PathTracer

@@ -6,11 +6,8 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using Ara3D.Serialization.VIM;
-using Ara3D.Collections;
 using Ara3D.Geometry;
 using Ara3D.Graphics;
-using Ara3D.Math;
-using Silk.NET.Assimp;
 using Vector4 = System.Numerics.Vector4;
 
 namespace Tutorial

@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Diagnostics;
-using Ara3D.Bowerbird.Core;
-using Ara3D.Services;
 using Autodesk.Revit.Attributes;
 using Autodesk.Revit.DB;
 using Autodesk.Revit.UI;

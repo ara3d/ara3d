@@ -2,9 +2,6 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Ara3D.Collections;
 using Ara3D.Math;
 using Ara3D.Serialization.G3D;

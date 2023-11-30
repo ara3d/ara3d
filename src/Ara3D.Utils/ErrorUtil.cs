@@ -1,5 +1,4 @@
 using System;
-using System.Diagnostics;
 using System.Runtime.ExceptionServices;
 
 namespace Ara3D.Utils

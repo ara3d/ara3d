@@ -1,6 +1,4 @@
-﻿using System.IO;
-
-namespace Ara3D.Utils
+﻿namespace Ara3D.Utils
 {
     public readonly struct DirectoryPath
     {

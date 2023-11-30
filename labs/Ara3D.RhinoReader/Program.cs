@@ -1,12 +1,7 @@
 ﻿using System.Diagnostics;
-using System.Linq;
-using System.Runtime.CompilerServices;
-using System.Security.Cryptography;
-using System.Text.Json;
 using Ara3D.Collections;
 using Ara3D.Math;
 using Ara3D.Serialization.G3D;
-using Microsoft.VisualBasic.CompilerServices;
 using Rhino.FileIO;
 using Rhino.Geometry;
 

@@ -1,10 +1,5 @@
-﻿using System;
-using System.Windows;
-using Ara3D.Bowerbird.Core;
-using Ara3D.Domo;
+﻿using Ara3D.Bowerbird.Core;
 using Ara3D.Services;
-using Ara3D.Utils;
-using LogEntry = Ara3D.Services.LogEntry;
 
 namespace Ara3D.Bowerbird.Wpf.Demo;
 

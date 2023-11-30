@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Windows;
+﻿using System.Windows;
 using Ara3D.Bowerbird.Core;
 using Ara3D.Domo;
 
