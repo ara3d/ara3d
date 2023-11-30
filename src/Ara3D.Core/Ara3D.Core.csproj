@@ -15,24 +15,5 @@
     </ItemGroup>
   </Target>
   -->
-  <ItemGroup>
-    <ProjectReference Include="..\Ara3D.Buffers\Ara3D.Buffers.csproj" />
-    <ProjectReference Include="..\Ara3D.Collections\Ara3D.Collections.csproj" />
-    <ProjectReference Include="..\Ara3D.Domo\Ara3D.Domo.csproj" />
-    <ProjectReference Include="..\Ara3D.Geometry\Ara3D.Geometry.csproj" />
-    <ProjectReference Include="..\Ara3D.Graphics\Ara3D.Graphics.csproj" />
-    <ProjectReference Include="..\Ara3D.Interop.Assimp\Ara3D.Interop.Assimp.csproj" />
-    <ProjectReference Include="..\Ara3D.Interop.G3Sharp\Ara3D.Interop.G3Sharp.csproj" />
-    <ProjectReference Include="..\Ara3D.Math\Ara3D.Math.csproj" />
-    <ProjectReference Include="..\Ara3D.Parsing.Grammars\Ara3D.Parsing.Grammars.csproj" />
-    <ProjectReference Include="..\Ara3D.Parsing\Ara3D.Parsing.csproj" />
-    <ProjectReference Include="..\Ara3D.Serialization.BFAST\Ara3D.Serialization.BFAST.csproj" />
-    <ProjectReference Include="..\Ara3D.Serialization.G3D\Ara3D.Serialization.G3D.csproj" />
-    <ProjectReference Include="..\Ara3D.Serialization.VIM\Ara3D.Serialization.VIM.csproj" />
-    <ProjectReference Include="..\Ara3D.Services\Ara3D.Services.csproj" />
-    <ProjectReference Include="..\Ara3D.Utils.Roslyn\Ara3D.Utils.Roslyn.csproj" />
-    <ProjectReference Include="..\Ara3D.Utils.Unsafe\Ara3D.Utils.Unsafe.csproj" />
-    <ProjectReference Include="..\Ara3D.Utils\Ara3D.Utils.csproj" />
-  </ItemGroup>
 
 </Project>

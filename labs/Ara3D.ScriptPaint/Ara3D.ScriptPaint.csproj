@@ -14,9 +14,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\src\Ara3D.Graphics\Ara3D.Graphics.csproj" />
     <ProjectReference Include="..\..\src\Ara3D.Services\Ara3D.Services.csproj" />
     <ProjectReference Include="..\..\src\Ara3D.Utils.Roslyn\Ara3D.Utils.Roslyn.csproj" />
-    <ProjectReference Include="..\PathTracer\PathTracer.csproj" />
   </ItemGroup>
 
 </Project>

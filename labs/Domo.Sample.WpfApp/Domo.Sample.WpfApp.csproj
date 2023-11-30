@@ -8,7 +8,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Domo.SampleModels\Domo.SampleModels.csproj" />
+    <ProjectReference Include="..\..\src\Ara3D.Domo\Ara3D.Domo.csproj" />
   </ItemGroup>
 
 </Project>
