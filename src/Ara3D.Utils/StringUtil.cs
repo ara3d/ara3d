@@ -8,13 +8,17 @@ namespace Ara3D.Utils
 {
     public static class StringUtil
     {
+        public static bool IsNullOrEmpty(this string self)
+            => string.IsNullOrEmpty(self);
+
+        public static bool IsNullOrWhiteSpace(this string self)
+            => string.IsNullOrWhiteSpace(self);
 
         public static string IfEmpty(this string self, string other)
-            => string.IsNullOrWhiteSpace(self) ? other : self;
+            => self.IsNullOrWhiteSpace() ? other : self;
 
         public static string ElidedSubstring(this string self, int start, int length, int max)
             => (length > max) ? self.Substring(start, max) + "..." : self.Substring(start, length);
-
 
         public static string ToUtf8(this byte[] bytes)
             => Encoding.UTF8.GetString(bytes);
@@ -36,6 +40,7 @@ namespace Ara3D.Utils
 
         public static string ToBase64(this byte[] bytes)
             => Convert.ToBase64String(bytes);
+
         public static string[] SplitAtNull(this string s)
             => s.Split('\0');
 

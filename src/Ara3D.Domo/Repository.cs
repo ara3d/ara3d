@@ -207,9 +207,6 @@ namespace Ara3D.Domo
             get => GetModels().Select(m => m.Value).ToList();
             set => SetModelValues(value);
         }
-
-        public IReadOnlyList<dynamic> DynamicModels
-            => GetModels().ToList();
     }
 
     public class SingletonRepository<T> : Repository<T>, ISingletonRepository<T>
@@ -222,9 +219,6 @@ namespace Ara3D.Domo
         public override bool IsSingleton => true;
 
         public IModel<T> Model { get; }
-        
-        public dynamic DynamicModel 
-            => Model;
 
         public T Value
         {

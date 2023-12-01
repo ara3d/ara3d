@@ -109,5 +109,22 @@ namespace Ara3D.Domo
 
         public static IModel<T> GetSingleModel<T>(this IRepository<T> repo)
             => repo.GetModels()[0];
+
+        /// <summary>
+        /// Returns a copy of the values as mutable dynamic that you can set in a
+        /// thread-safe and immutable manner. A copy of the the model is created, and
+        /// if a value is changed, then it is committed to the repo. 
+        /// </summary>
+        public static IReadOnlyList<dynamic> GetDynamicModels(this IRepository repo) 
+            => repo.GetModels().ToList();
+
+        /// <summary>
+        /// For use with singleton repositories. Returns a copy of the first value as a
+        /// mutable dynamic that you can set in a thread-safe and immutable manner.
+        /// A copy of the the model is created, and if a value is changed, then it is committed
+        /// to the repo. 
+        /// </summary>
+        public static dynamic GetDynamicModel(this IRepository repo)
+            => repo.GetDynamicModels()[0];
     }
 }   
