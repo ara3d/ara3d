@@ -16,7 +16,8 @@ namespace Ara3D.Domo
 
         static Model()
         {
-            _cloneMethod = typeof(TValue).GetMethod("MemberwiseClone", BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Instance);
+            _cloneMethod = typeof(TValue).GetMethod("MemberwiseClone", 
+                BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Instance);
         }
 
         private static readonly MethodInfo _cloneMethod;

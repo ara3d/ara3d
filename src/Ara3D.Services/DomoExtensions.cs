@@ -8,6 +8,9 @@ namespace Ara3D.Services
 {
     public static class DomoExtensions
     {
+        public static JsonText ToJson(this IModel model)
+            => JsonConvert.SerializeObject(model, Formatting.Indented);
+
         public static JsonText ToJson(this IRepository repo)
             => JsonConvert.SerializeObject(repo.GetValues().ToArray(), Formatting.Indented);
 
@@ -29,6 +32,7 @@ namespace Ara3D.Services
                 {
                     repo.Add(tmp.GetValue(i));
                 }
+
             }
 
             return repo;

@@ -4,18 +4,18 @@ namespace Ara3D.Utils
 {
     public class ApplicationFolders
     {
-        public ApplicationId ApplicationId { get; }
+        ApplicationData _appData { get; }
 
         public string AppFolder
-            => Path.Combine(ApplicationId.CompanyName, ApplicationId.AppName);
+            => Path.Combine(_appData.CompanyName, _appData.AppName);
 
-        public ApplicationFolders(ApplicationId appId)
-            => ApplicationId = appId;
+        public ApplicationFolders(ApplicationData appData)
+            => _appData = appData;
 
         public DirectoryPath ApplicationData => SpecialFolders.ApplicationData.RelativeFolder(AppFolder);
         public DirectoryPath CommonApplicationData => SpecialFolders.CommonApplicationData.RelativeFolder(AppFolder);
         public DirectoryPath ProgramFiles => SpecialFolders.ProgramFiles.RelativeFolder(AppFolder);
-        public DirectoryPath Documents => SpecialFolders.ProgramFiles.RelativeFolder(AppFolder);
-        public DirectoryPath TempFolder => SpecialFolders.Temp.RelativeFolder(AppFolder);
+        public DirectoryPath Documents => SpecialFolders.MyDocuments.RelativeFolder(AppFolder);
+        public DirectoryPath Temp => SpecialFolders.Temp.RelativeFolder(AppFolder);
     }
 }

@@ -5,8 +5,7 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
   	<UseWPF>true</UseWPF>
-  	 <UseWindowsForms>true</UseWindowsForms>
-    <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+    <UseWindowsForms>true</UseWindowsForms>
   </PropertyGroup>
 
   <ItemGroup>

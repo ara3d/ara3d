@@ -2,7 +2,6 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
-    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <Description>G3D is a simple, efficient, generic binary format for storing and transmitting geometry. The G3D format is designed to be used either as a serialization format or as an in-memory data structure. G3D can represent triangular meshes, quadrilateral meshes, polygonal meshes, point clouds, and line segments.
 It can be easily and efficiently deserialized and rendered in different languages and on different platforms.</Description>
     <EmbedUntrackedSources>true</EmbedUntrackedSources>

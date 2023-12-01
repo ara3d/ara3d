@@ -1,5 +1,11 @@
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Target Name="CopyNupkg" AfterTargets="Pack">
-      <Copy SourceFiles="$(OutputPath)..\$(PackageId).$(PackageVersion).nupkg" DestinationFolder="$(ProjectDir)..\..\output" />
+      <Copy SourceFiles="$(OutputPath)..\$(PackageId).$(PackageVersion).nupkg" 
+            DestinationFolder="$(ProjectDir)..\..\output" />
   </Target>
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <PackageVersion>1.1.0</PackageVersion>
+    <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+  </PropertyGroup>
 </Project>
