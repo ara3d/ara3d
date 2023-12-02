@@ -35,7 +35,15 @@ namespace Ara3D.Utils
         }
 
         public bool CanExecute(object parameter = null)
-            => CanExecuteDelegate == null || (bool?)CanExecuteDelegate.DynamicInvoke(parameter) != false;
+        {
+            if (CanExecuteDelegate == null) 
+                return true;
+            
+            if (CanExecuteDelegate.Method.GetParameters().Length > 0)
+                return (bool)CanExecuteDelegate.DynamicInvoke(parameter);
+
+            return (bool)CanExecuteDelegate.DynamicInvoke();
+        }
 
         public void Execute(object parameter = null)
         {
