@@ -41,7 +41,7 @@ namespace Ara3D.Domo
             => _cloneMethod.Invoke(Value, Array.Empty<object>());
 
         public bool HasProperty(string name)
-            => ValueType.GetProperty(name) != null;
+            => ValueType.GetProperty(name) != null || ValueType.GetField(name) != null;
 
         public void SetPropertyValue(string name, object value)
         {
@@ -49,7 +49,12 @@ namespace Ara3D.Domo
             var prop = ValueType.GetProperty(name);
             if (prop == null)
             {
-                throw new ArgumentException(name);
+                var field = ValueType.GetField(name);
+                if (field == null)
+                    throw new ArgumentException(name);
+                field.SetValue(newState, value);
+                Value = (TValue)newState;
+                return;
             }
             prop.SetValue(newState, value);
             Value = (TValue)newState;
@@ -58,12 +63,13 @@ namespace Ara3D.Domo
         public object GetPropertyValue(string name)
         {
             var prop = ValueType.GetProperty(name);
-            if (prop == null)
-            {
+            if (prop != null) 
+                return prop.GetValue(Value);
+            var field = ValueType.GetField(name);
+            if (field == null)
                 throw new ArgumentException(name);
-            }
+            return field.GetValue(Value);
 
-            return prop.GetValue(Value);
         }
 
         object IModel.Value

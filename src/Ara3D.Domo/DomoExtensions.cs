@@ -126,5 +126,25 @@ namespace Ara3D.Domo
         /// </summary>
         public static dynamic GetDynamicModel(this IRepository repo)
             => repo.GetDynamicModels()[0];
+
+        /// <summary>
+        /// Returns a model, that you can update dynamically.
+        /// Under the hood setting properties commits a copy of the model to
+        /// the repository. You can bind this directly to a WPF control if you want. 
+        /// </summary>
+        public static dynamic AsDynamic(this IModel model)
+            => model;
+
+        /// <summary>
+        /// Creates a copy of the existing model 
+        /// </summary>
+        public static IModel<T> Clone<T>(this IModel<T> self)
+            => self.Repository.Add(self.Value);
+
+        /// <summary>
+        /// Deletes the model from its repository
+        /// </summary>
+        public static void Delete(this IModel self)
+            => self.Repository.Delete(self.Id);
     }
 }   
