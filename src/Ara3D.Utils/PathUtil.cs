@@ -63,7 +63,7 @@ namespace Ara3D.Utils
 
         public static FilePath TransformName(this FilePath filePath, Func<string, string> f)
             => filePath.GetDirectory().RelativeFile(
-                f(filePath.GetFileNameWithoutExtension()) + f(filePath.GetExtension()));
+                f(filePath.GetFileNameWithoutExtension()) + filePath.GetExtension());
 
         /// <summary>
         /// Appends a time stamp to the time stamped filename and extension.

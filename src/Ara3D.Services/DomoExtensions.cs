@@ -42,7 +42,7 @@ namespace Ara3D.Services
         };
 
         public static JsonText ToJson(this IModel model)
-            => JsonConvert.SerializeObject(model, JsonSettings);
+            => JsonConvert.SerializeObject(model.Value, JsonSettings);
 
         public static JsonText ToJson(this IRepository repo)
             => JsonConvert.SerializeObject(repo.GetValues().ToArray(), JsonSettings);
