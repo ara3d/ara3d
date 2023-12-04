@@ -53,18 +53,28 @@ namespace Ara3D.Domo
                 if (field == null)
                     throw new ArgumentException(name);
                 field.SetValue(newState, value);
-                Value = (TValue)newState;
-                return;
             }
-            prop.SetValue(newState, value);
+            else if (prop.CanWrite)
+            {
+                prop.SetValue(newState, value);
+            }
+            else
+            {
+                // HACK: this is the only way to set the backing field 
+                // https://stackoverflow.com/questions/8817070/is-it-possible-to-access-backing-fields-behind-auto-implemented-properties
+                var field = ValueType.GetField($"<{name}>k__BackingField", BindingFlags.Instance | BindingFlags.NonPublic);
+                if (field == null)
+                    throw new ArgumentException($"Can not set property {name}, no backing field could be found");
+                field.SetValue(newState, value);
+            }
+
             Value = (TValue)newState;
         }
 
         public object GetPropertyValue(string name)
         {
             var prop = ValueType.GetProperty(name);
-            if (prop != null) 
-                return prop.GetValue(Value);
+            if (prop != null) return prop.GetValue(Value);
             var field = ValueType.GetField(name);
             if (field == null)
                 throw new ArgumentException(name);
