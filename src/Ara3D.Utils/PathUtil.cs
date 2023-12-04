@@ -68,7 +68,7 @@ namespace Ara3D.Utils
         /// <summary>
         /// Appends a time stamp to the time stamped filename and extension.
         /// </summary>
-        public static string TimeStampedFileName(this FilePath filePath)
+        public static FilePath ToTimeStampedFileName(this FilePath filePath)
             => TransformName(filePath, name => $"{name}-{GetTimeStamp()}");
 
         public static FilePath Move(this FilePath filePath, FilePath destination)
