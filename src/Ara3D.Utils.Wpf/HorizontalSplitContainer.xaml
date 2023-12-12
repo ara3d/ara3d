@@ -13,7 +13,7 @@
 		</Grid.ColumnDefinitions>
 
 		<ContentPresenter Grid.Column="0" Content="{Binding LeftContent, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}" />
-		<GridSplitter Grid.Column="1" Width="5" VerticalAlignment="Stretch" />
+		<GridSplitter Grid.Column="1" Width="5" HorizontalAlignment="Stretch" />
 		<ContentPresenter Grid.Column="2" Content="{Binding RightContent, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}" />
 	</Grid>
 </UserControl>

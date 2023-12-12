@@ -4,19 +4,32 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:KiwiMarkdownEditor"
-        xmlns:Wpf="clr-namespace:Ara3D.Utils.Wpf;assembly=Ara3D.Utils.Wpf" x:Class="KiwiMarkdownEditor.MainWindow"
+        xmlns:Wpf="clr-namespace:Ara3D.Utils.Wpf;assembly=Ara3D.Utils.Wpf"
+        xmlns:avalonedit="http://icsharpcode.net/sharpdevelop/avalonedit"
+        x:Class="KiwiMarkdownEditor.MainWindow"
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
 	<Grid>
 
-		<Wpf:HorizontalSplitContainer>
-			<Wpf:HorizontalSplitContainer.LeftContent>
-				<TextBlock>Hello</TextBlock>
-			</Wpf:HorizontalSplitContainer.LeftContent>
-			<Wpf:HorizontalSplitContainer.RightContent>
-				<TextBlock>World</TextBlock>
-			</Wpf:HorizontalSplitContainer.RightContent>
-		</Wpf:HorizontalSplitContainer>
+		<Wpf:SplitContainer LeftColumnWidth="*">
+			<Wpf:SplitContainer.Left>
+				<avalonedit:TextEditor
+					x:Name="Editor"			
+					FontFamily="Consolas"
+					ShowLineNumbers="True"
+					FontSize="10pt"
+					SyntaxHighlighting="MarkDown"
+					xml:space="preserve"
+				>
+# Test
+This is *another* test
+				</avalonedit:TextEditor>
+
+			</Wpf:SplitContainer.Left>
+			<Wpf:SplitContainer.Right>
+<WebBrowser x:Name="WebBrowser"/>
+			</Wpf:SplitContainer.Right>
+		</Wpf:SplitContainer>
 
 	</Grid>
 </Window>

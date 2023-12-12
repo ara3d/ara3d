@@ -19,6 +19,14 @@ namespace KiwiMarkdownEditor
         public MainWindow()
         {
             InitializeComponent();
+            this.Editor.TextChanged += Editor_TextChanged;
+        }
+
+        private void Editor_TextChanged(object? sender, EventArgs e)
+        {
+            var obj = this.WebBrowser.Document;
+            var html = Markdig.Markdown.ToHtml(this.Editor.Text);
+            this.WebBrowser.NavigateToString(html);
         }
     }
 }
