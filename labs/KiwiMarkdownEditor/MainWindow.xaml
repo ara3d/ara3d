@@ -9,8 +9,8 @@
         x:Class="KiwiMarkdownEditor.MainWindow"
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
-	<Grid>
-
+	<StackPanel>
+		<Button Click="ButtonBase_OnClick">Click me</Button>
 		<Wpf:SplitContainer LeftColumnWidth="*">
 			<Wpf:SplitContainer.Left>
 				<avalonedit:TextEditor
@@ -31,5 +31,5 @@ This is *another* test
 			</Wpf:SplitContainer.Right>
 		</Wpf:SplitContainer>
 
-	</Grid>
+	</StackPanel>
 </Window>

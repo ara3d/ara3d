@@ -1,6 +1,8 @@
-﻿using System.Windows;
+﻿using System.Configuration;
+using System.Data;
+using System.Windows;
 
-namespace KiwiMarkdownEditor
+namespace Ara3D.SVG.Creator
 {
     /// <summary>
     /// Interaction logic for App.xaml

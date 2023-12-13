@@ -1,0 +1,28 @@
+﻿<Window
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Ara3D.SVG.Creator"
+        xmlns:Ara3DWpf="clr-namespace:Ara3D.Utils.Wpf;assembly=Ara3D.Utils.Wpf"
+        xmlns:wpf="clr-namespace:Microsoft.Web.WebView2.Wpf;assembly=Microsoft.Web.WebView2.Wpf"
+        x:Class="Ara3D.SVG.Creator.MainWindow"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="450" Width="800">
+	<DockPanel>
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="2*"></ColumnDefinition>
+	            <ColumnDefinition Width="auto"></ColumnDefinition>
+				<ColumnDefinition Width="*"></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+			<wpf:WebView2 x:Name="Browser" Grid.Column="0" />
+            <GridSplitter  Grid.Column="1"></GridSplitter>
+            <ListBox Grid.Column="2">
+                <TextBlock>Hello</TextBlock>
+	            <TextBlock>Boom boom</TextBlock>
+                <Button Content="Press me"></Button>
+            </ListBox>
+		</Grid>
+	</DockPanel>
+</Window>
