@@ -61,15 +61,15 @@ namespace Ara3D.Utils.Wpf
         public static readonly DependencyProperty RightContentProperty = DependencyProperty.Register(
             nameof(Right), typeof(UIElement), typeof(HorizontalSplitContainer), new PropertyMetadata(null));
 
-        public UIElement Left
+        public UIElement? Left
         {
             get => GetValue(LeftContentProperty) as UIElement;
             set => SetValue(LeftContentProperty, value);
         }
 
-        public UIElement Right
+        public UIElement? Right
         {
-            get => (UIElement)GetValue(RightContentProperty);
+            get => GetValue(RightContentProperty) as UIElement;
             set => SetValue(RightContentProperty, value);
         }
 
