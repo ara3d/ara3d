@@ -11,6 +11,10 @@ using Newtonsoft.Json.Linq;
 using Svg;
 using Svg.Pathing;
 
+//== 
+// https://stackoverflow.com/questions/20810578/setting-attribute-of-svg-element-with-js-not-working?rq=3
+
+
 namespace Ara3D.SVG.Creator
 {
     /// <summary>
@@ -21,8 +25,10 @@ namespace Ara3D.SVG.Creator
         public Vector2 V1 = Vector2.Zero;
         public Vector2 V2 = Vector2.Zero;
 
-        public SvgPath Path = new SvgPath();
- 
+        public SvgPath Path1 = new SvgPath();
+        public SvgPath Path2 = new SvgPath();
+        public SvgGroup Group = new SvgGroup();
+
         public readonly FunctionRendererParameters RendererParameters = new FunctionRendererParameters();
 
         public readonly PropertiesPanel PropertiesPanel;
@@ -48,13 +54,13 @@ namespace Ara3D.SVG.Creator
         public void RedrawSvg()
         {
             RebuildPath();
-            SetXml(Path.GetXML());
+            SetXml(Group.GetXML());
         }
 
         public void RebuildPath()
         {
-            Path.PathData = new SvgPathSegmentList();
-            Path.PathData.Add(new SvgMoveToSegment(false, V1.ToSvg()));
+            Path1.PathData = new SvgPathSegmentList();
+            Path1.PathData.Add(new SvgMoveToSegment(false, V1.ToSvg()));
             var d = (V2 - V1).Length();
 
             var n = RendererParameters.NumSamples;
@@ -67,12 +73,21 @@ namespace Ara3D.SVG.Creator
                 var y = (float)System.Math.Sin(theta) * amp;
                 var baseLine = V1 + delta * i;
                 var pos = baseLine + (0,  y);
-                Path.PathData.Add(new SvgLineSegment(false, pos.ToSvg()));
+                Path1.PathData.Add(new SvgLineSegment(false, pos.ToSvg()));
             }
 
-            Path.StrokeWidth = (float)RendererParameters.OuterThickness;
-            Path.Fill = SvgPaintServer.None;
-            Path.Stroke = new SvgColourServer(RendererParameters.StrokeColor);
+            Path1.StrokeWidth = (float)RendererParameters.OuterThickness;
+            Path1.Fill = SvgPaintServer.None;
+            Path1.Stroke = new SvgColourServer(RendererParameters.FillColor);
+
+            Path2.PathData = Path1.PathData;
+            Path2.StrokeWidth = (float)RendererParameters.InnerThickness;
+            Path2.Fill = SvgPaintServer.None;
+            Path2.Stroke = new SvgColourServer(RendererParameters.StrokeColor);
+
+            Group.Children.Clear();
+            Group.Children.Add(Path1);
+            Group.Children.Add(Path2);
         }
 
         public void SetSvg(string svg)

@@ -26,14 +26,6 @@ namespace Ara3D.SVG.Creator
         public TInput Output { get; }
     }
 
-    public class Function1D { }
-
-    public class PolarFunction { }
-
-    public class Function2D { }
-
-    public class Function3D { }
-
     //==
 
     public class FunctionToPoints { }

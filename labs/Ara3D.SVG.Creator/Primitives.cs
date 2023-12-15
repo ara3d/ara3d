@@ -1,6 +1,8 @@
 ﻿using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
-using System.Drawing;
+using Ara3D.Math;
+using ExCSS;
+using Color = System.Drawing.Color;
 
 namespace Ara3D.SVG.Creator;
 
@@ -245,3 +247,73 @@ Uncategorized elements
 <clipPath>, <cursor>, <filter>, <foreignObject>, <hatchpath>, <script>, <style>, <view>
 
 */
+
+public class Function<TOutput>
+{
+    public float MinInput { get; set; }
+    public float MaxInput { get; set; }
+    public Func<float, TOutput> Func { get; set; }
+    public float Range => MaxInput - MinInput;
+}
+
+public class Function1D : Function<float>
+{
+}
+
+public class Function2D : Function<Vector2>
+{
+}
+
+public class FunctionPolar : Function<float>
+{
+    public FunctionPolar()
+    {
+        MinInput = 0;
+        MaxInput = MathF.PI * 2;
+    }
+}
+
+public class Circle : FunctionPolar
+{
+    public Circle()
+    {
+        Func = x => 1;
+    }
+}
+
+public class Rose : FunctionPolar
+{
+    public int N { get; set; } = 3;
+    public int D { get; set; } = 4;
+    
+    public Rose()
+    {
+        Func = x => MathF.Cos(N * x / D);
+    }
+}
+
+public class Spiral : FunctionPolar
+{
+    public Spiral()
+    {
+        Count = 5;
+        Func = x => MinRadius + x * (RadiusDelta) / Range;
+    }
+
+    public float Count
+    {
+        get => MaxInput / (MathF.PI * 2);
+        set => MaxInput = MathF.PI * 2 * value;
+    }
+
+    public float MinRadius { get; set; } = 0;
+    public float MaxRadius { get; set; } = 1;
+    public float RadiusDelta => MaxRadius - MinRadius;
+}
+
+public class Converters2
+{
+    public Function2D FunctionPolarToFunction2D(FunctionPolar fp) => throw new NotImplementedException();
+    public FunctionPolar FunctionPolarTransform(FunctionPolar fp) => throw new NotImplementedException();
+    public Function2D PathToFunction2D(Path path) => throw new NotImplementedException();
+}
