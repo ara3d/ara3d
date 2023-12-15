@@ -7,28 +7,12 @@ using Ara3D.Collections;
 
 namespace Ara3D.SVG.Creator
 {
-    public interface IPoints : IArray<IPoint>, IPrimitive
-    {
-    }
-
-    public interface IPoint
-    {
-        double X { get; }
-        double Y { get; }
-    }
-
     public interface IVector
     {
         double X { get; }
         double Y { get; }
     }
     
-    public interface ILine
-    {
-    }
-
-    public interface IPrimitive { }
-
     public class Lines { }
 
     public class FilledShape { }
@@ -51,12 +35,6 @@ namespace Ara3D.SVG.Creator
     public class Function3D { }
 
     //==
-
-    public class Component { }
-
-    public class FunctionRenderer : Component { }
-
-    public class PointsRenderer : Component { }
 
     public class FunctionToPoints { }
 

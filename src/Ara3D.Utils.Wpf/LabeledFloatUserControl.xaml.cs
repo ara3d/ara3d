@@ -12,13 +12,13 @@ namespace Ara3D.Utils.Wpf
     public partial class LabeledFloatUserControl : UserControl
     {
         public static readonly DependencyProperty LabelProperty = DependencyProperty
-            .Register("Label",
+            .Register(nameof(Label),
                 typeof(string),
                 typeof(LabeledFloatUserControl),
                 new FrameworkPropertyMetadata("Unnamed Label"));
 
         public static readonly DependencyProperty ValueProperty = DependencyProperty
-            .Register("Value",
+            .Register(nameof(Value),
                 typeof(float),
                 typeof(LabeledFloatUserControl),
                 new FrameworkPropertyMetadata(0.0f, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault));

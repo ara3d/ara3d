@@ -23,5 +23,6 @@ namespace Ara3D.Utils.Wpf
 
         public static Vector2Control CreateBound(object source, string propName, BindingMode mode = BindingMode.TwoWay)
             => BindTo(new Vector2Control(), source, propName, mode);
+
     }
 }

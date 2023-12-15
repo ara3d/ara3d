@@ -9,6 +9,7 @@ using Microsoft.Web.WebView2.Core;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using Svg;
+using Svg.Pathing;
 
 namespace Ara3D.SVG.Creator
 {
@@ -20,22 +21,73 @@ namespace Ara3D.SVG.Creator
         public Vector2 V1 = Vector2.Zero;
         public Vector2 V2 = Vector2.Zero;
 
-        public SvgPath Path; 
+        public SvgPath Path = new SvgPath();
+ 
+        public readonly FunctionRendererParameters RendererParameters = new FunctionRendererParameters();
+
+        public readonly PropertiesPanel PropertiesPanel;
 
         public MainWindow()
         {
             InitializeComponent();
-            PreviewMouseDoubleClick += OnPreviewMouseDoubleClick;
             Browser.CoreWebView2InitializationCompleted += BrowserOnCoreWebView2InitializationCompleted;
             Browser.EnsureCoreWebView2Async();
             Browser.WebMessageReceived += BrowserOnWebMessageReceived;
-            Browser.PreviewMouseDown += Browser_PreviewMouseDown;
-            MouseDown += OnMouseDown;
+            
+            // <local:PropertiesPanel x:Name="Props1"></local:PropertiesPanel>
+            ListBox.Items.Add(PropertiesPanel = new PropertiesPanel());
+            PropertiesPanel.DataObject = RendererParameters;
+            PropertiesPanel.PropertyChanged += PropertiesPanel_PropertyChanged;
         }
 
-        private void OnMouseDown(object sender, MouseButtonEventArgs e)
+        private void PropertiesPanel_PropertyChanged(object? sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
-            Browser_PreviewMouseDown(sender, e);
+            RedrawSvg();
+        }
+
+        public void RedrawSvg()
+        {
+            RebuildPath();
+            SetXml(Path.GetXML());
+        }
+
+        public void RebuildPath()
+        {
+            Path.PathData = new SvgPathSegmentList();
+            Path.PathData.Add(new SvgMoveToSegment(false, V1.ToSvg()));
+            var d = (V2 - V1).Length();
+
+            var n = RendererParameters.NumSamples;
+            var delta = (V2 - V1) / n;
+            var amp = d / 2;
+
+            for (var i = 0; i < n; ++i)
+            {
+                var theta = i * 2 * System.Math.PI / n;
+                var y = (float)System.Math.Sin(theta) * amp;
+                var baseLine = V1 + delta * i;
+                var pos = baseLine + (0,  y);
+                Path.PathData.Add(new SvgLineSegment(false, pos.ToSvg()));
+            }
+
+            Path.StrokeWidth = (float)RendererParameters.OuterThickness;
+            Path.Fill = SvgPaintServer.None;
+            Path.Stroke = new SvgColourServer(RendererParameters.StrokeColor);
+        }
+
+        public void SetSvg(string svg)
+        {
+            var text = svg.Replace("\"", "\\\"");
+            var script = $"setSvgText(\"{text}\")";
+            Browser.CoreWebView2.ExecuteScriptAsync(script);
+        }
+
+
+        public void SetXml(string xml)
+        {
+            var xmlDoc = new XmlDocument();
+            xmlDoc.LoadXml(xml);
+            SetSvg(xmlDoc.DocumentElement.OuterXml);
         }
 
         private void BrowserOnWebMessageReceived(object? sender, CoreWebView2WebMessageReceivedEventArgs e)
@@ -51,21 +103,15 @@ namespace Ara3D.SVG.Creator
             float y = json.Pos.y;
             V2 = new Vector2(x, y);
 
+            RedrawSvg();
+            /*
             var bldr = new PathBuilder();
             bldr.MoveAbs(V1);
             bldr.LineAbs(V2);
             Path = bldr.Path;
 
-            var xml = bldr.ToXml();
-            var xmlDoc = new XmlDocument();
-            xmlDoc.LoadXml(xml);
-
-            var text = xmlDoc.DocumentElement.OuterXml.Replace("\"", "\\\"");
-            Debug.WriteLine(text);
-
-            var script = $"setSvgText(\"{text}\")";
-            this.Browser.CoreWebView2.ExecuteScriptAsync(script);
-            //Debug.WriteLine($"x = {}");
+            SetXml(bldr.ToXml());
+            */
         }
 
         public static string Html = 
@@ -96,8 +142,12 @@ function setSvgText(text)
     console.log(elem);
     // https://stackoverflow.com/questions/24079659/loading-svg-using-innerhtml
     var xmlDoc = new DOMParser().parseFromString(text, ""text/xml"");
+    //elem.     
+    elem.textContent = '';
     elem.appendChild(xmlDoc.documentElement);    
+    //elem.remove(elem.firstChild);
     //elem.textContent = text;
+    //elem.textContent = xmlDoc.documentElement;
 }
 
 function onEvent(event)
@@ -127,20 +177,6 @@ document.onmousemove = function(event)
  cursor_y = event.pageY;
 }";
         
-        public static string GetMouseScript = @"'Cursor at: '+cursor_x+', '+cursor_y";
-
-        private async void Browser_PreviewMouseDown(object sender, MouseButtonEventArgs e)
-        {
-            var result = await Browser.CoreWebView2.ExecuteScriptAsync(GetMouseScript);
-            Debug.WriteLine(result);
-        }
-
-        private void OnPreviewMouseDoubleClick(object sender, MouseButtonEventArgs e)
-        {
-            Debug.WriteLine("Double clicked");
-            LoadSvg();
-        }
-
         private async void BrowserOnCoreWebView2InitializationCompleted(object? sender, CoreWebView2InitializationCompletedEventArgs e)
         {
             Debug.WriteLine("Web-browser Initialized!");

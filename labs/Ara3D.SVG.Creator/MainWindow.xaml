@@ -18,7 +18,7 @@
             </Grid.ColumnDefinitions>
 			<wpf:WebView2 x:Name="Browser" Grid.Column="0" />
             <GridSplitter  Grid.Column="1"></GridSplitter>
-            <ListBox Grid.Column="2">
+            <ListBox x:Name="ListBox"  Grid.Column="2">
                 <TextBlock>Hello</TextBlock>
 	            <TextBlock>Boom boom</TextBlock>
                 <Button Content="Press me"></Button>
