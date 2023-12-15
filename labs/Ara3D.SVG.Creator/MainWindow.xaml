@@ -10,7 +10,14 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
 	<DockPanel>
-        <Grid>
+        <Menu x:Name="Menu" DockPanel.Dock="Top">
+            <MenuItem Header="Create">
+	            <MenuItem Header="Sine wave" Click="MenuItem_OnClick"></MenuItem>
+				<MenuItem Header="Rose" Click="MenuItem_OnClick"></MenuItem>
+				<MenuItem Header="Spiral" Click="MenuItem_OnClick"></MenuItem>
+            </MenuItem>
+        </Menu>
+		<Grid>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="2*"></ColumnDefinition>
 	            <ColumnDefinition Width="auto"></ColumnDefinition>

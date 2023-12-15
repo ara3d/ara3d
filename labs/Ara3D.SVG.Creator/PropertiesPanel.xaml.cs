@@ -17,6 +17,8 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using Ara3D.Utils.Wpf;
+using ColorPicker;
+using ColorPicker.Models;
 
 namespace Ara3D.SVG.Creator
 {
@@ -75,6 +77,11 @@ namespace Ara3D.SVG.Creator
                     pi.SetValue(obj, ctrl.IsChecked);
                     OnPropertyChanged(pi.Name);
                 };
+                ctrl.Unchecked += (_, _) =>
+                {
+                    pi.SetValue(obj, ctrl.IsChecked);
+                    OnPropertyChanged(pi.Name);
+                };
                 collection.Add(ctrl);
             }
             else if (pi.PropertyType == typeof(double))
@@ -106,6 +113,34 @@ namespace Ara3D.SVG.Creator
                 };
                 collection.Add(ctrl);
             }
+            else if (pi.PropertyType == typeof(System.Drawing.Color))
+            {
+                var ctrl = new ColorSliders();
+                var clr = (System.Drawing.Color)val;
+                ctrl.SelectedColor = Color.FromArgb(clr.A, clr.R, clr.G, clr.B);
+                ctrl.ColorChanged += (_, _) =>
+                {
+                    var clr = ctrl.SelectedColor;
+                    var drawingColor = System.Drawing.Color.FromArgb(clr.A, clr.R, clr.G, clr.B);
+                    pi.SetValue(obj, drawingColor);
+                    OnPropertyChanged(pi.Name);
+                };
+                /*var ctrl = new Button();
+                var clr = (Color)val;
+                ctrl.Background = new SolidColorBrush(clr);
+                ctrl.Click += (_, _) =>
+                {
+                    var dlg = 
+                };
+                */
+                collection.Add(ctrl);
+            }
+            
+        }
+
+        private void Ctrl_Click(object sender, RoutedEventArgs e)
+        {
+            throw new NotImplementedException();
         }
 
         public void RecomputeLayout()

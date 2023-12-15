@@ -2,6 +2,7 @@
 using System.IO;
 using System.Text.Json.Serialization;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Input;
 using System.Xml;
 using Ara3D.Math;
@@ -57,37 +58,80 @@ namespace Ara3D.SVG.Creator
             SetXml(Group.GetXML());
         }
 
+        public Vector2 SineWaveFunc(float f)
+        {
+            var d = (V2 - V1).Length();
+            var delta = (V2 - V1);
+            var amp = d / 2;
+            var theta = f * 2 * System.Math.PI;
+            var y = (float)System.Math.Sin(theta) * amp;
+            var baseLine = V1 + delta * f;
+            return baseLine + (0, y);
+        }
+
         public void RebuildPath()
         {
-            Path1.PathData = new SvgPathSegmentList();
-            Path1.PathData.Add(new SvgMoveToSegment(false, V1.ToSvg()));
-            var d = (V2 - V1).Length();
+            RebuildPath(SineWaveFunc);
+        }
 
+        public void RebuildPath(Func<float, Vector2> f)
+        {
             var n = RendererParameters.NumSamples;
-            var delta = (V2 - V1) / n;
-            var amp = d / 2;
 
-            for (var i = 0; i < n; ++i)
+            if (RendererParameters.AsPointsOrLines)
             {
-                var theta = i * 2 * System.Math.PI / n;
-                var y = (float)System.Math.Sin(theta) * amp;
-                var baseLine = V1 + delta * i;
-                var pos = baseLine + (0,  y);
-                Path1.PathData.Add(new SvgLineSegment(false, pos.ToSvg()));
+                Group.Children.Clear();
+
+                for (var i = 0f; i <= n; ++i)
+                {
+                    var v = f(i / n);
+
+                    var circle = new SvgCircle();
+                    circle.CenterX = v.X;
+                    circle.CenterY = v.Y;
+                    circle.Radius = (float)RendererParameters.OuterThickness;
+                    circle.Fill = new SvgColourServer(RendererParameters.StrokeColor);
+                    Group.Children.Add(circle);
+                }
+
+                for (var i = 0f; i <= n; ++i)
+                {
+                    var v = f(i / n);
+
+                    var circle = new SvgCircle();
+                    circle.CenterX = v.X;
+                    circle.CenterY = v.Y;
+                    circle.Radius = (float)RendererParameters.InnerThickness;
+                    circle.Fill = new SvgColourServer(RendererParameters.FillColor);
+                    Group.Children.Add(circle);
+                }
             }
+            else
+            {
+                Path1.PathData = new SvgPathSegmentList();
 
-            Path1.StrokeWidth = (float)RendererParameters.OuterThickness;
-            Path1.Fill = SvgPaintServer.None;
-            Path1.Stroke = new SvgColourServer(RendererParameters.FillColor);
 
-            Path2.PathData = Path1.PathData;
-            Path2.StrokeWidth = (float)RendererParameters.InnerThickness;
-            Path2.Fill = SvgPaintServer.None;
-            Path2.Stroke = new SvgColourServer(RendererParameters.StrokeColor);
+                var v = f(0);
+                Path1.PathData.Add(new SvgMoveToSegment(false, v.ToSvg()));
+                for (var i = 1f; i <= n; i += 1)
+                {
+                    v = f(i / n);
+                    Path1.PathData.Add(new SvgLineSegment(false, v.ToSvg()));
+                }
 
-            Group.Children.Clear();
-            Group.Children.Add(Path1);
-            Group.Children.Add(Path2);
+                Path1.StrokeWidth = (float)RendererParameters.OuterThickness;
+                Path1.Fill = SvgPaintServer.None;
+                Path1.Stroke = new SvgColourServer(RendererParameters.FillColor);
+
+                Path2.PathData = Path1.PathData;
+                Path2.StrokeWidth = (float)RendererParameters.InnerThickness;
+                Path2.Fill = SvgPaintServer.None;
+                Path2.Stroke = new SvgColourServer(RendererParameters.StrokeColor);
+
+                Group.Children.Clear();
+                Group.Children.Add(Path1);
+                Group.Children.Add(Path2);
+            }
         }
 
         public void SetSvg(string svg)
@@ -215,5 +259,21 @@ document.onmousemove = function(event)
             // TODO: this ight be useful
             //this.Browser.CoreWebView2.AddHostObjectToScript("name", null);
         }
+
+       private void MenuItem_OnClick(object sender, RoutedEventArgs e)
+       {
+           if (sender is MenuItem mi)
+           {
+               switch (mi.Header as string)
+               {
+                    case "sine wave":
+                    case "rose":
+                    case "spiral":
+                        Debug.WriteLine(mi.Name);
+                        break;
+               }
+           }
+           //throw new NotImplementedException();
+       }
     }
 }
