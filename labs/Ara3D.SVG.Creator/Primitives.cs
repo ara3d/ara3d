@@ -100,9 +100,7 @@ public interface ITransform3D : IComponent { }
 
 public interface IDeformer : IModifier { }
 
-
-public interface ISineWave : IGenerator
-{ }
+public interface ISineWave : IGenerator { }
 
 public interface IReflect : IModifier { }
 public interface ISmooth : IModifier { } 
@@ -248,36 +246,39 @@ Uncategorized elements
 
 */
 
-public class Function<TOutput>
+public class Function
 {
     public float MinInput { get; set; }
     public float MaxInput { get; set; }
-    public Func<float, TOutput> Func { get; set; }
+    public Func<float, Vector2> Func { get; set; }
     public float Range => MaxInput - MinInput;
 }
 
-public class Function1D : Function<float>
+public class Function1D : Function
 {
 }
 
-public class Function2D : Function<Vector2>
+public class Function2D : Function
 {
 }
 
-public class FunctionPolar : Function<float>
+public class FunctionPolar : Function
 {
     public FunctionPolar()
     {
         MinInput = 0;
         MaxInput = MathF.PI * 2;
     }
+
+    public void SetPolarFunc(Func<float, float> polar)
+        => Func = x => (polar(x) * MathF.Cos(x), polar(x) * MathF.Sin(x));
 }
 
 public class Circle : FunctionPolar
 {
     public Circle()
     {
-        Func = x => 1;
+        SetPolarFunc(x => 1);
     }
 }
 
@@ -288,7 +289,7 @@ public class Rose : FunctionPolar
     
     public Rose()
     {
-        Func = x => MathF.Cos(N * x / D);
+        SetPolarFunc(x => MathF.Cos(N * x / D));
     }
 }
 
@@ -297,7 +298,7 @@ public class Spiral : FunctionPolar
     public Spiral()
     {
         Count = 5;
-        Func = x => MinRadius + x * (RadiusDelta) / Range;
+        SetPolarFunc(x => MinRadius + x * (RadiusDelta) / Range);
     }
 
     public float Count
@@ -316,4 +317,13 @@ public class Converters2
     public Function2D FunctionPolarToFunction2D(FunctionPolar fp) => throw new NotImplementedException();
     public FunctionPolar FunctionPolarTransform(FunctionPolar fp) => throw new NotImplementedException();
     public Function2D PathToFunction2D(Path path) => throw new NotImplementedException();
+}
+
+public class Stack
+{
+    public FunctionRendererParameters RendererParameters { get; set; }
+    public Function2D Function { get; set; }
+    public Vector2 A { get; set; }
+    public Vector2 B { get; set; }
+    public Vector2 Delta => B - A;
 }

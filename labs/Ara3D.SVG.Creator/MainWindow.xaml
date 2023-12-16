@@ -19,17 +19,16 @@
         </Menu>
 		<Grid>
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="2*"></ColumnDefinition>
+                <ColumnDefinition Width="*"></ColumnDefinition>
 	            <ColumnDefinition Width="auto"></ColumnDefinition>
 				<ColumnDefinition Width="*"></ColumnDefinition>
             </Grid.ColumnDefinitions>
 			<wpf:WebView2 x:Name="Browser" Grid.Column="0" />
-            <GridSplitter  Grid.Column="1"></GridSplitter>
-            <ListBox x:Name="ListBox"  Grid.Column="2">
-                <TextBlock>Hello</TextBlock>
-	            <TextBlock>Boom boom</TextBlock>
-                <Button Content="Press me"></Button>
-            </ListBox>
+			<GridSplitter Grid.Column="1" Width="10" HorizontalAlignment="Right" VerticalAlignment="Stretch" />
+            <ScrollViewer Grid.Column="2">
+            <StackPanel x:Name="StackPanel" >
+            </StackPanel>
+            </ScrollViewer>
 		</Grid>
 	</DockPanel>
 </Window>

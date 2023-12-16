@@ -1,14 +1,10 @@
-﻿using System.Diagnostics;
-using System.IO;
-using System.Text.Json.Serialization;
+﻿using System.Diagnostics; 
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Input;
 using System.Xml;
 using Ara3D.Math;
 using Microsoft.Web.WebView2.Core;
 using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
 using Svg;
 using Svg.Pathing;
 
@@ -31,8 +27,9 @@ namespace Ara3D.SVG.Creator
         public SvgGroup Group = new SvgGroup();
 
         public readonly FunctionRendererParameters RendererParameters = new FunctionRendererParameters();
-
         public readonly PropertiesPanel PropertiesPanel;
+
+        public Stack Stack { get; set; } = new Stack();
 
         public MainWindow()
         {
@@ -42,7 +39,7 @@ namespace Ara3D.SVG.Creator
             Browser.WebMessageReceived += BrowserOnWebMessageReceived;
             
             // <local:PropertiesPanel x:Name="Props1"></local:PropertiesPanel>
-            ListBox.Items.Add(PropertiesPanel = new PropertiesPanel());
+            StackPanel.Children.Add(PropertiesPanel = new PropertiesPanel());
             PropertiesPanel.DataObject = RendererParameters;
             PropertiesPanel.PropertyChanged += PropertiesPanel_PropertyChanged;
         }
@@ -109,7 +106,6 @@ namespace Ara3D.SVG.Creator
             else
             {
                 Path1.PathData = new SvgPathSegmentList();
-
 
                 var v = f(0);
                 Path1.PathData.Add(new SvgMoveToSegment(false, v.ToSvg()));
@@ -227,7 +223,6 @@ document.addEventListener('click', onEvent);
 document.addEventListener('dblclick', onEvent);
 ";
             
-
         public static string TrackMouseScript = @"var cursor_x = -1;
 var cursor_y = -1;
 document.onmousemove = function(event)
@@ -244,7 +239,7 @@ document.onmousemove = function(event)
             await Browser.CoreWebView2.ExecuteScriptAsync(TrackMouseScript);
         }
 
-       public void LoadSvg()
+        public void LoadSvg()
         {
             //var text = File.ReadAllText(@"C:\Users\cdigg\git\ara3d-dev\ara3d.github.io\ara3d.svg");
             //var text2 = File.ReadAllText(@"C:\Users\cdigg\Downloads\SVG spilled Water Effect.html");
@@ -260,16 +255,19 @@ document.onmousemove = function(event)
             //this.Browser.CoreWebView2.AddHostObjectToScript("name", null);
         }
 
-       private void MenuItem_OnClick(object sender, RoutedEventArgs e)
-       {
+        private void MenuItem_OnClick(object sender, RoutedEventArgs e)
+        {
            if (sender is MenuItem mi)
            {
                switch (mi.Header as string)
                {
                     case "sine wave":
+                        break;
+                    case "circle":
+                        break;
                     case "rose":
+                        break;
                     case "spiral":
-                        Debug.WriteLine(mi.Name);
                         break;
                }
            }

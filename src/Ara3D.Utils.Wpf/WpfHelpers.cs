@@ -127,6 +127,14 @@ namespace Ara3D.Utils.Wpf
 
         const int SplitterSize = 5;
 
+        public static Grid AddControlRow(this Grid grid, UIElement element)
+        {
+            var nRow = grid.RowDefinitions.Count;
+            grid.RowDefinitions.Add(new RowDefinition());
+            Grid.SetRow(element, nRow);
+            return grid;
+        }
+
         public static Grid TwoColumnGridWithSplitter(UIElement left, UIElement right, int width)
         {
             var g = new Grid();

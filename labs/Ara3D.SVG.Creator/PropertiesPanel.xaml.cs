@@ -1,24 +1,10 @@
-﻿using System;
-
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Linq;
+﻿using System.ComponentModel;
 using System.Reflection;
-using System.Runtime.CompilerServices;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 using Ara3D.Utils.Wpf;
 using ColorPicker;
-using ColorPicker.Models;
 
 namespace Ara3D.SVG.Creator
 {
@@ -125,22 +111,8 @@ namespace Ara3D.SVG.Creator
                     pi.SetValue(obj, drawingColor);
                     OnPropertyChanged(pi.Name);
                 };
-                /*var ctrl = new Button();
-                var clr = (Color)val;
-                ctrl.Background = new SolidColorBrush(clr);
-                ctrl.Click += (_, _) =>
-                {
-                    var dlg = 
-                };
-                */
                 collection.Add(ctrl);
             }
-            
-        }
-
-        private void Ctrl_Click(object sender, RoutedEventArgs e)
-        {
-            throw new NotImplementedException();
         }
 
         public void RecomputeLayout()

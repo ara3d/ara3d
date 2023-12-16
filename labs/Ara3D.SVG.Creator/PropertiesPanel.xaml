@@ -6,6 +6,6 @@
              xmlns:local="clr-namespace:Ara3D.SVG.Creator"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
-    <StackPanel x:Name="StackPanel">
-    </StackPanel>
+	<StackPanel x:Name="StackPanel">
+	</StackPanel>
 </UserControl>
