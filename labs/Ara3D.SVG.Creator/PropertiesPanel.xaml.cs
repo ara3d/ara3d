@@ -3,6 +3,7 @@ using System.Reflection;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
+using Ara3D.Math;
 using Ara3D.Utils.Wpf;
 using ColorPicker;
 
@@ -41,50 +42,81 @@ namespace Ara3D.SVG.Creator
 
         public void AddControl(object obj, PropertyInfo pi, UIElementCollection collection)
         {
-            collection.AddLabel(pi.Name);
             var val = pi.GetValue(obj);
             if (pi.PropertyType == typeof(string))
             {
+                collection.AddLabel(pi.Name);
                 var ctrl = new TextBox();
                 ctrl.Text = val as string;
-                ctrl.TextChanged += (_, _) =>
+                if (pi.CanWrite)
                 {
-                    pi.SetValue(obj, ctrl.Text);
-                    OnPropertyChanged(pi.Name);
-                };
+                    ctrl.TextChanged += (_, _) =>
+                    {
+                        pi.SetValue(obj, ctrl.Text);
+                        OnPropertyChanged(pi.Name);
+                    };
+                }
+
                 collection.Add(ctrl);
             }
             else if (pi.PropertyType == typeof(bool))
             {
-                var ctrl = new CheckBox();
+                var ctrl = new CheckBox() { Content = pi.Name };
                 ctrl.IsChecked = val is true;
-                ctrl.Checked += (_, _) =>
+                if (pi.CanWrite)
                 {
-                    pi.SetValue(obj, ctrl.IsChecked);
-                    OnPropertyChanged(pi.Name);
-                };
-                ctrl.Unchecked += (_, _) =>
-                {
-                    pi.SetValue(obj, ctrl.IsChecked);
-                    OnPropertyChanged(pi.Name);
-                };
+                    ctrl.Checked += (_, _) =>
+                    {
+                        pi.SetValue(obj, ctrl.IsChecked);
+                        OnPropertyChanged(pi.Name);
+                    };
+                    ctrl.Unchecked += (_, _) =>
+                    {
+                        pi.SetValue(obj, ctrl.IsChecked);
+                        OnPropertyChanged(pi.Name);
+                    };
+                }
+
                 collection.Add(ctrl);
             }
             else if (pi.PropertyType == typeof(double))
             {
+                collection.AddLabel(pi.Name);
                 var ctrl = new Slider();
                 ctrl.Minimum = 0;
-                ctrl.Maximum = 1000;
+                ctrl.Maximum = 100;
                 ctrl.Value = (double)val;
-                ctrl.ValueChanged += (_, _) =>
+                if (pi.CanWrite)
                 {
-                    pi.SetValue(obj, ctrl.Value);
-                    OnPropertyChanged(pi.Name);
-                };
+                    ctrl.ValueChanged += (_, _) =>
+                    {
+                        pi.SetValue(obj, ctrl.Value);
+                        OnPropertyChanged(pi.Name);
+                    };
+                }
+
+                collection.Add(ctrl);
+            }
+            else if (pi.PropertyType == typeof(float))
+            {
+                collection.AddLabel(pi.Name);
+                var ctrl = new Slider();
+                ctrl.Minimum = 0;
+                ctrl.Maximum = 100;
+                ctrl.Value = (float)val;
+                if (pi.CanWrite)
+                {
+                    ctrl.ValueChanged += (_, _) =>
+                    {
+                        pi.SetValue(obj, (float)ctrl.Value);
+                        OnPropertyChanged(pi.Name);
+                    };
+                }
                 collection.Add(ctrl);
             }
             else if (pi.PropertyType == typeof(int))
             {
+                collection.AddLabel(pi.Name);
                 var ctrl = new Slider();
                 ctrl.Minimum = 0;
                 ctrl.Maximum = 100;
@@ -92,35 +124,73 @@ namespace Ara3D.SVG.Creator
                 ctrl.SmallChange = 1;
                 ctrl.TickFrequency = 10;
                 ctrl.Value = (int)val;
-                ctrl.ValueChanged += (_, _) =>
+
+                if (pi.CanWrite)
                 {
-                    pi.SetValue(obj, (int)ctrl.Value);
-                    OnPropertyChanged(pi.Name);
-                };
+                    ctrl.ValueChanged += (_, _) =>
+                    {
+                        pi.SetValue(obj, (int)ctrl.Value);
+                        OnPropertyChanged(pi.Name);
+                    };
+                }
+
                 collection.Add(ctrl);
             }
             else if (pi.PropertyType == typeof(System.Drawing.Color))
             {
+                collection.AddLabel(pi.Name);
                 var ctrl = new ColorSliders();
                 var clr = (System.Drawing.Color)val;
                 ctrl.SelectedColor = Color.FromArgb(clr.A, clr.R, clr.G, clr.B);
-                ctrl.ColorChanged += (_, _) =>
+
+                if (pi.CanWrite)
                 {
-                    var clr = ctrl.SelectedColor;
-                    var drawingColor = System.Drawing.Color.FromArgb(clr.A, clr.R, clr.G, clr.B);
-                    pi.SetValue(obj, drawingColor);
-                    OnPropertyChanged(pi.Name);
-                };
+                    ctrl.ColorChanged += (_, _) =>
+                    {
+                        var clr = ctrl.SelectedColor;
+                        var drawingColor = System.Drawing.Color.FromArgb(clr.A, clr.R, clr.G, clr.B);
+                        pi.SetValue(obj, drawingColor);
+                        OnPropertyChanged(pi.Name);
+                    };
+                }
+
                 collection.Add(ctrl);
+            }
+            else if (pi.PropertyType == typeof(Vector2))
+            {
+                collection.AddLabel(pi.Name);
+                var ctrl = new Vector2Control();
+                ctrl.Value = (Vector2)val;
+                if (pi.CanWrite)
+                {
+                    ctrl.PropertyChanged += (_, _) =>
+                    {
+                        pi.SetValue(obj, ctrl.Value);
+                        OnPropertyChanged(pi.Name);
+                    };
+                }
+
+                collection.Add(ctrl);
+            }
+            else if (pi.PropertyType == typeof(FunctionRendererParameters)
+                    || typeof(Function).IsAssignableFrom(pi.PropertyType)
+                || typeof(Cloner).IsAssignableFrom(pi.PropertyType))
+            {
+                if (val == null) return;
+                var ctrl = ToGroupBox(val, pi.Name);
+                if (ctrl != null)
+                    collection.Add(ctrl);
+            }
+            else
+            {
+                collection.Add(new Label() { Content = $"<{pi.PropertyType}>" });
             }
         }
 
-        public void RecomputeLayout()
+        public GroupBox ToGroupBox(object obj, string name)
         {
-            var obj = DataObject;
-            StackPanel.Children.Clear();
-
-            if (obj == null) return;
+            if (obj == null) 
+                return null;
 
             var t = obj.GetType();
             var sp = new StackPanel();
@@ -130,8 +200,15 @@ namespace Ara3D.SVG.Creator
                 AddControl(obj, p, sp.Children);
             }
 
-            var g = new GroupBox() { Header = t.Name, Content = sp };
-            StackPanel.Children.Add(g);
+            return new GroupBox() { Header = name, Content = sp };
+        }
+
+        public void RecomputeLayout()
+        {
+            StackPanel.Children.Clear();
+
+            var obj = DataObject;
+            StackPanel.Children.Add(ToGroupBox(obj, null));
         }
 
         public event PropertyChangedEventHandler? PropertyChanged;

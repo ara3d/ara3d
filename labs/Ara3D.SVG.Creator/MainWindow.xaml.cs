@@ -2,6 +2,7 @@
 using System.Windows;
 using System.Windows.Controls;
 using System.Xml;
+using Ara3D.Collections;
 using Ara3D.Math;
 using Microsoft.Web.WebView2.Core;
 using Newtonsoft.Json;
@@ -19,17 +20,9 @@ namespace Ara3D.SVG.Creator
     /// </summary>
     public partial class MainWindow : Window
     {
-        public Vector2 V1 = Vector2.Zero;
-        public Vector2 V2 = Vector2.Zero;
-
-        public SvgPath Path1 = new SvgPath();
-        public SvgPath Path2 = new SvgPath();
-        public SvgGroup Group = new SvgGroup();
-
-        public readonly FunctionRendererParameters RendererParameters = new FunctionRendererParameters();
         public readonly PropertiesPanel PropertiesPanel;
 
-        public Stack Stack { get; set; } = new Stack();
+        public Stack CurrentStack { get; set; } = new Stack();
 
         public MainWindow()
         {
@@ -40,7 +33,7 @@ namespace Ara3D.SVG.Creator
             
             // <local:PropertiesPanel x:Name="Props1"></local:PropertiesPanel>
             StackPanel.Children.Add(PropertiesPanel = new PropertiesPanel());
-            PropertiesPanel.DataObject = RendererParameters;
+            PropertiesPanel.DataObject = CurrentStack;
             PropertiesPanel.PropertyChanged += PropertiesPanel_PropertyChanged;
         }
 
@@ -51,83 +44,86 @@ namespace Ara3D.SVG.Creator
 
         public void RedrawSvg()
         {
-            RebuildPath();
-            SetXml(Group.GetXML());
-        }
-
-        public Vector2 SineWaveFunc(float f)
-        {
-            var d = (V2 - V1).Length();
-            var delta = (V2 - V1);
-            var amp = d / 2;
-            var theta = f * 2 * System.Math.PI;
-            var y = (float)System.Math.Sin(theta) * amp;
-            var baseLine = V1 + delta * f;
-            return baseLine + (0, y);
-        }
-
-        public void RebuildPath()
-        {
-            RebuildPath(SineWaveFunc);
-        }
-
-        public void RebuildPath(Func<float, Vector2> f)
-        {
-            var n = RendererParameters.NumSamples;
-
-            if (RendererParameters.AsPointsOrLines)
+            var group = new SvgGroup();
+            if (CurrentStack.Cloner != null)
             {
-                Group.Children.Clear();
-
-                for (var i = 0f; i <= n; ++i)
+                var stacks = CurrentStack.Cloner.Clone(CurrentStack);
+                foreach (var stack in stacks.ToEnumerable())
                 {
-                    var v = f(i / n);
-
-                    var circle = new SvgCircle();
-                    circle.CenterX = v.X;
-                    circle.CenterY = v.Y;
-                    circle.Radius = (float)RendererParameters.OuterThickness;
-                    circle.Fill = new SvgColourServer(RendererParameters.StrokeColor);
-                    Group.Children.Add(circle);
-                }
-
-                for (var i = 0f; i <= n; ++i)
-                {
-                    var v = f(i / n);
-
-                    var circle = new SvgCircle();
-                    circle.CenterX = v.X;
-                    circle.CenterY = v.Y;
-                    circle.Radius = (float)RendererParameters.InnerThickness;
-                    circle.Fill = new SvgColourServer(RendererParameters.FillColor);
-                    Group.Children.Add(circle);
+                    var subGroup = RebuildPath(stack);
+                    group.Children.Add(subGroup);
                 }
             }
             else
             {
-                Path1.PathData = new SvgPathSegmentList();
+                group = RebuildPath(CurrentStack);
+            }
+            SetXml(group.GetXML());
+        }
+        
+        public SvgGroup RebuildPath(Stack stack)
+        {
+            var group = new SvgGroup();
+            var n = stack.RendererParameters.NumSamples;
 
-                var v = f(0);
-                Path1.PathData.Add(new SvgMoveToSegment(false, v.ToSvg()));
-                for (var i = 1f; i <= n; i += 1)
+            if (stack.RendererParameters.AsPointsOrLines)
+            {
+                group.Children.Clear();
+
+                for (var i = 0f; i <= n; ++i)
                 {
-                    v = f(i / n);
-                    Path1.PathData.Add(new SvgLineSegment(false, v.ToSvg()));
+                    var v = stack.GetPoint(i / n);
+
+                    var circle = new SvgCircle();
+                    circle.CenterX = v.X;
+                    circle.CenterY = v.Y;
+                    circle.Radius = (float)stack.RendererParameters.OuterThickness;
+                    circle.Fill = new SvgColourServer(stack.RendererParameters.StrokeColor);
+                    group.Children.Add(circle);
                 }
 
-                Path1.StrokeWidth = (float)RendererParameters.OuterThickness;
-                Path1.Fill = SvgPaintServer.None;
-                Path1.Stroke = new SvgColourServer(RendererParameters.FillColor);
+                for (var i = 0f; i <= n; ++i)
+                {
+                    var v = stack.GetPoint(i / n);
 
-                Path2.PathData = Path1.PathData;
-                Path2.StrokeWidth = (float)RendererParameters.InnerThickness;
-                Path2.Fill = SvgPaintServer.None;
-                Path2.Stroke = new SvgColourServer(RendererParameters.StrokeColor);
-
-                Group.Children.Clear();
-                Group.Children.Add(Path1);
-                Group.Children.Add(Path2);
+                    var circle = new SvgCircle();
+                    circle.CenterX = v.X;
+                    circle.CenterY = v.Y;
+                    circle.Radius = (float)stack.RendererParameters.InnerThickness;
+                    circle.Fill = new SvgColourServer(stack.RendererParameters.FillColor);
+                    group.Children.Add(circle);
+                }
             }
+            else
+            {
+                var path1 = new SvgPath();
+                var path2 = new SvgPath();
+
+                path1.PathData = new SvgPathSegmentList();
+
+                var v = stack.GetPoint(0);
+                path1.PathData.Add(new SvgMoveToSegment(false, v.ToSvg()));
+                for (var i = 1f; i <= n; i += 1)
+                {
+                    v = stack.GetPoint(i / n);
+                    path1.PathData.Add(new SvgLineSegment(false, v.ToSvg()));
+                }
+
+                path1.StrokeWidth = (float)stack.RendererParameters.OuterThickness;
+                path1.Fill = SvgPaintServer.None;
+                path1.Stroke = new SvgColourServer(stack.RendererParameters.FillColor);
+
+                path2.PathData = path1.PathData;
+                path2.StrokeWidth = (float)stack.RendererParameters.InnerThickness;
+                path2.Fill = SvgPaintServer.None;
+                path2.Stroke = new SvgColourServer(stack.RendererParameters.StrokeColor);
+
+                group.Children.Clear();
+                group.Children.Add(path1);
+                group.Children.Add(path2);
+            }
+
+            return group;
         }
 
         public void SetSvg(string svg)
@@ -136,7 +132,6 @@ namespace Ara3D.SVG.Creator
             var script = $"setSvgText(\"{text}\")";
             Browser.CoreWebView2.ExecuteScriptAsync(script);
         }
-
 
         public void SetXml(string xml)
         {
@@ -153,10 +148,10 @@ namespace Ara3D.SVG.Creator
 
             dynamic json = JsonConvert.DeserializeObject(txt);
 
-            V1 = V2;
+            CurrentStack.A = CurrentStack.B;
             float x = json.Pos.x;
             float y = json.Pos.y;
-            V2 = new Vector2(x, y);
+            CurrentStack.B = new Vector2(x, y);
 
             RedrawSvg();
             /*
@@ -259,18 +254,28 @@ document.onmousemove = function(event)
         {
            if (sender is MenuItem mi)
            {
-               switch (mi.Header as string)
+               var s = mi.Header as string;
+               switch (s?.ToLowerInvariant())
                {
                     case "sine wave":
+                        CurrentStack.Function = new SineWave();
                         break;
                     case "circle":
+                        CurrentStack.Function = new Circle();
                         break;
                     case "rose":
+                        CurrentStack.Function = new Rose();
                         break;
                     case "spiral":
+                        CurrentStack.Function = new Spiral();
+                        break;
+                    case "gaussian":
+                        CurrentStack.Function = new Gaussian();
                         break;
                }
-           }
+               PropertiesPanel.RecomputeLayout();
+               RedrawSvg();
+            }
            //throw new NotImplementedException();
        }
     }
