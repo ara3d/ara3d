@@ -3,6 +3,8 @@ using System.ComponentModel.DataAnnotations;
 using Ara3D.Collections;
 using Ara3D.Math;
 using ExCSS;
+using Svg;
+using Svg.Transforms;
 using Color = System.Drawing.Color;
 
 namespace Ara3D.SVG.Creator;
@@ -71,7 +73,7 @@ public interface ICubicCurve : IPrimitive { }
 
 public interface IFunction1D : IPrimitive { }
 
-
+    
 
 public interface IPolarFunction : IPrimitive { }
 public interface IFunction2D : IPrimitive { }
@@ -79,6 +81,23 @@ public interface IFunction2D : IPrimitive { }
 public interface IPointsCollection : IPrimitive { }
 
 //==
+
+public class EntityReference
+{
+     public Entity Entity { get; }
+     public Modifier Modifier { get; }
+}
+
+
+/*
+public class Duplicate : Generator
+{
+    public EntityReference Ref { get; }
+
+    override 
+}
+*/
+
 
 public class FunctionRendererParameters
 {
