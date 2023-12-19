@@ -1,14 +1,36 @@
 ﻿using Ara3D.Collections;
+using Ara3D.Math;
+using Svg;
+using Svg.Transforms;
 
 namespace Ara3D.SVG.Creator;
 
-public abstract class Cloner
+public abstract class Cloner : Operator
 {
-    public abstract IArray<Stack> Clone(Stack stack);
 }
 
+public class RadialCloner : Cloner
+{
+    public Vector2 Center { get; set; } = (100, 100);
+    public float Radius { get; set; } = 10f;
+    public int Count { get; set; } = 10;
 
+    public override IEntity Evaluate(IElement e, float strength)
+    {
+        var list = new List<IEntity>();
+        for (var i = 0; i < Count; ++i)
+        {
+            var tmp = e.Clone();
+            list.Add(tmp);
+        }
 
+        var r = new Compound(list);
+        var opRotate = new Rotate() { Angle = 360f, Center = Center, LinearRamp = true };
+        return opRotate.Evaluate(r, strength);
+    }
+}
+
+/*
 public class Subdivider : Cloner
 {
     public int Rows { get; set; } = 2;
@@ -37,3 +59,4 @@ public class Subdivider : Cloner
         return list.ToIArray();
     }
 }
+*/

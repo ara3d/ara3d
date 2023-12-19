@@ -1,4 +1,7 @@
-﻿using System.Windows;
+﻿using System.Collections.Generic;
+using System.ComponentModel;
+using System.Runtime.CompilerServices;
+using System.Windows;
 using System.Windows.Input;
 using MouseEventArgs = System.Windows.Input.MouseEventArgs;
 using Point = System.Windows.Point;
@@ -9,7 +12,7 @@ namespace Ara3D.Utils.Wpf
     /// <summary>
     /// Interaction logic for LabeledFloatUserControl.xaml
     /// </summary>
-    public partial class LabeledFloatUserControl : UserControl
+    public partial class LabeledFloatUserControl : UserControl, INotifyPropertyChanged
     {
         public static readonly DependencyProperty LabelProperty = DependencyProperty
             .Register(nameof(Label),
@@ -21,10 +24,20 @@ namespace Ara3D.Utils.Wpf
             .Register(nameof(Value),
                 typeof(float),
                 typeof(LabeledFloatUserControl),
-                new FrameworkPropertyMetadata(0.0f, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault));
+                new FrameworkPropertyMetadata(0.0f, 
+                    FrameworkPropertyMetadataOptions.BindsTwoWayByDefault, PropertyChangedCallback));
+
+        private static void PropertyChangedCallback(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            if (d is LabeledFloatUserControl lfuc)
+                lfuc.OnPropertyChanged();
+        }
 
         public LabeledFloatUserControl()
-            => InitializeComponent();
+        {
+            InitializeComponent();
+            
+        }
 
         public string Label
         {
@@ -86,6 +99,13 @@ namespace Ara3D.Utils.Wpf
         private void HandleMouseUp(object sender, MouseButtonEventArgs e)
         {
             ReleaseMouseCapture();
+        }
+
+        public event PropertyChangedEventHandler? PropertyChanged;
+
+        public void OnPropertyChanged()
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Value)));
         }
     }
 }

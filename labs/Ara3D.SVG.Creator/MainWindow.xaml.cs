@@ -1,9 +1,11 @@
-﻿using System.Diagnostics; 
+﻿using System.Diagnostics;
+using System.Drawing;
 using System.Windows;
 using System.Windows.Controls;
 using System.Xml;
 using Ara3D.Collections;
 using Ara3D.Math;
+using Ara3D.Utils.Wpf;
 using Microsoft.Web.WebView2.Core;
 using Newtonsoft.Json;
 using Svg;
@@ -22,7 +24,7 @@ namespace Ara3D.SVG.Creator
     {
         public readonly PropertiesPanel PropertiesPanel;
 
-        public Stack CurrentStack { get; set; } = new Stack();
+        public List<OperatorStack> Stacks { get; } = new();
 
         public MainWindow()
         {
@@ -33,8 +35,72 @@ namespace Ara3D.SVG.Creator
             
             // <local:PropertiesPanel x:Name="Props1"></local:PropertiesPanel>
             StackPanel.Children.Add(PropertiesPanel = new PropertiesPanel());
-            PropertiesPanel.DataObject = CurrentStack;
             PropertiesPanel.PropertyChanged += PropertiesPanel_PropertyChanged;
+
+            CreateMenu();
+        }
+
+        public void SetCurrentEntity(OperatorStack operatorStack)
+        {
+            PropertiesPanel.DataObject = operatorStack;
+            PropertiesPanel.RecomputeLayout();
+        }
+
+        public void CreateObject(Generator gen)
+        {
+            var entity = new OperatorStack();
+            Stacks.Add(entity);
+            entity.Generator = gen;
+            var setStroke = new SetStrokeColor() { Color = Color.Black };
+            entity.Operators.Add(setStroke);
+
+            var setStrokeWidth = new SetStrokeWidth() { Width = 3 };
+            entity.Operators.Add(setStrokeWidth);
+
+            var setFillColor = new SetFillColor() { Color = Color.AntiqueWhite };
+            entity.Operators.Add(setFillColor);
+
+            SetCurrentEntity(entity);
+        }
+
+        public void AddModifier(Operator mod)
+        {
+            var entity = Stacks.LastOrDefault();
+            if (entity == null) return;
+            entity.Operators.Add(mod);
+            SetCurrentEntity(entity);
+        }
+
+        public void AddModifierMenuItem<T>(MenuItem parent) where T: Operator, new()
+        {
+            var name = typeof(T).Name;
+            parent.AddMenuItem(name, () => AddModifier(new T()));
+        }
+
+        public void AddCreateMenuItem<T>(MenuItem parent) where T : Generator, new()
+        {
+            var name = typeof(T).Name;
+            parent.AddMenuItem(name, () => CreateObject(new T()));
+        }
+
+        public void CreateMenu()
+        {
+            this.Menu.Items.Clear();
+            var create = this.Menu.AddMenuItem("Create");
+            AddCreateMenuItem<RectGenerator>(create);
+            AddCreateMenuItem<EllipseGenerator>(create);
+            AddCreateMenuItem<SquareGenerator>(create);
+            AddCreateMenuItem<CircleGenerator>(create);
+            var mods = this.Menu.AddMenuItem("Modify");
+            AddModifierMenuItem<SetStrokeWidth>(mods);
+            AddModifierMenuItem<SetStrokeColor>(mods);
+            AddModifierMenuItem<SetFillColor>(mods);
+            AddModifierMenuItem<Translate>(mods);
+            AddModifierMenuItem<Scale>(mods);
+            AddModifierMenuItem<Skew>(mods);
+            AddModifierMenuItem<Rotate>(mods);
+            // TODO: make a cloner menu (HOWEVER ... this is a composed operator)
+            AddModifierMenuItem<RadialCloner>(mods);
         }
 
         private void PropertiesPanel_PropertyChanged(object? sender, System.ComponentModel.PropertyChangedEventArgs e)
@@ -44,86 +110,10 @@ namespace Ara3D.SVG.Creator
 
         public void RedrawSvg()
         {
-            var group = new SvgGroup();
-            if (CurrentStack.Cloner != null)
-            {
-                var stacks = CurrentStack.Cloner.Clone(CurrentStack);
-                foreach (var stack in stacks.ToEnumerable())
-                {
-                    var subGroup = RebuildPath(stack);
-                    group.Children.Add(subGroup);
-                }
-            }
-            else
-            {
-                group = RebuildPath(CurrentStack);
-            }
-            SetXml(group.GetXML());
-        }
-        
-        public SvgGroup RebuildPath(Stack stack)
-        {
-            var group = new SvgGroup();
-            var n = stack.RendererParameters.NumSamples;
-
-            if (stack.RendererParameters.AsPointsOrLines)
-            {
-                group.Children.Clear();
-
-                for (var i = 0f; i <= n; ++i)
-                {
-                    var v = stack.GetPoint(i / n);
-
-                    var circle = new SvgCircle();
-                    circle.CenterX = v.X;
-                    circle.CenterY = v.Y;
-                    circle.Radius = (float)stack.RendererParameters.OuterThickness;
-                    circle.Fill = new SvgColourServer(stack.RendererParameters.StrokeColor);
-                    group.Children.Add(circle);
-                }
-
-                for (var i = 0f; i <= n; ++i)
-                {
-                    var v = stack.GetPoint(i / n);
-
-                    var circle = new SvgCircle();
-                    circle.CenterX = v.X;
-                    circle.CenterY = v.Y;
-                    circle.Radius = (float)stack.RendererParameters.InnerThickness;
-                    circle.Fill = new SvgColourServer(stack.RendererParameters.FillColor);
-                    group.Children.Add(circle);
-                }
-            }
-            else
-            {
-                var path1 = new SvgPath();
-                var path2 = new SvgPath();
-
-                path1.PathData = new SvgPathSegmentList();
-
-                var v = stack.GetPoint(0);
-                path1.PathData.Add(new SvgMoveToSegment(false, v.ToSvg()));
-                for (var i = 1f; i <= n; i += 1)
-                {
-                    v = stack.GetPoint(i / n);
-                    path1.PathData.Add(new SvgLineSegment(false, v.ToSvg()));
-                }
-
-                path1.StrokeWidth = (float)stack.RendererParameters.OuterThickness;
-                path1.Fill = SvgPaintServer.None;
-                path1.Stroke = new SvgColourServer(stack.RendererParameters.FillColor);
-
-                path2.PathData = path1.PathData;
-                path2.StrokeWidth = (float)stack.RendererParameters.InnerThickness;
-                path2.Fill = SvgPaintServer.None;
-                path2.Stroke = new SvgColourServer(stack.RendererParameters.StrokeColor);
-
-                group.Children.Clear();
-                group.Children.Add(path1);
-                group.Children.Add(path2);
-            }
-
-            return group;
+            var doc = new SvgDocument();
+            foreach (var stk in Stacks)
+                doc.Children.Add(stk.Evaluate().Svg);
+            SetXml(doc.GetXML());
         }
 
         public void SetSvg(string svg)
@@ -148,10 +138,24 @@ namespace Ara3D.SVG.Creator
 
             dynamic json = JsonConvert.DeserializeObject(txt);
 
-            CurrentStack.A = CurrentStack.B;
             float x = json.Pos.x;
             float y = json.Pos.y;
-            CurrentStack.B = new Vector2(x, y);
+
+            var stack = Stacks.LastOrDefault();
+            if (stack == null) return;
+
+            stack.Generator.A = stack.Generator.B;
+            stack.Generator.B = new Vector2(x, y);
+
+            var (ax, ay) = stack.Generator.A;
+            var (bx, by) = stack.Generator.B;
+            var minX = System.Math.Min(ax, bx);
+            var minY = System.Math.Min(ay, by);
+            var maxX = System.Math.Max(ax, bx);
+            var maxY = System.Math.Max(ay, by);
+
+            stack.Generator.A = (minX, minY);
+            stack.Generator.B = (maxX, maxY);
 
             RedrawSvg();
             /*
@@ -249,7 +253,7 @@ document.onmousemove = function(event)
             // TODO: this ight be useful
             //this.Browser.CoreWebView2.AddHostObjectToScript("name", null);
         }
-
+        /*
         private void MenuItem_OnClick(object sender, RoutedEventArgs e)
         {
            if (sender is MenuItem mi)
@@ -277,6 +281,6 @@ document.onmousemove = function(event)
                RedrawSvg();
             }
            //throw new NotImplementedException();
-       }
+       }*/
     }
 }

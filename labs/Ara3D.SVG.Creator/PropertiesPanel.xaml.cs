@@ -173,17 +173,28 @@ namespace Ara3D.SVG.Creator
                 collection.Add(ctrl);
             }
             else if (pi.PropertyType == typeof(FunctionRendererParameters)
-                    || typeof(Function).IsAssignableFrom(pi.PropertyType)
-                || typeof(Cloner).IsAssignableFrom(pi.PropertyType))
+                    || typeof(Operator).IsAssignableFrom(pi.PropertyType)
+                    || typeof(Generator).IsAssignableFrom(pi.PropertyType)
+                    )
             {
                 if (val == null) return;
                 var ctrl = ToGroupBox(val, pi.Name);
                 if (ctrl != null)
                     collection.Add(ctrl);
             }
+            else if (val is List<Operator> mods)
+            {
+                foreach (var mod in mods)
+                {
+                    var ctrl = ToGroupBox(mod, mod.GetType().Name);
+                    if (ctrl != null)
+                        collection.Add(ctrl);
+                }
+            }
             else
             {
                 collection.Add(new Label() { Content = $"<{pi.PropertyType}>" });
+
             }
         }
 

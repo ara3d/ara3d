@@ -84,8 +84,8 @@ public interface IPointsCollection : IPrimitive { }
 
 public class EntityReference
 {
-     public Entity Entity { get; }
-     public Modifier Modifier { get; }
+     public OperatorStack OperatorStack { get; }
+     public Operator Operator { get; }
 }
 
 

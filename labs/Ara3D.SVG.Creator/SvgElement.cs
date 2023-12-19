@@ -9,7 +9,7 @@ namespace Ara3D.SVG.Creator;
 
 public class PathBuilder
 {
-    public readonly SvgPath Path = new SvgPath() { PathData = new SvgPathSegmentList() };
+    public readonly SvgPath Path = new() { PathData = new SvgPathSegmentList() };
 
     public string ToXml()
     {
@@ -90,22 +90,21 @@ public class PathBuilder
 
 public class SvgDocumentBuilder
 {
-    public readonly SvgDocument Doc = new SvgDocument();
-    //public Dictionary<string, SvgElement> Elements { get; } = new Dictionary<string, SvgElement>();
+    public readonly SvgDocument Doc = new();
+    //public Dictionary<string, SvgElement> Operators { get; } = new Dictionary<string, SvgElement>();
 
     public void AddElement(SvgElement element)
     {
         //var guid = Guid.NewGuid();
         //element.ID = guid.ToString();
-        //Elements.Add(element.ID, element);
+        //Operators.Add(element.ID, element);
         Doc.Children.Add(element);
     }
 }
 
 public static class Converters
 {
-    public static PointF ToSvg(this Vector2 p)
-        => new PointF(p.X, p.Y);
+    public static PointF ToSvg(this Vector2 p) => new(p.X, p.Y);
 }
 
 /*
