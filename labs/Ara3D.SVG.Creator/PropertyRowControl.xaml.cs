@@ -13,7 +13,7 @@ namespace Ara3D.SVG.Creator
             InitializeComponent();
         }
 
-        public Control AddProperty(string name, Color backColor, 
+        public NumericControl AddProperty(string name, Color backColor, 
             double changeAmount, double defaultValue,  double currentValue, Action<double> onChanged)
         {
             var control = new NumericControl

@@ -53,13 +53,18 @@ namespace Ara3D.SVG.Creator
             var t = obj.GetType();
             if (obj is OperatorStack stk)
             {
-                var gen = stk.Generator;
-                var genCtrl = UIGenerator.CreateControlFromProperties("Generator", gen, gen.GetType(), _ => OnPropertyChanged(null));
-                StackPanel.Children.Add(genCtrl);
-
+                {
+                    var gen = stk.Generator;
+                    var notifier = new PropertyChangeNotifier();
+                    var genCtrl = UIGenerator.CreateControlFromProperties("Generator", gen.GetType(), () => gen,
+                        _ => OnPropertyChanged(null), notifier);
+                    StackPanel.Children.Add(genCtrl);
+                }
                 foreach (var op in stk.Operators)
                 {
-                    var ctrl = UIGenerator.CreateControlFromProperties(t.Name.ToUIName(), op, op.GetType(), _ => OnPropertyChanged(null));
+                    var notifier = new PropertyChangeNotifier();
+                    var ctrl = UIGenerator.CreateControlFromProperties(t.Name.ToUIName(), op.GetType(), () => op,
+                        _ => OnPropertyChanged(null), notifier);
                     StackPanel.Children.Add(ctrl);
                 }
             }
