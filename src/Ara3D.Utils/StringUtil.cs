@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
+using System.Xml.Linq;
 
 namespace Ara3D.Utils
 {
@@ -19,6 +20,24 @@ namespace Ara3D.Utils
 
         public static string ElidedSubstring(this string self, int start, int length, int max)
             => (length > max) ? self.Substring(start, max) + "..." : self.Substring(start, length);
+
+        public static string ToUIName(this string self)
+        {
+            if (string.IsNullOrEmpty(self))
+                return "";
+            var sb = new StringBuilder();
+            for (var i = 0; i < self.Length; ++i)
+            {
+                if (i > 0 && char.IsUpper(self[i]))
+                {
+                    sb.Append(' ');
+                }
+
+                sb.Append(self[i]);
+            }
+
+            return sb.ToString();
+        }
 
         public static string ToUtf8(this byte[] bytes)
             => Encoding.UTF8.GetString(bytes);

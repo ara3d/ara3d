@@ -1,18 +1,7 @@
-﻿using Ara3D.Collections;
-using Ara3D.Math;
-using Svg;
-using Svg.Transforms;
+﻿namespace Ara3D.SVG.Creator;
 
-namespace Ara3D.SVG.Creator;
-
-public abstract class Cloner : Operator
+public class Cloner : Operator
 {
-}
-
-public class RadialCloner : Cloner
-{
-    public Vector2 Center { get; set; } = (100, 100);
-    public float Radius { get; set; } = 10f;
     public int Count { get; set; } = 10;
 
     public override IEntity Evaluate(IElement e, float strength)
@@ -24,9 +13,7 @@ public class RadialCloner : Cloner
             list.Add(tmp);
         }
 
-        var r = new Compound(list);
-        var opRotate = new Rotate() { Angle = 360f, Center = Center, LinearRamp = true };
-        return opRotate.Evaluate(r, strength);
+        return new Compound(list);
     }
 }
 

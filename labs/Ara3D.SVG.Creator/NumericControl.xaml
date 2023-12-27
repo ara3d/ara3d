@@ -1,0 +1,41 @@
+﻿<UserControl x:Class="Ara3D.SVG.Creator.NumericControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             mc:Ignorable="d" 
+			 MouseMove="NumericControl_OnMouseMove"
+			 MouseUp="NumericControl_OnMouseUp"
+             d:DesignHeight="20.242" d:DesignWidth="85.294">
+	<Grid>
+		<Grid.ColumnDefinitions>
+			<ColumnDefinition x:Name="LabelColumn" Width="18"></ColumnDefinition>
+			<ColumnDefinition Width="*"></ColumnDefinition>
+			<ColumnDefinition Width="10"></ColumnDefinition>
+		</Grid.ColumnDefinitions>
+		<Button Grid.Column="0" x:Name="LabelButton">
+			<Button.Resources>
+				<Style TargetType="Border">
+					<Setter Property="CornerRadius" Value="4 0 0 4"/>
+				</Style>
+			</Button.Resources>
+						X
+		</Button>
+		<TextBox x:Name="InnerTextBox" Grid.Column="1" TextChanged="InnerTextBox_OnTextChanged" VerticalContentAlignment="Center" PreviewTextInput="InnerTextBox_OnPreviewTextInput" 
+		         Text="1.234567"/>
+		<UniformGrid Grid.Column="2" Columns="1">
+			<RepeatButton 
+				x:Name="UpButton" Click="UpButton_OnClick" MouseDown="UpButton_OnMouseDown">
+				<Polygon x:Name="UpPolygon" Width="5" Height="5" Points="0.5,0 2.5,4, 4.5,0" Stroke="DarkSlateGray" Fill="DarkSlateGray" >
+					<Polygon.RenderTransform>
+						<RotateTransform CenterX="2.5" CenterY="2.5" Angle="180" />
+					</Polygon.RenderTransform>
+				</Polygon>
+			</RepeatButton>
+			<RepeatButton 
+				x:Name="DownButton" Click="DownButton_OnClick" MouseDown="UpButton_OnMouseDown">
+				<Polygon x:Name="DownPolygon" Width="5" Height="5" Points="0.5,0 2.5,4, 4.5,0" Stroke="DarkSlateGray" Fill="DarkSlateGray" />
+			</RepeatButton>
+		</UniformGrid>
+	</Grid>
+</UserControl>

@@ -105,6 +105,7 @@ public class SvgDocumentBuilder
 public static class Converters
 {
     public static PointF ToSvg(this Vector2 p) => new(p.X, p.Y);
+    public static PointF ToSvg(this DVector2 p) => p.Vector2.ToSvg();
 }
 
 /*

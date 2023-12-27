@@ -47,9 +47,30 @@ public class SetStrokeColor : Operator
             else
                 x.Stroke = new SvgColourServer(Color);
         });
-
 }
 
+public class TransformOperator : Operator
+{
+    public TransformViewModel Transform { get; set; } = new TransformViewModel();
+
+    public override IEntity Evaluate(IElement e, float strength)
+        => e.ModifySvg(x =>
+        {
+            var transform = Transform;
+            if (strength.AlmostEquals(1))
+                transform = new TransformViewModel().LerpTo(Transform, strength);
+
+            if (x.Transforms == null)
+                x.Transforms = new SvgTransformCollection();
+
+            x.Transforms.Add(new SvgTranslate((float)transform.PositionX, (float)transform.PositionY));
+            x.Transforms.Add(new SvgRotate((float)transform.RotationAngle));
+            x.Transforms.Add(new SvgScale((float)transform.ScaleX, (float)transform.ScaleY));
+            x.Transforms.Add(new SvgSkew((float)transform.SkewX, (float)transform.SkewY));
+        });
+
+}
+/*
 public abstract class TransformOperator : Operator
 {
     public override IEntity Evaluate(IElement e, float strength)
@@ -103,6 +124,7 @@ public class Translate : TransformOperator
     public override SvgTransform GetTransform(float strength)
         => new SvgTranslate(Vector2.Zero.Lerp(Amount, strength).X, Vector2.Zero.Lerp(Amount, strength).Y);
 }
+*/
 
 public static class Extensions
 {

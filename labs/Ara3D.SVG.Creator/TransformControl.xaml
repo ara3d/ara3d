@@ -1,0 +1,63 @@
+﻿<UserControl x:Class="Ara3D.SVG.Creator.TransformControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:Ara3D.SVG.Creator"
+             mc:Ignorable="d" 
+			 FontFamily="Barlow"
+             d:DesignHeight="80" d:DesignWidth="300">
+	<Grid>
+        <Grid.ColumnDefinitions>
+			<ColumnDefinition Width="2*"></ColumnDefinition>
+			<ColumnDefinition Width="2*"></ColumnDefinition>
+			<ColumnDefinition Width="2*"></ColumnDefinition>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+			<RowDefinition></RowDefinition>
+	        <RowDefinition></RowDefinition>
+	        <RowDefinition></RowDefinition>
+	        <RowDefinition></RowDefinition>
+		</Grid.RowDefinitions>
+		<Button  Grid.Column="0" Grid.Row="0" Background="WhiteSmoke" Margin="1 0 1 0">
+			<Button.Resources>
+				<Style TargetType="Border">
+					<Setter Property="CornerRadius" Value="4"/>
+				</Style>
+			</Button.Resources> Position
+        </Button>
+		<Button Grid.Column="0" Grid.Row="1" Background="WhiteSmoke" Margin="1 0 1 0">
+			<Button.Resources>
+				<Style TargetType="Border">
+					<Setter Property="CornerRadius" Value="4"/>
+				</Style>
+			</Button.Resources>
+				Rotation
+		</Button>
+		<Button Grid.Column="0" Grid.Row="2" Background="WhiteSmoke" Margin="1 0 1 0">
+			<Button.Resources>
+				<Style TargetType="Border">
+					<Setter Property="CornerRadius" Value="4"/>
+				</Style>
+			</Button.Resources>
+			Skew</Button>
+		<Button Grid.Column="0" Grid.Row="3" Background="WhiteSmoke" Margin="1 0 1 0">
+			<Button.Resources>
+				<Style TargetType="Border">
+					<Setter Property="CornerRadius" Value="4"/>
+				</Style>
+			</Button.Resources>
+			Scale</Button>
+
+		<local:NumericControl Grid.Row="0" Grid.Column="1" Label="X" Value="{Binding Transform.PositionX, Mode=TwoWay}" Margin="1 0 1 0"/>
+		<local:NumericControl Grid.Row="0" Grid.Column="2" Label="Y" Value="{Binding Transform.PositionY, Mode=TwoWay}" Margin="1 0 1 0"/>
+
+		<local:NumericControl Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="2" Label="θ" Value="{Binding Transform.RotationAngle, Mode=TwoWay}" Margin="1 0 1 0"/>
+
+		<local:NumericControl Grid.Row="2" Grid.Column="1" Label="X" Value="{Binding Transform.SkewX, Mode=TwoWay}" Margin="1 0 1 0"/>
+		<local:NumericControl Grid.Row="2" Grid.Column="2" Label="Y" Value="{Binding Transform.SkewY, Mode=TwoWay}" Margin="1 0 1 0"/>
+
+		<local:NumericControl Grid.Row="3" Grid.Column="1" Label="X" ChangeSize="0.1" Value="{Binding Transform.ScaleX, Mode=TwoWay}" Margin="1 0 1 0"/>
+		<local:NumericControl Grid.Row="3" Grid.Column="2" Label="Y" ChangeSize="0.1" Value="{Binding Transform.ScaleY, Mode=TwoWay}" Margin="1 0 1 0"/>
+    </Grid>
+</UserControl>

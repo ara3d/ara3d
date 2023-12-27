@@ -1,6 +1,8 @@
-﻿using System.Windows;
+﻿using System.Configuration;
+using System.Data;
+using System.Windows;
 
-namespace Ara3D.SVG.Creator
+namespace Ara3D.Penguin
 {
     /// <summary>
     /// Interaction logic for App.xaml

@@ -1,11 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Ara3D.Collections;
-
-namespace Ara3D.SVG.Creator
+﻿namespace Ara3D.SVG.Creator
 {
     public interface IVector
     {

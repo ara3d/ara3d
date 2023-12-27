@@ -8,9 +8,10 @@
         xmlns:wpf="clr-namespace:Microsoft.Web.WebView2.Wpf;assembly=Microsoft.Web.WebView2.Wpf"
         x:Class="Ara3D.SVG.Creator.MainWindow"
         mc:Ignorable="d"
+        FontFamily="Aptos"
         Title="MainWindow" Height="450" Width="800">
 	<DockPanel>
-        <Menu x:Name="Menu" DockPanel.Dock="Top">
+        <Menu FontFamily="Barlow" x:Name="Menu" DockPanel.Dock="Top">
         </Menu>
 		<Grid>
             <Grid.ColumnDefinitions>

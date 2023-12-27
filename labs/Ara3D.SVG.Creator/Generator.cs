@@ -1,5 +1,4 @@
 ﻿using Ara3D.Math;
-using ExCSS;
 using Svg;
 using Svg.Pathing;
 
@@ -7,29 +6,29 @@ namespace Ara3D.SVG.Creator;
 
 public abstract class Generator
 {
-    public Vector2 Center
+    public Position Center
     {
-        get => A + Size / 2;
+        get => A + Size.ToVector() / 2;
         set
         {
-            var offset = Center - value;
+            var offset = Center.ToVector() - value;
             A += offset;
             B += offset;
         }
     }
 
-    public Vector2 Size
+    public Size Size
     {
-        get => B - A;
+        get => B.ToVector() - A;
         set
         {
-            A = Center - value / 2;
-            B = Center + value / 2;
+            A = Center - value.ToVector() / 2;
+            B = Center + value.ToVector() / 2;
         }
     }
 
-    public Vector2 A { get; set; }
-    public Vector2 B { get; set; }
+    public Position A { get; set; }
+    public Position B { get; set; }
 
     public abstract IEntity Evaluate();
 }
@@ -76,40 +75,40 @@ public class SvgPrimitiveClosedShape : Generator
         {
             return new SvgEllipse()
             {
-                CenterX = Center.X,
-                CenterY = Center.Y,
-                RadiusX = Size.X / 2,
-                RadiusY = Size.Y / 2
+                CenterX = (float)Center.X,
+                CenterY = (float)Center.Y,
+                RadiusX = (float)Size.W / 2,
+                RadiusY = (float)Size.H / 2
             };
         }
         if (Shape == SvgPrimitiveClosedShapeEnum.Circle)
         {
             return new SvgEllipse()
             {
-                CenterX = Center.X,
-                CenterY = Center.Y,
-                RadiusX = Size.MinComponent() / 2,
-                RadiusY = Size.MinComponent() / 2
+                CenterX = (float)Center.X,
+                CenterY = (float)Center.Y,
+                RadiusX = (float)Size.ToVector().MinComponent() / 2,
+                RadiusY = (float)Size.ToVector().MinComponent() / 2
             };
         }
         else if (Shape == SvgPrimitiveClosedShapeEnum.Square)
         {
             return new SvgRectangle()
             {
-                X = A.X,
-                Y = A.Y,
-                Width = Size.MinComponent(),
-                Height = Size.MinComponent()
+                X = (float)A.X,
+                Y = (float)A.Y,
+                Width = (float)Size.ToVector().MinComponent(),
+                Height = (float)Size.ToVector().MinComponent()
             };
         }
         else
         {
             return new SvgRectangle()
             {
-                X = A.X,
-                Y = A.Y,
-                Width = Size.X,
-                Height = Size.Y
+                X = (float)A.X,
+                Y = (float)A.Y,
+                Width = (float)Size.W,
+                Height = (float)Size.H
             };
         }
     }
@@ -117,11 +116,30 @@ public class SvgPrimitiveClosedShape : Generator
     public override IEntity Evaluate() => CreateSvgEntity();
 }
 
+
+/*
+public class RawSvg : Generator
+{
+    public string Svg { get; set; }
+    //= @"<svg fill=""#E4202E"" role=""img"" viewBox=""0 0 24 24"" xmlns=""http://www.w3.org/2000/svg""><title>Atari</title><path d=""M0 21.653s3.154-.355 5.612-2.384c2.339-1.93 3.185-3.592 3.77-5.476.584-1.885.671-6.419.671-7.764V2.346H8.598v1.365c-.024 2.041-.2 5.918-1.135 8.444C5.203 18.242 0 18.775 0 18.775zm24 0s-3.154-.355-5.61-2.384c-2.342-1.93-3.187-3.592-3.772-5.476-.583-1.885-.671-6.419-.671-7.764V2.346H15.4l.001 1.365c.024 2.041.202 5.918 1.138 8.444 2.258 6.087 7.46 6.62 7.46 6.62zM10.659 2.348h2.685v19.306H10.66Z""/></svg>";
+        = File.ReadAllText(@"C:/Users/cdigg/git/temp/noto-emoji/svg/emoji_u2708.svg");
+    public override IEntity Evaluate()
+        => SvgEntity.Create(Svg);
+}*/
+
+public class RawSvg : Generator
+{
+    public string FilePath { get; set; } = @"C:/Users/cdigg/git/temp/noto-emoji/svg/emoji_u2708.svg";
+
+    public override IEntity Evaluate()
+        => SvgEntity.LoadFromFile(FilePath);
+}
+
 public class FunctionGenerator : Generator
 {
     public FunctionRendererParameters RendererParameters { get; set; } = new();
-    public Function Function { get; set; } = new Circle();
-    public Vector2 GetPoint(float x) => A + Function.Func(x * Function.Length + Function.Offset) * Size;
+    public Function Function { get; set; } = new CircleFunc();
+    public DVector2 GetPoint(float x) => A + Function.Func(x * Function.Length + Function.Offset) * Size;
 
     public override IEntity Evaluate()
     {
@@ -137,8 +155,8 @@ public class FunctionGenerator : Generator
                 var v = GetPoint(i / n);
 
                 var circle = new SvgCircle();
-                circle.CenterX = v.X;
-                circle.CenterY = v.Y;
+                circle.CenterX = (float)v.X;
+                circle.CenterY = (float)v.Y;
                 circle.Radius = (float)RendererParameters.OuterThickness;
                 circle.Fill = new SvgColourServer(RendererParameters.StrokeColor);
                 group.Children.Add(circle);
@@ -149,8 +167,8 @@ public class FunctionGenerator : Generator
                 var v = GetPoint(i / n);
 
                 var circle = new SvgCircle();
-                circle.CenterX = v.X;
-                circle.CenterY = v.Y;
+                circle.CenterX = (float)v.X;
+                circle.CenterY = (float)v.Y;
                 circle.Radius = (float)RendererParameters.InnerThickness;
                 circle.Fill = new SvgColourServer(RendererParameters.FillColor);
                 group.Children.Add(circle);

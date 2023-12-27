@@ -1,10 +1,5 @@
-﻿using System.ComponentModel;
-using System.ComponentModel.DataAnnotations;
-using Ara3D.Collections;
+﻿using System.ComponentModel.DataAnnotations;
 using Ara3D.Math;
-using ExCSS;
-using Svg;
-using Svg.Transforms;
 using Color = System.Drawing.Color;
 
 namespace Ara3D.SVG.Creator;
@@ -269,9 +264,9 @@ Uncategorized elements
 
 public class Function
 {
-    public float Offset { get; set; } = 0;
-    public float Length { get; set; } = 1;
-    public Func<float, Vector2> Func { get; set; }
+    public double Offset { get; set; } = 0;
+    public double Length { get; set; } = 1;
+    public Func<double, DVector2> Func { get; set; }
 }
 
 public class Function1D : Function
@@ -284,17 +279,15 @@ public class Function2D : Function
 
 public class FunctionPolar : Function
 {
-    public const float Pi2 = MathF.PI * 2;
-
-    public void SetPolarFunc(Func<float, float> polar)
-        => Func = x => (polar(x) * MathF.Cos(x), polar(x) * MathF.Sin(x));
+    public void SetPolarFunc(Func<double, double> polar)
+        => Func = x => (polar(x) * System.Math.Cos(x), polar(x) * System.Math.Sin(x));
 }
 
 public class SineWave : Function
 {
     public SineWave()
     {
-        Func = x => (x, MathF.Sin(x * MathF.PI * 2));
+        Func = x => (x, System.Math.Sin(x * System.Math.PI * 2));
     }
 }
 
@@ -306,13 +299,13 @@ public class Gaussian : Function
 
     public Gaussian()
     {
-        Func = x => (x, A * MathF.Exp(-MathF.Pow(x - B, 2) / 2 * C * C));
+        Func = x => (x, A * System.Math.Exp(-System.Math.Pow(x - B, 2) / 2 * C * C));
     }
 }
 
-public class Circle : FunctionPolar
+public class CircleFunc : FunctionPolar
 {
-    public Circle()
+    public CircleFunc()
     {
         SetPolarFunc(x => 1);
     }
@@ -325,7 +318,7 @@ public class Rose : FunctionPolar
     
     public Rose()
     {
-        SetPolarFunc(x => MathF.Cos(N * x / D));
+        SetPolarFunc(x => System.Math.Cos(N * x / D));
     }
 }
 

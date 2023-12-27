@@ -1,15 +1,12 @@
 ﻿using System.Diagnostics;
-using System.Drawing;
 using System.Windows;
 using System.Windows.Controls;
 using System.Xml;
-using Ara3D.Collections;
 using Ara3D.Math;
 using Ara3D.Utils.Wpf;
 using Microsoft.Web.WebView2.Core;
 using Newtonsoft.Json;
 using Svg;
-using Svg.Pathing;
 
 //== 
 // https://stackoverflow.com/questions/20810578/setting-attribute-of-svg-element-with-js-not-working?rq=3
@@ -51,6 +48,7 @@ namespace Ara3D.SVG.Creator
             var entity = new OperatorStack();
             Stacks.Add(entity);
             entity.Generator = gen;
+            /*
             var setStroke = new SetStrokeColor() { Color = Color.Black };
             entity.Operators.Add(setStroke);
 
@@ -59,8 +57,9 @@ namespace Ara3D.SVG.Creator
 
             var setFillColor = new SetFillColor() { Color = Color.AntiqueWhite };
             entity.Operators.Add(setFillColor);
-
+            */
             SetCurrentEntity(entity);
+            RedrawSvg();
         }
 
         public void AddModifier(Operator mod)
@@ -91,16 +90,14 @@ namespace Ara3D.SVG.Creator
             AddCreateMenuItem<EllipseGenerator>(create);
             AddCreateMenuItem<SquareGenerator>(create);
             AddCreateMenuItem<CircleGenerator>(create);
+            AddCreateMenuItem<RawSvg>(create);
             var mods = this.Menu.AddMenuItem("Modify");
             AddModifierMenuItem<SetStrokeWidth>(mods);
             AddModifierMenuItem<SetStrokeColor>(mods);
             AddModifierMenuItem<SetFillColor>(mods);
-            AddModifierMenuItem<Translate>(mods);
-            AddModifierMenuItem<Scale>(mods);
-            AddModifierMenuItem<Skew>(mods);
-            AddModifierMenuItem<Rotate>(mods);
-            // TODO: make a cloner menu (HOWEVER ... this is a composed operator)
-            AddModifierMenuItem<RadialCloner>(mods);
+            AddModifierMenuItem<TransformOperator>(mods);
+            var clones = this.Menu.AddMenuItem("Cloners");
+            AddModifierMenuItem<Cloner>(clones);
         }
 
         private void PropertiesPanel_PropertyChanged(object? sender, System.ComponentModel.PropertyChangedEventArgs e)
@@ -145,17 +142,17 @@ namespace Ara3D.SVG.Creator
             if (stack == null) return;
 
             stack.Generator.A = stack.Generator.B;
-            stack.Generator.B = new Vector2(x, y);
+            stack.Generator.B = new DVector2(x, y);
 
-            var (ax, ay) = stack.Generator.A;
-            var (bx, by) = stack.Generator.B;
+            var (ax, ay) = stack.Generator.A.ToVector();
+            var (bx, by) = stack.Generator.B.ToVector();
             var minX = System.Math.Min(ax, bx);
             var minY = System.Math.Min(ay, by);
             var maxX = System.Math.Max(ax, bx);
             var maxY = System.Math.Max(ay, by);
 
-            stack.Generator.A = (minX, minY);
-            stack.Generator.B = (maxX, maxY);
+            stack.Generator.A = new DVector2(minX, minY);
+            stack.Generator.B = new DVector2(maxX, maxY);
 
             RedrawSvg();
             /*
@@ -221,21 +218,18 @@ function onEvent(event)
 document.addEventListener('click', onEvent);
 document.addEventListener('dblclick', onEvent);
 ";
-            
-        public static string TrackMouseScript = @"var cursor_x = -1;
-var cursor_y = -1;
-document.onmousemove = function(event)
-{
- cursor_x = event.pageX;
- cursor_y = event.pageY;
-}";
         
         private async void BrowserOnCoreWebView2InitializationCompleted(object? sender, CoreWebView2InitializationCompletedEventArgs e)
         {
             Debug.WriteLine("Web-browser Initialized!");
             Browser.CoreWebView2.AddScriptToExecuteOnDocumentCreatedAsync(OnDocCreatedScript);
             LoadSvg();
-            await Browser.CoreWebView2.ExecuteScriptAsync(TrackMouseScript);
+
+            var rg = new RectGenerator();
+            rg.A = new DVector2(50, 50);
+            rg.B = new DVector2(250, 250);
+            CreateObject(rg);
+            AddModifier(new TransformOperator());
         }
 
         public void LoadSvg()
@@ -245,12 +239,9 @@ document.onmousemove = function(event)
             Browser.NavigateToString(Html);
 
             // TODO: this will be fun.
-            // this.Browser.CoreWebView2.ExecuteScriptAsync("");
-
-            // TODO: so will this
             //this.Browser.CoreWebView2.PrintToPdfAsync()
 
-            // TODO: this ight be useful
+            // TODO: this might be useful
             //this.Browser.CoreWebView2.AddHostObjectToScript("name", null);
         }
         /*

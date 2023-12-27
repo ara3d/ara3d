@@ -1,5 +1,4 @@
 ﻿using System.IO;
-using Ara3D.Collections;
 using Svg;
 
 namespace Ara3D.SVG.Creator;
@@ -34,6 +33,18 @@ public class SvgEntity : IElement
     public int Index { get; set; }
     public IEntity Clone() => new SvgEntity() { Svg = Svg.DeepCopy() };
     public static SvgEntity Create(SvgElement svg) => new() { Svg = svg };
+    public static SvgEntity LoadFromFile(string filePath) {
+        var doc = SvgDocument.Open(filePath);
+        //return doc;
+        var group = new SvgGroup();
+        foreach (var child in  doc.Children)
+        {
+            group.Children.Add(child);
+        }
+
+        return group;
+        //*/
+    }
     public static SvgEntity Create(string txt) => new() { Svg = SvgDocument.FromSvg<SvgDocument>(txt) };
     public static implicit operator SvgEntity(string s) => Create(s);
     public static implicit operator SvgEntity(SvgElement e) => Create(e);
