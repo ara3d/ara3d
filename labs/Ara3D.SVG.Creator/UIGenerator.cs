@@ -192,8 +192,8 @@ public static class UIGenerator
                 notifier.OnPropertyChanged(name);
             };
             notifier.PropertyChanged += (sender, args) => SetColorSliderColor(ctrl, (Color)getValue());
+            return ctrl;
         }
-
         // Primitives 
         else if (type == typeof(string))
         {
@@ -202,6 +202,10 @@ public static class UIGenerator
         else if (type == typeof(double))
         {
             return CreateRowControl(name, "X", () => (double)getValue(), x => setValue(x), notifier);
+        }
+        else if (type == typeof(float))
+        {
+            return CreateRowControl(name, "X", () => (float)getValue(), x => setValue((float)x), notifier);
         }
         else if (type == typeof(int))
         {
