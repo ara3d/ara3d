@@ -15,15 +15,16 @@ public abstract class Operator
 
 public class SetStrokeWidth : Operator
 {
-    public float Width { get; set; }
+
+    public StrokeWidth Width { get; set; } = 1f;
 
     public override IEntity Evaluate(IElement e, float strength)
-        => e.ModifySvg(x => x.StrokeWidth += (Width - x.StrokeWidth) * strength);
+        => e.ModifySvg(x => x.StrokeWidth += (float)(Width - x.StrokeWidth) * strength);
 }
 
 public class SetFillColor : Operator
 {
-    public Color Color { get; set; }
+    public Color Color { get; set; } = Color.CornflowerBlue;
 
     public override IEntity Evaluate(IElement e, float strength)
         => e.ModifySvg(x =>
@@ -37,7 +38,7 @@ public class SetFillColor : Operator
 
 public class SetStrokeColor : Operator
 {
-    public Color Color { get; set; }
+    public Color Color { get; set; } = Color.MediumVioletRed;
 
     public override IEntity Evaluate(IElement e, float strength)
         => e.ModifySvg(x =>
@@ -74,61 +75,7 @@ public class TransformOperator : Operator
         });
 
 }
-/*
-public abstract class TransformOperator : Operator
-{
-    public override IEntity Evaluate(IElement e, float strength)
-        => e.ModifySvg(x =>
-        {
-            if (x.Transforms == null)
-                x.Transforms = new SvgTransformCollection();
-            x.Transforms.Add(GetTransform(strength));
-        });
 
-    public abstract SvgTransform GetTransform(float strength);
-}
-
-public class Rotate : TransformOperator
-{
-    public float Angle { get; set; }
-    public Vector2 Center { get; set; }
-
-    public override SvgTransform GetTransform(float strength)
-        => new SvgRotate(0f.Lerp(Angle, strength), Center.X, Center.Y);
-}
-
-public class Scale : TransformOperator
-{
-    public Vector2 Amount { get; set; }
-
-    public override SvgTransform GetTransform(float strength)
-        => new SvgScale(Vector2.One.Lerp(Amount, strength).X, Vector2.One.Lerp(Amount, strength).Y);
-}
-
-public class ScaleUniform : TransformOperator
-{
-    public float Amount { get; set; }
-
-    public override SvgTransform GetTransform(float strength)
-        => new SvgScale(1f.Lerp(Amount, strength));
-}
-
-public class Skew : TransformOperator
-{
-    public Vector2 Amount { get; set; }
-
-    public override SvgTransform GetTransform(float strength)
-        => new SvgSkew(Vector2.Zero.Lerp(Amount, strength).X, Vector2.Zero.Lerp(Amount, strength).Y);
-}
-
-public class Translate : TransformOperator
-{
-    public Vector2 Amount { get; set; }
-
-    public override SvgTransform GetTransform(float strength)
-        => new SvgTranslate(Vector2.Zero.Lerp(Amount, strength).X, Vector2.Zero.Lerp(Amount, strength).Y);
-}
-*/
 
 public static class Extensions
 {

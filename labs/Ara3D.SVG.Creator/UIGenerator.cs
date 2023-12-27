@@ -65,6 +65,18 @@ public static class UIGenerator
 
     public static PropertyRowControl CreateRowControl(
         string name,
+        Func<StrokeWidth> getValue,
+        Action<StrokeWidth> setValue,
+        PropertyChangeNotifier notifier)
+    {
+        var r = new PropertyRowControl() { Name = name };
+        var ctrl = r.AddProperty("W", Colors.LightCyan, 5, 0, getValue(), x => setValue(new StrokeWidth(x)));
+        notifier.PropertyChanged += (_, _) => ctrl.Value = getValue();
+        return r;
+    }
+
+    public static PropertyRowControl CreateRowControl(
+        string name,
         string fieldName,
         Func<int> getValue,
         Action<int> setValue,
@@ -198,6 +210,14 @@ public static class UIGenerator
         else if (type == typeof(string))
         {
             throw new NotImplementedException();
+        }
+        else if (type == typeof(Angle))
+        {
+            return CreateRowControl(name, () => (Angle)getValue(), x => setValue(x), notifier);
+        }
+        else if (type == typeof(StrokeWidth))
+        {
+            return CreateRowControl(name, () => (StrokeWidth)getValue(), x => setValue(x), notifier);
         }
         else if (type == typeof(double))
         {

@@ -230,6 +230,9 @@ document.addEventListener('dblclick', onEvent);
             rg.B = new DVector2(250, 250);
             CreateObject(rg);
             AddModifier(new TransformOperator());
+            AddModifier(new SetStrokeWidth());
+            AddModifier(new SetStrokeColor());
+            AddModifier(new SetFillColor());
         }
 
         public void LoadSvg()

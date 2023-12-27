@@ -31,6 +31,14 @@ public class Angle
     public static implicit operator double(Angle x) => x.Degrees;
 }
 
+public class StrokeWidth
+{
+    public double Amount { get; set; }
+    public StrokeWidth(double x) => Amount = x;
+    public static implicit operator StrokeWidth(double x) => new(x);
+    public static implicit operator double(StrokeWidth x) => x.Amount;
+}
+
 public class Circle
 {
     public Circle(Position center, double r)
