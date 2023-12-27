@@ -21,7 +21,7 @@
 			</Button.Resources>
 						X
 		</Button>
-		<TextBox x:Name="InnerTextBox" Grid.Column="1" TextChanged="InnerTextBox_OnTextChanged" VerticalContentAlignment="Center" PreviewTextInput="InnerTextBox_OnPreviewTextInput" 
+		<TextBox x:Name="InnerTextBox" Grid.Column="1" TextChanged="InnerTextBox_OnTextChanged" VerticalContentAlignment="Center" 
 		         Text="1.234567"/>
 		<UniformGrid Grid.Column="2" Columns="1">
 			<RepeatButton 

@@ -115,9 +115,6 @@ namespace Ara3D.SVG.Creator
             }
         }
 
-        private void InnerTextBox_OnPreviewTextInput(object sender, TextCompositionEventArgs e)
-            => e.Handled = !IsTextAllowed(e.Text);
-
         private void InnerTextBox_OnTextChanged(object sender, TextChangedEventArgs e)
         {
             if (double.TryParse(InnerTextBox.Text, out var value))

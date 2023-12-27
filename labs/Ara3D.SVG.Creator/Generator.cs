@@ -11,7 +11,7 @@ public abstract class Generator
         get => A + Size.ToVector() / 2;
         set
         {
-            var offset = Center.ToVector() - value;
+            var offset = value - Center.ToVector();
             A += offset;
             B += offset;
         }

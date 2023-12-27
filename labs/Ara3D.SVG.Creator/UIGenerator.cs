@@ -92,7 +92,7 @@ public static class UIGenerator
 
             foreach (var prop in props)
             {
-                var ctrl = CreateControlFromProperty(prop, getValue, notifier);
+                var ctrl = CreateControlFromProperty(prop, getValue, setValue, notifier);
                 ctrl.Margin = RowMargin;
                 sp.Children.Add(ctrl);
             }
@@ -114,17 +114,18 @@ public static class UIGenerator
         var r = new PropertyRowControl();
         r.Name = name;
 
-        var val = getValue();
         {
             if (p1.PropertyType != typeof(double))
                 throw new Exception("Only doubles currently supported as properties of numeric row control");
 
-            var p1Val = (double)p1.GetValue(val);
+            var p1Val = (double)p1.GetValue(getValue());
             var ctrl = r.AddProperty(p1.Name, Colors.LemonChiffon, 5, 0, p1Val, (x) =>
             {
                 if (p1.CanWrite)
                 {
+                    var val = getValue();
                     p1.SetValue(val, x);
+                    setValue(val);
                     notifier.OnPropertyChanged(p1.Name);
                 }
             });
@@ -137,12 +138,14 @@ public static class UIGenerator
             if (p2.PropertyType != typeof(double))
                 throw new Exception("Only doubles currently supported as properties of numeric row control");
 
-            var p2Val = (double)p2.GetValue(val);
+            var p2Val = (double)p2.GetValue(getValue());
             var ctrl = r.AddProperty(p2.Name, Colors.LemonChiffon, 5, 0, p2Val, (x) =>
             {
                 if (p2.CanWrite)
-                {
+                { 
+                    var val = getValue();
                     p2.SetValue(val, x);
+                    setValue(val);
                     notifier.OnPropertyChanged(p2.Name);
                 }
             });
@@ -153,18 +156,18 @@ public static class UIGenerator
         return r;
     }
 
-    public static Control CreateControlFromProperty(PropertyInfo pi, Func<object> getParentVal, PropertyChangeNotifier notifier)
+    public static Control CreateControlFromProperty(PropertyInfo pi, Func<object> getParentVal, Action<object> setParentVal, PropertyChangeNotifier notifier)
     {
-        var parentVal = getParentVal();
-        var propVal = pi.GetValue(parentVal);
         var ctrl = CreateControl(pi.Name, pi.PropertyType, () => pi.GetValue(getParentVal()), (x) =>
         {
             if (pi.CanWrite)
             {
+                var parentVal = getParentVal();
                 var oldVal = pi.GetValue(parentVal);
                 if (oldVal.Equals(x))
                     return;
                 pi.SetValue(parentVal, x);
+                setParentVal(parentVal);
                 notifier.OnPropertyChanged(pi.Name);
             }
         }, notifier);
