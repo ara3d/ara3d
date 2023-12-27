@@ -51,22 +51,26 @@ public class SetStrokeColor : Operator
 
 public class TransformOperator : Operator
 {
-    public TransformViewModel Transform { get; set; } = new TransformViewModel();
+    public Vector Translation { get; set; } = DVector2.Zero;
+    public Vector Skew { get; set; } = DVector2.Zero;
+    public Angle Rotation { get; set; } = 0;
+    public Scale Scale { get; set; } = DVector2.One;
 
     public override IEntity Evaluate(IElement e, float strength)
         => e.ModifySvg(x =>
         {
-            var transform = Transform;
-            if (strength.AlmostEquals(1))
-                transform = new TransformViewModel().LerpTo(Transform, strength);
+            var tr = DVector2.Zero.Lerp(Translation.ToVector(), strength).Vector2;
+            var sk = DVector2.Zero.Lerp(Skew.ToVector(), strength).Vector2;
+            var ro = (float)0.0.Lerp(Rotation.Degrees, strength);
+            var sc = DVector2.One.Lerp(Scale.ToVector(), strength).Vector2;
 
             if (x.Transforms == null)
                 x.Transforms = new SvgTransformCollection();
 
-            x.Transforms.Add(new SvgTranslate((float)transform.PositionX, (float)transform.PositionY));
-            x.Transforms.Add(new SvgRotate((float)transform.RotationAngle));
-            x.Transforms.Add(new SvgScale((float)transform.ScaleX, (float)transform.ScaleY));
-            x.Transforms.Add(new SvgSkew((float)transform.SkewX, (float)transform.SkewY));
+            x.Transforms.Add(new SvgTranslate(tr.X, tr.Y));
+            x.Transforms.Add(new SvgRotate(ro));
+            x.Transforms.Add(new SvgScale(sc.X, sc.Y));
+            x.Transforms.Add(new SvgSkew(sk.X, sk.Y));
         });
 
 }

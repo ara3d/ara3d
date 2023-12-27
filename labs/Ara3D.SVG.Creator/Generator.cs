@@ -22,13 +22,14 @@ public abstract class Generator
         get => B.ToVector() - A;
         set
         {
-            A = Center - value.ToVector() / 2;
-            B = Center + value.ToVector() / 2;
+            var center = Center.ToVector();
+            A = center - value.ToVector() / 2;
+            B = center + value.ToVector() / 2;
         }
     }
 
-    public Position A { get; set; }
-    public Position B { get; set; }
+    public Position A { get; set; } = DVector2.Zero;
+    public Position B { get; set; } = DVector2.Zero;
 
     public abstract IEntity Evaluate();
 }

@@ -107,8 +107,11 @@ public class Scale
 {
     public Scale(double x, double y)
         => (X, Y) = (x, y);
+    public DVector2 ToVector() => (X, Y);
     public double X { get; set; }
     public double Y { get; set; }
+    public static implicit operator DVector2(Scale s) => new(s.X, s.Y);
+    public static implicit operator Scale(DVector2 v) => new(v.X, v.Y);
 };
 
 public class Vector

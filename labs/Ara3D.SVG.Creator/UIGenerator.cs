@@ -1,4 +1,5 @@
-﻿using System.Diagnostics;
+﻿using System.ComponentModel;
+using System.Diagnostics;
 using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Windows;
@@ -10,6 +11,23 @@ using ColorPicker;
 using Color = System.Drawing.Color;
 
 namespace Ara3D.SVG.Creator;
+
+
+public class PropertyChangeNotifier : INotifyPropertyChanged
+{
+    public event PropertyChangedEventHandler? PropertyChanged;
+
+    public void OnPropertyChanged(string propertyName)
+        => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+}
+
+public class ControlWithUpdater
+{
+    public ControlWithUpdater(Control control, Action<object> updateAction)
+        => (Control, UpdateAction) = (control, updateAction);
+    public Control Control { get; }
+    public Action<object> UpdateAction { get; }
+}
 
 public static class UIGenerator
 {
@@ -75,11 +93,13 @@ public static class UIGenerator
         else
         {
             var g = new GroupBox();
+            var notifier = new PropertyChangeNotifier();
             g.Header = name.ToUIName();
             var sp = new StackPanel();
+
             foreach (var prop in props)
             {
-                var ctrl = CreateControlFromProperty(prop, obj, setValue);
+                var ctrl = CreateControlFromProperty(prop, obj, notifier);
                 ctrl.Margin = RowMargin;
                 sp.Children.Add(ctrl);
             }
@@ -120,17 +140,21 @@ public static class UIGenerator
         return r;
     }
 
-    public static Control CreateControlFromProperty(PropertyInfo pi, object parentVal, Action<object> setValue)
+    public static Control CreateControlFromProperty(PropertyInfo pi, object parentVal, PropertyChangeNotifier notifier)
     {
         var propVal = pi.GetValue(parentVal);
         var ctrl = CreateControl(pi.Name, propVal, pi.PropertyType, (x) =>
         {
             if (pi.CanWrite)
             {
+                var oldVal = pi.GetValue(parentVal);
+                if (oldVal.Equals(x))
+                    return;
                 pi.SetValue(parentVal, x);
-                setValue(x);
+                notifier.OnPropertyChanged(pi.Name);
             }
         });
+        notifier.PropertyChanged += (s, e) => { }   
         return ctrl;
     }
 
@@ -138,7 +162,7 @@ public static class UIGenerator
     {
         if (type == typeof(Size))
         {
-            CreateControlFromProperties(name, val, type, setValue);
+            return CreateControlFromProperties(name, val, type, setValue);
         }
         else if (type == typeof(Color))
         {
@@ -154,47 +178,47 @@ public static class UIGenerator
         }
         else if (type == typeof(Vector))
         {
-            CreateControlFromProperties(name, val, type, setValue);
+            return CreateControlFromProperties(name, val, type, setValue);
         }
         else if (type == typeof(Scale))
         {
-            CreateControlFromProperties(name, val, type, setValue);
+            return CreateControlFromProperties(name, val, type, setValue);
         }
         else if (type == typeof(Position))
         {
-            CreateControlFromProperties(name, val, type, setValue);
+            return CreateControlFromProperties(name, val, type, setValue);
         }
         else if (type == typeof(Angle))
         {
-            CreateControlFromProperties(name, val, type, setValue);
+            return CreateControlFromProperties(name, val, type, setValue);
         }
         else if (type == typeof(Circle))
         {
-            CreateControlFromProperties(name, val, type, setValue);
+            return CreateControlFromProperties(name, val, type, setValue);
         }
         else if (type == typeof(Rect))
         {
-            CreateControlFromProperties(name, val, type, setValue);
+            return CreateControlFromProperties(name, val, type, setValue);
         }
         else if (type == typeof(RoundedRect))
         {
-            CreateControlFromProperties(name, val, type, setValue);
+            return CreateControlFromProperties(name, val, type, setValue);
         }
         else if (type == typeof(Ellipse))
         {
-            CreateControlFromProperties(name, val, type, setValue);
+            return CreateControlFromProperties(name, val, type, setValue);
         }
         else if (type == typeof(Square))
         {
-            CreateControlFromProperties(name, val, type, setValue);
+            return CreateControlFromProperties(name, val, type, setValue);
         }
         else if (type == typeof(Line))
         {
-            CreateControlFromProperties(name, val, type, setValue);
+            return CreateControlFromProperties(name, val, type, setValue);
         }
         else if (type == typeof(Quadratic))
         {
-            CreateControlFromProperties(name, val, type, setValue);
+            return CreateControlFromProperties(name, val, type, setValue);
         }
         // Primitives 
         else if (type == typeof(string))
@@ -203,11 +227,11 @@ public static class UIGenerator
         }
         else if (type == typeof(double))
         {
-            CreateRowControl(name, "X", (double)val, x => setValue(x));
+            return CreateRowControl(name, "X", (double)val, x => setValue(x));
         }
         else if (type == typeof(int))
         {
-            CreateRowControl(name, "N", (int)val, x => setValue(x));
+            return CreateRowControl(name, "N", (int)val, x => setValue(x));
         }
         else if (type == typeof(bool))
         {
@@ -220,9 +244,22 @@ public static class UIGenerator
             ctrl.Unchecked += (_, _) => setValue(ctrl.IsChecked);
             return ctrl;
         }
-        else
+        else if (type.IsEnum)
         {
+            var ctrl = new ComboBox();
+            var xs = System.Enum.GetValues(type);
+            var names = System.Enum.GetNames(type);
+            for (var i=0; i<xs.Length; i++)
+            {
+                ctrl.Items.Add(names[i]);
+            }
 
+            // https://learn.microsoft.com/en-us/dotnet/api/system.windows.controls.combobox?view=windowsdesktop-8.0
+            ctrl.IsEditable = true;
+            ctrl.IsReadOnly = false;
+            ctrl.SelectedIndex = 0;
+            ctrl.SelectionChanged += (_, _) => setValue(xs.GetValue(ctrl.SelectedIndex));
+            return ctrl;
         }
 
         throw  new NotImplementedException();
