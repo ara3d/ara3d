@@ -147,5 +147,26 @@ namespace Ara3D.Utils
         /// </summary>
         public static Action InvokableMethod(this MethodInfo mi, object self, params object[] args)
             => () => mi.Invoke(self, args);
+
+        public static int GetEnumIndex(this Type type, object value)
+        {
+            if (!type.IsEnum)
+                throw new Exception("Required an enum type");
+            var vals = Enum.GetValues(type);
+            for (var i = 0; i < vals.Length; i++)
+            {
+                if (vals.GetValue(i).Equals(value))
+                    return i;
+            }
+            return -1;
+        }
+
+        public static object GetEnumValue(this Type type, int index)
+        {
+            if (!type.IsEnum)
+                throw new Exception("Required an enum type");
+            var vals = Enum.GetValues(type);
+            return vals.GetValue(index);
+        }
     }
 }

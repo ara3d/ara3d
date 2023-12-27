@@ -231,8 +231,8 @@ public static class UIGenerator
         else if (type.IsEnum)
         {
             var ctrl = new ComboBox();
-            var xs = System.Enum.GetValues(type);
-            var names = System.Enum.GetNames(type);
+            var xs = Enum.GetValues(type);
+            var names = Enum.GetNames(type);
             for (var i=0; i<xs.Length; i++)
             {
                 ctrl.Items.Add(names[i]);
@@ -241,14 +241,11 @@ public static class UIGenerator
             // https://learn.microsoft.com/en-us/dotnet/api/system.windows.controls.combobox?view=windowsdesktop-8.0
             ctrl.IsEditable = true;
             ctrl.IsReadOnly = false;
-            
-            // TODO: set the selected index
-            //ctrl.SelectedIndex = Array.FindIndex(xs, );
-            
-            ctrl.SelectionChanged += (_, _) => setValue(xs.GetValue(ctrl.SelectedIndex));
 
-            // TODO: set the selected index 
-            //notifier.PropertyChanged += 
+            var val = getValue();
+            ctrl.SelectedIndex = type.GetEnumIndex(val);
+            ctrl.SelectionChanged += (_, _) => setValue(xs.GetValue(ctrl.SelectedIndex));
+            notifier.PropertyChanged += (_, _) => type.GetEnumIndex(getValue());
             
             return ctrl;
         }
