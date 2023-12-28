@@ -13,18 +13,26 @@ public abstract class Operator
     public bool LinearRamp { get; set; }
 }
 
-public class SetStrokeWidth : Operator
+public class SetStroke : Operator
 {
+    public StrokeWidth Width { get; set; } = 3f;
 
-    public StrokeWidth Width { get; set; } = 1f;
+    public Color Color { get; set; } = Color.DarkSlateBlue;
 
     public override IEntity Evaluate(IElement e, float strength)
-        => e.ModifySvg(x => x.StrokeWidth += (float)(Width - x.StrokeWidth) * strength);
+        => e.ModifySvg(x =>
+        {
+            x.StrokeWidth += (float)(Width - x.StrokeWidth) * strength;
+            if (x.Stroke is SvgColourServer cs)
+                x.Stroke = new SvgColourServer(cs.Colour.Lerp(Color, strength));
+            else
+                x.Stroke = new SvgColourServer(Color);
+        });
 }
 
 public class SetFillColor : Operator
 {
-    public Color Color { get; set; } = Color.CornflowerBlue;
+    public Color Color { get; set; } = Color.Coral;
 
     public override IEntity Evaluate(IElement e, float strength)
         => e.ModifySvg(x =>
@@ -33,20 +41,6 @@ public class SetFillColor : Operator
                 x.Fill = new SvgColourServer(cs.Colour.Lerp(Color, strength));
             else
                 x.Fill = new SvgColourServer(Color);
-        });
-}
-
-public class SetStrokeColor : Operator
-{
-    public Color Color { get; set; } = Color.MediumVioletRed;
-
-    public override IEntity Evaluate(IElement e, float strength)
-        => e.ModifySvg(x =>
-        {
-            if (x.Stroke is SvgColourServer cs)
-                x.Stroke = new SvgColourServer(cs.Colour.Lerp(Color, strength));
-            else
-                x.Stroke = new SvgColourServer(Color);
         });
 }
 

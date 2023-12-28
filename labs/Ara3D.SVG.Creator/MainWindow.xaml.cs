@@ -29,11 +29,8 @@ namespace Ara3D.SVG.Creator
             Browser.CoreWebView2InitializationCompleted += BrowserOnCoreWebView2InitializationCompleted;
             Browser.EnsureCoreWebView2Async();
             Browser.WebMessageReceived += BrowserOnWebMessageReceived;
-            
-            // <local:PropertiesPanel x:Name="Props1"></local:PropertiesPanel>
             StackPanel.Children.Add(PropertiesPanel = new PropertiesPanel());
             PropertiesPanel.PropertyChanged += PropertiesPanel_PropertyChanged;
-
             CreateMenu();
         }
 
@@ -92,8 +89,7 @@ namespace Ara3D.SVG.Creator
             AddCreateMenuItem<CircleGenerator>(create);
             AddCreateMenuItem<RawSvg>(create);
             var mods = this.Menu.AddMenuItem("Modify");
-            AddModifierMenuItem<SetStrokeWidth>(mods);
-            AddModifierMenuItem<SetStrokeColor>(mods);
+            AddModifierMenuItem<SetStroke>(mods);
             AddModifierMenuItem<SetFillColor>(mods);
             AddModifierMenuItem<TransformOperator>(mods);
             var clones = this.Menu.AddMenuItem("Cloners");
@@ -229,10 +225,10 @@ document.addEventListener('dblclick', onEvent);
             rg.A = new DVector2(50, 50);
             rg.B = new DVector2(250, 250);
             CreateObject(rg);
-            AddModifier(new TransformOperator());
-            AddModifier(new SetStrokeWidth());
-            AddModifier(new SetStrokeColor());
+            AddModifier(new TransformOperator());   
+            AddModifier(new SetStroke());
             AddModifier(new SetFillColor());
+            RedrawSvg();
         }
 
         public void LoadSvg()

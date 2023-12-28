@@ -2,10 +2,14 @@
 using System.Reflection;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Input;
 using System.Windows.Media;
+using Ara3D.Math;
 using Ara3D.Utils;
 using ColorPicker;
+using Microsoft.VisualBasic.Devices;
 using Color = System.Drawing.Color;
+using Mouse = Microsoft.VisualBasic.Devices.Mouse;
 
 namespace Ara3D.SVG.Creator;
 
@@ -32,7 +36,9 @@ public static class UIGenerator
     // Regular control. 
 
     public static Thickness RowMargin = new Thickness(0, 1, 0, 1);
-    
+
+   
+
     public static bool IsNumericType(this Type type)
         => type == typeof(double) 
            || type == typeof(int) 
@@ -94,7 +100,7 @@ public static class UIGenerator
         var props = type.GetProperties();
         if (props.Length <= 2 && props.All(p => p.PropertyType.IsNumericType()))
         {
-            return CreateRowControlFromProperties(name, getValue, setValue, props[0], props.ElementAtOrDefault(1), notifier);
+            return CreateRowControlFromProperties(name, type, getValue, setValue, props[0], props.ElementAtOrDefault(1), notifier);
         }
         else
         {
@@ -117,6 +123,7 @@ public static class UIGenerator
     
     public static PropertyRowControl CreateRowControlFromProperties(
         string name,
+        Type parentType,
         Func<object> getValue,
         Action<object> setValue,
         PropertyInfo p1,
@@ -126,12 +133,20 @@ public static class UIGenerator
         var r = new PropertyRowControl();
         r.Name = name;
 
+        var defaultValue = 0.0;
+        var changeAmount = 5.0;
+        if (parentType == typeof(Scale))
+        {
+            defaultValue = 1.0;
+            changeAmount = 0.05;
+        }
+
         {
             if (p1.PropertyType != typeof(double))
                 throw new Exception("Only doubles currently supported as properties of numeric row control");
 
             var p1Val = (double)p1.GetValue(getValue());
-            var ctrl = r.AddProperty(p1.Name, Colors.LemonChiffon, 5, 0, p1Val, (x) =>
+            var ctrl = r.AddProperty(p1.Name, Colors.LightPink, changeAmount, defaultValue, p1Val, (x) =>
             {
                 if (p1.CanWrite)
                 {
@@ -151,7 +166,7 @@ public static class UIGenerator
                 throw new Exception("Only doubles currently supported as properties of numeric row control");
 
             var p2Val = (double)p2.GetValue(getValue());
-            var ctrl = r.AddProperty(p2.Name, Colors.LemonChiffon, 5, 0, p2Val, (x) =>
+            var ctrl = r.AddProperty(p2.Name, Colors.LightGreen, changeAmount, defaultValue, p2Val, (x) =>
             {
                 if (p2.CanWrite)
                 { 

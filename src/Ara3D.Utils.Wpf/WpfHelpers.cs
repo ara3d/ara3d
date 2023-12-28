@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using Ara3D.Math;
 using HorizontalAlignment = System.Windows.HorizontalAlignment;
 using ListBox = System.Windows.Controls.ListBox;
 using TabControl = System.Windows.Controls.TabControl;
@@ -173,5 +174,11 @@ namespace Ara3D.Utils.Wpf
             self.IsOpen = true;
             return self;
         }
+
+        public static DVector2 ToVector(this Point pt)
+            => (pt.X, pt.Y);
+
+        public static DVector2 GetMouseVector(this Control control)
+            => Mouse.GetPosition(control).ToVector();
     }
 }
