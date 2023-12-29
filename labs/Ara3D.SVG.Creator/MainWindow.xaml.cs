@@ -88,6 +88,7 @@ namespace Ara3D.SVG.Creator
             AddCreateMenuItem<SquareGenerator>(create);
             AddCreateMenuItem<CircleGenerator>(create);
             AddCreateMenuItem<RawSvg>(create);
+            AddCreateMenuItem<StarShape>(create);
             var mods = this.Menu.AddMenuItem("Modify");
             AddModifierMenuItem<SetStroke>(mods);
             AddModifierMenuItem<SetFillColor>(mods);

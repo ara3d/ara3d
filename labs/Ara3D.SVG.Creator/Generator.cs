@@ -42,6 +42,30 @@ public enum SvgPrimitiveClosedShapeEnum
     Circle,
 }
 
+public class StarShape : Generator
+{
+    public int Points { get; set; } = 5;
+
+    public double InnerRadius { get; set; } = 20;
+    public double OuterRadius { get; set; } = 50;
+
+    public override IEntity Evaluate()
+    {
+        var points = new List<DVector2>();
+        var n = Points * 2;
+        for (var i = 0; i < n; i++)
+        {
+            var theta = System.Math.PI * 2 * i / (double)n;
+            var r = i.IsEven() ? OuterRadius : InnerRadius;
+            var pt = new DVector2(theta.Sin(), theta.Cos()) * r;
+            pt += Center;
+            points.Add(pt);
+        }
+
+        return (SvgEntity)points.ToSvgPath(true);
+    }
+}
+
 public class EllipseGenerator : SvgPrimitiveClosedShape
 {
     public EllipseGenerator()
@@ -208,3 +232,24 @@ public class FunctionGenerator : Generator
     }
 }
 
+public static class SvgExtensions
+{
+    public static SvgPath ToSvgPath(this IReadOnlyList<DVector2> points, bool closed)
+    {
+        var r = new SvgPath();
+        if (points.Count > 0)
+        {
+            r.PathData = new SvgPathSegmentList { new SvgMoveToSegment(false, points[0].ToSvg()) };
+            for (var i = 1; i < points.Count; i += 1)
+            {
+                r.PathData.Add(new SvgLineSegment(false, points[i].ToSvg()));
+            }
+
+            if (closed)
+            {
+                r.PathData.Add(new SvgLineSegment(false, points[0].ToSvg()));
+            }
+        }
+        return r;
+    }
+}

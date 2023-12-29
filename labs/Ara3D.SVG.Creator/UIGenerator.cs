@@ -76,7 +76,7 @@ public static class UIGenerator
         PropertyChangeNotifier notifier)
     {
         var r = new PropertyRowControl() { Name = name };
-        var ctrl = r.AddProperty("W", Colors.LightCyan, 5, 0, getValue(), x => setValue(new StrokeWidth(x)));
+        var ctrl = r.AddProperty("W", Colors.Aquamarine, 0.2, 0, getValue(), x => setValue(new StrokeWidth(x)));
         notifier.PropertyChanged += (_, _) => ctrl.Value = getValue();
         return r;
     }
@@ -89,7 +89,7 @@ public static class UIGenerator
         PropertyChangeNotifier notifier)
     {
         var r = new PropertyRowControl() { Name = name };
-        var ctrl = r.AddProperty(fieldName, Colors.PaleGreen, 5, 0, getValue(), d => setValue((int)d));
+        var ctrl = r.AddProperty(fieldName, Colors.PaleGreen, 1, 0, getValue(), d => setValue((int)d));
         notifier.PropertyChanged += (_, _) => ctrl.Value = getValue();
         return r;
     }
