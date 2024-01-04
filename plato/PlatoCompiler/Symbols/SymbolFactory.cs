@@ -349,9 +349,8 @@ namespace Plato.Compiler.Symbols
                 TypeBindingsScope = TypeBindingsScope.Push();
 
                 foreach (var tpd in typeDef.TypeParameters)
-                    if (tpd.Constraint != null)
-                        BindType(tpd.Name, tpd.Constraint.Definition);
-
+                    BindType(tpd.Name, tpd);
+                
                 var astTypeDecl = SymbolsToNodes[typeDef] as AstTypeDeclaration;
 
                 // Resolve the inherits and implemented type declarations

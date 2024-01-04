@@ -9,12 +9,12 @@ public interface Value<Self>: Any<Self>
 {
     Self Default();
 }
-public interface Array<T, Self>: Any<Self>
+public interface Array<T, Self>
 {
     Integer Count();
     T At(Integer n);
 }
-public interface Vector<T, Self>: Array<Self, Numerical>, Numerical<Self>
+public interface Vector<T, Self>: Array<Self, T>, Numerical<Self>
 {
 }
 public interface Measure<Self>: Value<Self>, ScalarArithmetic<Self>, Equatable<Self>, Comparable<Self>, Magnitudinal<Self>
@@ -56,8 +56,8 @@ public interface AdditiveInverse<Self>
 }
 public interface AdditiveArithmetic<T, Self>
 {
-    Self Add(AdditiveInverse other);
-    Self Subtract(AdditiveInverse other);
+    Self Add(T other);
+    Self Subtract(T other);
 }
 public interface ScalarArithmetic<Self>: AdditiveArithmetic<Self, Number>, Value<Self>
 {
@@ -73,7 +73,7 @@ public interface BooleanOperations<Self>: Value<Self>
     Self Or(Self b);
     Self Not();
 }
-public interface Interval<T, Self>: Vector<Self, Numerical>
+public interface Interval<T, Self>: Vector<Self, T>
 {
     T Min();
     T Max();
