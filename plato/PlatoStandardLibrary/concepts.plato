@@ -19,7 +19,7 @@ concept Array<T: Any>
 }
 
 concept Vector<T: Numerical>
-    inherits Array<T>, Numerical
+    inherits Array<T>, Numerical, Magnitudinal
 {
 }
 
@@ -39,28 +39,31 @@ concept Numerical
 }
 
 concept Magnitudinal
-    inherits Value
+    inherits Comparable
 {
     Magnitude(x: Self): Number
         => x.FieldValues.Square.Sum.SquareRoot;
+
+    Compare(x: Self, y: Self): Integer
+        => x.Magnitude < y.Magnitude 
+            ? -1
+            : x.Magnitude > y.Magnitude 
+                ? 1
+                : 0;
 }
 
 concept Comparable
-    inherits Value
 {
-    Compare(x: Self, y: Self): Integer
-        => x.Value.Compare(y.Value);
+    Compare(x: Self, y: Self): Integer;
 }
 
 concept Equatable
-    inherits Value
 {
     Equals(a: Self, b: Self): Boolean
         => a.FieldValues.Equals(b.FieldValues).All;
 }
 
 concept Arithmetic
-    inherits Value
 { 
     Add(self: Self, other: Self): Self
         => self.FieldValues + other.FieldValues;
@@ -99,7 +102,7 @@ concept AdditiveArithmetic<T: AdditiveInverse>
 }
 
 concept ScalarArithmetic
-    inherits AdditiveArithmetic<Number>, Value
+    inherits AdditiveArithmetic<Number>
 {
     Add(self: Self, scalar: Number): Self
         => self.FieldValues + scalar;
@@ -118,7 +121,6 @@ concept ScalarArithmetic
 }
 
 concept BooleanOperations
-    inherits Value
 {
     And(a: Self, b: Self): Self 
         => a.FieldValues && b.FieldValues;
@@ -135,4 +137,10 @@ concept Interval<T: Numerical>
 {
     Min(x: Self): T;
     Max(x: Self): T;
+
+    Count(x: Self): Integer
+        => 2;
+    
+    At(x: Self, n: Integer)
+        => n == 0 ? x.Min : x.Max;
 }

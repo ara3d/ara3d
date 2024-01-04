@@ -42,5 +42,8 @@ namespace Plato.Compiler.Symbols
 
         public bool IsSelfType()
             => Name == "Self";
+
+        public bool UsesSelfType()
+            => IsSelfType() || TypeArgs.Any(ta => ta.UsesSelfType());
     }
 }

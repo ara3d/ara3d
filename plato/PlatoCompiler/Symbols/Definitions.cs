@@ -46,7 +46,8 @@ namespace Plato.Compiler.Symbols
         public TypeExpression GetParameterType(int n) => Parameters[n].Type;
         public TypeExpression ReturnType => Type;
         public TypeDefinition OwnerType { get; }
-        
+        public IEnumerable<TypeExpression> ParametersAndReturnType => Parameters.Select(p => p.Type).Append(ReturnType);
+
         public FunctionDefinition(string name, TypeDefinition ownerType, TypeExpression returnType, Expression body, params ParameterDefinition[] parameters)
             : base(returnType, name)
         {
@@ -166,6 +167,15 @@ namespace Plato.Compiler.Symbols
 
         public override IEnumerable<Symbol> GetChildSymbols()
             => Methods.Cast<Symbol>().Concat(Fields).Concat(TypeParameters).Concat(Inherits).Concat(Implements);
+
+        public bool UsesSelfTypeInNonFirstPosition()
+        {
+            if (Functions.Any(f => f.ParametersAndReturnType.Skip(1).Any(te => te.UsesSelfType()))) 
+                return true;
+            if (Inherits.Any(te => te.UsesSelfType()))
+                return true;
+            return Inherits.Any(i => i.Definition.UsesSelfTypeInNonFirstPosition());
+        }
     }
 
     public class TypeParameterDefinition : TypeDefinition

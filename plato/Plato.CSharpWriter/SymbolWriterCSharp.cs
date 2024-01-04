@@ -88,20 +88,30 @@ namespace Plato.CSharpWriter
             return this;
         }
 
+        public static string JoinTypeParameters(IEnumerable<string> parameters)
+        {
+            var r = parameters.JoinStrings(", ");
+            if (r.Length == 0)
+                return r;
+            return $"<{r}>";
+        }
+
         public static string TypeAsInherited(TypeExpression type)
         {
-            var argsJoined = type.TypeArgs.Select(t => ToString(t)).Prepend("Self").JoinStrings(", ");
-            return $"{type.Name}<{argsJoined}>";
+            return type.Name + JoinTypeParameters(type.Definition.UsesSelfTypeInNonFirstPosition() 
+                ? type.TypeArgs.Select(t => ToString(t)).Prepend("Self") 
+                : type.TypeArgs.Select(t => ToString(t)));
         }
 
         public SymbolWriterCSharp WriteConceptInterface(TypeDefinition type)
         {
             Debug.Assert(type.IsConcept());
 
-            var typeParams = type.TypeParameters.Select(tp => tp.Name)
-                .Append("Self").JoinStrings(", ");
+            var typeParams = JoinTypeParameters(type.UsesSelfTypeInNonFirstPosition()
+                ? type.TypeParameters.Select(tp => tp.Name).Prepend("Self")
+                : type.TypeParameters.Select(tp => tp.Name));
 
-            var fullName = $"{type.Name}<{typeParams}>";
+            var fullName = $"{type.Name}{typeParams}";
             var inherited = type.Inherits.Count > 0
                 ? ": " + type.Inherits.Select(TypeAsInherited).JoinStrings(", ")
                 : "";
