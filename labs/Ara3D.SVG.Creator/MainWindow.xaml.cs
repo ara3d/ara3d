@@ -95,6 +95,7 @@ namespace Ara3D.SVG.Creator
             AddModifierMenuItem<TransformOperator>(mods);
             var clones = this.Menu.AddMenuItem("Cloners");
             AddModifierMenuItem<Cloner>(clones);
+            AddModifierMenuItem<ArrangeRadially>(clones);
         }
 
         private void PropertiesPanel_PropertyChanged(object? sender, System.ComponentModel.PropertyChangedEventArgs e)
@@ -226,9 +227,11 @@ document.addEventListener('dblclick', onEvent);
             rg.A = new DVector2(50, 50);
             rg.B = new DVector2(250, 250);
             CreateObject(rg);
-            AddModifier(new TransformOperator());   
             AddModifier(new SetStroke());
             AddModifier(new SetFillColor());
+            AddModifier(new Cloner());
+            AddModifier(new ArrangeRadially());
+            //AddModifier(new TransformOperator());   
             RedrawSvg();
         }
 

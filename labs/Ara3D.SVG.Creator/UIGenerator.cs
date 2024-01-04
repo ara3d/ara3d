@@ -3,12 +3,13 @@ using System.Reflection;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
-using System.Windows.Media;
 using Ara3D.Math;
 using Ara3D.Utils;
 using ColorPicker;
+using ExCSS;
 using Microsoft.VisualBasic.Devices;
 using Color = System.Drawing.Color;
+using Colors = System.Windows.Media.Colors;
 using Mouse = Microsoft.VisualBasic.Devices.Mouse;
 
 namespace Ara3D.SVG.Creator;
@@ -36,8 +37,6 @@ public static class UIGenerator
     // Regular control. 
 
     public static Thickness RowMargin = new Thickness(0, 1, 0, 1);
-
-   
 
     public static bool IsNumericType(this Type type)
         => type == typeof(double) 
@@ -120,8 +119,56 @@ public static class UIGenerator
             return g;
         }
     }
-    
-    public static PropertyRowControl CreateRowControlFromProperties(
+
+    public static PropertyRowControl AddPropertyToRowControl(PropertyRowControl r, PropertyInfo p,
+        Func<object> getValue,
+        Action<object> setValue,
+        double changeAmount,
+        double defaultValue,
+        System.Windows.Media.Color color,
+        PropertyChangeNotifier notifier)
+    {
+        if (p == null)
+            return r;
+        if (p.PropertyType == typeof(double))
+        {
+            var pVal = (double)p.GetValue(getValue());
+            var ctrl = r.AddProperty(p.Name, color, changeAmount, defaultValue, pVal, (x) =>
+            {
+                if (p.CanWrite)
+                {
+                    var val = getValue();
+                    p.SetValue(val, x);
+                    setValue(val);
+                    notifier.OnPropertyChanged(p.Name);
+                }
+            });
+            notifier.PropertyChanged += (sender, args) =>
+                ctrl.Value = (double)p.GetValue(getValue());
+            return r;
+        }
+        else if (p.PropertyType == typeof(int))
+        {
+            var pVal = (int)p.GetValue(getValue());
+            var ctrl = r.AddProperty(p.Name, Colors.PaleGreen, 1, 0, pVal, (x) =>
+            {
+                if (p.CanWrite)
+                {
+                    var val = getValue();
+                    p.SetValue(val, (int)x);
+                    setValue(val);
+                    notifier.OnPropertyChanged(p.Name);
+                }
+            });
+            notifier.PropertyChanged += (sender, args) =>
+                ctrl.Value = (int)p.GetValue(getValue());
+            return r;
+        }
+
+        throw new Exception("Only integers and doubles support for row controls");
+    }
+
+     public static PropertyRowControl CreateRowControlFromProperties(
         string name,
         Type parentType,
         Func<object> getValue,
@@ -141,45 +188,11 @@ public static class UIGenerator
             changeAmount = 0.05;
         }
 
-        {
-            if (p1.PropertyType != typeof(double))
-                throw new Exception("Only doubles currently supported as properties of numeric row control");
+        var color = Colors.LightPink;
 
-            var p1Val = (double)p1.GetValue(getValue());
-            var ctrl = r.AddProperty(p1.Name, Colors.LightPink, changeAmount, defaultValue, p1Val, (x) =>
-            {
-                if (p1.CanWrite)
-                {
-                    var val = getValue();
-                    p1.SetValue(val, x);
-                    setValue(val);
-                    notifier.OnPropertyChanged(p1.Name);
-                }
-            });
-            notifier.PropertyChanged += (sender, args) => 
-                ctrl.Value = (double)p1.GetValue(getValue());
-        }
-
-        if (p2 != null)
-        {
-            if (p2.PropertyType != typeof(double))
-                throw new Exception("Only doubles currently supported as properties of numeric row control");
-
-            var p2Val = (double)p2.GetValue(getValue());
-            var ctrl = r.AddProperty(p2.Name, Colors.LightGreen, changeAmount, defaultValue, p2Val, (x) =>
-            {
-                if (p2.CanWrite)
-                { 
-                    var val = getValue();
-                    p2.SetValue(val, x);
-                    setValue(val);
-                    notifier.OnPropertyChanged(p2.Name);
-                }
-            });
-            notifier.PropertyChanged += (sender, args) => 
-                ctrl.Value = (double)p2.GetValue(getValue());
-        }
-
+        r = AddPropertyToRowControl(r, p1, getValue, setValue, changeAmount, defaultValue, Colors.LightPink, notifier);
+        r = AddPropertyToRowControl(r, p2, getValue, setValue, changeAmount, defaultValue, Colors.LightGreen, notifier);
+            
         return r;
     }
 

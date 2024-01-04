@@ -1,30 +1,201 @@
-﻿using System.Collections.Generic;
-using System;
+﻿using System;
+using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
+using System.Text;
+using Ara3D.Utils;
 using Plato.Compiler.Ast;
+using Plato.Compiler.Symbols;
 using Plato.Compiler.Types;
 
-namespace Plato.Compiler.Symbols
+namespace Plato.CSharpWriter
 {
-    public class SymbolWriterCSharp : SymbolWriter<SymbolWriterCSharp>
+    // TODO: there are two different code builders. THere should only be one. 
+    public class SymbolWriterCSharp : CodeBuilder<SymbolWriterCSharp>
     {
-        public SymbolWriterCSharp(Compiler compiler)
-            : base(compiler) 
-        { }
+        public Compiler.Compiler Compiler { get; }
+        public Dictionary<string, StringBuilder> Files { get; } = new Dictionary<string, StringBuilder>();
+
+        public DirectoryPath OutputFolder { get; }
+
+        public SymbolWriterCSharp(Compiler.Compiler compiler, DirectoryPath outputFolder)
+        {
+            Compiler = compiler;
+            OutputFolder = outputFolder;
+        }
+
+        public void StartNewFile(string fileName)
+        {
+            sb = new StringBuilder();
+            Files.Add(fileName, sb);
+        }
+
+        public SymbolWriterCSharp Write(IEnumerable<Symbol> symbols)
+            => symbols.Aggregate(this, (writer, symbol) => writer.Write(symbol));
+
+        public SymbolWriterCSharp WriteCommaList(IEnumerable<Symbol> symbols)
+        {
+            var r = this;
+            var first = true;
+            foreach (var s in symbols)
+            {
+                if (!first)
+                    r = r.Write(", ");
+                first = false;
+                r = r.Write(s);
+            }
+
+            return r;
+        }
+
+        public SymbolWriterCSharp Write(Symbol symbol)
+        {
+            switch (symbol)
+            {
+                case DefinitionSymbol definition:
+                    return Write(definition);
+                case Expression expression:
+                    return Write(expression);
+                case TypeDefinition typeDefinition:
+                    return Write(typeDefinition);
+                case TypeExpression typeExpression:
+                    return Write(typeExpression);
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(symbol));
+            }
+        }
+
+        public SymbolWriterCSharp WriteAll()
+        {
+            WriteConceptInterfaces();
+            //WriteConceptExtensions();
+            //WriteTypeImplementations();
+            return this;
+        }
+
+        public SymbolWriterCSharp WriteConceptInterfaces()
+        {
+            StartNewFile(OutputFolder.RelativeFile("Concepts.cs"));
+
+            foreach (var c in Compiler.AllTypeAndLibraryDefinitions)
+            {
+                if (c.IsConcept())
+                {
+                    WriteConceptInterface(c);
+                }
+            }
+
+            return this;
+        }
+
+        public static string TypeAsInherited(TypeExpression type)
+        {
+            var argsJoined = type.TypeArgs.Select(t => ToString(t)).Prepend("Self").JoinStrings(", ");
+            return $"{type.Name}<{argsJoined}>";
+        }
+
+        public SymbolWriterCSharp WriteConceptInterface(TypeDefinition type)
+        {
+            Debug.Assert(type.IsConcept());
+
+            var typeParams = type.TypeParameters.Select(tp => tp.Name)
+                .Append("Self").JoinStrings(", ");
+
+            var fullName = $"{type.Name}<{typeParams}>";
+            var inherited = type.Inherits.Count > 0
+                ? ": " + type.Inherits.Select(TypeAsInherited).JoinStrings(", ")
+                : "";
+
+            Write("public interface ").Write(fullName)
+                .WriteLine(inherited)
+                .WriteStartBlock();
+
+            foreach (var m in type.Methods)
+            {
+                // TODO: if the member can be a property, make it a property. 
+                WriteSignature(m.Function, true).WriteLine(";");
+            }
+
+            WriteEndBlock();
+            return this;
+        }
+
+
+        public SymbolWriterCSharp WriteConceptExtensions()
+        {
+            foreach (var c in Compiler.AllTypeAndLibraryDefinitions)
+            {
+                if (c.IsConcept())
+                {
+                    WriteConceptExtension(c);
+                }
+            }
+            return this;
+        }
+
+        public SymbolWriterCSharp WriteConceptExtension(TypeDefinition type)
+        {
+            Debug.Assert(type.IsConcept());
+            
+            return WriteLine("public static partial class Extensions")
+                .WriteStartBlock()
+                .WriteConceptMembersAsExtensionMethods(type)
+                .WriteEndBlock();
+        }
+
+
+        public SymbolWriterCSharp WriteTypeImplementations()
+        {
+            foreach (var c in Compiler.AllTypeAndLibraryDefinitions)
+            {
+                if (c.IsConcrete())
+                {
+                    WriteTypeImplementation(c);
+                }
+            }
+            return this;
+        }
+
+        public SymbolWriterCSharp WriteTypeImplementation(TypeDefinition type)
+        {
+            // TODO: constructor 
+            // TODO: interface list 
+            // TODO: with operations
+            // TODO: value tuple implicit conversions
+            // TODO: deconstructor 
+            // TODO: fields
+            // TODO: operators 
+            // TODO: default implementations
+            // TODO: inlined extension methods (required?)
+            // TODO: some methods are arrays. 
+            // TODO: iterate over all the implemented methods
+            return this;
+        }
+
+
+        public static string ToString(TypeExpression type, string defaultType = "var")
+        {
+            if (type == null)
+                return defaultType;
+            if (type.TypeArgs.Count == 0)
+                return type.Name;
+            var argsJoined = type.TypeArgs.Select(t => ToString(t)).JoinStrings(", ");
+            return $"{type.Name}<{argsJoined}>";
+        }
 
         public SymbolWriterCSharp WriteTypeDecl(TypeExpression type, string defaultType = "var")
         {
-            if (type == null)
-                return Write($"{defaultType} ");
-            return Write(type.Name).Write(" ");
+            return Write(ToString(type, defaultType)).Write(" ");
         }
 
-        public SymbolWriterCSharp WriteSignature(FunctionDefinition function)
+        public SymbolWriterCSharp WriteSignature(FunctionDefinition function, bool skipFirstParameter)
         {
             return WriteTypeDecl(function.Type, "void")
                 .Write(function.Name)
                 .Write("(")
-                .WriteCommaList(function.Parameters)
+                .WriteCommaList(skipFirstParameter 
+                    ? function.Parameters.Skip(1) 
+                    : function.Parameters)
                 .Write(")");
         }
 
@@ -43,7 +214,7 @@ namespace Plato.Compiler.Symbols
             if (function.Body == null)
                 return this;
 
-            return WriteSignature(function)
+            return WriteSignature(function, false)
                 .WriteFunctionBody(function);
         }
 
@@ -52,6 +223,9 @@ namespace Plato.Compiler.Symbols
 
         public static string TypeArgsString(IEnumerable<string> args)
             => args.Any() ? "<" + string.Join(", ", args) + ">" : "";
+
+        public FilePath ToFileName(TypeDefinition type)
+            => OutputFolder.RelativeFile($"{type.Kind}_{type.Name}.cs");
 
         public SymbolWriterCSharp WriteLibraryMethods(TypeDefinition type)
         {
@@ -243,48 +417,20 @@ namespace Plato.Compiler.Symbols
             return type.Inherits.Any(tr => IsTypePreservingConcept(tr.Definition));
         }
 
-        public SymbolWriterCSharp WriteUnimplementedMethods(TypeDefinition type)
+        public SymbolWriterCSharp Write(TypeDefinition type)
         {
-            foreach (var f in type.Methods.Select(m => m.Function))
-            {
-                if (f.Body != null)
-                    continue;
-                WriteSignature(f).WriteLine(";");
-            }
+            // TODO: this is deprecated and will be removed 
+            throw new NotImplementedException();
 
-            return this;
-        }
-
-        public override SymbolWriterCSharp Write(TypeDefinition type)
-        {
             if (type.IsConcept())
             {
-                // TODO: get and append the type parameters 
-
-                var fullName = $"{type.Name}<Self>";
-                var inherited = type.Inherits.Count > 0
-                    ? ": " + string.Join(", ", type.Inherits.Select(td => $"{td?.Name}<Self>"))
-                    : "";
-
-                Write("public interface ").Write(fullName)
-                    .WriteLine(inherited)
-                    .Indent()
-                    .WriteLine($"where Self : {fullName}")
-                    .Dedent()
-                    .WriteStartBlock()
-                    .WriteUnimplementedMethods(type)
-                    .WriteEndBlock();
-
-                WriteLine("public static partial class Extensions")
-                    .WriteStartBlock()
-                    .WriteConceptMembersAsExtensionMethods(type)
-                    .WriteEndBlock();
-
-                return this;
+                
             }
 
             if (type.IsConcrete())
             {
+                StartNewFile(ToFileName(type));
+
                 var implements = type.Implements.Count > 0
                     ? ": " + string.Join(", ", type.Implements.Select(td => $"{td?.Name}<{type.Name}>"))
                     : "";
@@ -305,6 +451,8 @@ namespace Plato.Compiler.Symbols
 
             if (type.IsLibrary())
             {
+                StartNewFile(ToFileName(type));
+
                 return WriteLine("public static partial class Extensions")
                     .WriteStartBlock()
                     .WriteLibraryMethods(type)
@@ -320,7 +468,7 @@ namespace Plato.Compiler.Symbols
             return this;
         }
 
-        public override SymbolWriterCSharp Write(DefinitionSymbol value)
+        public SymbolWriterCSharp Write(DefinitionSymbol value)
         {
             switch (value)
             {
@@ -356,12 +504,12 @@ namespace Plato.Compiler.Symbols
             return this;
         }
 
-        public override SymbolWriterCSharp Write(TypeExpression typeExpression)
+        public SymbolWriterCSharp Write(TypeExpression typeExpression)
         {
             return WriteTypeDecl(typeExpression);
         }
 
-        public override SymbolWriterCSharp Write(Expression expr)
+        public SymbolWriterCSharp Write(Expression expr)
         {
             if (expr == null)
                 return this;

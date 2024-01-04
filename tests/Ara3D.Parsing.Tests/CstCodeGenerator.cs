@@ -1,3 +1,5 @@
+using Ara3D.Utils;
+
 namespace Parakeet.Tests
 {
     public static class CstCodeGenerator

@@ -264,7 +264,8 @@ type Point3D
 type Point2D
     implements Value
 {
-    Value: Vector2D;
+    X: Number;
+    Y: Number;
 }
 
 type Line3D

@@ -1,4 +1,8 @@
 ﻿using System.IO;
+using System.Security.Cryptography.Pkcs;
+using System.Xml.Linq;
+using Ara3D.Collections;
+using Ara3D.Math;
 using Svg;
 
 namespace Ara3D.SVG.Creator;
@@ -9,6 +13,8 @@ public interface IEntity
     public IEntity Clone();
 }
 
+
+/*
 public interface IEntityDescriptor
 {
     public string Name { get; }
@@ -16,77 +22,70 @@ public interface IEntityDescriptor
     public IEntity Read(Stream stream);
     public Stream Write(Stream stream);
 }
+*/
+
+
+public static class AttributeBufferShortNames
+{
+    public static Dictionary<string, string> ShortNames = new Dictionary<string, string>()
+    {
+        { "p", "position" },
+        { "px", "position.x" },
+        { "py", "position.y" },
+        { "x", "position.x" },
+        { "y", "position.y" },
+        { "k", "skew" },
+        { "kx", "skew.x" },
+        { "ky", "skew.y" },
+        { "s", "scale" },
+        { "sx", "scale.x" },
+        { "sy", "scale.y" },
+        { "n", "normal" },
+        { "nx", "normal.x" },
+        { "ny", "normal.y" },
+        { "t", "tangent" },
+        { "tx", "tangent.x" },
+        { "ty", "tangent.y" },
+        { "r", "rotation" },
+        { "i", "index" },
+        { "t", "amount" },
+        { "z", "size" },
+        { "u", "uv.x" },
+        { "v", "uv.y" },
+    };
+}
 
 public interface ICompound : IEntity
 {
-    IReadOnlyList<IEntity> Entities { get; }
+    IArray<IEntity> Entities { get; }
 }
 
 public interface IElement : IEntity
 {
-    public int Index { get; set; }
 }
 
 public class SvgEntity : IElement
 {
     public SvgElement Svg { get; set; }
-    public int Index { get; set; }
     public IEntity Clone() => new SvgEntity() { Svg = Svg.DeepCopy() };
     public static SvgEntity Create(SvgElement svg) => new() { Svg = svg };
     public static SvgEntity LoadFromFile(string filePath) {
         var doc = SvgDocument.Open(filePath);
-        //return doc;
         var group = new SvgGroup();
         foreach (var child in  doc.Children)
         {
             group.Children.Add(child);
         }
-
-        return group;
-        //*/
+        return group;   
     }
     public static SvgEntity Create(string txt) => new() { Svg = SvgDocument.FromSvg<SvgDocument>(txt) };
     public static implicit operator SvgEntity(string s) => Create(s);
     public static implicit operator SvgEntity(SvgElement e) => Create(e);
 }
 
-public class Compound : ICompound
-{
-    public IReadOnlyList<IEntity> Entities { get; } 
-
-    public SvgElement Svg
-    {
-        get
-        {
-            var r = new SvgGroup();
-            foreach (var x in Entities)
-                r.Children.Add(x.Svg);
-            return r;
-        }
-    }
-
-    public Compound(IReadOnlyList<IEntity> entities)
-        => Entities = entities;
-
-    public IEntity Clone()
-        => new Compound(Entities.Select(e => e.Clone()).ToList());
-}
-
-public class BoundEntity : IEntity
-{
-
-    public Operator Op { get; }
-    public IEntity Target { get; }
-    public SvgElement Svg { get; }
-    public IEntity Clone()
-    {
-        throw new NotImplementedException();
-    }
-}
-
 public static class EntityExtensions
 {
-    public static IElement ModifySvg(this IElement entity, Action<SvgElement> action)
+    public static IEntity ModifySvg(this IEntity entity, Action<SvgElement> action)
     {
         action.Invoke(entity.Svg);
         return entity;

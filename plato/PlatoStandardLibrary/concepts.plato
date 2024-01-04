@@ -9,7 +9,7 @@ concept Any
 concept Value 
     inherits Any
 {
-    Default(): Self;
+    Default(): Self;     
 }
 
 concept Array<T: Any>
@@ -27,8 +27,7 @@ concept Vector<T: Numerical>
 concept Measure
     inherits Value, ScalarArithmetic, Equatable, Comparable, Magnitudinal
 { 
-    Value(x: Self): Number
-        => x.FieldValues[0];
+    Value(x: Self): Number;
 }
 
 concept Numerical 
@@ -50,7 +49,8 @@ concept Magnitudinal
 concept Comparable
     inherits Value
 {
-    Compare(x: Self, y: Self): Integer;
+    Compare(x: Self, y: Self): Integer
+        => x.Value.Compare(y.Value);
 }
 
 concept Equatable
@@ -85,8 +85,22 @@ concept Arithmetic
         => self.FieldValues % other.FieldValues;
 }
 
+concept AdditiveInverse
+{
+    Negative(self: Self): Self
+        => -self.FieldValues;
+}
+
+concept AdditiveArithmetic<T: AdditiveInverse>
+{
+    Add(self: Self, other: T): Self;    
+
+    Subtract(self: Self, other: T): Self
+        => self.Add(other.Negative);
+}
+
 concept ScalarArithmetic
-    inherits Value
+    inherits AdditiveArithmetic<Number>, Value
 {
     Add(self: Self, scalar: Number): Self
         => self.FieldValues + scalar;

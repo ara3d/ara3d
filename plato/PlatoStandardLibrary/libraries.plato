@@ -28,7 +28,7 @@ library Array
         => xs.Count == 0;
     
     First(xs: Array): Any 
-        => xs.At(0);
+        => xs.At(0);    
     
     Last(xs: Array): Any
         => xs.At(xs.Count - 1);
@@ -45,7 +45,7 @@ library Array
         => xs.IsEmpty ? true : f(xs.First) && f(xs.Rest);
 
     All(xs: Array): Boolean 
-        => xs.All((b: Boolean) => b);
+        => xs.All((b) => b);
 } 
 
 library Interval

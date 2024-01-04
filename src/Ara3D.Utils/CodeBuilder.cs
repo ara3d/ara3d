@@ -6,7 +6,7 @@ namespace Ara3D.Utils
 {
     public class CodeBuilder<T> where T : CodeBuilder<T>
     {
-        public StringBuilder sb { get; } = new StringBuilder();
+        public StringBuilder sb { get; set; } = new StringBuilder();
         public bool AtNewLine { get; private set; }
         public int IndentLevel { get; private set; }
 
@@ -106,6 +106,12 @@ namespace Ara3D.Utils
         {
             return Write(" ");
         }
+
+        public T WriteStartBlock()
+            => WriteLine("{").Indent();
+
+        public T WriteEndBlock()
+            => Dedent().WriteLine("}");
     }
 
     public class CodeBuilder : CodeBuilder<CodeBuilder>
