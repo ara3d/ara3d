@@ -2,8 +2,6 @@ public interface Any
 {
     Array<String> FieldNames();
     Array<Any> FieldValues();
-    Array<Type> FieldTypes();
-    Type TypeOf();
 }
 public interface Value<Self>: Any
 {
@@ -40,6 +38,7 @@ public interface Comparable<Self>
 public interface Equatable<Self>
 {
     Boolean Equals(Self b);
+    Boolean NotEquals(Self b);
 }
 public interface Arithmetic<Self>
 {

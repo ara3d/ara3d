@@ -18,13 +18,6 @@ type Boolean
     implements BooleanOperations
 { }
 
-// Built-in type that represents the type of a run-time value. 
-type Type
-    implements Value
-{ 
-    Name: String;
-}
-
 // Built-in type that represents a character of text 
 type Character
     implements Value

@@ -10,13 +10,28 @@ using Plato.Compiler.Types;
 
 namespace Plato.CSharpWriter
 {
-    // TODO: there are two different code builders. THere should only be one. 
     public class SymbolWriterCSharp : CodeBuilder<SymbolWriterCSharp>
     {
         public Compiler.Compiler Compiler { get; }
         public Dictionary<string, StringBuilder> Files { get; } = new Dictionary<string, StringBuilder>();
 
         public DirectoryPath OutputFolder { get; }
+
+        public static HashSet<string> IntrinsicTypes = new HashSet<string>()
+        {
+            "Number",
+            "Boolean",
+            "Integer",
+            "Character",
+            "String",
+            "Array1",
+            "Tuple2",
+            "Tuple3",
+            "Function0",
+            "Function1",
+            "Function2",
+            "Function3",
+        };
 
         public SymbolWriterCSharp(Compiler.Compiler compiler, DirectoryPath outputFolder)
         {
@@ -69,7 +84,7 @@ namespace Plato.CSharpWriter
         {
             WriteConceptInterfaces();
             //WriteConceptExtensions();
-            //WriteTypeImplementations();
+            WriteTypeImplementations();
             return this;
         }
 
@@ -130,7 +145,6 @@ namespace Plato.CSharpWriter
             return this;
         }
 
-
         public SymbolWriterCSharp WriteConceptExtensions()
         {
             foreach (var c in Compiler.AllTypeAndLibraryDefinitions)
@@ -153,12 +167,15 @@ namespace Plato.CSharpWriter
                 .WriteEndBlock();
         }
 
-
         public SymbolWriterCSharp WriteTypeImplementations()
         {
+            StartNewFile(OutputFolder.RelativeFile("Types.cs"));
+            
+            WriteLine("using System;");
+
             foreach (var c in Compiler.AllTypeAndLibraryDefinitions)
             {
-                if (c.IsConcrete())
+                if (c.IsConcrete() && !IntrinsicTypes.Contains(c.Name))
                 {
                     WriteTypeImplementation(c);
                 }
@@ -166,22 +183,146 @@ namespace Plato.CSharpWriter
             return this;
         }
 
-        public SymbolWriterCSharp WriteTypeImplementation(TypeDefinition type)
+        public static string ImplementedTypeString(TypeExpression te, string typeName)
         {
-            // TODO: constructor 
-            // TODO: interface list 
-            // TODO: with operations
-            // TODO: value tuple implicit conversions
-            // TODO: deconstructor 
-            // TODO: fields
-            // TODO: operators 
-            // TODO: default implementations
-            // TODO: inlined extension methods (required?)
-            // TODO: some methods are arrays. 
-            // TODO: iterate over all the implemented methods
-            return this;
+            var typeArgs = te.TypeArgs.Select(ta => ToString(ta));
+            if (te.Definition.UsesSelfTypeInNonFirstPosition())
+                typeArgs = typeArgs.Prepend(typeName);
+            return $"{te.Name}{JoinTypeParameters(typeArgs)}";
         }
 
+        public static string FieldNameToParameterName(string fieldName)
+            => fieldName.Length == 0 || fieldName[0].IsLower() 
+                ? $"_{fieldName}" 
+                : fieldName.DecapitalizeFirst();
+
+        public SymbolWriterCSharp WriteTypeImplementation(TypeDefinition t)
+        {
+            Debug.Assert(t.IsConcrete());
+
+            var implements = t.Implements.Count > 0
+                ? ": " + string.Join(", ", t.Implements.Select(te => ImplementedTypeString(te, t.Name)))
+                : "";
+
+            Write("public class ");
+            Write(t.Name);
+            WriteLine(implements);
+            WriteStartBlock();
+
+            var name = t.Name;
+            var fieldTypes = t.Fields.Select(f => GetTypeName(f.Type, t)).ToList();
+            var fieldNames = t.Fields.Select(f => f.Name).ToList();
+            var parameterNames = fieldNames.Select(FieldNameToParameterName);
+
+            for (var i = 0; i < fieldTypes.Count; ++i)
+            {
+                var ft = fieldTypes[i];     
+                var fn = fieldNames[i];
+                WriteLine($"public {ft} {fn} {{ get; }}");
+            }
+
+            // TODO: add "With" functions 
+
+            var parameters = fieldTypes.Zip(parameterNames, (pt, pn) => $"{pt} {pn}");
+            var parameterNamesStr = parameterNames.JoinStringsWithComma();
+            var parametersStr = parameters.JoinStringsWithComma();
+
+            var fieldTypesStr = string.Join(", ", fieldTypes);
+            var fieldNamesStr = fieldNames.JoinStringsWithComma();
+
+            // Regular Constructor 
+            WriteLine($"public {name}({parametersStr}) => ({fieldNamesStr}) = ({parameterNamesStr});");
+            
+            // Parameterless construct
+            WriteLine($"public {name}() {{ }}");
+
+            // Static factory function (New)
+            WriteLine($"public static {name} New({parametersStr}) => new {name}({parameterNamesStr});");
+            
+            // Implicit operators 
+            if (t.Fields.Count > 1)
+            {
+                // Implicit value-tuple operator 
+                var qualifiedFieldNames = fieldNames.Select(f => $"self.{f}").JoinStringsWithComma();
+                var tupleNames = string.Join(", ", Enumerable.Range(1, t.Fields.Count).Select(i => $"value.Item{i}"));
+                WriteLine($"public static implicit operator ({fieldTypesStr})({name} self) => ({qualifiedFieldNames});");
+                WriteLine($"public static implicit operator {name}(({fieldTypesStr}) value) => new {name}({tupleNames});");
+
+                // TODO: deconstructor function 
+            }
+            else if (t.Fields.Count == 1)
+            {
+                // Implicit operator to/from the field 
+                var fieldName = t.Fields[0].Name;
+                var fieldType = GetTypeName(t.Fields[0].Type, t);
+                WriteLine($"public static implicit operator {fieldType}({name} self) => self.{fieldName};");
+                WriteLine($"public static implicit operator {name}({fieldType} value) => new {name}(value);");
+            }
+
+            /* TODO:
+            var fieldNamesAsStrings = string.Join(", ", fieldNames.Select(f => $"\"{f}\""));
+            WriteLine($"public string[] FieldNames() => new[] {{ {fieldNamesAsStrings} }};");
+            WriteLine($"public object[] FieldValues() => new[] {{ {fieldNamesString} }};");
+            */
+
+            foreach (var sub in GetAllImplementedConcepts(t))
+            {
+                var c = sub.Type.Definition;
+                foreach (var m in c.Methods)
+                {
+                    var f = m.Function;
+                    var ret = GetTypeName(f.Type, sub);
+                    var paramList = f
+                        .Parameters.Skip(1)
+                        .Select(p => $"{GetTypeName(p.Type, sub)} {p.Name}")
+                        .JoinStringsWithComma();
+                    var staticParamList = f
+                        .Parameters
+                        .Select(p => $"{GetTypeName(p.Type, sub)} {p.Name}")
+                        .JoinStringsWithComma();
+
+                    WriteLine($"public {ret} {f.Name}({paramList}) => throw new NotImplementedException();");
+
+                    if (f.Parameters.Count == 2)
+                    {
+                        var op = OperatorNameLookup.NameToBinaryOperator(f.Name);
+                        if (op != null)
+                        {
+                            if (op != "[]")
+                            {
+                                WriteLine(
+                                    $"public static {ret} operator {op}({staticParamList}) => throw new NotImplementedException();");
+                            }
+                            else
+                            {
+                                var index = f.Parameters[1];
+                                Write($"public ")
+                                    .Write(ret)
+                                    .Write(" this[").Write(index).Write("] => throw new NotImplementedException();");
+
+                                //.WriteLine()
+                                //.WriteStartBlock()
+                                //.Write("get")
+                                //.WriteFunctionBody(f)
+                                //.WriteEndBlock();
+                            }
+                        }
+                    }
+
+                    if (f.Parameters.Count == 1)
+                    {
+                        var op = OperatorNameLookup.NameToUnaryOperator(f.Name);
+                        if (op != null)
+                            WriteLine(
+                                $"public static {ret} operator {op}({staticParamList}) => throw new NotImplementedException();");
+                    }
+                }
+            }
+
+            WriteEndBlock();
+            
+            return this;
+        }
 
         public static string ToString(TypeExpression type, string defaultType = "var")
         {
@@ -310,104 +451,43 @@ namespace Plato.CSharpWriter
             return this;
         }
 
-        public static string GetTypeName(TypeExpression tr, TypeDefinition parent)
+        public static IEnumerable<TypeSubstitutions> GetAllImplementedConcepts(TypeDefinition def)
         {
-            // TODO: slightly more complicated when actually passing arguments and stuff. 
-            var r = tr.Name;
-            if (r == "Self")
-                return parent.Name;
+            var r = new HashSet<TypeSubstitutions>();
+
+            foreach (var impl in def.Implements)
+            {
+                var sub = new TypeSubstitutions(def, impl);
+                r.Add(sub);
+                if (impl.Definition != null)
+                {
+                    foreach (var tmp2 in impl.Definition.Inherits)
+                    {
+                        r.Add(new TypeSubstitutions(def, tmp2, sub.Lookup));
+                    }
+                }
+            }
             return r;
+        }
+
+        public static string GetTypeName(TypeExpression expr, TypeDefinition parentType)
+            => GetTypeName(expr, new TypeSubstitutions(parentType, expr));
+
+        public static string GetTypeName(TypeExpression expr, TypeSubstitutions subs)
+        {
+            var r = expr.Name;
+            if (expr.Name == "Self") 
+                r = subs.Self.Name;
+            if (expr.Definition is TypeParameterDefinition tpd && subs.Lookup.ContainsKey(tpd))
+                r = GetTypeName(subs.Lookup[tpd], subs);
+            var args = expr.TypeArgs.Select(ta => GetTypeName(ta, subs)).ToList();
+            if (args.Count == 0)
+                return r;
+            return $"{r}<{args.JoinStringsWithComma()}>";
         }
 
         public static string GetParameterNamesJoined(FunctionDefinition f)
             => string.Join(", ", f.Parameters.Select(p => p.Name));
-
-        public static string GetParameterNamesAndTypesJoined(FunctionDefinition f, TypeDefinition t)
-            => string.Join(", ", f.Parameters.Select(p => $"{GetTypeName(p.Type, t)} {p.Name}"));
-
-        public SymbolWriterCSharp WriteConstructor(TypeDefinition t)
-        {
-            if (!t.IsConcrete()) throw new NotSupportedException();
-            var name = t.Name;
-            var fieldTypes = t.Fields.Select(f => GetTypeName(f.Type, t)).ToList();
-            var fieldNames = t.Fields.Select(f => $"{f.Name}").ToList();
-            var parameterList = string.Join(", ", t.Fields.Select(f => $"{GetTypeName(f.Type, t)} _{f.Name}"));
-            var parameterNamesString = string.Join(", ", t.Fields.Select(f => $"_{f.Name}"));
-            var fieldTypesString = string.Join(", ", fieldTypes);
-            var fieldNamesString = string.Join(", ", fieldNames);
-
-            WriteLine($"public {name}({parameterList}) => ({fieldNamesString}) = ({parameterNamesString});");
-            WriteLine($"public static {name} New({parameterList}) => new({parameterNamesString});");
-            if (t.Fields.Count > 1)
-            {
-                var qualifiedFieldNames = string.Join(", ", fieldNames.Select(f => $"self.{f}"));
-                var tupleNames = string.Join(", ", Enumerable.Range(1, t.Fields.Count).Select(i => $"value.Item{i}"));
-                WriteLine($"public static implicit operator ({fieldTypesString})({name} self) => ({qualifiedFieldNames});");
-                WriteLine($"public static implicit operator {name}(({fieldTypesString}) value) => new {name}({tupleNames});");
-            }
-            else if (t.Fields.Count == 1)
-            {
-                var fieldName = t.Fields[0].Name;
-                var fieldType = GetTypeName(t.Fields[0].Type, t);
-                WriteLine($"public static implicit operator {fieldType}({name} self) => self.{fieldName};");
-                WriteLine($"public static implicit operator {name}({fieldType} value) => new {fieldType}(value);");
-            }
-
-            var fieldNamesAsStrings = string.Join(", ", fieldNames.Select(f => $"\"{f}\""));
-            WriteLine($"public string[] FieldNames() => new[] {{ {fieldNamesAsStrings} }};");
-            WriteLine($"public object[] FieldValues() => new[] {{ {fieldNamesString} }};");
-
-            // TODO: output the static methods. 
-            // TODO: add all appropriate operators 
-            // TODO: output all zero parameter methods as properties 
-            // TODO: add all appropriate functions as extension methods
-
-            foreach (var m in t.GetConceptMethods())
-            {
-                var f = m.Function;
-                var ret = GetTypeName(f.Type, t);
-                var paramList = GetParameterNamesAndTypesJoined(f, t);
-                var argList = GetParameterNamesJoined(f);
-
-                if (f.Body == null)
-                {
-                    WriteLine($"public static {ret} {f.Name}({paramList}) => Extensions.{f.Name}({argList});");
-                }
-
-                if (f.Parameters.Count == 2)
-                {
-                    var op = OperatorNameLookup.NameToBinaryOperator(f.Name);
-                    if (op != null)
-                    {
-                        if (op != "[]")
-                        {
-                            WriteLine($"public static {ret} operator {op}({paramList}) => Extensions.{f.Name}({argList});");
-                        }
-                        else
-                        {
-                            var index = f.Parameters[1];
-                            Write($"public ")
-                                .Write(ret)
-                                .Write(" this[").Write(index).Write("]")
-                                .WriteLine()
-                                .WriteStartBlock()
-                                .Write("get")
-                                .WriteFunctionBody(f)
-                                .WriteEndBlock();
-                        }
-                    }
-                }
-
-                if (f.Parameters.Count == 1)
-                {
-                    var op = OperatorNameLookup.NameToUnaryOperator(f.Name);
-                    if (op != null)
-                        WriteLine($"public static {ret} operator {op}({paramList}) => Extensions.{f.Name}({argList});");
-                }
-            }
-
-            return this;
-        }
 
         public static bool IsSelfType(TypeExpression rs)
             => rs.Definition is SelfType;
@@ -441,23 +521,7 @@ namespace Plato.CSharpWriter
             {
                 StartNewFile(ToFileName(type));
 
-                var implements = type.Implements.Count > 0
-                    ? ": " + string.Join(", ", type.Implements.Select(td => $"{td?.Name}<{type.Name}>"))
-                    : "";
-
-                return Write("public class ")
-                    .Write(type.Name)
-                    .WriteLine(implements)
-                    .WriteStartBlock()
-                    .WriteConstructor(type)
-                    .Write(type.Members)
-                    .WriteEndBlock();
-
-                // TODO: write properties
-                // TODO: write "With" functions
-                // TODO: write implicit casts 
-                // TODO: write operator overloads 
-            }
+              }
 
             if (type.IsLibrary())
             {

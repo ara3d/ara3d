@@ -125,23 +125,26 @@ library Value
 
 library Vector
 {
-    Sum(v: Array): Numerical 
+    Sum(v: Vector): Numerical 
         => v.Aggregate(0, Add); 
     
-    SumSquares(v: Array): Number
+    SumSquares(v: Vector): Numerical
         => v.Square.Sum; 
     
-    LengthSquared(v: Array): Number
+    LengthSquared(v: Vector): Numerical
         => v.SumSquares;
     
-    Length(v: Array): Number
+    Length(v: Vector): Numerical
         => v.LengthSquared.SquareRoot;
     
-    Dot(v1: Vector, v2: Vector): Number
+    Dot(v1: Vector, v2: Vector): Numerical
         => (v1 * v2).Sum;
 
     Normal(v: Vector): Vector
         => v / v.Length;
+
+    Average(v: Vector): Numerical
+        => v.Sum / v.Count;
 }
 
 library Numerical
@@ -316,12 +319,6 @@ library Comparable
     
     Max(a: Comparable, b: Comparable): Comparable 
         => a >= b ? a : b;
-}
-
-library Equatable
-{
-    NotEquals(x: Equatable, y: Equatable): Boolean
-        => !x.Equals(y);
 }
 
 library Easings

@@ -1,9 +1,7 @@
 concept Any
 { 
-    FieldNames(): Array<String>;     
+    FieldNames(x: Self): Array<String>;     
     FieldValues(x: Self): Array<Any>;
-    FieldTypes(x: Self): Array<Type>;
-    TypeOf(): Type;
 }
 
 concept Value 
@@ -61,6 +59,9 @@ concept Equatable
 {
     Equals(a: Self, b: Self): Boolean
         => a.FieldValues.Equals(b.FieldValues).All;
+
+    NotEquals(a: Self, b: Self): Boolean
+        => !a.Equals(b);
 }
 
 concept Arithmetic

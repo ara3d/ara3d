@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -85,13 +86,14 @@ namespace Ara3D.Utils
         public static string Drop(this string s, int n)
             => s.Substring(0, Math.Max(0, s.Length - n));
 
-
         public static string JoinStrings<T1, T2>(this IDictionary<T1, T2> self, string sep = ";")
             => self.Select(kv => $"{kv.Key}={kv.Value}").JoinStrings(sep);
 
         public static string JoinStrings<T>(this IEnumerable<T> self, string sep = ";")
             => string.Join(sep, self);
 
+        public static string JoinStringsWithComma<T>(this IEnumerable<T> self)
+            => self.JoinStrings(", ");
 
         /// <summary>
         /// Remove starting and ending quotes.
@@ -133,5 +135,11 @@ namespace Ara3D.Utils
 
         public static string RemoveChars(this string text, string chars)
             => text.Where(c => !chars.Contains(c)).Aggregate(new StringBuilder(), (sb, c) => sb.Append(c)).ToString();
+
+        public static string CapitalizeFirst(this string text)
+            => text.IsNullOrEmpty() ? text : text[0].ToUpper() + text.Substring(1);
+
+        public static string DecapitalizeFirst(this string text)
+            => text.IsNullOrEmpty() ? text : text[0].ToLower() + text.Substring(1);
     }
 }

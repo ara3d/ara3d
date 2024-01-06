@@ -2,4 +2,4 @@
 public class Integer { }
 public class Boolean { }
 public class String { }
-public class Type { } 
+public class Character { }
