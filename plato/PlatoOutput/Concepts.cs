@@ -29,7 +29,6 @@ public interface Numerical<Self>: Value<Self>, Arithmetic<Self>, ScalarArithmeti
 public interface Magnitudinal<Self>: Comparable<Self>
 {
     Number Magnitude();
-    Integer Compare(Self y);
 }
 public interface Comparable<Self>
 {

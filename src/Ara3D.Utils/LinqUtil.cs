@@ -8,8 +8,6 @@ namespace Ara3D.Utils
     {
         // https://stackoverflow.com/questions/4823467/using-linq-to-find-the-cumulative-sum-of-an-array-of-numbers-in-c-sharp/
 
-        #region LINQ to find the cumulative sum of an array
-
         public static IEnumerable<U> Accumulate<T, U>(this IEnumerable<T> self, U init, Func<U, T, U> f)
         {
             foreach (var x in self)
@@ -25,7 +23,6 @@ namespace Ara3D.Utils
         public static IEnumerable<int> PartialSums(this IEnumerable<int> self)
             => self.Accumulate((x, y) => x + y);
 
-        #endregion
         public static IEnumerable<T> DifferentFromPrevious<T>(this IEnumerable<T> self)
         {
             var first = true;
@@ -79,6 +76,7 @@ namespace Ara3D.Utils
 
             return r;
         }
+
         /// <summary>
         /// Returns the top of a stack, or the default T value if none is present.
         /// </summary>
@@ -209,6 +207,21 @@ namespace Ara3D.Utils
         {
             var tmp = self.Select(selector).Where(filter).ToList();
             return tmp.Count == 0 ? defaultValue : tmp.Max();
+        }
+
+        public static IEnumerable<T> Distinct<T, U>(this IEnumerable<T> self, Func<T, U> func)
+            => self.Distinct(CreateEqualityComparer<T>(x => func(x).GetHashCode(), (a, b) => func(a).Equals(func(b))));
+
+        public static IEnumerable<T> Distinct<T>(this IEnumerable<T> self, Func<T, T, bool> comparison, Func<T, int> hashFunc)
+            => self.Distinct(CreateEqualityComparer(hashFunc, comparison));
+
+        public static IEqualityComparer<T> CreateEqualityComparer<T>(
+            Func<T, int> getHashCode,
+            Func<T, T, bool> equals)
+        {
+            if (getHashCode == null) throw new ArgumentNullException(nameof(getHashCode));
+            if (equals == null) throw new ArgumentNullException(nameof(equals));
+            return new Comparer<T>(getHashCode, equals);
         }
     }
 }

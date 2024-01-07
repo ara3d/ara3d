@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Diagnostics;
 using System.Linq;
+using Ara3D.Utils;
 using Plato.Compiler.Ast;
 using Plato.Compiler.Types;
 
@@ -46,7 +48,7 @@ namespace Plato.Compiler.Symbols
         public TypeExpression GetParameterType(int n) => Parameters[n].Type;
         public TypeExpression ReturnType => Type;
         public TypeDefinition OwnerType { get; }
-        public IEnumerable<TypeExpression> ParametersAndReturnType => Parameters.Select(p => p.Type).Append(ReturnType);
+        public IEnumerable<TypeExpression> ParametersAndReturnType => Enumerable.Append(Parameters.Select(p => p.Type), ReturnType);
 
         public FunctionDefinition(string name, TypeDefinition ownerType, TypeExpression returnType, Expression body, params ParameterDefinition[] parameters)
             : base(returnType, name)

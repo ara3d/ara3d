@@ -212,7 +212,7 @@ namespace Plato.CSharpWriter
             var name = t.Name;
             var fieldTypes = t.Fields.Select(f => GetTypeName(f.Type, t)).ToList();
             var fieldNames = t.Fields.Select(f => f.Name).ToList();
-            var parameterNames = fieldNames.Select(FieldNameToParameterName);
+               var parameterNames = fieldNames.Select(FieldNameToParameterName);
 
             for (var i = 0; i < fieldTypes.Count; ++i)
             {
@@ -221,11 +221,19 @@ namespace Plato.CSharpWriter
                 WriteLine($"public {ft} {fn} {{ get; }}");
             }
 
-            // TODO: add "With" functions 
+            for (var i = 0; i < fieldTypes.Count; ++i)
+            {
+                var ft = fieldTypes[i];
+                var fn = fieldNames[i];
+                var pn = FieldNameToParameterName(fn);
+                var args = fieldNames.Select((n, j) => j == i ? pn : n).JoinStringsWithComma();
+                WriteLine($"public {name} With{fn}({ft} {pn}) => ({args});");
+            }
 
             var parameters = fieldTypes.Zip(parameterNames, (pt, pn) => $"{pt} {pn}");
             var parameterNamesStr = parameterNames.JoinStringsWithComma();
             var parametersStr = parameters.JoinStringsWithComma();
+            var deconstructorParametersStr = fieldTypes.Zip(parameterNames, (pt, pn) => $"out {pt} {pn}").JoinStringsWithComma();
 
             var fieldTypesStr = string.Join(", ", fieldTypes);
             var fieldNamesStr = fieldNames.JoinStringsWithComma();
@@ -248,7 +256,11 @@ namespace Plato.CSharpWriter
                 WriteLine($"public static implicit operator ({fieldTypesStr})({name} self) => ({qualifiedFieldNames});");
                 WriteLine($"public static implicit operator {name}(({fieldTypesStr}) value) => new {name}({tupleNames});");
 
-                // TODO: deconstructor function 
+                // Deconstructor function 
+                Write($"public void Deconstruct({deconstructorParametersStr}) {{ ");
+                for (var i = 0; i < t.Fields.Count; ++i)
+                    Write($"{FieldNameToParameterName(t.Fields[i].Name)} = {t.Fields[i].Name}; ");
+                WriteLine("}");
             }
             else if (t.Fields.Count == 1)
             {
@@ -265,21 +277,45 @@ namespace Plato.CSharpWriter
             WriteLine($"public object[] FieldValues() => new[] {{ {fieldNamesString} }};");
             */
 
-            foreach (var sub in GetAllImplementedConcepts(t))
+            var funcs = new HashSet<string>();
+
+            var concepts = GetAllImplementedConcepts(t).ToList();
+            concepts = concepts.Distinct(sub => sub.Type.Definition).ToList();
+            foreach (var sub in concepts)
             {
                 var c = sub.Type.Definition;
                 foreach (var m in c.Methods)
                 {
                     var f = m.Function;
+                    
                     var ret = GetTypeName(f.Type, sub);
+
+                    var argList = f
+                        .Parameters.Skip(1)
+                        .Select(p => $"{p.Name}")
+                        .JoinStringsWithComma();
+                    
+                    var firstName = f.Parameters.Count > 0 ? f.Parameters[0].Name : "";
+                    
                     var paramList = f
                         .Parameters.Skip(1)
                         .Select(p => $"{GetTypeName(p.Type, sub)} {p.Name}")
                         .JoinStringsWithComma();
+
                     var staticParamList = f
                         .Parameters
                         .Select(p => $"{GetTypeName(p.Type, sub)} {p.Name}")
                         .JoinStringsWithComma();
+
+                    var paramTypeList = f
+                        .Parameters.Skip(1)
+                        .Select(p => $"{GetTypeName(p.Type, sub)}")
+                        .JoinStringsWithComma();
+
+                    var sig = $"{f.Name}({paramTypeList}):{ret}";
+                    if (funcs.Contains(sig))
+                        continue;
+                    funcs.Add(sig);
 
                     WriteLine($"public {ret} {f.Name}({paramList}) => throw new NotImplementedException();");
 
@@ -291,14 +327,17 @@ namespace Plato.CSharpWriter
                             if (op != "[]")
                             {
                                 WriteLine(
-                                    $"public static {ret} operator {op}({staticParamList}) => throw new NotImplementedException();");
+                                    $"public static {ret} operator {op}({staticParamList}) => {firstName}.{f.Name}({argList});");
                             }
                             else
                             {
                                 var index = f.Parameters[1];
                                 Write($"public ")
                                     .Write(ret)
-                                    .Write(" this[").Write(index).Write("] => throw new NotImplementedException();");
+                                    .Write(" this[")
+                                    .Write(index)
+                                    .Write($"] => {f.Name}({index.Name});")
+                                    .WriteLine();
 
                                 //.WriteLine()
                                 //.WriteStartBlock()
@@ -314,7 +353,7 @@ namespace Plato.CSharpWriter
                         var op = OperatorNameLookup.NameToUnaryOperator(f.Name);
                         if (op != null)
                             WriteLine(
-                                $"public static {ret} operator {op}({staticParamList}) => throw new NotImplementedException();");
+                                $"public static {ret} operator {op}({staticParamList}) => {firstName}.{f.Name}({argList});");
                     }
                 }
             }
@@ -454,14 +493,13 @@ namespace Plato.CSharpWriter
         public static IEnumerable<TypeSubstitutions> GetAllImplementedConcepts(TypeDefinition def)
         {
             var r = new HashSet<TypeSubstitutions>();
-
             foreach (var impl in def.Implements)
             {
                 var sub = new TypeSubstitutions(def, impl);
                 r.Add(sub);
                 if (impl.Definition != null)
                 {
-                    foreach (var tmp2 in impl.Definition.Inherits)
+                    foreach (var tmp2 in impl.Definition.GetAllImplementedConcepts())
                     {
                         r.Add(new TypeSubstitutions(def, tmp2, sub.Lookup));
                     }

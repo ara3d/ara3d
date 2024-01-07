@@ -41,13 +41,6 @@ concept Magnitudinal
 {
     Magnitude(x: Self): Number
         => x.FieldValues.Square.Sum.SquareRoot;
-
-    Compare(x: Self, y: Self): Integer
-        => x.Magnitude < y.Magnitude 
-            ? -1
-            : x.Magnitude > y.Magnitude 
-                ? 1
-                : 0;
 }
 
 concept Comparable
