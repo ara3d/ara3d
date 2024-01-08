@@ -7,11 +7,13 @@ public interface Value: Any
 {
 }
 public interface Array<T>
+where T : Any
 {
     Integer Count { get; }
     T At(Integer n);
 }
 public interface Vector<Self, T>: Array<T>, Numerical<Self>, Magnitudinal<Self>
+where T : Numerical<T>
 {
 }
 public interface Measure<Self>: Value, ScalarArithmetic<Self>, Equatable<Self>, Comparable<Self>, Magnitudinal<Self>
@@ -38,7 +40,7 @@ public interface Equatable<Self>
     Boolean Equals(Self b);
     Boolean NotEquals(Self b);
 }
-public interface Arithmetic<Self>
+public interface Arithmetic<Self>: AdditiveInverse<Self>
 {
     Self Add(Self other);
     Self Subtract(Self other);
@@ -53,6 +55,7 @@ public interface AdditiveInverse<Self>
     Self Negative { get; }
 }
 public interface AdditiveArithmetic<Self, T>
+where T : AdditiveInverse<T>
 {
     Self Add(T other);
     Self Subtract(T other);
@@ -71,7 +74,8 @@ public interface BooleanOperations<Self>
     Self Or(Self b);
     Self Not { get; }
 }
-public interface Interval<Self, T>: Vector<Self, T>
+public interface Interval<T>
+where T : Measure<T>
 {
     T Min { get; }
     T Max { get; }

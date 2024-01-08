@@ -1,108 +1,124 @@
 [0:00.002] Creating compiler
-[0:00.002] Opening files
-[0:00.160] Starting compiling C:\Users\cdigg\git\ara3d\plato\PlatoWinFormsEditor\..\PlatoStandardLibrary\intrinsics.plato at 2024-01-08 11:06:36 AM
-[0:00.160] Starting to parse 37 lines containing 1060 characters
-[0:00.160] Tokenization phase
-[0:00.169] Completed tokenization
-[0:00.172] Starting main parse
-[0:00.181] Completed parsing
-[0:00.181] Gathering parse errors
-[0:00.182] Found 0 errors
-[0:00.182] Gathering parse nodes
-[0:00.182] Found 760 nodes
-[0:00.182] Creating parse tree
-[0:00.186] Creating Concrete Syntax Tree (CST)
-[0:00.237] Creating Abstract Syntax Tree (AST)
-[0:00.302] Completed all steps, result is successful
-[0:00.432] Starting compiling C:\Users\cdigg\git\ara3d\plato\PlatoWinFormsEditor\..\PlatoStandardLibrary\concepts.plato at 2024-01-08 11:06:37 AM
-[0:00.432] Starting to parse 133 lines containing 2718 characters
-[0:00.432] Tokenization phase
-[0:00.452] Completed tokenization
-[0:00.452] Starting main parse
-[0:00.508] Completed parsing
-[0:00.508] Gathering parse errors
-[0:00.508] Found 0 errors
-[0:00.508] Gathering parse nodes
-[0:00.508] Found 1426 nodes
-[0:00.508] Creating parse tree
-[0:00.509] Creating Concrete Syntax Tree (CST)
-[0:00.512] Creating Abstract Syntax Tree (AST)
-[0:00.540] Completed all steps, result is successful
-[0:00.601] Starting compiling C:\Users\cdigg\git\ara3d\plato\PlatoWinFormsEditor\..\PlatoStandardLibrary\types.plato at 2024-01-08 11:06:37 AM
-[0:00.601] Starting to parse 866 lines containing 12863 characters
-[0:00.601] Tokenization phase
-[0:00.613] Completed tokenization
-[0:00.613] Starting main parse
-[0:00.620] Completed parsing
-[0:00.620] Gathering parse errors
-[0:00.620] Found 0 errors
-[0:00.620] Gathering parse nodes
-[0:00.625] Found 3781 nodes
-[0:00.625] Creating parse tree
-[0:00.626] Creating Concrete Syntax Tree (CST)
-[0:00.628] Creating Abstract Syntax Tree (AST)
-[0:00.635] Completed all steps, result is successful
-[0:00.792] Starting compiling C:\Users\cdigg\git\ara3d\plato\PlatoWinFormsEditor\..\PlatoStandardLibrary\libraries.plato at 2024-01-08 11:06:37 AM
-[0:00.792] Starting to parse 438 lines containing 11304 characters
-[0:00.792] Tokenization phase
-[0:00.810] Completed tokenization
-[0:00.810] Starting main parse
-[0:00.840] Completed parsing
-[0:00.840] Gathering parse errors
-[0:00.840] Found 0 errors
-[0:00.840] Gathering parse nodes
-[0:00.841] Found 6163 nodes
-[0:00.841] Creating parse tree
-[0:00.846] Creating Concrete Syntax Tree (CST)
-[0:00.857] Creating Abstract Syntax Tree (AST)
-[0:00.894] Completed all steps, result is successful
-[0:00.894] Applying syntax coloring
-[0:00.894] Completed syntax coloring
-[0:00.901] Initializing Compiler
-[0:00.901] Gathering parsers
-[0:00.902] Gathering AST trees
-[0:00.902] Gathering type declarations
-[0:00.909] Creating symbol resolver
-[0:00.912] Creating type definitions
-[0:00.946] Found 0 symbol resolution errors
-[0:00.947] Gathering function definitions
-[0:00.948] Found 720 functions
-[0:00.948] Checking semantics
-[0:00.948] Creating Reified Types
-[0:00.989] Found 116 types
-[0:00.990] Created a total of 1253 reified functions
-[0:00.990] Adding library functions to reified types
-[0:01.077] Grouping Reified functions by name for faster type resolution
-[0:01.080] Creating function analysis
-[0:01.086] Gathering constraints for each function
-[0:01.159] Function group call unresolved: no functions 58
-Aggregate(Rest(xs), , (\(ParameterDefinition=acc$4676:Concept:Any, ParameterDefinition=cur$4678:Concept:Any) -> Primitive:Function) with ($138:(Array, $137:Any), String, (Function, $379:Any, $380:Any, $378:Any)) has 0 possible return types 
-Add(ToString(First(xs)), Aggregate(Rest(xs), , (\(ParameterDefinition=acc$4676:Concept:Any, ParameterDefinition=cur$4678:Concept:Any) -> Primitive:Function)) with (String, $381:Any) has 0 possible return types 
-And(f(First(xs)), f(Rest(xs))) with ($385:Any, $388:Any) has 0 possible return types 
-All(xs, (\(ParameterDefinition=b$4732:Concept:Any) -> Primitive:Function) with ($158:(Array, $157:Any), (Function, $391:Any, $390:Any)) has 0 possible return types 
-And(value, LessThanOrEquals(value, Max(x))) with ($183:Numerical, Boolean) has 0 possible return types 
-LessThanOrEquals(Min(x), And(value, LessThanOrEquals(value, Max(x)))) with ($45:Numerical, $393:Any) has 0 possible return types 
-And(Min(other), GreaterThanOrEquals(Max(x), Max(other))) with ($45:Numerical, Boolean) has 0 possible return types 
-LessThanOrEquals(Min(x), And(Min(other), GreaterThanOrEquals(Max(x), Max(other)))) with ($45:Numerical, $395:Any) has 0 possible return types 
+[0:00.003] Opening files
+[0:00.134] Starting compiling C:\Users\cdigg\git\ara3d\plato\PlatoWinFormsEditor\..\PlatoStandardLibrary\intrinsics.plato at 2024-01-08 11:23:16 AM
+[0:00.134] Starting to parse 37 lines containing 1060 characters
+[0:00.134] Tokenization phase
+[0:00.136] Completed tokenization
+[0:00.137] Starting main parse
+[0:00.138] Completed parsing
+[0:00.138] Gathering parse errors
+[0:00.139] Found 0 errors
+[0:00.139] Gathering parse nodes
+[0:00.139] Found 760 nodes
+[0:00.139] Creating parse tree
+[0:00.139] Creating Concrete Syntax Tree (CST)
+[0:00.146] Creating Abstract Syntax Tree (AST)
+[0:00.154] Completed all steps, result is successful
+[0:00.201] Starting compiling C:\Users\cdigg\git\ara3d\plato\PlatoWinFormsEditor\..\PlatoStandardLibrary\concepts.plato at 2024-01-08 11:23:16 AM
+[0:00.201] Starting to parse 133 lines containing 2734 characters
+[0:00.201] Tokenization phase
+[0:00.204] Completed tokenization
+[0:00.204] Starting main parse
+[0:00.239] Completed parsing
+[0:00.239] Gathering parse errors
+[0:00.239] Found 0 errors
+[0:00.239] Gathering parse nodes
+[0:00.240] Found 1418 nodes
+[0:00.240] Creating parse tree
+[0:00.240] Creating Concrete Syntax Tree (CST)
+[0:00.242] Creating Abstract Syntax Tree (AST)
+[0:00.265] Completed all steps, result is successful
+[0:00.335] Starting compiling C:\Users\cdigg\git\ara3d\plato\PlatoWinFormsEditor\..\PlatoStandardLibrary\types.plato at 2024-01-08 11:23:16 AM
+[0:00.335] Starting to parse 866 lines containing 12867 characters
+[0:00.335] Tokenization phase
+[0:00.341] Completed tokenization
+[0:00.341] Starting main parse
+[0:00.345] Completed parsing
+[0:00.345] Gathering parse errors
+[0:00.345] Found 0 errors
+[0:00.345] Gathering parse nodes
+[0:00.345] Found 3781 nodes
+[0:00.345] Creating parse tree
+[0:00.348] Creating Concrete Syntax Tree (CST)
+[0:00.349] Creating Abstract Syntax Tree (AST)
+[0:00.353] Completed all steps, result is successful
+[0:00.390] Starting compiling C:\Users\cdigg\git\ara3d\plato\PlatoWinFormsEditor\..\PlatoStandardLibrary\libraries.plato at 2024-01-08 11:23:16 AM
+[0:00.390] Starting to parse 438 lines containing 11304 characters
+[0:00.390] Tokenization phase
+[0:00.397] Completed tokenization
+[0:00.398] Starting main parse
+[0:00.416] Completed parsing
+[0:00.416] Gathering parse errors
+[0:00.416] Found 0 errors
+[0:00.416] Gathering parse nodes
+[0:00.416] Found 6163 nodes
+[0:00.416] Creating parse tree
+[0:00.417] Creating Concrete Syntax Tree (CST)
+[0:00.420] Creating Abstract Syntax Tree (AST)
+[0:00.427] Completed all steps, result is successful
+[0:00.427] Applying syntax coloring
+[0:00.427] Completed syntax coloring
+[0:00.429] Initializing Compiler
+[0:00.429] Gathering parsers
+[0:00.429] Gathering AST trees
+[0:00.429] Gathering type declarations
+[0:00.433] Creating symbol resolver
+[0:00.435] Creating type definitions
+[0:00.454] Found 0 symbol resolution errors
+[0:00.454] Gathering function definitions
+[0:00.455] Found 720 functions
+[0:00.455] Checking semantics
+[0:00.455] Creating Reified Types
+[0:00.483] Found 116 types
+[0:00.483] Created a total of 1083 reified functions
+[0:00.483] Adding library functions to reified types
+[0:00.555] Grouping Reified functions by name for faster type resolution
+[0:00.559] Creating function analysis
+[0:00.566] Gathering constraints for each function
+[0:00.629] Function group call unresolved: no functions 74
+GreaterThanOrEquals(Min(x), Max(x)) with ($46:(AdditiveArithmetic, $45:AdditiveInverse), $49:(AdditiveArithmetic, $48:AdditiveInverse)) has 0 possible return types 
+Aggregate(Rest(xs), , (\(ParameterDefinition=acc$4675:Concept:Any, ParameterDefinition=cur$4677:Concept:Any) -> Primitive:Function) with ($140:(Array, $139:Any), String, (Function, $418:Any, $419:Any, $417:Any)) has 0 possible return types 
+Add(ToString(First(xs)), Aggregate(Rest(xs), , (\(ParameterDefinition=acc$4675:Concept:Any, ParameterDefinition=cur$4677:Concept:Any) -> Primitive:Function)) with (String, $420:Any) has 0 possible return types 
+And(f(First(xs)), f(Rest(xs))) with ($424:Any, $427:Any) has 0 possible return types 
+All(xs, (\(ParameterDefinition=b$4731:Concept:Any) -> Primitive:Function) with ($160:(Array, $159:Any), (Function, $430:Any, $429:Any)) has 0 possible return types 
+Subtract(Max(x), Min(x)) with ($49:(AdditiveArithmetic, $48:AdditiveInverse), $46:(AdditiveArithmetic, $45:AdditiveInverse)) has 0 possible return types 
+Multiply(Max(x), amount) with ($49:(AdditiveArithmetic, $48:AdditiveInverse), Unit) has 0 possible return types 
+Add(Subtract(1, amount), Multiply(Max(x), amount)) with (Number, $433:Any) has 0 possible return types 
+Multiply(Min(x), Add(Subtract(1, amount), Multiply(Max(x), amount))) with ($46:(AdditiveArithmetic, $45:AdditiveInverse), $434:Any) has 0 possible return types 
+Subtract(value, Min(x)) with ($175:Numerical, $46:(AdditiveArithmetic, $45:AdditiveInverse)) has 0 possible return types 
+Divide(Subtract(value, Min(x)), Size(x)) with ($436:Any, $164:Numerical) has 0 possible return types 
+Negative(Max(x)) with ($49:(AdditiveArithmetic, $48:AdditiveInverse)) has 0 possible return types 
+Negative(Min(x)) with ($46:(AdditiveArithmetic, $45:AdditiveInverse)) has 0 possible return types 
+LessThanOrEquals(value, Max(x)) with ($195:Numerical, $49:(AdditiveArithmetic, $48:AdditiveInverse)) has 0 possible return types 
+And(value, LessThanOrEquals(value, Max(x))) with ($195:Numerical, $440:Any) has 0 possible return types 
+LessThanOrEquals(Min(x), And(value, LessThanOrEquals(value, Max(x)))) with ($46:(AdditiveArithmetic, $45:AdditiveInverse), $441:Any) has 0 possible return types 
+GreaterThanOrEquals(Max(x), Max(other)) with ($49:(AdditiveArithmetic, $48:AdditiveInverse), $49:(AdditiveArithmetic, $48:AdditiveInverse)) has 0 possible return types 
+And(Min(other), GreaterThanOrEquals(Max(x), Max(other))) with ($46:(AdditiveArithmetic, $45:AdditiveInverse), $443:Any) has 0 possible return types 
+LessThanOrEquals(Min(x), And(Min(other), GreaterThanOrEquals(Max(x), Max(other)))) with ($46:(AdditiveArithmetic, $45:AdditiveInverse), $444:Any) has 0 possible return types 
+GreaterThan(value, (Max(x)?Max(x):value)) with ($268:Numerical, $49:(AdditiveArithmetic, $48:AdditiveInverse)) has 0 possible return types 
+LessThan(value, (Min(x)?Min(x):GreaterThan(value, (Max(x)?Max(x):value)))) with ($268:Numerical, $46:(AdditiveArithmetic, $45:AdditiveInverse)) has 0 possible return types 
 Clamp(x, Tuple(0, 1)) with (Number, (Tuple, Integer, Integer)) has 0 possible return types 
-And(Min(x), LessThanOrEquals(value, Max(x))) with ($45:Numerical, Boolean) has 0 possible return types 
-GreaterThanOrEquals(value, And(Min(x), LessThanOrEquals(value, Max(x)))) with ($237:Numerical, $398:Any) has 0 possible return types 
-Aggregate(v, 0, Add) with ($240:(Vector, $239:Numerical), Integer, Function) has 0 possible return types 
-Sum(Square(v)) with ($264:Numerical) has 0 possible return types 
-SquareRoot(LengthSquared(v)) with ($247:Numerical) has 0 possible return types 
+Clamp(x, Min(y)) with ($258:(Interval, $257:(AdditiveArithmetic, $256:AdditiveInverse)), $46:(AdditiveArithmetic, $45:AdditiveInverse)) has 0 possible return types 
+Clamp(x, Max(y)) with ($258:(Interval, $257:(AdditiveArithmetic, $256:AdditiveInverse)), $49:(AdditiveArithmetic, $48:AdditiveInverse)) has 0 possible return types 
+LessThanOrEquals(value, Max(x)) with ($273:Numerical, $49:(AdditiveArithmetic, $48:AdditiveInverse)) has 0 possible return types 
+And(Min(x), LessThanOrEquals(value, Max(x))) with ($46:(AdditiveArithmetic, $45:AdditiveInverse), $451:Any) has 0 possible return types 
+GreaterThanOrEquals(value, And(Min(x), LessThanOrEquals(value, Max(x)))) with ($273:Numerical, $452:Any) has 0 possible return types 
+Aggregate(v, 0, Add) with ($276:(Vector, $275:Numerical), Integer, Function) has 0 possible return types 
+Sum(Square(v)) with ($300:Numerical) has 0 possible return types 
+SquareRoot(LengthSquared(v)) with ($283:Numerical) has 0 possible return types 
 Zip(FieldValues(self), FieldValues(min), FieldValues(max), Between) with ($3:(Array, Any), $3:(Array, Any), $3:(Array, Any), Function) has 0 possible return types 
 Divide(Pi, 180) with (Function, Integer) has 0 possible return types 
-Multiply(x, Divide(Pi, 180)) with (Number, $404:Any) has 0 possible return types 
+Multiply(x, Divide(Pi, 180)) with (Number, $458:Any) has 0 possible return types 
 Multiply(2, Pi) with (Integer, Function) has 0 possible return types 
-Multiply(x, Multiply(2, Pi)) with (Number, $406:Any) has 0 possible return types 
-And(a, LessThanOrEquals(v, b)) with ($342:Comparable, Boolean) has 0 possible return types 
-GreaterThanOrEquals(v, And(a, LessThanOrEquals(v, b))) with ($341:Comparable, $408:Any) has 0 possible return types 
-Contains(i, v) with ($347:(Interval, $346:Numerical), $345:Value) has 0 possible return types 
-Multiply(0.5, easeIn(Multiply(p, 2))) with (Number, $413:Any) has 0 possible return types 
-Add(easeOut(Multiply(p, Subtract(2, 1))), 0.5) with ($417:Any, Number) has 0 possible return types 
-Multiply(0.5, Add(easeOut(Multiply(p, Subtract(2, 1))), 0.5)) with (Number, $418:Any) has 0 possible return types 
-LessThan(p, (0.5?Multiply(0.5, easeIn(Multiply(p, 2))):Multiply(0.5, Add(easeOut(Multiply(p, Subtract(2, 1))), 0.5)))) with (Number, $414:Any) has 0 possible return types 
-Subtract(1, easeIn(Subtract(1, p))) with (Integer, $423:Any) has 0 possible return types 
+Multiply(x, Multiply(2, Pi)) with (Number, $460:Any) has 0 possible return types 
+And(a, LessThanOrEquals(v, b)) with ($378:Comparable, Boolean) has 0 possible return types 
+GreaterThanOrEquals(v, And(a, LessThanOrEquals(v, b))) with ($377:Comparable, $462:Any) has 0 possible return types 
+Contains(i, v) with ($384:(Interval, $383:(AdditiveArithmetic, $382:AdditiveInverse)), $381:Value) has 0 possible return types 
+Multiply(0.5, easeIn(Multiply(p, 2))) with (Number, $467:Any) has 0 possible return types 
+Add(easeOut(Multiply(p, Subtract(2, 1))), 0.5) with ($471:Any, Number) has 0 possible return types 
+Multiply(0.5, Add(easeOut(Multiply(p, Subtract(2, 1))), 0.5)) with (Number, $472:Any) has 0 possible return types 
+LessThan(p, (0.5?Multiply(0.5, easeIn(Multiply(p, 2))):Multiply(0.5, Add(easeOut(Multiply(p, Subtract(2, 1))), 0.5)))) with (Number, $468:Any) has 0 possible return types 
+Subtract(1, easeIn(Subtract(1, p))) with (Integer, $477:Any) has 0 possible return types 
 InvertEaseFunc(p, QuadraticEaseIn) with (Number, Function) has 0 possible return types 
 BlendEaseFunc(p, QuadraticEaseIn, QuadraticEaseOut) with (Number, Function, Function) has 0 possible return types 
 InvertEaseFunc(p, CubicEaseIn) with (Number, Function) has 0 possible return types 
@@ -112,29 +128,28 @@ BlendEaseFunc(p, QuarticEaseIn, QuarticEaseOut) with (Number, Function, Function
 InvertEaseFunc(p, QuinticEaseIn) with (Number, Function) has 0 possible return types 
 BlendEaseFunc(p, QuinticEaseIn, QuinticEaseOut) with (Number, Function, Function) has 0 possible return types 
 InvertEaseFunc(p, SineEaseOut) with (Number, Function) has 0 possible return types 
-Turns(Quarter(p)) with ($286:Numerical) has 0 possible return types 
-Sin(Turns(Quarter(p))) with ($434:Any) has 0 possible return types 
+Turns(Quarter(p)) with ($322:Numerical) has 0 possible return types 
+Sin(Turns(Quarter(p))) with ($488:Any) has 0 possible return types 
 BlendEaseFunc(p, SineEaseIn, SineEaseOut) with (Number, Function, Function) has 0 possible return types 
-SquareRoot(FromOne(Pow2(p))) with ($270:Numerical) has 0 possible return types 
-FromOne(SquareRoot(FromOne(Pow2(p)))) with ($437:Any) has 0 possible return types 
+SquareRoot(FromOne(Pow2(p))) with ($306:Numerical) has 0 possible return types 
+FromOne(SquareRoot(FromOne(Pow2(p)))) with ($491:Any) has 0 possible return types 
 InvertEaseFunc(p, CircularEaseIn) with (Number, Function) has 0 possible return types 
 BlendEaseFunc(p, CircularEaseIn, CircularEaseOut) with (Number, Function, Function) has 0 possible return types 
 InvertEaseFunc(p, ExponentialEaseIn) with (Number, Function) has 0 possible return types 
 BlendEaseFunc(p, ExponentialEaseIn, ExponentialEaseOut) with (Number, Function, Function) has 0 possible return types 
-Turns(Quarter(p)) with ($286:Numerical) has 0 possible return types 
-Multiply(Turns(Quarter(p)), Sin(Radians(Pow(2, Multiply(10, MinusOne(p)))))) with ($443:Any, Number) has 0 possible return types 
-Multiply(13, Multiply(Turns(Quarter(p)), Sin(Radians(Pow(2, Multiply(10, MinusOne(p))))))) with (Integer, $444:Any) has 0 possible return types 
+Turns(Quarter(p)) with ($322:Numerical) has 0 possible return types 
+Multiply(Turns(Quarter(p)), Sin(Radians(Pow(2, Multiply(10, MinusOne(p)))))) with ($497:Any, Number) has 0 possible return types 
+Multiply(13, Multiply(Turns(Quarter(p)), Sin(Radians(Pow(2, Multiply(10, MinusOne(p))))))) with (Integer, $498:Any) has 0 possible return types 
 InvertEaseFunc(p, ElasticEaseIn) with (Number, Function) has 0 possible return types 
 BlendEaseFunc(p, ElasticEaseIn, ElasticEaseOut) with (Number, Function, Function) has 0 possible return types 
-Turns(Half(p)) with ($282:Numerical) has 0 possible return types 
-Sin(Turns(Half(p))) with ($448:Any) has 0 possible return types 
-Multiply(p, Sin(Turns(Half(p)))) with (Number, $449:Any) has 0 possible return types 
-Subtract(Pow3(p), Multiply(p, Sin(Turns(Half(p))))) with ($326:Numerical, $450:Any) has 0 possible return types 
+Turns(Half(p)) with ($318:Numerical) has 0 possible return types 
+Sin(Turns(Half(p))) with ($502:Any) has 0 possible return types 
+Multiply(p, Sin(Turns(Half(p)))) with (Number, $503:Any) has 0 possible return types 
+Subtract(Pow3(p), Multiply(p, Sin(Turns(Half(p))))) with ($362:Numerical, $504:Any) has 0 possible return types 
 InvertEaseFunc(p, BackEaseIn) with (Number, Function) has 0 possible return types 
 BlendEaseFunc(p, BackEaseIn, BackEaseOut) with (Number, Function, Function) has 0 possible return types 
 InvertEaseFunc(p, BounceEaseOut) with (Number, Function) has 0 possible return types 
 BlendEaseFunc(p, BounceEaseIn, BounceEaseOut) with (Number, Function, Function) has 0 possible return types 
-Function group call unresolved: ambiguous 1
-Clamp(x, y) with ($189:(Interval, $188:Numerical), $191:(Interval, $190:Numerical)) has 2 possible return types $230:(Interval, $229:Numerical), $234:Numerical
+Function group call unresolved: ambiguous 0
 
-[0:01.159] Outputting errors and warnings
+[0:00.629] Outputting errors and warnings

@@ -255,7 +255,7 @@ type Point3D
 }
 
 type Point2D
-    implements Value
+    implements Measure
 {
     X: Number;
     Y: Number;
@@ -487,7 +487,7 @@ type TimeRange
 // Ideally we would be more compact and enable comparisons. 
 // Possibly some alternative types like "CalendarDateTime" 
 type DateTime
-    implements Value
+    implements Measure
 {
     Year: Integer;
     Month: Integer;

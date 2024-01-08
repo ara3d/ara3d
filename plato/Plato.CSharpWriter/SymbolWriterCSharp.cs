@@ -155,9 +155,12 @@ namespace Plato.CSharpWriter
 
             foreach (var tp in type.TypeParameters)
             {
-                if (tp.Constraint != null)
+                if (tp.Constraint == null)
                     continue;
-                WriteLine($"where {tp.Name} : {TypeAsInherited(tp.Constraint)}");
+                var constraintArgs = JoinTypeParameters(tp.Constraint.Definition.IsSelfConstrained()
+                    ? tp.Constraint.TypeArgs.Select(t => ToString(t)).Prepend(tp.Name)
+                    : tp.Constraint.TypeArgs.Select(t => ToString(t)));                
+                WriteLine($"where {tp.Name} : {tp.Constraint.Name}{constraintArgs}");
             }
 
             WriteStartBlock();

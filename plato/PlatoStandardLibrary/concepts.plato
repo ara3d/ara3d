@@ -56,7 +56,8 @@ concept Equatable
         => !a.Equals(b);
 }
 
-concept Arithmetic
+concept Arithmetic 
+    inherits AdditiveInverse
 { 
     Add(self: Self, other: Self): Self
         => self.FieldValues + other.FieldValues;
@@ -125,8 +126,7 @@ concept BooleanOperations
         => a.FieldValues;
 }
 
-concept Interval<T: Numerical>
-    inherits Vector<T>
+concept Interval<T: Measure>
 {
     Min(x: Self): T;
     Max(x: Self): T;

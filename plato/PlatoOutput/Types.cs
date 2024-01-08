@@ -635,7 +635,7 @@ public class Transform2D: Value
     public Array<String> FieldNames => throw new NotImplementedException();
     public Array<Any> FieldValues => throw new NotImplementedException();
 }
-public class AlignedBox2D: Interval<AlignedBox2D, Vector2D>
+public class AlignedBox2D: Interval<Vector2D>
 {
     public Vector2D A { get; }
     public Vector2D B { get; }
@@ -650,46 +650,8 @@ public class AlignedBox2D: Interval<AlignedBox2D, Vector2D>
     public void Deconstruct(out Vector2D a, out Vector2D b) { a = A; b = B; }
     public Vector2D Min => throw new NotImplementedException();
     public Vector2D Max => throw new NotImplementedException();
-    public Integer Count => throw new NotImplementedException();
-    public Vector2D At(Integer n) => throw new NotImplementedException();
-    public Vector2D this[Integer n] => At(n);
-    public AlignedBox2D Zero => throw new NotImplementedException();
-    public AlignedBox2D One => throw new NotImplementedException();
-    public AlignedBox2D MinValue => throw new NotImplementedException();
-    public AlignedBox2D MaxValue => throw new NotImplementedException();
-    public Array<String> FieldNames => throw new NotImplementedException();
-    public Array<Any> FieldValues => throw new NotImplementedException();
-    public AlignedBox2D Add(AlignedBox2D other) => throw new NotImplementedException();
-    public static AlignedBox2D operator +(AlignedBox2D self, AlignedBox2D other) => self.Add(other);
-    public AlignedBox2D Subtract(AlignedBox2D other) => throw new NotImplementedException();
-    public static AlignedBox2D operator -(AlignedBox2D self, AlignedBox2D other) => self.Subtract(other);
-    public AlignedBox2D Negative => throw new NotImplementedException();
-    public static AlignedBox2D operator -(AlignedBox2D self) => self.Negative;
-    public AlignedBox2D Reciprocal => throw new NotImplementedException();
-    public AlignedBox2D Multiply(AlignedBox2D other) => throw new NotImplementedException();
-    public static AlignedBox2D operator *(AlignedBox2D self, AlignedBox2D other) => self.Multiply(other);
-    public AlignedBox2D Divide(AlignedBox2D other) => throw new NotImplementedException();
-    public static AlignedBox2D operator /(AlignedBox2D self, AlignedBox2D other) => self.Divide(other);
-    public AlignedBox2D Modulo(AlignedBox2D other) => throw new NotImplementedException();
-    public static AlignedBox2D operator %(AlignedBox2D self, AlignedBox2D other) => self.Modulo(other);
-    public AlignedBox2D Add(Number scalar) => throw new NotImplementedException();
-    public static AlignedBox2D operator +(AlignedBox2D self, Number scalar) => self.Add(scalar);
-    public AlignedBox2D Subtract(Number scalar) => throw new NotImplementedException();
-    public static AlignedBox2D operator -(AlignedBox2D self, Number scalar) => self.Subtract(scalar);
-    public AlignedBox2D Multiply(Number scalar) => throw new NotImplementedException();
-    public static AlignedBox2D operator *(AlignedBox2D self, Number scalar) => self.Multiply(scalar);
-    public AlignedBox2D Divide(Number scalar) => throw new NotImplementedException();
-    public static AlignedBox2D operator /(AlignedBox2D self, Number scalar) => self.Divide(scalar);
-    public AlignedBox2D Modulo(Number scalar) => throw new NotImplementedException();
-    public static AlignedBox2D operator %(AlignedBox2D self, Number scalar) => self.Modulo(scalar);
-    public Boolean Equals(AlignedBox2D b) => throw new NotImplementedException();
-    public static Boolean operator ==(AlignedBox2D a, AlignedBox2D b) => a.Equals(b);
-    public Boolean NotEquals(AlignedBox2D b) => throw new NotImplementedException();
-    public static Boolean operator !=(AlignedBox2D a, AlignedBox2D b) => a.NotEquals(b);
-    public Integer Compare(AlignedBox2D y) => throw new NotImplementedException();
-    public Number Magnitude => throw new NotImplementedException();
 }
-public class AlignedBox3D: Interval<AlignedBox3D, Vector3D>
+public class AlignedBox3D: Interval<Vector3D>
 {
     public Vector3D A { get; }
     public Vector3D B { get; }
@@ -704,44 +666,6 @@ public class AlignedBox3D: Interval<AlignedBox3D, Vector3D>
     public void Deconstruct(out Vector3D a, out Vector3D b) { a = A; b = B; }
     public Vector3D Min => throw new NotImplementedException();
     public Vector3D Max => throw new NotImplementedException();
-    public Integer Count => throw new NotImplementedException();
-    public Vector3D At(Integer n) => throw new NotImplementedException();
-    public Vector3D this[Integer n] => At(n);
-    public AlignedBox3D Zero => throw new NotImplementedException();
-    public AlignedBox3D One => throw new NotImplementedException();
-    public AlignedBox3D MinValue => throw new NotImplementedException();
-    public AlignedBox3D MaxValue => throw new NotImplementedException();
-    public Array<String> FieldNames => throw new NotImplementedException();
-    public Array<Any> FieldValues => throw new NotImplementedException();
-    public AlignedBox3D Add(AlignedBox3D other) => throw new NotImplementedException();
-    public static AlignedBox3D operator +(AlignedBox3D self, AlignedBox3D other) => self.Add(other);
-    public AlignedBox3D Subtract(AlignedBox3D other) => throw new NotImplementedException();
-    public static AlignedBox3D operator -(AlignedBox3D self, AlignedBox3D other) => self.Subtract(other);
-    public AlignedBox3D Negative => throw new NotImplementedException();
-    public static AlignedBox3D operator -(AlignedBox3D self) => self.Negative;
-    public AlignedBox3D Reciprocal => throw new NotImplementedException();
-    public AlignedBox3D Multiply(AlignedBox3D other) => throw new NotImplementedException();
-    public static AlignedBox3D operator *(AlignedBox3D self, AlignedBox3D other) => self.Multiply(other);
-    public AlignedBox3D Divide(AlignedBox3D other) => throw new NotImplementedException();
-    public static AlignedBox3D operator /(AlignedBox3D self, AlignedBox3D other) => self.Divide(other);
-    public AlignedBox3D Modulo(AlignedBox3D other) => throw new NotImplementedException();
-    public static AlignedBox3D operator %(AlignedBox3D self, AlignedBox3D other) => self.Modulo(other);
-    public AlignedBox3D Add(Number scalar) => throw new NotImplementedException();
-    public static AlignedBox3D operator +(AlignedBox3D self, Number scalar) => self.Add(scalar);
-    public AlignedBox3D Subtract(Number scalar) => throw new NotImplementedException();
-    public static AlignedBox3D operator -(AlignedBox3D self, Number scalar) => self.Subtract(scalar);
-    public AlignedBox3D Multiply(Number scalar) => throw new NotImplementedException();
-    public static AlignedBox3D operator *(AlignedBox3D self, Number scalar) => self.Multiply(scalar);
-    public AlignedBox3D Divide(Number scalar) => throw new NotImplementedException();
-    public static AlignedBox3D operator /(AlignedBox3D self, Number scalar) => self.Divide(scalar);
-    public AlignedBox3D Modulo(Number scalar) => throw new NotImplementedException();
-    public static AlignedBox3D operator %(AlignedBox3D self, Number scalar) => self.Modulo(scalar);
-    public Boolean Equals(AlignedBox3D b) => throw new NotImplementedException();
-    public static Boolean operator ==(AlignedBox3D a, AlignedBox3D b) => a.Equals(b);
-    public Boolean NotEquals(AlignedBox3D b) => throw new NotImplementedException();
-    public static Boolean operator !=(AlignedBox3D a, AlignedBox3D b) => a.NotEquals(b);
-    public Integer Compare(AlignedBox3D y) => throw new NotImplementedException();
-    public Number Magnitude => throw new NotImplementedException();
 }
 public class Complex: Vector<Complex, Number>
 {
@@ -948,7 +872,7 @@ public class Point3D: Value
     public Array<String> FieldNames => throw new NotImplementedException();
     public Array<Any> FieldValues => throw new NotImplementedException();
 }
-public class Point2D: Value
+public class Point2D: Measure<Point2D>
 {
     public Number X { get; }
     public Number Y { get; }
@@ -961,10 +885,27 @@ public class Point2D: Value
     public static implicit operator (Number, Number)(Point2D self) => (self.X, self.Y);
     public static implicit operator Point2D((Number, Number) value) => new Point2D(value.Item1, value.Item2);
     public void Deconstruct(out Number x, out Number y) { x = X; y = Y; }
+    public Number Value => throw new NotImplementedException();
     public Array<String> FieldNames => throw new NotImplementedException();
     public Array<Any> FieldValues => throw new NotImplementedException();
+    public Point2D Add(Number scalar) => throw new NotImplementedException();
+    public static Point2D operator +(Point2D self, Number scalar) => self.Add(scalar);
+    public Point2D Subtract(Number scalar) => throw new NotImplementedException();
+    public static Point2D operator -(Point2D self, Number scalar) => self.Subtract(scalar);
+    public Point2D Multiply(Number scalar) => throw new NotImplementedException();
+    public static Point2D operator *(Point2D self, Number scalar) => self.Multiply(scalar);
+    public Point2D Divide(Number scalar) => throw new NotImplementedException();
+    public static Point2D operator /(Point2D self, Number scalar) => self.Divide(scalar);
+    public Point2D Modulo(Number scalar) => throw new NotImplementedException();
+    public static Point2D operator %(Point2D self, Number scalar) => self.Modulo(scalar);
+    public Boolean Equals(Point2D b) => throw new NotImplementedException();
+    public static Boolean operator ==(Point2D a, Point2D b) => a.Equals(b);
+    public Boolean NotEquals(Point2D b) => throw new NotImplementedException();
+    public static Boolean operator !=(Point2D a, Point2D b) => a.NotEquals(b);
+    public Integer Compare(Point2D y) => throw new NotImplementedException();
+    public Number Magnitude => throw new NotImplementedException();
 }
-public class Line3D: Interval<Line3D, Point3D>
+public class Line3D: Interval<Point3D>
 {
     public Point3D A { get; }
     public Point3D B { get; }
@@ -979,46 +920,8 @@ public class Line3D: Interval<Line3D, Point3D>
     public void Deconstruct(out Point3D a, out Point3D b) { a = A; b = B; }
     public Point3D Min => throw new NotImplementedException();
     public Point3D Max => throw new NotImplementedException();
-    public Integer Count => throw new NotImplementedException();
-    public Point3D At(Integer n) => throw new NotImplementedException();
-    public Point3D this[Integer n] => At(n);
-    public Line3D Zero => throw new NotImplementedException();
-    public Line3D One => throw new NotImplementedException();
-    public Line3D MinValue => throw new NotImplementedException();
-    public Line3D MaxValue => throw new NotImplementedException();
-    public Array<String> FieldNames => throw new NotImplementedException();
-    public Array<Any> FieldValues => throw new NotImplementedException();
-    public Line3D Add(Line3D other) => throw new NotImplementedException();
-    public static Line3D operator +(Line3D self, Line3D other) => self.Add(other);
-    public Line3D Subtract(Line3D other) => throw new NotImplementedException();
-    public static Line3D operator -(Line3D self, Line3D other) => self.Subtract(other);
-    public Line3D Negative => throw new NotImplementedException();
-    public static Line3D operator -(Line3D self) => self.Negative;
-    public Line3D Reciprocal => throw new NotImplementedException();
-    public Line3D Multiply(Line3D other) => throw new NotImplementedException();
-    public static Line3D operator *(Line3D self, Line3D other) => self.Multiply(other);
-    public Line3D Divide(Line3D other) => throw new NotImplementedException();
-    public static Line3D operator /(Line3D self, Line3D other) => self.Divide(other);
-    public Line3D Modulo(Line3D other) => throw new NotImplementedException();
-    public static Line3D operator %(Line3D self, Line3D other) => self.Modulo(other);
-    public Line3D Add(Number scalar) => throw new NotImplementedException();
-    public static Line3D operator +(Line3D self, Number scalar) => self.Add(scalar);
-    public Line3D Subtract(Number scalar) => throw new NotImplementedException();
-    public static Line3D operator -(Line3D self, Number scalar) => self.Subtract(scalar);
-    public Line3D Multiply(Number scalar) => throw new NotImplementedException();
-    public static Line3D operator *(Line3D self, Number scalar) => self.Multiply(scalar);
-    public Line3D Divide(Number scalar) => throw new NotImplementedException();
-    public static Line3D operator /(Line3D self, Number scalar) => self.Divide(scalar);
-    public Line3D Modulo(Number scalar) => throw new NotImplementedException();
-    public static Line3D operator %(Line3D self, Number scalar) => self.Modulo(scalar);
-    public Boolean Equals(Line3D b) => throw new NotImplementedException();
-    public static Boolean operator ==(Line3D a, Line3D b) => a.Equals(b);
-    public Boolean NotEquals(Line3D b) => throw new NotImplementedException();
-    public static Boolean operator !=(Line3D a, Line3D b) => a.NotEquals(b);
-    public Integer Compare(Line3D y) => throw new NotImplementedException();
-    public Number Magnitude => throw new NotImplementedException();
 }
-public class Line2D: Interval<Line2D, Point2D>
+public class Line2D: Interval<Point2D>
 {
     public Point2D A { get; }
     public Point2D B { get; }
@@ -1033,44 +936,6 @@ public class Line2D: Interval<Line2D, Point2D>
     public void Deconstruct(out Point2D a, out Point2D b) { a = A; b = B; }
     public Point2D Min => throw new NotImplementedException();
     public Point2D Max => throw new NotImplementedException();
-    public Integer Count => throw new NotImplementedException();
-    public Point2D At(Integer n) => throw new NotImplementedException();
-    public Point2D this[Integer n] => At(n);
-    public Line2D Zero => throw new NotImplementedException();
-    public Line2D One => throw new NotImplementedException();
-    public Line2D MinValue => throw new NotImplementedException();
-    public Line2D MaxValue => throw new NotImplementedException();
-    public Array<String> FieldNames => throw new NotImplementedException();
-    public Array<Any> FieldValues => throw new NotImplementedException();
-    public Line2D Add(Line2D other) => throw new NotImplementedException();
-    public static Line2D operator +(Line2D self, Line2D other) => self.Add(other);
-    public Line2D Subtract(Line2D other) => throw new NotImplementedException();
-    public static Line2D operator -(Line2D self, Line2D other) => self.Subtract(other);
-    public Line2D Negative => throw new NotImplementedException();
-    public static Line2D operator -(Line2D self) => self.Negative;
-    public Line2D Reciprocal => throw new NotImplementedException();
-    public Line2D Multiply(Line2D other) => throw new NotImplementedException();
-    public static Line2D operator *(Line2D self, Line2D other) => self.Multiply(other);
-    public Line2D Divide(Line2D other) => throw new NotImplementedException();
-    public static Line2D operator /(Line2D self, Line2D other) => self.Divide(other);
-    public Line2D Modulo(Line2D other) => throw new NotImplementedException();
-    public static Line2D operator %(Line2D self, Line2D other) => self.Modulo(other);
-    public Line2D Add(Number scalar) => throw new NotImplementedException();
-    public static Line2D operator +(Line2D self, Number scalar) => self.Add(scalar);
-    public Line2D Subtract(Number scalar) => throw new NotImplementedException();
-    public static Line2D operator -(Line2D self, Number scalar) => self.Subtract(scalar);
-    public Line2D Multiply(Number scalar) => throw new NotImplementedException();
-    public static Line2D operator *(Line2D self, Number scalar) => self.Multiply(scalar);
-    public Line2D Divide(Number scalar) => throw new NotImplementedException();
-    public static Line2D operator /(Line2D self, Number scalar) => self.Divide(scalar);
-    public Line2D Modulo(Number scalar) => throw new NotImplementedException();
-    public static Line2D operator %(Line2D self, Number scalar) => self.Modulo(scalar);
-    public Boolean Equals(Line2D b) => throw new NotImplementedException();
-    public static Boolean operator ==(Line2D a, Line2D b) => a.Equals(b);
-    public Boolean NotEquals(Line2D b) => throw new NotImplementedException();
-    public static Boolean operator !=(Line2D a, Line2D b) => a.NotEquals(b);
-    public Integer Compare(Line2D y) => throw new NotImplementedException();
-    public Number Magnitude => throw new NotImplementedException();
 }
 public class Color: Value
 {
@@ -1610,7 +1475,7 @@ public class TimeSpan: Measure<TimeSpan>
     public Integer Compare(TimeSpan y) => throw new NotImplementedException();
     public Number Magnitude => throw new NotImplementedException();
 }
-public class TimeRange: Interval<TimeRange, DateTime>
+public class TimeRange: Interval<DateTime>
 {
     public DateTime Begin { get; }
     public DateTime End { get; }
@@ -1625,46 +1490,8 @@ public class TimeRange: Interval<TimeRange, DateTime>
     public void Deconstruct(out DateTime begin, out DateTime end) { begin = Begin; end = End; }
     public DateTime Min => throw new NotImplementedException();
     public DateTime Max => throw new NotImplementedException();
-    public Integer Count => throw new NotImplementedException();
-    public DateTime At(Integer n) => throw new NotImplementedException();
-    public DateTime this[Integer n] => At(n);
-    public TimeRange Zero => throw new NotImplementedException();
-    public TimeRange One => throw new NotImplementedException();
-    public TimeRange MinValue => throw new NotImplementedException();
-    public TimeRange MaxValue => throw new NotImplementedException();
-    public Array<String> FieldNames => throw new NotImplementedException();
-    public Array<Any> FieldValues => throw new NotImplementedException();
-    public TimeRange Add(TimeRange other) => throw new NotImplementedException();
-    public static TimeRange operator +(TimeRange self, TimeRange other) => self.Add(other);
-    public TimeRange Subtract(TimeRange other) => throw new NotImplementedException();
-    public static TimeRange operator -(TimeRange self, TimeRange other) => self.Subtract(other);
-    public TimeRange Negative => throw new NotImplementedException();
-    public static TimeRange operator -(TimeRange self) => self.Negative;
-    public TimeRange Reciprocal => throw new NotImplementedException();
-    public TimeRange Multiply(TimeRange other) => throw new NotImplementedException();
-    public static TimeRange operator *(TimeRange self, TimeRange other) => self.Multiply(other);
-    public TimeRange Divide(TimeRange other) => throw new NotImplementedException();
-    public static TimeRange operator /(TimeRange self, TimeRange other) => self.Divide(other);
-    public TimeRange Modulo(TimeRange other) => throw new NotImplementedException();
-    public static TimeRange operator %(TimeRange self, TimeRange other) => self.Modulo(other);
-    public TimeRange Add(Number scalar) => throw new NotImplementedException();
-    public static TimeRange operator +(TimeRange self, Number scalar) => self.Add(scalar);
-    public TimeRange Subtract(Number scalar) => throw new NotImplementedException();
-    public static TimeRange operator -(TimeRange self, Number scalar) => self.Subtract(scalar);
-    public TimeRange Multiply(Number scalar) => throw new NotImplementedException();
-    public static TimeRange operator *(TimeRange self, Number scalar) => self.Multiply(scalar);
-    public TimeRange Divide(Number scalar) => throw new NotImplementedException();
-    public static TimeRange operator /(TimeRange self, Number scalar) => self.Divide(scalar);
-    public TimeRange Modulo(Number scalar) => throw new NotImplementedException();
-    public static TimeRange operator %(TimeRange self, Number scalar) => self.Modulo(scalar);
-    public Boolean Equals(TimeRange b) => throw new NotImplementedException();
-    public static Boolean operator ==(TimeRange a, TimeRange b) => a.Equals(b);
-    public Boolean NotEquals(TimeRange b) => throw new NotImplementedException();
-    public static Boolean operator !=(TimeRange a, TimeRange b) => a.NotEquals(b);
-    public Integer Compare(TimeRange y) => throw new NotImplementedException();
-    public Number Magnitude => throw new NotImplementedException();
 }
-public class DateTime: Value
+public class DateTime: Measure<DateTime>
 {
     public Integer Year { get; }
     public Integer Month { get; }
@@ -1687,10 +1514,27 @@ public class DateTime: Value
     public static implicit operator (Integer, Integer, Integer, Integer, Integer, Integer, Number)(DateTime self) => (self.Year, self.Month, self.TimeZoneOffset, self.Day, self.Minute, self.Second, self.Milliseconds);
     public static implicit operator DateTime((Integer, Integer, Integer, Integer, Integer, Integer, Number) value) => new DateTime(value.Item1, value.Item2, value.Item3, value.Item4, value.Item5, value.Item6, value.Item7);
     public void Deconstruct(out Integer year, out Integer month, out Integer timeZoneOffset, out Integer day, out Integer minute, out Integer second, out Number milliseconds) { year = Year; month = Month; timeZoneOffset = TimeZoneOffset; day = Day; minute = Minute; second = Second; milliseconds = Milliseconds; }
+    public Number Value => throw new NotImplementedException();
     public Array<String> FieldNames => throw new NotImplementedException();
     public Array<Any> FieldValues => throw new NotImplementedException();
+    public DateTime Add(Number scalar) => throw new NotImplementedException();
+    public static DateTime operator +(DateTime self, Number scalar) => self.Add(scalar);
+    public DateTime Subtract(Number scalar) => throw new NotImplementedException();
+    public static DateTime operator -(DateTime self, Number scalar) => self.Subtract(scalar);
+    public DateTime Multiply(Number scalar) => throw new NotImplementedException();
+    public static DateTime operator *(DateTime self, Number scalar) => self.Multiply(scalar);
+    public DateTime Divide(Number scalar) => throw new NotImplementedException();
+    public static DateTime operator /(DateTime self, Number scalar) => self.Divide(scalar);
+    public DateTime Modulo(Number scalar) => throw new NotImplementedException();
+    public static DateTime operator %(DateTime self, Number scalar) => self.Modulo(scalar);
+    public Boolean Equals(DateTime b) => throw new NotImplementedException();
+    public static Boolean operator ==(DateTime a, DateTime b) => a.Equals(b);
+    public Boolean NotEquals(DateTime b) => throw new NotImplementedException();
+    public static Boolean operator !=(DateTime a, DateTime b) => a.NotEquals(b);
+    public Integer Compare(DateTime y) => throw new NotImplementedException();
+    public Number Magnitude => throw new NotImplementedException();
 }
-public class AnglePair: Interval<AnglePair, Angle>
+public class AnglePair: Interval<Angle>
 {
     public Angle Start { get; }
     public Angle End { get; }
@@ -1705,44 +1549,6 @@ public class AnglePair: Interval<AnglePair, Angle>
     public void Deconstruct(out Angle start, out Angle end) { start = Start; end = End; }
     public Angle Min => throw new NotImplementedException();
     public Angle Max => throw new NotImplementedException();
-    public Integer Count => throw new NotImplementedException();
-    public Angle At(Integer n) => throw new NotImplementedException();
-    public Angle this[Integer n] => At(n);
-    public AnglePair Zero => throw new NotImplementedException();
-    public AnglePair One => throw new NotImplementedException();
-    public AnglePair MinValue => throw new NotImplementedException();
-    public AnglePair MaxValue => throw new NotImplementedException();
-    public Array<String> FieldNames => throw new NotImplementedException();
-    public Array<Any> FieldValues => throw new NotImplementedException();
-    public AnglePair Add(AnglePair other) => throw new NotImplementedException();
-    public static AnglePair operator +(AnglePair self, AnglePair other) => self.Add(other);
-    public AnglePair Subtract(AnglePair other) => throw new NotImplementedException();
-    public static AnglePair operator -(AnglePair self, AnglePair other) => self.Subtract(other);
-    public AnglePair Negative => throw new NotImplementedException();
-    public static AnglePair operator -(AnglePair self) => self.Negative;
-    public AnglePair Reciprocal => throw new NotImplementedException();
-    public AnglePair Multiply(AnglePair other) => throw new NotImplementedException();
-    public static AnglePair operator *(AnglePair self, AnglePair other) => self.Multiply(other);
-    public AnglePair Divide(AnglePair other) => throw new NotImplementedException();
-    public static AnglePair operator /(AnglePair self, AnglePair other) => self.Divide(other);
-    public AnglePair Modulo(AnglePair other) => throw new NotImplementedException();
-    public static AnglePair operator %(AnglePair self, AnglePair other) => self.Modulo(other);
-    public AnglePair Add(Number scalar) => throw new NotImplementedException();
-    public static AnglePair operator +(AnglePair self, Number scalar) => self.Add(scalar);
-    public AnglePair Subtract(Number scalar) => throw new NotImplementedException();
-    public static AnglePair operator -(AnglePair self, Number scalar) => self.Subtract(scalar);
-    public AnglePair Multiply(Number scalar) => throw new NotImplementedException();
-    public static AnglePair operator *(AnglePair self, Number scalar) => self.Multiply(scalar);
-    public AnglePair Divide(Number scalar) => throw new NotImplementedException();
-    public static AnglePair operator /(AnglePair self, Number scalar) => self.Divide(scalar);
-    public AnglePair Modulo(Number scalar) => throw new NotImplementedException();
-    public static AnglePair operator %(AnglePair self, Number scalar) => self.Modulo(scalar);
-    public Boolean Equals(AnglePair b) => throw new NotImplementedException();
-    public static Boolean operator ==(AnglePair a, AnglePair b) => a.Equals(b);
-    public Boolean NotEquals(AnglePair b) => throw new NotImplementedException();
-    public static Boolean operator !=(AnglePair a, AnglePair b) => a.NotEquals(b);
-    public Integer Compare(AnglePair y) => throw new NotImplementedException();
-    public Number Magnitude => throw new NotImplementedException();
 }
 public class Ring: Numerical<Ring>
 {
@@ -1809,7 +1615,7 @@ public class Arc: Value
     public Array<String> FieldNames => throw new NotImplementedException();
     public Array<Any> FieldValues => throw new NotImplementedException();
 }
-public class TimeInterval: Interval<TimeInterval, TimeSpan>
+public class TimeInterval: Interval<TimeSpan>
 {
     public TimeSpan Start { get; }
     public TimeSpan End { get; }
@@ -1824,46 +1630,8 @@ public class TimeInterval: Interval<TimeInterval, TimeSpan>
     public void Deconstruct(out TimeSpan start, out TimeSpan end) { start = Start; end = End; }
     public TimeSpan Min => throw new NotImplementedException();
     public TimeSpan Max => throw new NotImplementedException();
-    public Integer Count => throw new NotImplementedException();
-    public TimeSpan At(Integer n) => throw new NotImplementedException();
-    public TimeSpan this[Integer n] => At(n);
-    public TimeInterval Zero => throw new NotImplementedException();
-    public TimeInterval One => throw new NotImplementedException();
-    public TimeInterval MinValue => throw new NotImplementedException();
-    public TimeInterval MaxValue => throw new NotImplementedException();
-    public Array<String> FieldNames => throw new NotImplementedException();
-    public Array<Any> FieldValues => throw new NotImplementedException();
-    public TimeInterval Add(TimeInterval other) => throw new NotImplementedException();
-    public static TimeInterval operator +(TimeInterval self, TimeInterval other) => self.Add(other);
-    public TimeInterval Subtract(TimeInterval other) => throw new NotImplementedException();
-    public static TimeInterval operator -(TimeInterval self, TimeInterval other) => self.Subtract(other);
-    public TimeInterval Negative => throw new NotImplementedException();
-    public static TimeInterval operator -(TimeInterval self) => self.Negative;
-    public TimeInterval Reciprocal => throw new NotImplementedException();
-    public TimeInterval Multiply(TimeInterval other) => throw new NotImplementedException();
-    public static TimeInterval operator *(TimeInterval self, TimeInterval other) => self.Multiply(other);
-    public TimeInterval Divide(TimeInterval other) => throw new NotImplementedException();
-    public static TimeInterval operator /(TimeInterval self, TimeInterval other) => self.Divide(other);
-    public TimeInterval Modulo(TimeInterval other) => throw new NotImplementedException();
-    public static TimeInterval operator %(TimeInterval self, TimeInterval other) => self.Modulo(other);
-    public TimeInterval Add(Number scalar) => throw new NotImplementedException();
-    public static TimeInterval operator +(TimeInterval self, Number scalar) => self.Add(scalar);
-    public TimeInterval Subtract(Number scalar) => throw new NotImplementedException();
-    public static TimeInterval operator -(TimeInterval self, Number scalar) => self.Subtract(scalar);
-    public TimeInterval Multiply(Number scalar) => throw new NotImplementedException();
-    public static TimeInterval operator *(TimeInterval self, Number scalar) => self.Multiply(scalar);
-    public TimeInterval Divide(Number scalar) => throw new NotImplementedException();
-    public static TimeInterval operator /(TimeInterval self, Number scalar) => self.Divide(scalar);
-    public TimeInterval Modulo(Number scalar) => throw new NotImplementedException();
-    public static TimeInterval operator %(TimeInterval self, Number scalar) => self.Modulo(scalar);
-    public Boolean Equals(TimeInterval b) => throw new NotImplementedException();
-    public static Boolean operator ==(TimeInterval a, TimeInterval b) => a.Equals(b);
-    public Boolean NotEquals(TimeInterval b) => throw new NotImplementedException();
-    public static Boolean operator !=(TimeInterval a, TimeInterval b) => a.NotEquals(b);
-    public Integer Compare(TimeInterval y) => throw new NotImplementedException();
-    public Number Magnitude => throw new NotImplementedException();
 }
-public class RealInterval: Interval<RealInterval, Number>
+public class RealInterval: Interval<Number>
 {
     public Number A { get; }
     public Number B { get; }
@@ -1878,44 +1646,6 @@ public class RealInterval: Interval<RealInterval, Number>
     public void Deconstruct(out Number a, out Number b) { a = A; b = B; }
     public Number Min => throw new NotImplementedException();
     public Number Max => throw new NotImplementedException();
-    public Integer Count => throw new NotImplementedException();
-    public Number At(Integer n) => throw new NotImplementedException();
-    public Number this[Integer n] => At(n);
-    public RealInterval Zero => throw new NotImplementedException();
-    public RealInterval One => throw new NotImplementedException();
-    public RealInterval MinValue => throw new NotImplementedException();
-    public RealInterval MaxValue => throw new NotImplementedException();
-    public Array<String> FieldNames => throw new NotImplementedException();
-    public Array<Any> FieldValues => throw new NotImplementedException();
-    public RealInterval Add(RealInterval other) => throw new NotImplementedException();
-    public static RealInterval operator +(RealInterval self, RealInterval other) => self.Add(other);
-    public RealInterval Subtract(RealInterval other) => throw new NotImplementedException();
-    public static RealInterval operator -(RealInterval self, RealInterval other) => self.Subtract(other);
-    public RealInterval Negative => throw new NotImplementedException();
-    public static RealInterval operator -(RealInterval self) => self.Negative;
-    public RealInterval Reciprocal => throw new NotImplementedException();
-    public RealInterval Multiply(RealInterval other) => throw new NotImplementedException();
-    public static RealInterval operator *(RealInterval self, RealInterval other) => self.Multiply(other);
-    public RealInterval Divide(RealInterval other) => throw new NotImplementedException();
-    public static RealInterval operator /(RealInterval self, RealInterval other) => self.Divide(other);
-    public RealInterval Modulo(RealInterval other) => throw new NotImplementedException();
-    public static RealInterval operator %(RealInterval self, RealInterval other) => self.Modulo(other);
-    public RealInterval Add(Number scalar) => throw new NotImplementedException();
-    public static RealInterval operator +(RealInterval self, Number scalar) => self.Add(scalar);
-    public RealInterval Subtract(Number scalar) => throw new NotImplementedException();
-    public static RealInterval operator -(RealInterval self, Number scalar) => self.Subtract(scalar);
-    public RealInterval Multiply(Number scalar) => throw new NotImplementedException();
-    public static RealInterval operator *(RealInterval self, Number scalar) => self.Multiply(scalar);
-    public RealInterval Divide(Number scalar) => throw new NotImplementedException();
-    public static RealInterval operator /(RealInterval self, Number scalar) => self.Divide(scalar);
-    public RealInterval Modulo(Number scalar) => throw new NotImplementedException();
-    public static RealInterval operator %(RealInterval self, Number scalar) => self.Modulo(scalar);
-    public Boolean Equals(RealInterval b) => throw new NotImplementedException();
-    public static Boolean operator ==(RealInterval a, RealInterval b) => a.Equals(b);
-    public Boolean NotEquals(RealInterval b) => throw new NotImplementedException();
-    public static Boolean operator !=(RealInterval a, RealInterval b) => a.NotEquals(b);
-    public Integer Compare(RealInterval y) => throw new NotImplementedException();
-    public Number Magnitude => throw new NotImplementedException();
 }
 public class Capsule: Value
 {
