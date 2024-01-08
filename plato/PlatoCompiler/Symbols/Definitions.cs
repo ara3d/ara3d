@@ -170,13 +170,13 @@ namespace Plato.Compiler.Symbols
         public override IEnumerable<Symbol> GetChildSymbols()
             => Methods.Cast<Symbol>().Concat(Fields).Concat(TypeParameters).Concat(Inherits).Concat(Implements);
 
-        public bool UsesSelfTypeInNonFirstPosition()
+        public bool IsSelfConstrained()
         {
             if (Functions.Any(f => f.ParametersAndReturnType.Skip(1).Any(te => te.UsesSelfType()))) 
                 return true;
             if (Inherits.Any(te => te.UsesSelfType()))
                 return true;
-            return Inherits.Any(i => i.Definition.UsesSelfTypeInNonFirstPosition());
+            return Inherits.Any(i => i.Definition.IsSelfConstrained());
         }
     }
 

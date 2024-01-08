@@ -17,13 +17,8 @@ namespace Plato.CSharpWriter
 
         public DirectoryPath OutputFolder { get; }
 
-        public static HashSet<string> IntrinsicTypes = new HashSet<string>()
+        public static HashSet<string> IgnoreTypes = new HashSet<string>()
         {
-            "Number",
-            "Boolean",
-            "Integer",
-            "Character",
-            "String",
             "Array1",
             "Tuple2",
             "Tuple3",
@@ -31,6 +26,15 @@ namespace Plato.CSharpWriter
             "Function1",
             "Function2",
             "Function3",
+        };
+
+        public static HashSet<string> IntrinsicTypes = new HashSet<string>()
+        {
+            "Number",
+            "Boolean",
+            "Integer",
+            "Character",
+            "String",
         };
 
         public SymbolWriterCSharp(Compiler.Compiler compiler, DirectoryPath outputFolder)
@@ -85,6 +89,22 @@ namespace Plato.CSharpWriter
             WriteConceptInterfaces();
             //WriteConceptExtensions();
             WriteTypeImplementations();
+            //WriteLibraries();
+            return this;
+        }
+
+        public SymbolWriterCSharp WriteLibraries()
+        {
+            StartNewFile(OutputFolder.RelativeFile("Library.cs"));
+
+            foreach (var c in Compiler.AllTypeAndLibraryDefinitions)
+            {
+                if (c.IsLibrary())
+                {
+                    WriteLibraryMethods(c);
+                }
+            }
+
             return this;
         }
 
@@ -113,7 +133,7 @@ namespace Plato.CSharpWriter
 
         public static string TypeAsInherited(TypeExpression type)
         {
-            return type.Name + JoinTypeParameters(type.Definition.UsesSelfTypeInNonFirstPosition() 
+            return type.Name + JoinTypeParameters(type.Definition.IsSelfConstrained() 
                 ? type.TypeArgs.Select(t => ToString(t)).Prepend("Self") 
                 : type.TypeArgs.Select(t => ToString(t)));
         }
@@ -122,7 +142,7 @@ namespace Plato.CSharpWriter
         {
             Debug.Assert(type.IsConcept());
 
-            var typeParams = JoinTypeParameters(type.UsesSelfTypeInNonFirstPosition()
+            var typeParams = JoinTypeParameters(type.IsSelfConstrained()
                 ? type.TypeParameters.Select(tp => tp.Name).Prepend("Self")
                 : type.TypeParameters.Select(tp => tp.Name));
 
@@ -131,14 +151,20 @@ namespace Plato.CSharpWriter
                 ? ": " + type.Inherits.Select(TypeAsInherited).JoinStrings(", ")
                 : "";
 
-            Write("public interface ").Write(fullName)
-                .WriteLine(inherited)
-                .WriteStartBlock();
+            Write("public interface ").Write(fullName).WriteLine(inherited);
+
+            foreach (var tp in type.TypeParameters)
+            {
+                if (tp.Constraint != null)
+                    continue;
+                WriteLine($"where {tp.Name} : {TypeAsInherited(tp.Constraint)}");
+            }
+
+            WriteStartBlock();
 
             foreach (var m in type.Methods)
             {
-                // TODO: if the member can be a property, make it a property. 
-                WriteSignature(m.Function, true).WriteLine(";");
+                WriteSignature(m.Function, true, true);
             }
 
             WriteEndBlock();
@@ -175,7 +201,7 @@ namespace Plato.CSharpWriter
 
             foreach (var c in Compiler.AllTypeAndLibraryDefinitions)
             {
-                if (c.IsConcrete() && !IntrinsicTypes.Contains(c.Name))
+                if (c.IsConcrete() && !IgnoreTypes.Contains(c.Name))
                 {
                     WriteTypeImplementation(c);
                 }
@@ -186,7 +212,7 @@ namespace Plato.CSharpWriter
         public static string ImplementedTypeString(TypeExpression te, string typeName)
         {
             var typeArgs = te.TypeArgs.Select(ta => ToString(ta));
-            if (te.Definition.UsesSelfTypeInNonFirstPosition())
+            if (te.Definition.IsSelfConstrained())
                 typeArgs = typeArgs.Prepend(typeName);
             return $"{te.Name}{JoinTypeParameters(typeArgs)}";
         }
@@ -212,7 +238,50 @@ namespace Plato.CSharpWriter
             var name = t.Name;
             var fieldTypes = t.Fields.Select(f => GetTypeName(f.Type, t)).ToList();
             var fieldNames = t.Fields.Select(f => f.Name).ToList();
-               var parameterNames = fieldNames.Select(FieldNameToParameterName);
+            var parameterNames = fieldNames.Select(FieldNameToParameterName);
+            Debug.Assert(fieldTypes.Count == fieldNames.Count);
+
+            var isIntrinsic = IntrinsicTypes.Contains(name);
+            if (fieldTypes.Count > 0)
+                if (isIntrinsic)
+                    throw new Exception($"Intrinsic {name} should not have fields");
+
+
+            if (fieldTypes.Count == 0)
+            {
+                if (!isIntrinsic)
+                    throw new Exception($"Only intrinsics can have no fields not {name}");
+
+                fieldNames.Add("Value");
+                if (name == "String")
+                {
+                    fieldTypes.Add("string");
+                }
+                else if (name == "Number")
+                {
+                    fieldTypes.Add("double");
+                }
+                else if (name == "Boolean")
+                {
+                    fieldTypes.Add("bool");
+                }
+                else if (name == "Integer")
+                {
+                    fieldTypes.Add("int");
+                }
+                else if (name == "Character")
+                {
+                    fieldTypes.Add("char");
+                }
+                else if (name == "String")
+                {
+                    fieldTypes.Add("string");
+                }
+                else
+                {
+                    throw new Exception($"Not a recognized intrinsic {name}");
+                }
+            }
 
             for (var i = 0; i < fieldTypes.Count; ++i)
             {
@@ -241,32 +310,34 @@ namespace Plato.CSharpWriter
             // Regular Constructor 
             WriteLine($"public {name}({parametersStr}) => ({fieldNamesStr}) = ({parameterNamesStr});");
             
-            // Parameterless construct
+            // Parameterless constructor
             WriteLine($"public {name}() {{ }}");
+
+            WriteLine($"public static {name} Default = new {name}();");
 
             // Static factory function (New)
             WriteLine($"public static {name} New({parametersStr}) => new {name}({parameterNamesStr});");
             
             // Implicit operators 
-            if (t.Fields.Count > 1)
+            if (fieldNames.Count > 1)
             {
                 // Implicit value-tuple operator 
                 var qualifiedFieldNames = fieldNames.Select(f => $"self.{f}").JoinStringsWithComma();
-                var tupleNames = string.Join(", ", Enumerable.Range(1, t.Fields.Count).Select(i => $"value.Item{i}"));
+                var tupleNames = string.Join(", ", Enumerable.Range(1, fieldNames.Count).Select(i => $"value.Item{i}"));
                 WriteLine($"public static implicit operator ({fieldTypesStr})({name} self) => ({qualifiedFieldNames});");
                 WriteLine($"public static implicit operator {name}(({fieldTypesStr}) value) => new {name}({tupleNames});");
 
                 // Deconstructor function 
                 Write($"public void Deconstruct({deconstructorParametersStr}) {{ ");
-                for (var i = 0; i < t.Fields.Count; ++i)
-                    Write($"{FieldNameToParameterName(t.Fields[i].Name)} = {t.Fields[i].Name}; ");
+                foreach (var fn in fieldNames)
+                    Write($"{FieldNameToParameterName(fn)} = {fn}; ");
                 WriteLine("}");
             }
-            else if (t.Fields.Count == 1)
+            else if (fieldNames.Count == 1)
             {
                 // Implicit operator to/from the field 
-                var fieldName = t.Fields[0].Name;
-                var fieldType = GetTypeName(t.Fields[0].Type, t);
+                var fieldName = fieldNames[0];
+                var fieldType = fieldTypes[0];
                 WriteLine($"public static implicit operator {fieldType}({name} self) => self.{fieldName};");
                 WriteLine($"public static implicit operator {name}({fieldType} value) => new {name}(value);");
             }
@@ -317,11 +388,23 @@ namespace Plato.CSharpWriter
                         continue;
                     funcs.Add(sig);
 
-                    WriteLine($"public {ret} {f.Name}({paramList}) => throw new NotImplementedException();");
+                    if (paramList.Length > 0)
+                    {
+                        WriteLine($"public {ret} {f.Name}({paramList}) => throw new NotImplementedException();");
+                    }
+                    else
+                    {
+                        WriteLine($"public {ret} {f.Name} => throw new NotImplementedException();");
+                    }
 
                     if (f.Parameters.Count == 2)
                     {
                         var op = OperatorNameLookup.NameToBinaryOperator(f.Name);
+                        
+                        // NOTE: this is because in C#, the "||" and "&&" operators cannot be overridden.
+                        if (op == "||") op = "|";
+                        if (op == "&&") op = "&";
+
                         if (op != null)
                         {
                             if (op != "[]")
@@ -353,7 +436,7 @@ namespace Plato.CSharpWriter
                         var op = OperatorNameLookup.NameToUnaryOperator(f.Name);
                         if (op != null)
                             WriteLine(
-                                $"public static {ret} operator {op}({staticParamList}) => {firstName}.{f.Name}({argList});");
+                                $"public static {ret} operator {op}({staticParamList}) => {firstName}.{f.Name};");
                     }
                 }
             }
@@ -378,15 +461,28 @@ namespace Plato.CSharpWriter
             return Write(ToString(type, defaultType)).Write(" ");
         }
 
-        public SymbolWriterCSharp WriteSignature(FunctionDefinition function, bool skipFirstParameter)
-        {
-            return WriteTypeDecl(function.Type, "void")
-                .Write(function.Name)
-                .Write("(")
-                .WriteCommaList(skipFirstParameter 
-                    ? function.Parameters.Skip(1) 
-                    : function.Parameters)
-                .Write(")");
+        public SymbolWriterCSharp WriteSignature(FunctionDefinition function, bool skipFirstParameter, bool eos)
+        {   
+            WriteTypeDecl(function.Type, "void")
+                .Write(function.Name);
+
+            if (function.Parameters.Count > 1)
+            {
+                var r = Write("(")
+                    .WriteCommaList(skipFirstParameter
+                        ? function.Parameters.Skip(1)
+                        : function.Parameters)
+                    .Write(")");
+                if (eos)
+                     r = r.WriteLine(";");
+                return r;
+            }
+            else
+            {
+                var r = Write(" { get; }");
+                if (eos) r = r.WriteLine();
+                return r;
+            }
         }
 
         public SymbolWriterCSharp WriteFunctionBody(FunctionDefinition function)
@@ -404,7 +500,7 @@ namespace Plato.CSharpWriter
             if (function.Body == null)
                 return this;
 
-            return WriteSignature(function, false)
+            return WriteSignature(function, false, false)
                 .WriteFunctionBody(function);
         }
 
@@ -417,44 +513,76 @@ namespace Plato.CSharpWriter
         public FilePath ToFileName(TypeDefinition type)
             => OutputFolder.RelativeFile($"{type.Kind}_{type.Name}.cs");
 
+        public SymbolWriterCSharp WriteTypeArgs(IReadOnlyList<TypeExpression> args)
+        {
+            if (args.Count == 0)
+                return this;
+            Write("<");
+            for (var i = 0; i < args.Count; ++i)
+            {
+                if (i > 0)
+                    Write(", ");
+                WriteTypeWithArgsOrParameters(args[i]);
+            }
+            return Write(">");
+        }
+
+        public SymbolWriterCSharp WriteTypeParameters(IReadOnlyList<TypeParameterDefinition> parameters)
+        {
+            if (parameters.Count == 0)
+                return this;
+            Write("<");
+            for (var i = 0; i < parameters.Count; ++i)
+            {
+                if (i > 0)
+                    Write(", ");
+                Write(parameters[i].Name);
+            }
+            return Write(">");
+        }
+
+        public SymbolWriterCSharp WriteTypeWithArgsOrParameters(TypeExpression expr)
+        {
+            Write(expr.Name);
+            if (expr.TypeArgs.Count > 0)
+                WriteTypeArgs(expr.TypeArgs);
+            else if (expr.Definition.TypeParameters.Count > 0)
+                WriteTypeParameters(expr.Definition.TypeParameters);
+            return this;
+        }
+
         public SymbolWriterCSharp WriteLibraryMethods(TypeDefinition type)
         {
-            foreach (var mds in type.Methods)
+            Debug.Assert(type.IsLibrary());
+
+            WriteLine($"public static partial class {type.Name}Library");
+            WriteStartBlock();
+            foreach (var f in type.Functions)
             {
-                if (mds.Function.Body == null)
-                    // Intrinsic 
-                    continue;
-
-                var f = mds.Function;
-
-                if (f.Body == null)
-                    // Intrinsic 
-                    continue;
-
-                var typeParameterNames =
-                    f.Parameters.Count > 0
-                        ? f.Parameters[0].Type.Definition.TypeParameters.Select(tp => tp.Name).ToList()
-                        : new List<string>();
-                var typeArgsString = TypeArgsString(typeParameterNames);
-
-                // TODO: the type parameters are going to be a lot more complicated than this. 
-                // We will need constraints.
-                // We will need to look at all of the parameters.
-                // By default every "Any", will actually be a type argument. 
-                // I will also need to figure out how many parameters each thing has (e.g., function, tuple). 
-                // NOTE: I should be able to infer the number of parameter of things, based on how they are called. 
-                // 
-
-                Write("public static ")
-                    .WriteTypeDecl(f.Type, "void")
-                    .Write(mds.Name)
-                    .Write(typeArgsString)
-                    .Write("(")
-                    .WriteCommaList(mds.Function.Parameters)
-                    .Write(") ")
-                    .WriteFunctionBody(mds.Function);
+                Write("public static ");
+                WriteTypeWithArgsOrParameters(f.ReturnType);
+                Write(" ");
+                var generic = f.Type.TypeArgs.Count > 0 
+                              || f.Type.Definition.TypeParameters.Count > 0;
+                Write(f.Name);
+                if (generic)
+                {
+                    WriteTypeParameters(f.Type.Definition.TypeParameters);
+                }
+                Write("(");
+                Write("this ");
+                for (var i = 0; i < f.Parameters.Count; ++i)
+                {
+                    if (i > 0) Write(", ");
+                    var p = f.Parameters[i];
+                    WriteTypeWithArgsOrParameters(p.Type);
+                    Write(" ");
+                    Write(p.Name);
+                }
+                Write(") => ");
+                WriteLine("throw new NotImplementedException();");
             }
-
+            WriteEndBlock();
             return this;
         }
 
@@ -543,41 +671,6 @@ namespace Plato.CSharpWriter
             }
 
             return type.Inherits.Any(tr => IsTypePreservingConcept(tr.Definition));
-        }
-
-        public SymbolWriterCSharp Write(TypeDefinition type)
-        {
-            // TODO: this is deprecated and will be removed 
-            throw new NotImplementedException();
-
-            if (type.IsConcept())
-            {
-                
-            }
-
-            if (type.IsConcrete())
-            {
-                StartNewFile(ToFileName(type));
-
-              }
-
-            if (type.IsLibrary())
-            {
-                StartNewFile(ToFileName(type));
-
-                return WriteLine("public static partial class Extensions")
-                    .WriteStartBlock()
-                    .WriteLibraryMethods(type)
-                    .WriteEndBlock();
-            }
-
-            if (type.IsPrimitive())
-            {
-                // TODO: output the primitives 
-                return this;
-            }
-
-            return this;
         }
 
         public SymbolWriterCSharp Write(DefinitionSymbol value)

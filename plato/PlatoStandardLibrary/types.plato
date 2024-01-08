@@ -479,8 +479,8 @@ type TimeSpan
 type TimeRange
     implements Interval<DateTime>
 {
-    Min: DateTime;
-    Max: DateTime;
+    Begin: DateTime;
+    End: DateTime;
 }
 
 // TODO: a naive gregorian calendar date representation.

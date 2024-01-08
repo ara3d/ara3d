@@ -1,34 +1,33 @@
 public interface Any
 {
-    Array<String> FieldNames();
-    Array<Any> FieldValues();
+    Array<String> FieldNames { get; }
+    Array<Any> FieldValues { get; }
 }
-public interface Value<Self>: Any
+public interface Value: Any
 {
-    Self Default();
 }
 public interface Array<T>
 {
-    Integer Count();
+    Integer Count { get; }
     T At(Integer n);
 }
 public interface Vector<Self, T>: Array<T>, Numerical<Self>, Magnitudinal<Self>
 {
 }
-public interface Measure<Self>: Value<Self>, ScalarArithmetic<Self>, Equatable<Self>, Comparable<Self>, Magnitudinal<Self>
+public interface Measure<Self>: Value, ScalarArithmetic<Self>, Equatable<Self>, Comparable<Self>, Magnitudinal<Self>
 {
-    Number Value();
+    Number Value { get; }
 }
-public interface Numerical<Self>: Value<Self>, Arithmetic<Self>, ScalarArithmetic<Self>, Equatable<Self>, Comparable<Self>, Magnitudinal<Self>
+public interface Numerical<Self>: Value, Arithmetic<Self>, ScalarArithmetic<Self>, Equatable<Self>, Comparable<Self>, Magnitudinal<Self>
 {
-    Self Zero();
-    Self One();
-    Self MinValue();
-    Self MaxValue();
+    Self Zero { get; }
+    Self One { get; }
+    Self MinValue { get; }
+    Self MaxValue { get; }
 }
 public interface Magnitudinal<Self>: Comparable<Self>
 {
-    Number Magnitude();
+    Number Magnitude { get; }
 }
 public interface Comparable<Self>
 {
@@ -43,15 +42,15 @@ public interface Arithmetic<Self>
 {
     Self Add(Self other);
     Self Subtract(Self other);
-    Self Negative();
-    Self Reciprocal();
+    Self Negative { get; }
+    Self Reciprocal { get; }
     Self Multiply(Self other);
     Self Divide(Self other);
     Self Modulo(Self other);
 }
 public interface AdditiveInverse<Self>
 {
-    Self Negative();
+    Self Negative { get; }
 }
 public interface AdditiveArithmetic<Self, T>
 {
@@ -70,12 +69,10 @@ public interface BooleanOperations<Self>
 {
     Self And(Self b);
     Self Or(Self b);
-    Self Not();
+    Self Not { get; }
 }
 public interface Interval<Self, T>: Vector<Self, T>
 {
-    T Min();
-    T Max();
-    Integer Count();
-    Any At(Integer n);
+    T Min { get; }
+    T Max { get; }
 }

@@ -6,8 +6,7 @@ concept Any
 
 concept Value 
     inherits Any
-{
-    Default(): Self;     
+{ 
 }
 
 concept Array<T: Any>
@@ -131,10 +130,4 @@ concept Interval<T: Numerical>
 {
     Min(x: Self): T;
     Max(x: Self): T;
-
-    Count(x: Self): Integer
-        => 2;
-    
-    At(x: Self, n: Integer)
-        => n == 0 ? x.Min : x.Max;
 }

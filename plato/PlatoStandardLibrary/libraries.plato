@@ -1,15 +1,15 @@
 library Array
 {
-    Map(xs: Array, f: Function): Array 
+    Map(xs: Array, f: Function1): Array 
         => (xs.Count, (i) => f(xs.At(i)));
 
     Reverse(xs: Array): Array
         => (xs.Count, (i) => f(xs.At(xs.Count - 1 - i)));
 
-    Zip(xs: Array, ys: Array, f: Function): Array 
+    Zip(xs: Array, ys: Array, f: Function2): Array 
         => (xs.Count, (i) => f(At(i), ys.At(i)));  
 
-    Zip(xs: Array, ys: Array, zs: Array, f: Function): Array 
+    Zip(xs: Array, ys: Array, zs: Array, f: Function3): Array 
         => (xs.Count, (i) => f(At(i), ys.At(i), zs.At(i)));
     
     Skip(xs: Array, n: Integer): Array
@@ -18,7 +18,7 @@ library Array
     Take(xs: Array, n: Integer): Array
         => (n, (i) => At(i));   
     
-    Aggregate(xs: Array, init: Any, f: Function): Any 
+    Aggregate(xs: Array, init: Any, f: Function2): Any 
         => xs.IsEmpty ? init : f(init, xs.Rest);
 
     Rest(xs: Array): Array 
@@ -41,7 +41,7 @@ library Array
             : xs.First.ToString 
             + xs.Rest.Aggregate("", (acc, cur) => $"{acc}{sep}{cur}");
     
-    All(xs: Array, f: Function): Boolean 
+    All(xs: Array, f: Function1): Boolean 
         => xs.IsEmpty ? true : f(xs.First) && f(xs.Rest);
 
     All(xs: Array): Boolean 
@@ -331,12 +331,12 @@ library Easings
     // This is an extremely good example of why Plato matters as a language. 
     // When we look at the source code of the two other implementations. 
 
-    BlendEaseFunc(p: Number, easeIn: Function, easeOut: Function): Number 
+    BlendEaseFunc(p: Number, easeIn: Function1, easeOut: Function1): Number 
         => p < 0.5 
             ? 0.5 * easeIn(p * 2) 
             : 0.5 * easeOut(p * 2 - 1) + 0.5;
     
-    InvertEaseFunc(p: Number, easeIn: Function): Number 
+    InvertEaseFunc(p: Number, easeIn: Function1): Number 
         => 1 - easeIn(1 - p);
 
     Linear(p: Number): Number 
