@@ -16,7 +16,7 @@ public interface Vector<Self, T>: Array<T>, Numerical<Self>, Magnitudinal<Self>
 where T : Numerical<T>
 {
 }
-public interface Measure<Self>: Value, ScalarArithmetic<Self>, Equatable<Self>, Comparable<Self>, Magnitudinal<Self>
+public interface Measure<Self>: Value, ScalarArithmetic<Self>, Equatable<Self>, Comparable<Self>, Magnitudinal<Self>, Difference<Self, Number>
 {
     Number Value { get; }
 }
@@ -40,10 +40,9 @@ public interface Equatable<Self>
     Boolean Equals(Self b);
     Boolean NotEquals(Self b);
 }
-public interface Arithmetic<Self>: AdditiveInverse<Self>
+public interface Arithmetic<Self>: AdditiveInverse<Self>, Difference<Self, Self>, AdditiveArithmetic<Self, Self>
 {
     Self Add(Self other);
-    Self Subtract(Self other);
     Self Negative { get; }
     Self Reciprocal { get; }
     Self Multiply(Self other);
@@ -54,11 +53,16 @@ public interface AdditiveInverse<Self>
 {
     Self Negative { get; }
 }
-public interface AdditiveArithmetic<Self, T>
+public interface AdditiveArithmetic<Self, T>: Difference<Self, T>
 where T : AdditiveInverse<T>
 {
     Self Add(T other);
     Self Subtract(T other);
+}
+public interface Difference<Self, T>
+where T : Numerical<T>
+{
+    T Subtract(Self b);
 }
 public interface ScalarArithmetic<Self>: AdditiveArithmetic<Self, Number>
 {
@@ -75,7 +79,7 @@ public interface BooleanOperations<Self>
     Self Not { get; }
 }
 public interface Interval<T>
-where T : Measure<T>
+where T : Difference<T>
 {
     T Min { get; }
     T Max { get; }

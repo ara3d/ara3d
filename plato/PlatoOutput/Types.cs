@@ -17,8 +17,6 @@ public class Number: Numerical<Number>
     public Array<Any> FieldValues => throw new NotImplementedException();
     public Number Add(Number other) => throw new NotImplementedException();
     public static Number operator +(Number self, Number other) => self.Add(other);
-    public Number Subtract(Number other) => throw new NotImplementedException();
-    public static Number operator -(Number self, Number other) => self.Subtract(other);
     public Number Negative => throw new NotImplementedException();
     public static Number operator -(Number self) => self.Negative;
     public Number Reciprocal => throw new NotImplementedException();
@@ -28,6 +26,8 @@ public class Number: Numerical<Number>
     public static Number operator /(Number self, Number other) => self.Divide(other);
     public Number Modulo(Number other) => throw new NotImplementedException();
     public static Number operator %(Number self, Number other) => self.Modulo(other);
+    public Number Subtract(Number b) => throw new NotImplementedException();
+    public static Number operator -(Number a, Number b) => a.Subtract(b);
     public Boolean Equals(Number b) => throw new NotImplementedException();
     public static Boolean operator ==(Number a, Number b) => a.Equals(b);
     public Boolean NotEquals(Number b) => throw new NotImplementedException();
@@ -53,8 +53,6 @@ public class Integer: Numerical<Integer>
     public Array<Any> FieldValues => throw new NotImplementedException();
     public Integer Add(Integer other) => throw new NotImplementedException();
     public static Integer operator +(Integer self, Integer other) => self.Add(other);
-    public Integer Subtract(Integer other) => throw new NotImplementedException();
-    public static Integer operator -(Integer self, Integer other) => self.Subtract(other);
     public Integer Negative => throw new NotImplementedException();
     public static Integer operator -(Integer self) => self.Negative;
     public Integer Reciprocal => throw new NotImplementedException();
@@ -64,6 +62,8 @@ public class Integer: Numerical<Integer>
     public static Integer operator /(Integer self, Integer other) => self.Divide(other);
     public Integer Modulo(Integer other) => throw new NotImplementedException();
     public static Integer operator %(Integer self, Integer other) => self.Modulo(other);
+    public Integer Subtract(Integer b) => throw new NotImplementedException();
+    public static Integer operator -(Integer a, Integer b) => a.Subtract(b);
     public Integer Add(Number scalar) => throw new NotImplementedException();
     public static Integer operator +(Integer self, Number scalar) => self.Add(scalar);
     public Integer Subtract(Number scalar) => throw new NotImplementedException();
@@ -145,8 +145,6 @@ public class Count: Numerical<Count>
     public Array<Any> FieldValues => throw new NotImplementedException();
     public Count Add(Count other) => throw new NotImplementedException();
     public static Count operator +(Count self, Count other) => self.Add(other);
-    public Count Subtract(Count other) => throw new NotImplementedException();
-    public static Count operator -(Count self, Count other) => self.Subtract(other);
     public Count Negative => throw new NotImplementedException();
     public static Count operator -(Count self) => self.Negative;
     public Count Reciprocal => throw new NotImplementedException();
@@ -156,6 +154,8 @@ public class Count: Numerical<Count>
     public static Count operator /(Count self, Count other) => self.Divide(other);
     public Count Modulo(Count other) => throw new NotImplementedException();
     public static Count operator %(Count self, Count other) => self.Modulo(other);
+    public Count Subtract(Count b) => throw new NotImplementedException();
+    public static Count operator -(Count a, Count b) => a.Subtract(b);
     public Count Add(Number scalar) => throw new NotImplementedException();
     public static Count operator +(Count self, Number scalar) => self.Add(scalar);
     public Count Subtract(Number scalar) => throw new NotImplementedException();
@@ -204,8 +204,6 @@ public class Unit: Numerical<Unit>
     public Array<Any> FieldValues => throw new NotImplementedException();
     public Unit Add(Unit other) => throw new NotImplementedException();
     public static Unit operator +(Unit self, Unit other) => self.Add(other);
-    public Unit Subtract(Unit other) => throw new NotImplementedException();
-    public static Unit operator -(Unit self, Unit other) => self.Subtract(other);
     public Unit Negative => throw new NotImplementedException();
     public static Unit operator -(Unit self) => self.Negative;
     public Unit Reciprocal => throw new NotImplementedException();
@@ -215,6 +213,8 @@ public class Unit: Numerical<Unit>
     public static Unit operator /(Unit self, Unit other) => self.Divide(other);
     public Unit Modulo(Unit other) => throw new NotImplementedException();
     public static Unit operator %(Unit self, Unit other) => self.Modulo(other);
+    public Unit Subtract(Unit b) => throw new NotImplementedException();
+    public static Unit operator -(Unit a, Unit b) => a.Subtract(b);
     public Unit Add(Number scalar) => throw new NotImplementedException();
     public static Unit operator +(Unit self, Number scalar) => self.Add(scalar);
     public Unit Subtract(Number scalar) => throw new NotImplementedException();
@@ -250,8 +250,6 @@ public class Percent: Numerical<Percent>
     public Array<Any> FieldValues => throw new NotImplementedException();
     public Percent Add(Percent other) => throw new NotImplementedException();
     public static Percent operator +(Percent self, Percent other) => self.Add(other);
-    public Percent Subtract(Percent other) => throw new NotImplementedException();
-    public static Percent operator -(Percent self, Percent other) => self.Subtract(other);
     public Percent Negative => throw new NotImplementedException();
     public static Percent operator -(Percent self) => self.Negative;
     public Percent Reciprocal => throw new NotImplementedException();
@@ -261,6 +259,8 @@ public class Percent: Numerical<Percent>
     public static Percent operator /(Percent self, Percent other) => self.Divide(other);
     public Percent Modulo(Percent other) => throw new NotImplementedException();
     public static Percent operator %(Percent self, Percent other) => self.Modulo(other);
+    public Percent Subtract(Percent b) => throw new NotImplementedException();
+    public static Percent operator -(Percent a, Percent b) => a.Subtract(b);
     public Percent Add(Number scalar) => throw new NotImplementedException();
     public static Percent operator +(Percent self, Number scalar) => self.Add(scalar);
     public Percent Subtract(Number scalar) => throw new NotImplementedException();
@@ -416,8 +416,6 @@ public class Vector2D: Vector<Vector2D, Number>
     public Array<Any> FieldValues => throw new NotImplementedException();
     public Vector2D Add(Vector2D other) => throw new NotImplementedException();
     public static Vector2D operator +(Vector2D self, Vector2D other) => self.Add(other);
-    public Vector2D Subtract(Vector2D other) => throw new NotImplementedException();
-    public static Vector2D operator -(Vector2D self, Vector2D other) => self.Subtract(other);
     public Vector2D Negative => throw new NotImplementedException();
     public static Vector2D operator -(Vector2D self) => self.Negative;
     public Vector2D Reciprocal => throw new NotImplementedException();
@@ -427,6 +425,8 @@ public class Vector2D: Vector<Vector2D, Number>
     public static Vector2D operator /(Vector2D self, Vector2D other) => self.Divide(other);
     public Vector2D Modulo(Vector2D other) => throw new NotImplementedException();
     public static Vector2D operator %(Vector2D self, Vector2D other) => self.Modulo(other);
+    public Vector2D Subtract(Vector2D b) => throw new NotImplementedException();
+    public static Vector2D operator -(Vector2D a, Vector2D b) => a.Subtract(b);
     public Vector2D Add(Number scalar) => throw new NotImplementedException();
     public static Vector2D operator +(Vector2D self, Number scalar) => self.Add(scalar);
     public Vector2D Subtract(Number scalar) => throw new NotImplementedException();
@@ -470,8 +470,6 @@ public class Vector3D: Vector<Vector3D, Number>
     public Array<Any> FieldValues => throw new NotImplementedException();
     public Vector3D Add(Vector3D other) => throw new NotImplementedException();
     public static Vector3D operator +(Vector3D self, Vector3D other) => self.Add(other);
-    public Vector3D Subtract(Vector3D other) => throw new NotImplementedException();
-    public static Vector3D operator -(Vector3D self, Vector3D other) => self.Subtract(other);
     public Vector3D Negative => throw new NotImplementedException();
     public static Vector3D operator -(Vector3D self) => self.Negative;
     public Vector3D Reciprocal => throw new NotImplementedException();
@@ -481,6 +479,8 @@ public class Vector3D: Vector<Vector3D, Number>
     public static Vector3D operator /(Vector3D self, Vector3D other) => self.Divide(other);
     public Vector3D Modulo(Vector3D other) => throw new NotImplementedException();
     public static Vector3D operator %(Vector3D self, Vector3D other) => self.Modulo(other);
+    public Vector3D Subtract(Vector3D b) => throw new NotImplementedException();
+    public static Vector3D operator -(Vector3D a, Vector3D b) => a.Subtract(b);
     public Vector3D Add(Number scalar) => throw new NotImplementedException();
     public static Vector3D operator +(Vector3D self, Number scalar) => self.Add(scalar);
     public Vector3D Subtract(Number scalar) => throw new NotImplementedException();
@@ -526,8 +526,6 @@ public class Vector4D: Vector<Vector4D, Number>
     public Array<Any> FieldValues => throw new NotImplementedException();
     public Vector4D Add(Vector4D other) => throw new NotImplementedException();
     public static Vector4D operator +(Vector4D self, Vector4D other) => self.Add(other);
-    public Vector4D Subtract(Vector4D other) => throw new NotImplementedException();
-    public static Vector4D operator -(Vector4D self, Vector4D other) => self.Subtract(other);
     public Vector4D Negative => throw new NotImplementedException();
     public static Vector4D operator -(Vector4D self) => self.Negative;
     public Vector4D Reciprocal => throw new NotImplementedException();
@@ -537,6 +535,8 @@ public class Vector4D: Vector<Vector4D, Number>
     public static Vector4D operator /(Vector4D self, Vector4D other) => self.Divide(other);
     public Vector4D Modulo(Vector4D other) => throw new NotImplementedException();
     public static Vector4D operator %(Vector4D self, Vector4D other) => self.Modulo(other);
+    public Vector4D Subtract(Vector4D b) => throw new NotImplementedException();
+    public static Vector4D operator -(Vector4D a, Vector4D b) => a.Subtract(b);
     public Vector4D Add(Number scalar) => throw new NotImplementedException();
     public static Vector4D operator +(Vector4D self, Number scalar) => self.Add(scalar);
     public Vector4D Subtract(Number scalar) => throw new NotImplementedException();
@@ -691,8 +691,6 @@ public class Complex: Vector<Complex, Number>
     public Array<Any> FieldValues => throw new NotImplementedException();
     public Complex Add(Complex other) => throw new NotImplementedException();
     public static Complex operator +(Complex self, Complex other) => self.Add(other);
-    public Complex Subtract(Complex other) => throw new NotImplementedException();
-    public static Complex operator -(Complex self, Complex other) => self.Subtract(other);
     public Complex Negative => throw new NotImplementedException();
     public static Complex operator -(Complex self) => self.Negative;
     public Complex Reciprocal => throw new NotImplementedException();
@@ -702,6 +700,8 @@ public class Complex: Vector<Complex, Number>
     public static Complex operator /(Complex self, Complex other) => self.Divide(other);
     public Complex Modulo(Complex other) => throw new NotImplementedException();
     public static Complex operator %(Complex self, Complex other) => self.Modulo(other);
+    public Complex Subtract(Complex b) => throw new NotImplementedException();
+    public static Complex operator -(Complex a, Complex b) => a.Subtract(b);
     public Complex Add(Number scalar) => throw new NotImplementedException();
     public static Complex operator +(Complex self, Number scalar) => self.Add(scalar);
     public Complex Subtract(Number scalar) => throw new NotImplementedException();
@@ -898,6 +898,8 @@ public class Point2D: Measure<Point2D>
     public static Point2D operator /(Point2D self, Number scalar) => self.Divide(scalar);
     public Point2D Modulo(Number scalar) => throw new NotImplementedException();
     public static Point2D operator %(Point2D self, Number scalar) => self.Modulo(scalar);
+    public Number Subtract(Point2D b) => throw new NotImplementedException();
+    public static Number operator -(Point2D a, Point2D b) => a.Subtract(b);
     public Boolean Equals(Point2D b) => throw new NotImplementedException();
     public static Boolean operator ==(Point2D a, Point2D b) => a.Equals(b);
     public Boolean NotEquals(Point2D b) => throw new NotImplementedException();
@@ -1281,8 +1283,6 @@ public class Proportion: Numerical<Proportion>
     public Array<Any> FieldValues => throw new NotImplementedException();
     public Proportion Add(Proportion other) => throw new NotImplementedException();
     public static Proportion operator +(Proportion self, Proportion other) => self.Add(other);
-    public Proportion Subtract(Proportion other) => throw new NotImplementedException();
-    public static Proportion operator -(Proportion self, Proportion other) => self.Subtract(other);
     public Proportion Negative => throw new NotImplementedException();
     public static Proportion operator -(Proportion self) => self.Negative;
     public Proportion Reciprocal => throw new NotImplementedException();
@@ -1292,6 +1292,8 @@ public class Proportion: Numerical<Proportion>
     public static Proportion operator /(Proportion self, Proportion other) => self.Divide(other);
     public Proportion Modulo(Proportion other) => throw new NotImplementedException();
     public static Proportion operator %(Proportion self, Proportion other) => self.Modulo(other);
+    public Proportion Subtract(Proportion b) => throw new NotImplementedException();
+    public static Proportion operator -(Proportion a, Proportion b) => a.Subtract(b);
     public Proportion Add(Number scalar) => throw new NotImplementedException();
     public static Proportion operator +(Proportion self, Number scalar) => self.Add(scalar);
     public Proportion Subtract(Number scalar) => throw new NotImplementedException();
@@ -1348,6 +1350,8 @@ public class Angle: Measure<Angle>
     public static Angle operator /(Angle self, Number scalar) => self.Divide(scalar);
     public Angle Modulo(Number scalar) => throw new NotImplementedException();
     public static Angle operator %(Angle self, Number scalar) => self.Modulo(scalar);
+    public Number Subtract(Angle b) => throw new NotImplementedException();
+    public static Number operator -(Angle a, Angle b) => a.Subtract(b);
     public Boolean Equals(Angle b) => throw new NotImplementedException();
     public static Boolean operator ==(Angle a, Angle b) => a.Equals(b);
     public Boolean NotEquals(Angle b) => throw new NotImplementedException();
@@ -1378,6 +1382,8 @@ public class Length: Measure<Length>
     public static Length operator /(Length self, Number scalar) => self.Divide(scalar);
     public Length Modulo(Number scalar) => throw new NotImplementedException();
     public static Length operator %(Length self, Number scalar) => self.Modulo(scalar);
+    public Number Subtract(Length b) => throw new NotImplementedException();
+    public static Number operator -(Length a, Length b) => a.Subtract(b);
     public Boolean Equals(Length b) => throw new NotImplementedException();
     public static Boolean operator ==(Length a, Length b) => a.Equals(b);
     public Boolean NotEquals(Length b) => throw new NotImplementedException();
@@ -1408,6 +1414,8 @@ public class Mass: Measure<Mass>
     public static Mass operator /(Mass self, Number scalar) => self.Divide(scalar);
     public Mass Modulo(Number scalar) => throw new NotImplementedException();
     public static Mass operator %(Mass self, Number scalar) => self.Modulo(scalar);
+    public Number Subtract(Mass b) => throw new NotImplementedException();
+    public static Number operator -(Mass a, Mass b) => a.Subtract(b);
     public Boolean Equals(Mass b) => throw new NotImplementedException();
     public static Boolean operator ==(Mass a, Mass b) => a.Equals(b);
     public Boolean NotEquals(Mass b) => throw new NotImplementedException();
@@ -1438,6 +1446,8 @@ public class Temperature: Measure<Temperature>
     public static Temperature operator /(Temperature self, Number scalar) => self.Divide(scalar);
     public Temperature Modulo(Number scalar) => throw new NotImplementedException();
     public static Temperature operator %(Temperature self, Number scalar) => self.Modulo(scalar);
+    public Number Subtract(Temperature b) => throw new NotImplementedException();
+    public static Number operator -(Temperature a, Temperature b) => a.Subtract(b);
     public Boolean Equals(Temperature b) => throw new NotImplementedException();
     public static Boolean operator ==(Temperature a, Temperature b) => a.Equals(b);
     public Boolean NotEquals(Temperature b) => throw new NotImplementedException();
@@ -1468,6 +1478,8 @@ public class TimeSpan: Measure<TimeSpan>
     public static TimeSpan operator /(TimeSpan self, Number scalar) => self.Divide(scalar);
     public TimeSpan Modulo(Number scalar) => throw new NotImplementedException();
     public static TimeSpan operator %(TimeSpan self, Number scalar) => self.Modulo(scalar);
+    public Number Subtract(TimeSpan b) => throw new NotImplementedException();
+    public static Number operator -(TimeSpan a, TimeSpan b) => a.Subtract(b);
     public Boolean Equals(TimeSpan b) => throw new NotImplementedException();
     public static Boolean operator ==(TimeSpan a, TimeSpan b) => a.Equals(b);
     public Boolean NotEquals(TimeSpan b) => throw new NotImplementedException();
@@ -1527,6 +1539,8 @@ public class DateTime: Measure<DateTime>
     public static DateTime operator /(DateTime self, Number scalar) => self.Divide(scalar);
     public DateTime Modulo(Number scalar) => throw new NotImplementedException();
     public static DateTime operator %(DateTime self, Number scalar) => self.Modulo(scalar);
+    public Number Subtract(DateTime b) => throw new NotImplementedException();
+    public static Number operator -(DateTime a, DateTime b) => a.Subtract(b);
     public Boolean Equals(DateTime b) => throw new NotImplementedException();
     public static Boolean operator ==(DateTime a, DateTime b) => a.Equals(b);
     public Boolean NotEquals(DateTime b) => throw new NotImplementedException();
@@ -1571,8 +1585,6 @@ public class Ring: Numerical<Ring>
     public Array<Any> FieldValues => throw new NotImplementedException();
     public Ring Add(Ring other) => throw new NotImplementedException();
     public static Ring operator +(Ring self, Ring other) => self.Add(other);
-    public Ring Subtract(Ring other) => throw new NotImplementedException();
-    public static Ring operator -(Ring self, Ring other) => self.Subtract(other);
     public Ring Negative => throw new NotImplementedException();
     public static Ring operator -(Ring self) => self.Negative;
     public Ring Reciprocal => throw new NotImplementedException();
@@ -1582,6 +1594,8 @@ public class Ring: Numerical<Ring>
     public static Ring operator /(Ring self, Ring other) => self.Divide(other);
     public Ring Modulo(Ring other) => throw new NotImplementedException();
     public static Ring operator %(Ring self, Ring other) => self.Modulo(other);
+    public Ring Subtract(Ring b) => throw new NotImplementedException();
+    public static Ring operator -(Ring a, Ring b) => a.Subtract(b);
     public Ring Add(Number scalar) => throw new NotImplementedException();
     public static Ring operator +(Ring self, Number scalar) => self.Add(scalar);
     public Ring Subtract(Number scalar) => throw new NotImplementedException();
@@ -1863,8 +1877,6 @@ public class UV: Vector<UV, Unit>
     public Array<Any> FieldValues => throw new NotImplementedException();
     public UV Add(UV other) => throw new NotImplementedException();
     public static UV operator +(UV self, UV other) => self.Add(other);
-    public UV Subtract(UV other) => throw new NotImplementedException();
-    public static UV operator -(UV self, UV other) => self.Subtract(other);
     public UV Negative => throw new NotImplementedException();
     public static UV operator -(UV self) => self.Negative;
     public UV Reciprocal => throw new NotImplementedException();
@@ -1874,6 +1886,8 @@ public class UV: Vector<UV, Unit>
     public static UV operator /(UV self, UV other) => self.Divide(other);
     public UV Modulo(UV other) => throw new NotImplementedException();
     public static UV operator %(UV self, UV other) => self.Modulo(other);
+    public UV Subtract(UV b) => throw new NotImplementedException();
+    public static UV operator -(UV a, UV b) => a.Subtract(b);
     public UV Add(Number scalar) => throw new NotImplementedException();
     public static UV operator +(UV self, Number scalar) => self.Add(scalar);
     public UV Subtract(Number scalar) => throw new NotImplementedException();
@@ -1917,8 +1931,6 @@ public class UVW: Vector<UVW, Unit>
     public Array<Any> FieldValues => throw new NotImplementedException();
     public UVW Add(UVW other) => throw new NotImplementedException();
     public static UVW operator +(UVW self, UVW other) => self.Add(other);
-    public UVW Subtract(UVW other) => throw new NotImplementedException();
-    public static UVW operator -(UVW self, UVW other) => self.Subtract(other);
     public UVW Negative => throw new NotImplementedException();
     public static UVW operator -(UVW self) => self.Negative;
     public UVW Reciprocal => throw new NotImplementedException();
@@ -1928,6 +1940,8 @@ public class UVW: Vector<UVW, Unit>
     public static UVW operator /(UVW self, UVW other) => self.Divide(other);
     public UVW Modulo(UVW other) => throw new NotImplementedException();
     public static UVW operator %(UVW self, UVW other) => self.Modulo(other);
+    public UVW Subtract(UVW b) => throw new NotImplementedException();
+    public static UVW operator -(UVW a, UVW b) => a.Subtract(b);
     public UVW Add(Number scalar) => throw new NotImplementedException();
     public static UVW operator +(UVW self, Number scalar) => self.Add(scalar);
     public UVW Subtract(Number scalar) => throw new NotImplementedException();
@@ -2024,6 +2038,8 @@ public class Area: Measure<Area>
     public static Area operator /(Area self, Number scalar) => self.Divide(scalar);
     public Area Modulo(Number scalar) => throw new NotImplementedException();
     public static Area operator %(Area self, Number scalar) => self.Modulo(scalar);
+    public Number Subtract(Area b) => throw new NotImplementedException();
+    public static Number operator -(Area a, Area b) => a.Subtract(b);
     public Boolean Equals(Area b) => throw new NotImplementedException();
     public static Boolean operator ==(Area a, Area b) => a.Equals(b);
     public Boolean NotEquals(Area b) => throw new NotImplementedException();
@@ -2054,6 +2070,8 @@ public class Volume: Measure<Volume>
     public static Volume operator /(Volume self, Number scalar) => self.Divide(scalar);
     public Volume Modulo(Number scalar) => throw new NotImplementedException();
     public static Volume operator %(Volume self, Number scalar) => self.Modulo(scalar);
+    public Number Subtract(Volume b) => throw new NotImplementedException();
+    public static Number operator -(Volume a, Volume b) => a.Subtract(b);
     public Boolean Equals(Volume b) => throw new NotImplementedException();
     public static Boolean operator ==(Volume a, Volume b) => a.Equals(b);
     public Boolean NotEquals(Volume b) => throw new NotImplementedException();
@@ -2084,6 +2102,8 @@ public class Velocity: Measure<Velocity>
     public static Velocity operator /(Velocity self, Number scalar) => self.Divide(scalar);
     public Velocity Modulo(Number scalar) => throw new NotImplementedException();
     public static Velocity operator %(Velocity self, Number scalar) => self.Modulo(scalar);
+    public Number Subtract(Velocity b) => throw new NotImplementedException();
+    public static Number operator -(Velocity a, Velocity b) => a.Subtract(b);
     public Boolean Equals(Velocity b) => throw new NotImplementedException();
     public static Boolean operator ==(Velocity a, Velocity b) => a.Equals(b);
     public Boolean NotEquals(Velocity b) => throw new NotImplementedException();
@@ -2114,6 +2134,8 @@ public class Acceleration: Measure<Acceleration>
     public static Acceleration operator /(Acceleration self, Number scalar) => self.Divide(scalar);
     public Acceleration Modulo(Number scalar) => throw new NotImplementedException();
     public static Acceleration operator %(Acceleration self, Number scalar) => self.Modulo(scalar);
+    public Number Subtract(Acceleration b) => throw new NotImplementedException();
+    public static Number operator -(Acceleration a, Acceleration b) => a.Subtract(b);
     public Boolean Equals(Acceleration b) => throw new NotImplementedException();
     public static Boolean operator ==(Acceleration a, Acceleration b) => a.Equals(b);
     public Boolean NotEquals(Acceleration b) => throw new NotImplementedException();
@@ -2144,6 +2166,8 @@ public class Force: Measure<Force>
     public static Force operator /(Force self, Number scalar) => self.Divide(scalar);
     public Force Modulo(Number scalar) => throw new NotImplementedException();
     public static Force operator %(Force self, Number scalar) => self.Modulo(scalar);
+    public Number Subtract(Force b) => throw new NotImplementedException();
+    public static Number operator -(Force a, Force b) => a.Subtract(b);
     public Boolean Equals(Force b) => throw new NotImplementedException();
     public static Boolean operator ==(Force a, Force b) => a.Equals(b);
     public Boolean NotEquals(Force b) => throw new NotImplementedException();
@@ -2174,6 +2198,8 @@ public class Pressure: Measure<Pressure>
     public static Pressure operator /(Pressure self, Number scalar) => self.Divide(scalar);
     public Pressure Modulo(Number scalar) => throw new NotImplementedException();
     public static Pressure operator %(Pressure self, Number scalar) => self.Modulo(scalar);
+    public Number Subtract(Pressure b) => throw new NotImplementedException();
+    public static Number operator -(Pressure a, Pressure b) => a.Subtract(b);
     public Boolean Equals(Pressure b) => throw new NotImplementedException();
     public static Boolean operator ==(Pressure a, Pressure b) => a.Equals(b);
     public Boolean NotEquals(Pressure b) => throw new NotImplementedException();
@@ -2204,6 +2230,8 @@ public class Energy: Measure<Energy>
     public static Energy operator /(Energy self, Number scalar) => self.Divide(scalar);
     public Energy Modulo(Number scalar) => throw new NotImplementedException();
     public static Energy operator %(Energy self, Number scalar) => self.Modulo(scalar);
+    public Number Subtract(Energy b) => throw new NotImplementedException();
+    public static Number operator -(Energy a, Energy b) => a.Subtract(b);
     public Boolean Equals(Energy b) => throw new NotImplementedException();
     public static Boolean operator ==(Energy a, Energy b) => a.Equals(b);
     public Boolean NotEquals(Energy b) => throw new NotImplementedException();
@@ -2234,6 +2262,8 @@ public class Memory: Measure<Memory>
     public static Memory operator /(Memory self, Number scalar) => self.Divide(scalar);
     public Memory Modulo(Number scalar) => throw new NotImplementedException();
     public static Memory operator %(Memory self, Number scalar) => self.Modulo(scalar);
+    public Number Subtract(Memory b) => throw new NotImplementedException();
+    public static Number operator -(Memory a, Memory b) => a.Subtract(b);
     public Boolean Equals(Memory b) => throw new NotImplementedException();
     public static Boolean operator ==(Memory a, Memory b) => a.Equals(b);
     public Boolean NotEquals(Memory b) => throw new NotImplementedException();
@@ -2264,6 +2294,8 @@ public class Frequency: Measure<Frequency>
     public static Frequency operator /(Frequency self, Number scalar) => self.Divide(scalar);
     public Frequency Modulo(Number scalar) => throw new NotImplementedException();
     public static Frequency operator %(Frequency self, Number scalar) => self.Modulo(scalar);
+    public Number Subtract(Frequency b) => throw new NotImplementedException();
+    public static Number operator -(Frequency a, Frequency b) => a.Subtract(b);
     public Boolean Equals(Frequency b) => throw new NotImplementedException();
     public static Boolean operator ==(Frequency a, Frequency b) => a.Equals(b);
     public Boolean NotEquals(Frequency b) => throw new NotImplementedException();
@@ -2294,6 +2326,8 @@ public class Loudness: Measure<Loudness>
     public static Loudness operator /(Loudness self, Number scalar) => self.Divide(scalar);
     public Loudness Modulo(Number scalar) => throw new NotImplementedException();
     public static Loudness operator %(Loudness self, Number scalar) => self.Modulo(scalar);
+    public Number Subtract(Loudness b) => throw new NotImplementedException();
+    public static Number operator -(Loudness a, Loudness b) => a.Subtract(b);
     public Boolean Equals(Loudness b) => throw new NotImplementedException();
     public static Boolean operator ==(Loudness a, Loudness b) => a.Equals(b);
     public Boolean NotEquals(Loudness b) => throw new NotImplementedException();
@@ -2324,6 +2358,8 @@ public class LuminousIntensity: Measure<LuminousIntensity>
     public static LuminousIntensity operator /(LuminousIntensity self, Number scalar) => self.Divide(scalar);
     public LuminousIntensity Modulo(Number scalar) => throw new NotImplementedException();
     public static LuminousIntensity operator %(LuminousIntensity self, Number scalar) => self.Modulo(scalar);
+    public Number Subtract(LuminousIntensity b) => throw new NotImplementedException();
+    public static Number operator -(LuminousIntensity a, LuminousIntensity b) => a.Subtract(b);
     public Boolean Equals(LuminousIntensity b) => throw new NotImplementedException();
     public static Boolean operator ==(LuminousIntensity a, LuminousIntensity b) => a.Equals(b);
     public Boolean NotEquals(LuminousIntensity b) => throw new NotImplementedException();
@@ -2354,6 +2390,8 @@ public class ElectricPotential: Measure<ElectricPotential>
     public static ElectricPotential operator /(ElectricPotential self, Number scalar) => self.Divide(scalar);
     public ElectricPotential Modulo(Number scalar) => throw new NotImplementedException();
     public static ElectricPotential operator %(ElectricPotential self, Number scalar) => self.Modulo(scalar);
+    public Number Subtract(ElectricPotential b) => throw new NotImplementedException();
+    public static Number operator -(ElectricPotential a, ElectricPotential b) => a.Subtract(b);
     public Boolean Equals(ElectricPotential b) => throw new NotImplementedException();
     public static Boolean operator ==(ElectricPotential a, ElectricPotential b) => a.Equals(b);
     public Boolean NotEquals(ElectricPotential b) => throw new NotImplementedException();
@@ -2384,6 +2422,8 @@ public class ElectricCharge: Measure<ElectricCharge>
     public static ElectricCharge operator /(ElectricCharge self, Number scalar) => self.Divide(scalar);
     public ElectricCharge Modulo(Number scalar) => throw new NotImplementedException();
     public static ElectricCharge operator %(ElectricCharge self, Number scalar) => self.Modulo(scalar);
+    public Number Subtract(ElectricCharge b) => throw new NotImplementedException();
+    public static Number operator -(ElectricCharge a, ElectricCharge b) => a.Subtract(b);
     public Boolean Equals(ElectricCharge b) => throw new NotImplementedException();
     public static Boolean operator ==(ElectricCharge a, ElectricCharge b) => a.Equals(b);
     public Boolean NotEquals(ElectricCharge b) => throw new NotImplementedException();
@@ -2414,6 +2454,8 @@ public class ElectricCurrent: Measure<ElectricCurrent>
     public static ElectricCurrent operator /(ElectricCurrent self, Number scalar) => self.Divide(scalar);
     public ElectricCurrent Modulo(Number scalar) => throw new NotImplementedException();
     public static ElectricCurrent operator %(ElectricCurrent self, Number scalar) => self.Modulo(scalar);
+    public Number Subtract(ElectricCurrent b) => throw new NotImplementedException();
+    public static Number operator -(ElectricCurrent a, ElectricCurrent b) => a.Subtract(b);
     public Boolean Equals(ElectricCurrent b) => throw new NotImplementedException();
     public static Boolean operator ==(ElectricCurrent a, ElectricCurrent b) => a.Equals(b);
     public Boolean NotEquals(ElectricCurrent b) => throw new NotImplementedException();
@@ -2444,6 +2486,8 @@ public class ElectricResistance: Measure<ElectricResistance>
     public static ElectricResistance operator /(ElectricResistance self, Number scalar) => self.Divide(scalar);
     public ElectricResistance Modulo(Number scalar) => throw new NotImplementedException();
     public static ElectricResistance operator %(ElectricResistance self, Number scalar) => self.Modulo(scalar);
+    public Number Subtract(ElectricResistance b) => throw new NotImplementedException();
+    public static Number operator -(ElectricResistance a, ElectricResistance b) => a.Subtract(b);
     public Boolean Equals(ElectricResistance b) => throw new NotImplementedException();
     public static Boolean operator ==(ElectricResistance a, ElectricResistance b) => a.Equals(b);
     public Boolean NotEquals(ElectricResistance b) => throw new NotImplementedException();
@@ -2474,6 +2518,8 @@ public class Power: Measure<Power>
     public static Power operator /(Power self, Number scalar) => self.Divide(scalar);
     public Power Modulo(Number scalar) => throw new NotImplementedException();
     public static Power operator %(Power self, Number scalar) => self.Modulo(scalar);
+    public Number Subtract(Power b) => throw new NotImplementedException();
+    public static Number operator -(Power a, Power b) => a.Subtract(b);
     public Boolean Equals(Power b) => throw new NotImplementedException();
     public static Boolean operator ==(Power a, Power b) => a.Equals(b);
     public Boolean NotEquals(Power b) => throw new NotImplementedException();
@@ -2504,6 +2550,8 @@ public class Density: Measure<Density>
     public static Density operator /(Density self, Number scalar) => self.Divide(scalar);
     public Density Modulo(Number scalar) => throw new NotImplementedException();
     public static Density operator %(Density self, Number scalar) => self.Modulo(scalar);
+    public Number Subtract(Density b) => throw new NotImplementedException();
+    public static Number operator -(Density a, Density b) => a.Subtract(b);
     public Boolean Equals(Density b) => throw new NotImplementedException();
     public static Boolean operator ==(Density a, Density b) => a.Equals(b);
     public Boolean NotEquals(Density b) => throw new NotImplementedException();
@@ -2574,8 +2622,6 @@ public class Probability: Numerical<Probability>
     public Array<Any> FieldValues => throw new NotImplementedException();
     public Probability Add(Probability other) => throw new NotImplementedException();
     public static Probability operator +(Probability self, Probability other) => self.Add(other);
-    public Probability Subtract(Probability other) => throw new NotImplementedException();
-    public static Probability operator -(Probability self, Probability other) => self.Subtract(other);
     public Probability Negative => throw new NotImplementedException();
     public static Probability operator -(Probability self) => self.Negative;
     public Probability Reciprocal => throw new NotImplementedException();
@@ -2585,6 +2631,8 @@ public class Probability: Numerical<Probability>
     public static Probability operator /(Probability self, Probability other) => self.Divide(other);
     public Probability Modulo(Probability other) => throw new NotImplementedException();
     public static Probability operator %(Probability self, Probability other) => self.Modulo(other);
+    public Probability Subtract(Probability b) => throw new NotImplementedException();
+    public static Probability operator -(Probability a, Probability b) => a.Subtract(b);
     public Probability Add(Number scalar) => throw new NotImplementedException();
     public static Probability operator +(Probability self, Number scalar) => self.Add(scalar);
     public Probability Subtract(Number scalar) => throw new NotImplementedException();

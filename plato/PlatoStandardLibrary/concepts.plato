@@ -21,7 +21,7 @@ concept Vector<T: Numerical>
 }
 
 concept Measure
-    inherits Value, ScalarArithmetic, Equatable, Comparable, Magnitudinal
+    inherits Value, ScalarArithmetic, Equatable, Comparable, Magnitudinal, Difference<Number>
 { 
     Value(x: Self): Number;
 }
@@ -57,13 +57,10 @@ concept Equatable
 }
 
 concept Arithmetic 
-    inherits AdditiveInverse
+    inherits AdditiveInverse, Difference<Self>, AdditiveArithmetic<Self>
 { 
     Add(self: Self, other: Self): Self
         => self.FieldValues + other.FieldValues;
-
-    Subtract(self: Self, other: Self): Self
-        => self.FieldValues - other.FieldValues;
 
     Negative(self: Self): Self
         => -self.FieldValues;
@@ -88,11 +85,19 @@ concept AdditiveInverse
 }
 
 concept AdditiveArithmetic<T: AdditiveInverse>
+    inherits Difference<T> 
 {
     Add(self: Self, other: T): Self;    
 
     Subtract(self: Self, other: T): Self
         => self.Add(other.Negative);
+}
+
+// TODO define and use MultiplicativeInverse and MultiplicativeArithmetic: 
+
+concept Difference<T: Numerical>
+{
+    Subtract(a: Self, b: Self): T;
 }
 
 concept ScalarArithmetic
@@ -126,7 +131,7 @@ concept BooleanOperations
         => a.FieldValues;
 }
 
-concept Interval<T: Measure>
+concept Interval<T: Difference>
 {
     Min(x: Self): T;
     Max(x: Self): T;

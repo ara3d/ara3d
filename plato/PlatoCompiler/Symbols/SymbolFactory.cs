@@ -353,6 +353,10 @@ namespace Plato.Compiler.Symbols
                 
                 var astTypeDecl = SymbolsToNodes[typeDef] as AstTypeDeclaration;
 
+                // Add a Self type
+                if (typeDef.Self != null)
+                    BindType(typeDef.Self);
+
                 // Resolve the inherits and implemented type declarations
 
                 foreach (var inheritedType in astTypeDecl.Inherits)
@@ -368,10 +372,6 @@ namespace Plato.Compiler.Symbols
                         throw new Exception($"Null implemented type declaration in {typeDef}");
                     typeDef.Implements.Add(ResolveType(implementedType));
                 }
-
-                // Add a Self type
-                if (typeDef.Self != null)
-                    BindType(typeDef.Self);
 
                 // For each method in the type create a function, and add it to a function group 
                 foreach (var m in typeDef.Methods)

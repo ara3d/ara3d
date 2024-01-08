@@ -22,7 +22,8 @@ namespace Plato.CSharpWriter
             {
                 var tp = def.TypeParameters[i];
                 var arg = args[i];
-                Lookup.Add(tp, arg);
+                if (!Lookup.ContainsKey(tp))
+                    Lookup.Add(tp, arg);
                 AddSubstitutions(arg);
             }
         }
