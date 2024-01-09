@@ -157,6 +157,9 @@ namespace Plato.CSharpWriter
             {
                 if (tp.Constraint == null)
                     continue;
+                // "Any" constraints aren't real constraints 
+                if (tp.Constraint.Name == "Any")
+                    continue;
                 var constraintArgs = JoinTypeParameters(tp.Constraint.Definition.IsSelfConstrained()
                     ? tp.Constraint.TypeArgs.Select(t => ToString(t)).Prepend(tp.Name)
                     : tp.Constraint.TypeArgs.Select(t => ToString(t)));                

@@ -3,24 +3,26 @@ public interface Any
     Array<String> FieldNames { get; }
     Array<Any> FieldValues { get; }
 }
-public interface Value: Any
+public interface Value<Self>: Any, Equatable<Self>
 {
 }
 public interface Array<T>
-where T : Any
 {
     Integer Count { get; }
     T At(Integer n);
 }
-public interface Vector<Self, T>: Array<T>, Numerical<Self>, Magnitudinal<Self>
+public interface Vector<Self, T>: Array<T>, Numerical<Self>, Magnitudinal<Self>, Equatable<Self>, Coordinate<Self>
 where T : Numerical<T>
 {
 }
-public interface Measure<Self>: Value, ScalarArithmetic<Self>, Equatable<Self>, Comparable<Self>, Magnitudinal<Self>, Difference<Self, Number>
+public interface Coordinate<Self>: Interpolatable<Self>
+{
+}
+public interface Measure<Self>: Value<Self>, ScalarArithmetic<Self>, Equatable<Self>, Comparable<Self>, Magnitudinal<Self>, Interpolatable<Self>
 {
     Number Value { get; }
 }
-public interface Numerical<Self>: Value, Arithmetic<Self>, ScalarArithmetic<Self>, Equatable<Self>, Comparable<Self>, Magnitudinal<Self>
+public interface Numerical<Self>: Value<Self>, Arithmetic<Self>, Equatable<Self>, Comparable<Self>, Magnitudinal<Self>, Interpolatable<Self>
 {
     Self Zero { get; }
     Self One { get; }
@@ -40,37 +42,29 @@ public interface Equatable<Self>
     Boolean Equals(Self b);
     Boolean NotEquals(Self b);
 }
-public interface Arithmetic<Self>: AdditiveInverse<Self>, Difference<Self, Self>, AdditiveArithmetic<Self, Self>
+public interface Arithmetic<Self>: AdditiveArithmetic<Self, Self>, MultiplicativeArithmetic<Self, Self>, AdditiveInverse<Self>, MultiplicativeInverse<Self>
 {
-    Self Add(Self other);
-    Self Negative { get; }
-    Self Reciprocal { get; }
-    Self Multiply(Self other);
-    Self Divide(Self other);
-    Self Modulo(Self other);
 }
 public interface AdditiveInverse<Self>
 {
     Self Negative { get; }
 }
-public interface AdditiveArithmetic<Self, T>: Difference<Self, T>
-where T : AdditiveInverse<T>
+public interface MultiplicativeInverse<Self>
+{
+    Self Reciprocal { get; }
+}
+public interface AdditiveArithmetic<Self, T>
 {
     Self Add(T other);
     Self Subtract(T other);
 }
-public interface Difference<Self, T>
-where T : Numerical<T>
+public interface MultiplicativeArithmetic<Self, T>
 {
-    T Subtract(Self b);
+    Self Divide(Self other);
+    Self Modulo(Self other);
 }
-public interface ScalarArithmetic<Self>: AdditiveArithmetic<Self, Number>
+public interface ScalarArithmetic<Self>: AdditiveArithmetic<Self, Number>, MultiplicativeArithmetic<Self, Number>
 {
-    Self Add(Number scalar);
-    Self Subtract(Number scalar);
-    Self Multiply(Number scalar);
-    Self Divide(Number scalar);
-    Self Modulo(Number scalar);
 }
 public interface BooleanOperations<Self>
 {
@@ -79,8 +73,13 @@ public interface BooleanOperations<Self>
     Self Not { get; }
 }
 public interface Interval<T>
-where T : Difference<T>
+where T : Interpolatable<T>
 {
     T Min { get; }
     T Max { get; }
+}
+public interface Interpolatable<Self>
+{
+    Self Lerp(Self b, Number amount);
+    Number Unlerp(Self a, Self b);
 }
