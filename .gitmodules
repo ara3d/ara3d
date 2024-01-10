@@ -1,0 +1,3 @@
+[submodule "plato"]
+	path = plato
+	url = https://github.com/cdiggins/plato
