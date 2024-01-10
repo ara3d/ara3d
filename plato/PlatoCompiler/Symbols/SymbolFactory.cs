@@ -148,6 +148,11 @@ namespace Plato.Compiler.Symbols
                 return CreateAny();
             }
             var name = astTypeNode.Name.Trim();
+            if (name == "var")
+            {
+                // NOTE: maybe this might be 
+                return CreateAny();
+            }
             if (string.IsNullOrWhiteSpace(name))
             {
                 LogError("Invalid variable name", astTypeNode);
@@ -210,13 +215,8 @@ namespace Plato.Compiler.Symbols
                                 ResolveExpr(astAssign.Value)));
 
                     case AstBlock astBlock:
-                        {
-                            if (astBlock.Statements.Count == 0)
-                                return null;
-                            if (astBlock.Statements.Count > 1)
-                                LogError("Cannot handle AstBlock with multiple children", astBlock);
-                            return Resolve(astBlock.Statements[0]);
-                        }
+                        return new BlockExpression(
+                            astBlock.Statements.Select(Resolve).ToArray());
 
                     case AstMulti astMulti:
                         {
@@ -276,7 +276,7 @@ namespace Plato.Compiler.Symbols
                             new VariableDefinition(astVarDef.Name, ResolveType(astVarDef.Type)));
 
                     case AstLoop astLoop:
-                        LogError("NotImplementedException", node);
+                        return new LoopSymbol(node);
                         return null;
                 }
 

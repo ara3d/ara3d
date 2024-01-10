@@ -67,6 +67,21 @@ namespace Plato.CSharpWriter
             return r;
         }
 
+        public SymbolWriterCSharp WriteCommaList(IEnumerable<string> symbols)
+        {
+            var r = this;
+            var first = true;
+            foreach (var s in symbols)
+            {
+                if (!first)
+                    r = r.Write(", ");
+                first = false;
+                r = r.Write(s);
+            }
+
+            return r;
+        }
+
         public SymbolWriterCSharp Write(Symbol symbol)
         {
             switch (symbol)
@@ -89,7 +104,7 @@ namespace Plato.CSharpWriter
             WriteConceptInterfaces();
             //WriteConceptExtensions();
             WriteTypeImplementations();
-            //WriteLibraries();
+            WriteLibraries();
             return this;
         }
 
@@ -519,42 +534,29 @@ namespace Plato.CSharpWriter
         public FilePath ToFileName(TypeDefinition type)
             => OutputFolder.RelativeFile($"{type.Kind}_{type.Name}.cs");
 
-        public SymbolWriterCSharp WriteTypeArgs(IReadOnlyList<TypeExpression> args)
+        // Used in library functions only.
+        public IReadOnlyList<string> GetTypeParameterNames(TypeExpression expr)
         {
-            if (args.Count == 0)
-                return this;
-            Write("<");
-            for (var i = 0; i < args.Count; ++i)
-            {
-                if (i > 0)
-                    Write(", ");
-                WriteTypeWithArgsOrParameters(args[i]);
-            }
-            return Write(">");
+            Debug.Assert(expr.TypeArgs.Count == 0);
+            var r = expr.Definition.TypeParameters.Select(p => p.Name);
+            if (expr.Definition.IsSelfConstrained())
+                r = r.Prepend("Self");
+            return r.ToList();
         }
 
-        public SymbolWriterCSharp WriteTypeParameters(IReadOnlyList<TypeParameterDefinition> parameters)
+        public SymbolWriterCSharp WriteTypeParameters(TypeExpression expr)
         {
-            if (parameters.Count == 0)
-                return this;
+            var parameterNames = GetTypeParameterNames(expr);
+            if (parameterNames.Count == 0) return this;
             Write("<");
-            for (var i = 0; i < parameters.Count; ++i)
-            {
-                if (i > 0)
-                    Write(", ");
-                Write(parameters[i].Name);
-            }
-            return Write(">");
-        }
-
-        public SymbolWriterCSharp WriteTypeWithArgsOrParameters(TypeExpression expr)
-        {
-            Write(expr.Name);
-            if (expr.TypeArgs.Count > 0)
-                WriteTypeArgs(expr.TypeArgs);
-            else if (expr.Definition.TypeParameters.Count > 0)
-                WriteTypeParameters(expr.Definition.TypeParameters);
+            WriteCommaList(parameterNames);
+            Write(">");
             return this;
+        }
+
+        public SymbolWriterCSharp WriteTypeForLibraryFunc(TypeExpression expr)
+        {
+            return Write(expr.Name).WriteTypeParameters(expr);
         }
 
         public SymbolWriterCSharp WriteLibraryMethods(TypeDefinition type)
@@ -566,26 +568,26 @@ namespace Plato.CSharpWriter
             foreach (var f in type.Functions)
             {
                 Write("public static ");
-                WriteTypeWithArgsOrParameters(f.ReturnType);
+                WriteTypeForLibraryFunc(f.ReturnType);
                 Write(" ");
-                var generic = f.Type.TypeArgs.Count > 0 
-                              || f.Type.Definition.TypeParameters.Count > 0;
                 Write(f.Name);
-                if (generic)
+                if (f.Parameters.Count > 0)
                 {
-                    WriteTypeParameters(f.Type.Definition.TypeParameters);
+                    WriteTypeParameters(f.Parameters[0].Type);
+                    Write("(");
+                    Write("this ");
+                    for (var i = 0; i < f.Parameters.Count; ++i)
+                    {
+                        if (i > 0) Write(", ");
+                        var p = f.Parameters[i];
+                        WriteTypeForLibraryFunc(p.Type);
+                        Write(" ");
+                        Write(p.Name);
+                    }
+                    Write(")");
                 }
-                Write("(");
-                Write("this ");
-                for (var i = 0; i < f.Parameters.Count; ++i)
-                {
-                    if (i > 0) Write(", ");
-                    var p = f.Parameters[i];
-                    WriteTypeWithArgsOrParameters(p.Type);
-                    Write(" ");
-                    Write(p.Name);
-                }
-                Write(") => ");
+
+                Write(" => ");
                 WriteLine("throw new NotImplementedException();");
             }
             WriteEndBlock();

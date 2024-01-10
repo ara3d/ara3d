@@ -23,6 +23,8 @@ public class Number: Numerical<Number>
     public static Number operator +(Number self, Number other) => self.Add(other);
     public Number Subtract(Number other) => throw new NotImplementedException();
     public static Number operator -(Number self, Number other) => self.Subtract(other);
+    public Number Multiply(Number other) => throw new NotImplementedException();
+    public static Number operator *(Number self, Number other) => self.Multiply(other);
     public Number Divide(Number other) => throw new NotImplementedException();
     public static Number operator /(Number self, Number other) => self.Divide(other);
     public Number Modulo(Number other) => throw new NotImplementedException();
@@ -59,6 +61,8 @@ public class Integer: Numerical<Integer>
     public static Integer operator +(Integer self, Integer other) => self.Add(other);
     public Integer Subtract(Integer other) => throw new NotImplementedException();
     public static Integer operator -(Integer self, Integer other) => self.Subtract(other);
+    public Integer Multiply(Integer other) => throw new NotImplementedException();
+    public static Integer operator *(Integer self, Integer other) => self.Multiply(other);
     public Integer Divide(Integer other) => throw new NotImplementedException();
     public static Integer operator /(Integer self, Integer other) => self.Divide(other);
     public Integer Modulo(Integer other) => throw new NotImplementedException();
@@ -149,6 +153,8 @@ public class Count: Numerical<Count>
     public static Count operator +(Count self, Count other) => self.Add(other);
     public Count Subtract(Count other) => throw new NotImplementedException();
     public static Count operator -(Count self, Count other) => self.Subtract(other);
+    public Count Multiply(Count other) => throw new NotImplementedException();
+    public static Count operator *(Count self, Count other) => self.Multiply(other);
     public Count Divide(Count other) => throw new NotImplementedException();
     public static Count operator /(Count self, Count other) => self.Divide(other);
     public Count Modulo(Count other) => throw new NotImplementedException();
@@ -202,6 +208,8 @@ public class Unit: Numerical<Unit>
     public static Unit operator +(Unit self, Unit other) => self.Add(other);
     public Unit Subtract(Unit other) => throw new NotImplementedException();
     public static Unit operator -(Unit self, Unit other) => self.Subtract(other);
+    public Unit Multiply(Unit other) => throw new NotImplementedException();
+    public static Unit operator *(Unit self, Unit other) => self.Multiply(other);
     public Unit Divide(Unit other) => throw new NotImplementedException();
     public static Unit operator /(Unit self, Unit other) => self.Divide(other);
     public Unit Modulo(Unit other) => throw new NotImplementedException();
@@ -238,6 +246,8 @@ public class Percent: Numerical<Percent>
     public static Percent operator +(Percent self, Percent other) => self.Add(other);
     public Percent Subtract(Percent other) => throw new NotImplementedException();
     public static Percent operator -(Percent self, Percent other) => self.Subtract(other);
+    public Percent Multiply(Percent other) => throw new NotImplementedException();
+    public static Percent operator *(Percent self, Percent other) => self.Multiply(other);
     public Percent Divide(Percent other) => throw new NotImplementedException();
     public static Percent operator /(Percent self, Percent other) => self.Divide(other);
     public Percent Modulo(Percent other) => throw new NotImplementedException();
@@ -422,6 +432,8 @@ public class Vector2D: Vector<Vector2D, Number>
     public static Vector2D operator +(Vector2D self, Vector2D other) => self.Add(other);
     public Vector2D Subtract(Vector2D other) => throw new NotImplementedException();
     public static Vector2D operator -(Vector2D self, Vector2D other) => self.Subtract(other);
+    public Vector2D Multiply(Vector2D other) => throw new NotImplementedException();
+    public static Vector2D operator *(Vector2D self, Vector2D other) => self.Multiply(other);
     public Vector2D Divide(Vector2D other) => throw new NotImplementedException();
     public static Vector2D operator /(Vector2D self, Vector2D other) => self.Divide(other);
     public Vector2D Modulo(Vector2D other) => throw new NotImplementedException();
@@ -466,6 +478,8 @@ public class Vector3D: Vector<Vector3D, Number>
     public static Vector3D operator +(Vector3D self, Vector3D other) => self.Add(other);
     public Vector3D Subtract(Vector3D other) => throw new NotImplementedException();
     public static Vector3D operator -(Vector3D self, Vector3D other) => self.Subtract(other);
+    public Vector3D Multiply(Vector3D other) => throw new NotImplementedException();
+    public static Vector3D operator *(Vector3D self, Vector3D other) => self.Multiply(other);
     public Vector3D Divide(Vector3D other) => throw new NotImplementedException();
     public static Vector3D operator /(Vector3D self, Vector3D other) => self.Divide(other);
     public Vector3D Modulo(Vector3D other) => throw new NotImplementedException();
@@ -512,6 +526,8 @@ public class Vector4D: Vector<Vector4D, Number>
     public static Vector4D operator +(Vector4D self, Vector4D other) => self.Add(other);
     public Vector4D Subtract(Vector4D other) => throw new NotImplementedException();
     public static Vector4D operator -(Vector4D self, Vector4D other) => self.Subtract(other);
+    public Vector4D Multiply(Vector4D other) => throw new NotImplementedException();
+    public static Vector4D operator *(Vector4D self, Vector4D other) => self.Multiply(other);
     public Vector4D Divide(Vector4D other) => throw new NotImplementedException();
     public static Vector4D operator /(Vector4D self, Vector4D other) => self.Divide(other);
     public Vector4D Modulo(Vector4D other) => throw new NotImplementedException();
@@ -687,6 +703,8 @@ public class Complex: Vector<Complex, Number>
     public static Complex operator +(Complex self, Complex other) => self.Add(other);
     public Complex Subtract(Complex other) => throw new NotImplementedException();
     public static Complex operator -(Complex self, Complex other) => self.Subtract(other);
+    public Complex Multiply(Complex other) => throw new NotImplementedException();
+    public static Complex operator *(Complex self, Complex other) => self.Multiply(other);
     public Complex Divide(Complex other) => throw new NotImplementedException();
     public static Complex operator /(Complex self, Complex other) => self.Divide(other);
     public Complex Modulo(Complex other) => throw new NotImplementedException();
@@ -1363,6 +1381,8 @@ public class Proportion: Numerical<Proportion>
     public static Proportion operator +(Proportion self, Proportion other) => self.Add(other);
     public Proportion Subtract(Proportion other) => throw new NotImplementedException();
     public static Proportion operator -(Proportion self, Proportion other) => self.Subtract(other);
+    public Proportion Multiply(Proportion other) => throw new NotImplementedException();
+    public static Proportion operator *(Proportion self, Proportion other) => self.Multiply(other);
     public Proportion Divide(Proportion other) => throw new NotImplementedException();
     public static Proportion operator /(Proportion self, Proportion other) => self.Divide(other);
     public Proportion Modulo(Proportion other) => throw new NotImplementedException();
@@ -1429,6 +1449,8 @@ public class Length: Measure<Length>
     public static Length operator +(Length self, Number other) => self.Add(other);
     public Length Subtract(Number other) => throw new NotImplementedException();
     public static Length operator -(Length self, Number other) => self.Subtract(other);
+    public Length Multiply(Length other) => throw new NotImplementedException();
+    public static Length operator *(Length self, Length other) => self.Multiply(other);
     public Length Divide(Length other) => throw new NotImplementedException();
     public static Length operator /(Length self, Length other) => self.Divide(other);
     public Length Modulo(Length other) => throw new NotImplementedException();
@@ -1459,6 +1481,8 @@ public class Mass: Measure<Mass>
     public static Mass operator +(Mass self, Number other) => self.Add(other);
     public Mass Subtract(Number other) => throw new NotImplementedException();
     public static Mass operator -(Mass self, Number other) => self.Subtract(other);
+    public Mass Multiply(Mass other) => throw new NotImplementedException();
+    public static Mass operator *(Mass self, Mass other) => self.Multiply(other);
     public Mass Divide(Mass other) => throw new NotImplementedException();
     public static Mass operator /(Mass self, Mass other) => self.Divide(other);
     public Mass Modulo(Mass other) => throw new NotImplementedException();
@@ -1489,6 +1513,8 @@ public class Temperature: Measure<Temperature>
     public static Temperature operator +(Temperature self, Number other) => self.Add(other);
     public Temperature Subtract(Number other) => throw new NotImplementedException();
     public static Temperature operator -(Temperature self, Number other) => self.Subtract(other);
+    public Temperature Multiply(Temperature other) => throw new NotImplementedException();
+    public static Temperature operator *(Temperature self, Temperature other) => self.Multiply(other);
     public Temperature Divide(Temperature other) => throw new NotImplementedException();
     public static Temperature operator /(Temperature self, Temperature other) => self.Divide(other);
     public Temperature Modulo(Temperature other) => throw new NotImplementedException();
@@ -1519,6 +1545,8 @@ public class Time: Measure<Time>
     public static Time operator +(Time self, Number other) => self.Add(other);
     public Time Subtract(Number other) => throw new NotImplementedException();
     public static Time operator -(Time self, Number other) => self.Subtract(other);
+    public Time Multiply(Time other) => throw new NotImplementedException();
+    public static Time operator *(Time self, Time other) => self.Multiply(other);
     public Time Divide(Time other) => throw new NotImplementedException();
     public static Time operator /(Time self, Time other) => self.Divide(other);
     public Time Modulo(Time other) => throw new NotImplementedException();
@@ -1613,6 +1641,8 @@ public class Ring: Numerical<Ring>
     public static Ring operator +(Ring self, Ring other) => self.Add(other);
     public Ring Subtract(Ring other) => throw new NotImplementedException();
     public static Ring operator -(Ring self, Ring other) => self.Subtract(other);
+    public Ring Multiply(Ring other) => throw new NotImplementedException();
+    public static Ring operator *(Ring self, Ring other) => self.Multiply(other);
     public Ring Divide(Ring other) => throw new NotImplementedException();
     public static Ring operator /(Ring self, Ring other) => self.Divide(other);
     public Ring Modulo(Ring other) => throw new NotImplementedException();
@@ -1939,6 +1969,8 @@ public class UV: Vector<UV, Unit>
     public static UV operator +(UV self, UV other) => self.Add(other);
     public UV Subtract(UV other) => throw new NotImplementedException();
     public static UV operator -(UV self, UV other) => self.Subtract(other);
+    public UV Multiply(UV other) => throw new NotImplementedException();
+    public static UV operator *(UV self, UV other) => self.Multiply(other);
     public UV Divide(UV other) => throw new NotImplementedException();
     public static UV operator /(UV self, UV other) => self.Divide(other);
     public UV Modulo(UV other) => throw new NotImplementedException();
@@ -1983,6 +2015,8 @@ public class UVW: Vector<UVW, Unit>
     public static UVW operator +(UVW self, UVW other) => self.Add(other);
     public UVW Subtract(UVW other) => throw new NotImplementedException();
     public static UVW operator -(UVW self, UVW other) => self.Subtract(other);
+    public UVW Multiply(UVW other) => throw new NotImplementedException();
+    public static UVW operator *(UVW self, UVW other) => self.Multiply(other);
     public UVW Divide(UVW other) => throw new NotImplementedException();
     public static UVW operator /(UVW self, UVW other) => self.Divide(other);
     public UVW Modulo(UVW other) => throw new NotImplementedException();
@@ -2084,6 +2118,8 @@ public class Area: Measure<Area>
     public static Area operator +(Area self, Number other) => self.Add(other);
     public Area Subtract(Number other) => throw new NotImplementedException();
     public static Area operator -(Area self, Number other) => self.Subtract(other);
+    public Area Multiply(Area other) => throw new NotImplementedException();
+    public static Area operator *(Area self, Area other) => self.Multiply(other);
     public Area Divide(Area other) => throw new NotImplementedException();
     public static Area operator /(Area self, Area other) => self.Divide(other);
     public Area Modulo(Area other) => throw new NotImplementedException();
@@ -2114,6 +2150,8 @@ public class Volume: Measure<Volume>
     public static Volume operator +(Volume self, Number other) => self.Add(other);
     public Volume Subtract(Number other) => throw new NotImplementedException();
     public static Volume operator -(Volume self, Number other) => self.Subtract(other);
+    public Volume Multiply(Volume other) => throw new NotImplementedException();
+    public static Volume operator *(Volume self, Volume other) => self.Multiply(other);
     public Volume Divide(Volume other) => throw new NotImplementedException();
     public static Volume operator /(Volume self, Volume other) => self.Divide(other);
     public Volume Modulo(Volume other) => throw new NotImplementedException();
@@ -2144,6 +2182,8 @@ public class Velocity: Measure<Velocity>
     public static Velocity operator +(Velocity self, Number other) => self.Add(other);
     public Velocity Subtract(Number other) => throw new NotImplementedException();
     public static Velocity operator -(Velocity self, Number other) => self.Subtract(other);
+    public Velocity Multiply(Velocity other) => throw new NotImplementedException();
+    public static Velocity operator *(Velocity self, Velocity other) => self.Multiply(other);
     public Velocity Divide(Velocity other) => throw new NotImplementedException();
     public static Velocity operator /(Velocity self, Velocity other) => self.Divide(other);
     public Velocity Modulo(Velocity other) => throw new NotImplementedException();
@@ -2174,6 +2214,8 @@ public class Acceleration: Measure<Acceleration>
     public static Acceleration operator +(Acceleration self, Number other) => self.Add(other);
     public Acceleration Subtract(Number other) => throw new NotImplementedException();
     public static Acceleration operator -(Acceleration self, Number other) => self.Subtract(other);
+    public Acceleration Multiply(Acceleration other) => throw new NotImplementedException();
+    public static Acceleration operator *(Acceleration self, Acceleration other) => self.Multiply(other);
     public Acceleration Divide(Acceleration other) => throw new NotImplementedException();
     public static Acceleration operator /(Acceleration self, Acceleration other) => self.Divide(other);
     public Acceleration Modulo(Acceleration other) => throw new NotImplementedException();
@@ -2204,6 +2246,8 @@ public class Force: Measure<Force>
     public static Force operator +(Force self, Number other) => self.Add(other);
     public Force Subtract(Number other) => throw new NotImplementedException();
     public static Force operator -(Force self, Number other) => self.Subtract(other);
+    public Force Multiply(Force other) => throw new NotImplementedException();
+    public static Force operator *(Force self, Force other) => self.Multiply(other);
     public Force Divide(Force other) => throw new NotImplementedException();
     public static Force operator /(Force self, Force other) => self.Divide(other);
     public Force Modulo(Force other) => throw new NotImplementedException();
@@ -2234,6 +2278,8 @@ public class Pressure: Measure<Pressure>
     public static Pressure operator +(Pressure self, Number other) => self.Add(other);
     public Pressure Subtract(Number other) => throw new NotImplementedException();
     public static Pressure operator -(Pressure self, Number other) => self.Subtract(other);
+    public Pressure Multiply(Pressure other) => throw new NotImplementedException();
+    public static Pressure operator *(Pressure self, Pressure other) => self.Multiply(other);
     public Pressure Divide(Pressure other) => throw new NotImplementedException();
     public static Pressure operator /(Pressure self, Pressure other) => self.Divide(other);
     public Pressure Modulo(Pressure other) => throw new NotImplementedException();
@@ -2264,6 +2310,8 @@ public class Energy: Measure<Energy>
     public static Energy operator +(Energy self, Number other) => self.Add(other);
     public Energy Subtract(Number other) => throw new NotImplementedException();
     public static Energy operator -(Energy self, Number other) => self.Subtract(other);
+    public Energy Multiply(Energy other) => throw new NotImplementedException();
+    public static Energy operator *(Energy self, Energy other) => self.Multiply(other);
     public Energy Divide(Energy other) => throw new NotImplementedException();
     public static Energy operator /(Energy self, Energy other) => self.Divide(other);
     public Energy Modulo(Energy other) => throw new NotImplementedException();
@@ -2294,6 +2342,8 @@ public class Memory: Measure<Memory>
     public static Memory operator +(Memory self, Number other) => self.Add(other);
     public Memory Subtract(Number other) => throw new NotImplementedException();
     public static Memory operator -(Memory self, Number other) => self.Subtract(other);
+    public Memory Multiply(Memory other) => throw new NotImplementedException();
+    public static Memory operator *(Memory self, Memory other) => self.Multiply(other);
     public Memory Divide(Memory other) => throw new NotImplementedException();
     public static Memory operator /(Memory self, Memory other) => self.Divide(other);
     public Memory Modulo(Memory other) => throw new NotImplementedException();
@@ -2324,6 +2374,8 @@ public class Frequency: Measure<Frequency>
     public static Frequency operator +(Frequency self, Number other) => self.Add(other);
     public Frequency Subtract(Number other) => throw new NotImplementedException();
     public static Frequency operator -(Frequency self, Number other) => self.Subtract(other);
+    public Frequency Multiply(Frequency other) => throw new NotImplementedException();
+    public static Frequency operator *(Frequency self, Frequency other) => self.Multiply(other);
     public Frequency Divide(Frequency other) => throw new NotImplementedException();
     public static Frequency operator /(Frequency self, Frequency other) => self.Divide(other);
     public Frequency Modulo(Frequency other) => throw new NotImplementedException();
@@ -2354,6 +2406,8 @@ public class Loudness: Measure<Loudness>
     public static Loudness operator +(Loudness self, Number other) => self.Add(other);
     public Loudness Subtract(Number other) => throw new NotImplementedException();
     public static Loudness operator -(Loudness self, Number other) => self.Subtract(other);
+    public Loudness Multiply(Loudness other) => throw new NotImplementedException();
+    public static Loudness operator *(Loudness self, Loudness other) => self.Multiply(other);
     public Loudness Divide(Loudness other) => throw new NotImplementedException();
     public static Loudness operator /(Loudness self, Loudness other) => self.Divide(other);
     public Loudness Modulo(Loudness other) => throw new NotImplementedException();
@@ -2384,6 +2438,8 @@ public class LuminousIntensity: Measure<LuminousIntensity>
     public static LuminousIntensity operator +(LuminousIntensity self, Number other) => self.Add(other);
     public LuminousIntensity Subtract(Number other) => throw new NotImplementedException();
     public static LuminousIntensity operator -(LuminousIntensity self, Number other) => self.Subtract(other);
+    public LuminousIntensity Multiply(LuminousIntensity other) => throw new NotImplementedException();
+    public static LuminousIntensity operator *(LuminousIntensity self, LuminousIntensity other) => self.Multiply(other);
     public LuminousIntensity Divide(LuminousIntensity other) => throw new NotImplementedException();
     public static LuminousIntensity operator /(LuminousIntensity self, LuminousIntensity other) => self.Divide(other);
     public LuminousIntensity Modulo(LuminousIntensity other) => throw new NotImplementedException();
@@ -2414,6 +2470,8 @@ public class ElectricPotential: Measure<ElectricPotential>
     public static ElectricPotential operator +(ElectricPotential self, Number other) => self.Add(other);
     public ElectricPotential Subtract(Number other) => throw new NotImplementedException();
     public static ElectricPotential operator -(ElectricPotential self, Number other) => self.Subtract(other);
+    public ElectricPotential Multiply(ElectricPotential other) => throw new NotImplementedException();
+    public static ElectricPotential operator *(ElectricPotential self, ElectricPotential other) => self.Multiply(other);
     public ElectricPotential Divide(ElectricPotential other) => throw new NotImplementedException();
     public static ElectricPotential operator /(ElectricPotential self, ElectricPotential other) => self.Divide(other);
     public ElectricPotential Modulo(ElectricPotential other) => throw new NotImplementedException();
@@ -2444,6 +2502,8 @@ public class ElectricCharge: Measure<ElectricCharge>
     public static ElectricCharge operator +(ElectricCharge self, Number other) => self.Add(other);
     public ElectricCharge Subtract(Number other) => throw new NotImplementedException();
     public static ElectricCharge operator -(ElectricCharge self, Number other) => self.Subtract(other);
+    public ElectricCharge Multiply(ElectricCharge other) => throw new NotImplementedException();
+    public static ElectricCharge operator *(ElectricCharge self, ElectricCharge other) => self.Multiply(other);
     public ElectricCharge Divide(ElectricCharge other) => throw new NotImplementedException();
     public static ElectricCharge operator /(ElectricCharge self, ElectricCharge other) => self.Divide(other);
     public ElectricCharge Modulo(ElectricCharge other) => throw new NotImplementedException();
@@ -2474,6 +2534,8 @@ public class ElectricCurrent: Measure<ElectricCurrent>
     public static ElectricCurrent operator +(ElectricCurrent self, Number other) => self.Add(other);
     public ElectricCurrent Subtract(Number other) => throw new NotImplementedException();
     public static ElectricCurrent operator -(ElectricCurrent self, Number other) => self.Subtract(other);
+    public ElectricCurrent Multiply(ElectricCurrent other) => throw new NotImplementedException();
+    public static ElectricCurrent operator *(ElectricCurrent self, ElectricCurrent other) => self.Multiply(other);
     public ElectricCurrent Divide(ElectricCurrent other) => throw new NotImplementedException();
     public static ElectricCurrent operator /(ElectricCurrent self, ElectricCurrent other) => self.Divide(other);
     public ElectricCurrent Modulo(ElectricCurrent other) => throw new NotImplementedException();
@@ -2504,6 +2566,8 @@ public class ElectricResistance: Measure<ElectricResistance>
     public static ElectricResistance operator +(ElectricResistance self, Number other) => self.Add(other);
     public ElectricResistance Subtract(Number other) => throw new NotImplementedException();
     public static ElectricResistance operator -(ElectricResistance self, Number other) => self.Subtract(other);
+    public ElectricResistance Multiply(ElectricResistance other) => throw new NotImplementedException();
+    public static ElectricResistance operator *(ElectricResistance self, ElectricResistance other) => self.Multiply(other);
     public ElectricResistance Divide(ElectricResistance other) => throw new NotImplementedException();
     public static ElectricResistance operator /(ElectricResistance self, ElectricResistance other) => self.Divide(other);
     public ElectricResistance Modulo(ElectricResistance other) => throw new NotImplementedException();
@@ -2534,6 +2598,8 @@ public class Power: Measure<Power>
     public static Power operator +(Power self, Number other) => self.Add(other);
     public Power Subtract(Number other) => throw new NotImplementedException();
     public static Power operator -(Power self, Number other) => self.Subtract(other);
+    public Power Multiply(Power other) => throw new NotImplementedException();
+    public static Power operator *(Power self, Power other) => self.Multiply(other);
     public Power Divide(Power other) => throw new NotImplementedException();
     public static Power operator /(Power self, Power other) => self.Divide(other);
     public Power Modulo(Power other) => throw new NotImplementedException();
@@ -2564,6 +2630,8 @@ public class Density: Measure<Density>
     public static Density operator +(Density self, Number other) => self.Add(other);
     public Density Subtract(Number other) => throw new NotImplementedException();
     public static Density operator -(Density self, Number other) => self.Subtract(other);
+    public Density Multiply(Density other) => throw new NotImplementedException();
+    public static Density operator *(Density self, Density other) => self.Multiply(other);
     public Density Divide(Density other) => throw new NotImplementedException();
     public static Density operator /(Density self, Density other) => self.Divide(other);
     public Density Modulo(Density other) => throw new NotImplementedException();
@@ -2654,6 +2722,8 @@ public class Probability: Numerical<Probability>
     public static Probability operator +(Probability self, Probability other) => self.Add(other);
     public Probability Subtract(Probability other) => throw new NotImplementedException();
     public static Probability operator -(Probability self, Probability other) => self.Subtract(other);
+    public Probability Multiply(Probability other) => throw new NotImplementedException();
+    public static Probability operator *(Probability self, Probability other) => self.Multiply(other);
     public Probability Divide(Probability other) => throw new NotImplementedException();
     public static Probability operator /(Probability self, Probability other) => self.Divide(other);
     public Probability Modulo(Probability other) => throw new NotImplementedException();

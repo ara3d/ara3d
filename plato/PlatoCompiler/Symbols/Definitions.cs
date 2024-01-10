@@ -87,7 +87,7 @@ namespace Plato.Compiler.Symbols
             : base(type, name) { }
 
         public override Reference ToReference()
-            => throw new NotSupportedException();
+            => new VariableReference(this);
 
         public override IEnumerable<Symbol> GetChildSymbols()
             => new[] { Type };

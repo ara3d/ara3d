@@ -60,6 +60,7 @@ public interface AdditiveArithmetic<Self, T>
 }
 public interface MultiplicativeArithmetic<Self, T>
 {
+    Self Multiply(Self other);
     Self Divide(Self other);
     Self Modulo(Self other);
 }

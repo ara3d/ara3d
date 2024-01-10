@@ -98,6 +98,7 @@ concept AdditiveArithmetic<T: Any>
 
 concept MultiplicativeArithmetic<T: Any>
 {
+    Multiply(self: Self, other: Self): Self;
     Divide(self: Self, other: Self): Self;    
     Modulo(self: Self, other: Self): Self;
 }
@@ -114,10 +115,13 @@ concept BooleanOperations
     Not(a: Self): Self;
 }
 
-concept Interval<T: Interpolatable>
+concept Interval<TValue: Interpolatable, TSize: Numerical>
+    where TValue: AdditiveArithmetic<Size>
+    where TSize: ScalarArithmetic 
 {
-    Min(x: Self): T;
-    Max(x: Self): T;
+    Min(x: Self): TValue;
+    Max(x: Self): TValue;
+    Size(x: Self): TSize;
 }
     
 concept Interpolatable

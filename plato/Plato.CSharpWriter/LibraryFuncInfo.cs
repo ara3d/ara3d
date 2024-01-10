@@ -24,6 +24,23 @@ namespace Plato.CSharpWriter
         }
     }
 
+    // 
+    public class TypeVar
+    {
+        public string Name => $"T{Index}";
+        public TypeParameterDefinition Definition { get; }
+        public bool HasDefinition => Definition != null;
+        public TypeExpression Constraint { get; }
+        public int Index { get; }
+
+        public TypeVar(int index, TypeParameterDefinition def, TypeExpression constraint)
+        {
+            Definition = def;
+            Index = index;
+            Constraint = constraint;
+        }
+    }
+
     /// <summary>
     /// Contains extra information about a type used in a library function.
     /// A type used in a library function is either 
@@ -77,9 +94,9 @@ namespace Plato.CSharpWriter
         public bool HasBody => Definition.Body != null;
         public FunctionDefinition Definition { get; }
         public TypeDefinition ParentType { get; }
-        public IReadOnlyList<TypeVariable> TypeVariables { get; }
+        public IReadOnlyList<TypeVar> TypeVariables { get; }
         public IReadOnlyList<ParamInfo> Parameters { get; }
-        
+
         // Note: when a function returns a concept 
         public bool ReturnsAConcept { get; }
         
@@ -106,16 +123,8 @@ namespace Plato.CSharpWriter
             ReturnType = new TypeInfo(definition.ReturnType);
             ReturnsAConcept = ReturnType.Definition.IsConcept();
             Parameters = Definition.Parameters.Select(p => new ParamInfo(p)).ToList();
-            
-            foreach (var p in Parameters)
-            {
 
-            }
-
-            if (!ReturnsAConcept)
-            {
-
-            }
+           
         }
 
     }

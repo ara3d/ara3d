@@ -5,6 +5,8 @@ using Plato.Compiler.Utilities;
 
 namespace Plato.Compiler.Symbols
 {
+    // TODO: this needs to be finished along with statements
+
     public class TypeExpression : Symbol
     {
         public string Name => Definition?.Name ?? throw new Exception("Unresolved");
