@@ -109,6 +109,9 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ara3D.ScriptPaint", "labs\Ara3D.ScriptPaint\Ara3D.ScriptPaint.csproj", "{5D7F9FDE-4E08-469F-9AB7-806AFBB7C531}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "plato", "plato", "{6782F97A-B94B-4A1E-9D2A-C106EED389E9}"
+	ProjectSection(SolutionItems) = preProject
+		plato\README.md = plato\README.md
+	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Emu", "labs\Emu\Emu.csproj", "{81E40D8B-D22C-436E-A78C-B963DFB66685}"
 EndProject
@@ -160,9 +163,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ara3D.SVG.Creator", "labs\A
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ara3D.Penguin", "labs\Ara3D.Penguin\Ara3D.Penguin.csproj", "{80A953C3-8423-45E7-973F-D4058A9BEA1B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PlatoOutput", "plato\PlatoOutput\PlatoOutput.csproj", "{2FDE647F-55AB-46AB-981C-08111A0EDABD}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PlatoOutput", "plato\PlatoOutput\PlatoOutput.csproj", "{2FDE647F-55AB-46AB-981C-08111A0EDABD}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Plato.CSharpWriter", "Plato\Plato.CSharpWriter\Plato.CSharpWriter.csproj", "{395BC91C-47E9-415C-8A41-9EF4390E164D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Plato.CSharpWriter", "Plato\Plato.CSharpWriter\Plato.CSharpWriter.csproj", "{395BC91C-47E9-415C-8A41-9EF4390E164D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -150,16 +150,18 @@
         public Rule Statement => Recursive(nameof(InnerStatement));
 
         public Rule QualifiedIdentifier => Node(List(Identifier, Symbol(".")));
-        public new Rule TypeParameter => Node(Identifier + TypeAnnotation);
+        public Rule TypeParameter => Node(Identifier);
         public Rule TypeParameterList => Node(AngledBracketList(TypeParameter).Optional());
 
         public Rule ImplementsList => Node(Optional(Keyword("implements") + Recovery + List(TypeExpr)));
         public Rule InheritsList => Node(Optional(Keyword("inherits") + Recovery + List(TypeExpr)));
+        public Rule Constraint => Node(Keyword("where") + Recovery + Identifier + TypeAnnotation);
+        public Rule ConstraintList => Node(Constraint.ZeroOrMore());
 
         public Rule Type => Node(Keyword("type") + Recovery + Identifier + TypeParameterList + ImplementsList +
                                  Braced(FieldDeclaration.ZeroOrMore()));
 
-        public Rule Concept => Node(Keyword("concept") + Recovery + Identifier + TypeParameterList + InheritsList +
+        public Rule Concept => Node(Keyword("concept") + Recovery + Identifier + TypeParameterList + ConstraintList + InheritsList +
                                     Braced(MethodDeclaration.ZeroOrMore()));
 
         public Rule Library =>
@@ -171,7 +173,7 @@
         public Rule FunctionParameterList => Node(ParenthesizedList(FunctionParameter));
         public Rule ExpressionBody => Node(Symbol("=>") + Recovery + Expression + EOS);
         public Rule FunctionBody => Node(ExpressionBody | CompoundStatement | EOS);
-        public new Rule TypeAnnotation => Node(Symbol(":") + Recovery + TypeExpr);
+        public Rule TypeAnnotation => Node(Symbol(":") + Recovery + TypeExpr);
 
         public Rule MethodDeclaration =>
             Node(Identifier + FunctionParameterList + Recovery + TypeAnnotation + FunctionBody);

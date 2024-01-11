@@ -5,10 +5,21 @@ namespace Parakeet.Tests
     public static class CstCodeGenerator
     {
         [Test, Explicit]
-        public static void OutputCst()
+        public static void OutputCSharpCst()
         {
             OutputCstCode(CSharpTests.Grammar, "CSharp");
+        }
+
+
+        [Test, Explicit]
+        public static void OutputJsonCst()
+        {
             OutputCstCode(JsonTests.Grammar, "Json");
+        }
+
+        [Test, Explicit]
+        public static void OutputPlatoCst()
+        {
             OutputCstCode(PlatoTests.Grammar, "Plato");
         }
 
