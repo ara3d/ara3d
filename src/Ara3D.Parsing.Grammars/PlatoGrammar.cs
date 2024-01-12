@@ -184,9 +184,10 @@
         public Rule ArrayRankSpecifier => Node(Bracketed(Comma.ZeroOrMore()));
         public Rule ArrayRankSpecifiers => Node(ArrayRankSpecifier.ZeroOrMore());
         public Rule TypeArgList => Node(AngledBracketList(TypeExpr));
-        public Rule SimpleTypExpr => Node(QualifiedIdentifier);
+        public Rule TypeVar => Node('$' + Identifier);
+        public Rule SimpleTypeExpr => Node(Identifier);
         public Rule CompoundTypeExpr => Node(ParenthesizedList(TypeExpr));
-        public Rule CompoundOrSimpleTypeExpr => Node(CompoundTypeExpr | SimpleTypExpr);
+        public Rule CompoundOrSimpleTypeExpr => Node(CompoundTypeExpr | SimpleTypeExpr | TypeVar);
         public Rule InnerTypeExpr => Node(CompoundOrSimpleTypeExpr + TypeArgList.Optional() + ArrayRankSpecifiers);
         public Rule TypeExpr => Recursive(nameof(InnerTypeExpr));
 
