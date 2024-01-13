@@ -1,4 +1,4 @@
-﻿using Ara3D.Parsing.Grammars;
+﻿using Parakeet.Grammars;
 
 namespace Parakeet.Grammars.WIP
 {

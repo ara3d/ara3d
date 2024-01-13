@@ -1,11 +1,12 @@
 ﻿using System.Runtime.CompilerServices;
+using Parakeet;
 
 namespace Parakeet
 {
     /// <summary>
     /// A class that represents the state of the parser, and the parse tree. 
     /// </summary>
-    public class ParserState
+    public class ParserState : ILocation
     {
         public ParserInput Input { get; }
         public int Position { get; }

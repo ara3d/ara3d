@@ -1,7 +1,7 @@
 ﻿using System.Linq;
 using Ara3D.Utils;
 
-namespace Ara3D.Parsing.CST
+namespace Parakeet.CST
 {
     public class CstXmlBuilder : CodeBuilder<CstXmlBuilder>
     {

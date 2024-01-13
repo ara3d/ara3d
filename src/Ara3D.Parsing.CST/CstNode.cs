@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Ara3D.Parsing.CST
+namespace Parakeet.CST
 {
     public interface ITree<T> where T : ITree<T>
     {

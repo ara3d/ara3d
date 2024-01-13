@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using Ara3D.Utils;
 using Parakeet;
 
-namespace Ara3D.Parsing.CST
+namespace Parakeet.CST
 {
     /// <summary>
     /// This class is used to generate typed classes for the Concrete syntax tree,

@@ -1,7 +1,7 @@
 ﻿using System.Linq;
 using Parakeet;
 
-namespace Ara3D.Parsing.Grammars
+namespace Parakeet.Grammars
 {
     public class CommonGrammar : Grammar
     {
