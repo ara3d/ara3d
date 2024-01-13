@@ -1,8 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using Ara3D.Utils;
+using Parakeet;
 
-namespace Parakeet
+namespace Ara3D.Parsing.CST
 {
     /// <summary>
     /// This class is used to generate typed classes for the Concrete syntax tree,
@@ -34,17 +35,17 @@ namespace Parakeet
             if (r is NodeRule nr)
                 return nr.Name;
             if (r is ZeroOrMoreRule z)
-                return z.Rule.ToNodeFieldName();
+                return ToNodeFieldName(z.Rule);
             if (r is OneOrMoreRule o)
-                return o.Rule.ToNodeFieldName();
+                return ToNodeFieldName(o.Rule);
             if (r is SequenceRule s)
                 return "Sequence";
             if (r is ChoiceRule c)
                 return "Choices";
             if (r is OptionalRule opt)
-                return opt.Rule.ToNodeFieldName();
+                return ToNodeFieldName(opt.Rule);
             if (r is RecursiveRule rec)
-                return rec.Rule.ToNodeFieldName();
+                return ToNodeFieldName(rec.Rule);
             return "Node";
         }
 

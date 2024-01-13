@@ -1,5 +1,5 @@
 ﻿using System.Diagnostics;
-using Parakeet.Demos;
+using Parakeet.Grammars;
 
 namespace Parakeet.Tests
 {

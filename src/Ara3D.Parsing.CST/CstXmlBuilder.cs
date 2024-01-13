@@ -1,7 +1,7 @@
 ﻿using System.Linq;
 using Ara3D.Utils;
 
-namespace Parakeet
+namespace Ara3D.Parsing.CST
 {
     public class CstXmlBuilder : CodeBuilder<CstXmlBuilder>
     {
@@ -13,7 +13,7 @@ namespace Parakeet
                 return WriteLine($"<{type}>{node.Text}</{type}>");
             }
             var r = WriteLine($"<{type}>").Indent();
-            r = node.Children.Aggregate(r, (current, c) => current.Write(c));
+            r = node.Children.Aggregate<CstNode, CstXmlBuilder>(r, (current, c) => current.Write(c));
             return r.Dedent().WriteLine($"</{type}>");
         }
     }

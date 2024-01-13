@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Parakeet
+namespace Ara3D.Parsing.CST
 {
     public interface ITree<T> where T : ITree<T>
     {
@@ -14,7 +14,7 @@ namespace Parakeet
     {
         public static TAcc Aggregate<T, TAcc>(this ITree<T> tree, TAcc init, Func<TAcc, T, TAcc> func)
             where T : ITree<T>
-            => tree.Children.Aggregate(init, (acc, curr) => curr.Aggregate(acc, func));
+            => tree.Children.Aggregate(init, (acc, curr) => Aggregate(curr, acc, func));
     }
 
     public class CstNode : ITree<CstNode>

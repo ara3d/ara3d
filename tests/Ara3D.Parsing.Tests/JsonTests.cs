@@ -1,5 +1,5 @@
 ﻿using Newtonsoft.Json.Linq;
-using Parakeet.Demos;
+using Parakeet.Grammars;
 using System.Diagnostics;
 
 namespace Parakeet.Tests

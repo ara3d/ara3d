@@ -1,4 +1,6 @@
-﻿namespace Parakeet.Demos
+﻿using Ara3D.Parsing.Grammars;
+
+namespace Parakeet.Grammars
 {
     public class JsonGrammar : CommonGrammar
     {

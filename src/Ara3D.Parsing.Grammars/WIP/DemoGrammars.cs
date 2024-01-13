@@ -1,4 +1,6 @@
-﻿namespace Parakeet.Demos.WIP
+﻿using Ara3D.Parsing.Grammars;
+
+namespace Parakeet.Grammars.WIP
 {
     public class CGrammar : CommonGrammar
     {
