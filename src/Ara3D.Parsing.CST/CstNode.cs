@@ -17,9 +17,10 @@ namespace Parakeet.CST
             => tree.Children.Aggregate(init, (acc, curr) => Aggregate(curr, acc, func));
     }
 
-    public class CstNode : ITree<CstNode>
+    public class CstNode : ITree<CstNode>, ILocation
     {
         public int Count => Children.Count;
+        public ILocation Location { get; set; }
         public CstNode this[int index] => Children[index];
         public CstNode(IReadOnlyList<CstNode> children) => Children = children;
         public IReadOnlyList<CstNode> Children { get; }
