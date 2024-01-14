@@ -1,4 +1,5 @@
 ﻿using System.Diagnostics;
+using Ara3D.Utils;
 using Parakeet.Grammars;
 
 namespace Parakeet.Tests
@@ -7,36 +8,38 @@ namespace Parakeet.Tests
     {
         public static PlatoGrammar Grammar = PlatoGrammar.Instance;
 
+        public static DirectoryPath InputFolder = @"C:\Users\cdigg\git\plato\PlatoStandardLibrary\";
+
         [Test]
-        [TestCase("C:\\Users\\cdigg\\git\\plato\\PlatoStandardLibrary\\libraries.plato")]
-        [TestCase("C:\\Users\\cdigg\\git\\plato\\PlatoStandardLibrary\\types.plato")]
-        [TestCase("C:\\Users\\cdigg\\git\\plato\\PlatoStandardLibrary\\concepts.plato")]
-        [TestCase("C:\\Users\\cdigg\\git\\plato\\PlatoStandardLibrary\\intrinsics.plato")]
+        [TestCase("libraries.plato")]
+        [TestCase("types.plato")]
+        [TestCase("concepts.plato")]
+        [TestCase("intrinsics.plato")]
         public static void TestFile(string file)
         {
-            var pi = ParserInput.FromFile(file);
+            var pi = ParserInput.FromFile(InputFolder.RelativeFile(file));
             ParserTests.ParseTest(pi, Grammar.File);
         }
 
         [Test]
-        [TestCase("C:\\Users\\cdigg\\git\\plato\\PlatoStandardLibrary\\libraries.plato")]
-        [TestCase("C:\\Users\\cdigg\\git\\plato\\PlatoStandardLibrary\\types.plato")]
-        [TestCase("C:\\Users\\cdigg\\git\\plato\\PlatoStandardLibrary\\concepts.plato")]
-        [TestCase("C:\\Users\\cdigg\\git\\plato\\PlatoStandardLibrary\\intrinsics.plato")]
+        [TestCase("libraries.plato")]
+        [TestCase("types.plato")]
+        [TestCase("concepts.plato")]
+        [TestCase("intrinsics.plato")]
         public static void TestTokenizer(string file)
         {
-            var pi = ParserInput.FromFile(file);
+            var pi = ParserInput.FromFile(InputFolder.RelativeFile(file));
             ParserTests.ParseTest(pi, PlatoTokenGrammar.Instance.Tokenizer);
         }
 
         [Test]
-        [TestCase("C:\\Users\\cdigg\\git\\plato\\PlatoStandardLibrary\\libraries.plato")]
-        [TestCase("C:\\Users\\cdigg\\git\\plato\\PlatoStandardLibrary\\types.plato")]
-        [TestCase("C:\\Users\\cdigg\\git\\plato\\PlatoStandardLibrary\\concepts.plato")]
-        [TestCase("C:\\Users\\cdigg\\git\\plato\\PlatoStandardLibrary\\intrinsics.plato")]
+        [TestCase("libraries.plato")]
+        [TestCase("types.plato")]
+        [TestCase("concepts.plato")]
+        [TestCase("intrinsics.plato")]
         public static void OutputTokens(string file)
         {
-            var pi = ParserInput.FromFile(file);
+            var pi = ParserInput.FromFile(InputFolder.RelativeFile(file));
             var state = pi.Parse(PlatoTokenGrammar.Instance.Tokenizer);
             Debug.Assert(state != null);
             var nodes = state.AllNodes().ToList();
