@@ -1,6 +1,4 @@
-﻿using Parakeet.Grammars;
-
-namespace Parakeet.Grammars.WIP
+﻿namespace Parakeet.Grammars.WIP
 {
     // https://en.wikipedia.org/wiki/S-expression
     // https://en.wikipedia.org/wiki/Lisp_(programming_language)

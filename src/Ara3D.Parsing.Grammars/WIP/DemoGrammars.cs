@@ -1,6 +1,4 @@
-﻿using Parakeet.Grammars;
-
-namespace Parakeet.Grammars.WIP
+﻿namespace Parakeet.Grammars.WIP
 {
     public class CGrammar : CommonGrammar
     {

@@ -2,15 +2,10 @@
 using System.Reflection;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Input;
-using Ara3D.Math;
 using Ara3D.Utils;
 using ColorPicker;
-using ExCSS;
-using Microsoft.VisualBasic.Devices;
 using Color = System.Drawing.Color;
 using Colors = System.Windows.Media.Colors;
-using Mouse = Microsoft.VisualBasic.Devices.Mouse;
 
 namespace Ara3D.SVG.Creator;
 

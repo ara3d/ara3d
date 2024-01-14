@@ -1,8 +1,4 @@
-﻿using System.IO;
-using System.Security.Cryptography.Pkcs;
-using System.Xml.Linq;
-using Ara3D.Collections;
-using Ara3D.Math;
+﻿using Ara3D.Collections;
 using Svg;
 
 namespace Ara3D.SVG.Creator;

@@ -1,15 +1,7 @@
 ﻿using System.ComponentModel;
-using System.Diagnostics;
-using System.Reflection;
-using System.Text;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Media;
-using System.Xml.Linq;
-using Ara3D.Math;
 using Ara3D.Utils;
-using Ara3D.Utils.Wpf;
-using ColorPicker;
 
 namespace Ara3D.SVG.Creator
 {

@@ -1,6 +1,4 @@
-﻿using Parakeet.Grammars;
-
-namespace Parakeet.Grammars
+﻿namespace Parakeet.Grammars
 {
     public class PlatoTokenGrammar : CommonGrammar
     {

@@ -1,6 +1,5 @@
 ﻿using System.Drawing;
 using Ara3D.Math;
-using Ara3D.Collections;
 using Svg;
 using Svg.Transforms;
 
