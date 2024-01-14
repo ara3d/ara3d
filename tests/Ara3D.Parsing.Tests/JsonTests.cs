@@ -211,7 +211,7 @@ namespace Parakeet.Tests
 
             {
                 var sw = Stopwatch.StartNew();
-                var ps = text.Parse(Grammar.Json);
+                var ps = Grammar.Json.Parse(text);
                 Console.WriteLine($"It took {sw.Elapsed} to parse using Parakeet");
 
                 var tree = ps.Node.ToParseTree();

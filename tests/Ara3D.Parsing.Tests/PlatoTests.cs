@@ -104,6 +104,15 @@ namespace Parakeet.Tests
         public static void TestExpressions(string input)
             => ParserTests.SingleParseTest(input, Grammar.Expression);
 
+        [Test]
+        public static void TestNotEquals()
+        {
+            var input = "a.Compare(b) != 0";
+            var state = Grammar.Expression.Parse(input);
+            var tree = state.Node.ToParseTree();
+            var xml = tree.ToXml();
+            Console.WriteLine(xml);
+        }   
 
         [Test]
         [TestCase("a", "Identifier")]

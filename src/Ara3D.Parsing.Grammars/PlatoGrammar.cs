@@ -16,7 +16,7 @@
         public Rule Indexer => Node(Bracketed(Expression));
 
         public Rule PostfixOperator => Node(
-            Symbols("!", "++", "--")
+            Symbols("++", "--")
             | MemberAccess
             | ConditionalMemberAccess
             | FunctionArgs

@@ -120,21 +120,6 @@ namespace Parakeet.Tests
                     return 0;
                 }
                 Console.WriteLine($"Tree {tree}");
-                //Console.WriteLine($"Contents {tree.Contents}");
-
-                //var ast = tree.ToNode();
-                //Console.WriteLine($"Ast = {ast}");
-
-                    /*
-                if (expNodes != null)
-                {
-                    Console.WriteLine("Expected parse tree is null");
-                }
-                else
-                {
-                    Console.WriteLine($"Expected parse tree = {expNodes.ToDefinition()}");
-                }
-                */
             }
             return ps.AtEnd() ? 1 : 0;
         }
