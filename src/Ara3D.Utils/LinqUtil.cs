@@ -138,7 +138,18 @@ namespace Ara3D.Utils
         }
 
         public static IEnumerable<T> Distinct<T, U>(this IEnumerable<T> self, Func<T, U> func)
-            => self.Distinct(CreateEqualityComparer<T>(x => func(x).GetHashCode(), (a, b) => func(a).Equals(func(b))));
+        {
+            var tmp = new HashSet<U>();
+            foreach (var x in self)
+            {
+                var y = func(x);
+                if (!tmp.Contains(y))
+                {
+                    yield return x;
+                    tmp.Add(y);
+                }
+            }
+        }
 
         public static IEnumerable<T> Distinct<T>(this IEnumerable<T> self, Func<T, T, bool> comparison, Func<T, int> hashFunc)
             => self.Distinct(CreateEqualityComparer(hashFunc, comparison));
