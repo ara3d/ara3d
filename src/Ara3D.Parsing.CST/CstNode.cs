@@ -5,19 +5,7 @@ using System.Text;
 
 namespace Parakeet.CST
 {
-    public interface ITree<T> where T : ITree<T>
-    {
-        IReadOnlyList<T> Children { get; }
-    }
-
-    public static class TreeHelpers
-    {
-        public static TAcc Aggregate<T, TAcc>(this ITree<T> tree, TAcc init, Func<TAcc, T, TAcc> func)
-            where T : ITree<T>
-            => tree.Children.Aggregate(init, (acc, curr) => Aggregate(curr, acc, func));
-    }
-
-    public class CstNode : ITree<CstNode>, ILocation
+    public class CstNode : ILocation
     {
         public int Count => Children.Count;
         public ILocation Location { get; set; }
@@ -60,7 +48,6 @@ namespace Parakeet.CST
         public CstLeaf(string text) : base(Array.Empty<CstNode>()) => Text = text;
         public override string ToString() => Text;
     }
-
 
     public class CstFilter : CstNode
     {
