@@ -68,7 +68,6 @@ namespace Parakeet.CST
         public bool Present => Node != null;
     }
     
-
     public static class CstExtensions
     {
         public static StringBuilder ToXml(this CstNode node, StringBuilder sb = null, string indent = "")
