@@ -155,8 +155,8 @@
 
         public Rule ImplementsList => Node(Optional(Keyword("implements") + Recovery + List(TypeExpr)));
         public Rule InheritsList => Node(Optional(Keyword("inherits") + Recovery + List(TypeExpr)));
-        public Rule Constraint => Node(Keyword("where") + Recovery + Identifier + TypeAnnotation);
-        public Rule ConstraintList => Node(Constraint.ZeroOrMore());
+        public Rule Constraint => Node(Identifier + TypeAnnotation);
+        public Rule ConstraintList => Node(Optional(Keyword("where") + Recovery + List(Constraint)));
 
         public Rule Type => Node(Keyword("type") + Recovery + Identifier + TypeParameterList + ImplementsList +
                                  Braced(FieldDeclaration.ZeroOrMore()));
