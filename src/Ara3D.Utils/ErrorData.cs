@@ -4,13 +4,13 @@ namespace Ara3D.Utils
 {
     public class ErrorData
     {
-        public Exception Exception { get; set; }
-        public string Message { get; set; }
-        public string HelpLink { get; set; }
-        public string Type { get; set; }
-        public bool Caught { get; set; }
-        public int HResult { get; set; }
-        public string StackTrace { get; set; }
+        public readonly Exception Exception;
+        public readonly string Message;
+        public readonly string HelpLink;
+        public readonly string Type;
+        public readonly bool Caught;
+        public readonly int HResult;
+        public readonly string StackTrace;
 
         public ErrorData(Exception e, bool caught = true)
         {

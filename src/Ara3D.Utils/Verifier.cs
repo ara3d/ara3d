@@ -4,6 +4,10 @@ using System.Runtime.CompilerServices;
 
 namespace Ara3D.Utils
 {
+    /// <summary>
+    /// Use this class as a replacement for debugger asserts, if you want to throw exceptions if certain conditions
+    /// are false even in your run-time code. 
+    /// </summary>
     public static class Verifier
     {
         public static void Assert<T>(T input,

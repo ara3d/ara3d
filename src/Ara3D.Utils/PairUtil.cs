@@ -4,6 +4,9 @@ namespace Ara3D.Utils
 {
     public static class PairUtil
     {
+        public static (T1, T2) PairWith<T1, T2>(this T1 first, T2 second)
+            => (first, second);
+
         public static (T2, T1) Swap<T1, T2>(this (T1, T2) pair)
             => (pair.Item2, pair.Item1);
 

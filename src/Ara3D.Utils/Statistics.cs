@@ -19,7 +19,7 @@ namespace Ara3D.Utils
         public readonly bool OrderedAscending;
         public readonly bool OrderedDescending;
 
-        // Additional staticis computed when doing multiple passes 
+        // Additional statistics computed when doing multiple passes 
         public readonly bool MultiPassStats;
         public readonly double Skewness;
         public readonly double Kurtosis;

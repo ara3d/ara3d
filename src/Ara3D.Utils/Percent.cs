@@ -3,7 +3,7 @@
     public readonly struct Percent
     {
         public Percent(double value) => Value = value;
-        public double Value { get; }
+        public readonly double Value;
         public static implicit operator double(Percent percent) => percent.Value;
         public static implicit operator Percent(double value) => new Percent(value);
         public static Percent FromFraction(double numerator, double denominator) => FromDecimalValue(numerator/denominator);

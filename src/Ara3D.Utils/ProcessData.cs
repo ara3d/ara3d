@@ -27,23 +27,23 @@ namespace Ara3D.Utils
             ModuleName = p.MainModule?.ModuleName ?? "";
         }
 
-        public int ExitCode { get; set; }
-        public bool HasExited { get; set; }
-        public bool Responding { get; set; }
-        public DateTimeOffset ExitTime { get; set; } 
-        public string MachineName { get; set; }
-        public string FileName { get; set; }
-        public string WindowTitle { get; set; }
-        public string ModuleName { get; set; }
-        public int Id { get; set; }
-        public long WorkingSet { get; set; }
-        public long PeakWorkingSet { get; set; }
-        public long PagedMemorySize { get; set; }
-        public long NonPagedMemorySize { get; set; }
-        public long PeakPagedMemorySize { get; set; }
-        public long VirtualMemorySize { get; set; }
-        public long PeakVirtualMemorySize { get; set; }
-        public long PrivateMemorySize { get; set; }
-        public FileVersionInfo FileVersionInfo { get; set; }
+        public readonly int ExitCode;
+        public readonly bool HasExited;
+        public readonly bool Responding;
+        public readonly DateTimeOffset ExitTime; 
+        public readonly string MachineName;
+        public readonly string FileName;
+        public readonly string WindowTitle;
+        public readonly string ModuleName;
+        public readonly int Id;
+        public readonly long WorkingSet;
+        public readonly long PeakWorkingSet;
+        public readonly long PagedMemorySize;
+        public readonly long NonPagedMemorySize;
+        public readonly long PeakPagedMemorySize;
+        public readonly long VirtualMemorySize;
+        public readonly long PeakVirtualMemorySize;
+        public readonly long PrivateMemorySize;
+        public readonly FileVersionInfo FileVersionInfo;
     }
 }
