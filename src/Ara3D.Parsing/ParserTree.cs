@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace Parakeet
+namespace Ara3D.Parsing
 {
     /// <summary>
     /// Created from parse nodes. 

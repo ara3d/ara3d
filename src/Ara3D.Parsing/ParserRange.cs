@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Parakeet
+namespace Ara3D.Parsing
 {
     /// <summary>
     /// Used to identify ranges of text such as found in a node or a match.

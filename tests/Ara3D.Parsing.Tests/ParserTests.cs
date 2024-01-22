@@ -1,5 +1,5 @@
 #pragma warning disable NUnit2005
-namespace Parakeet.Tests
+namespace Ara3D.Parsing.Tests
 {
     public static class ParserTests
     {

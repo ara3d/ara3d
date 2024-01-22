@@ -1,4 +1,4 @@
-﻿namespace Parakeet
+﻿namespace Ara3D.Parsing
 {
     /// <summary>
     /// Parse errors are only created within sequence when a "OnError" node fails. 

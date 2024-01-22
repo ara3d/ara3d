@@ -1,6 +1,6 @@
 ﻿using System.Runtime.CompilerServices;
 
-namespace Parakeet
+namespace Ara3D.Parsing
 {
     /// <summary>
     /// A class that represents the state of the parser, and the parse tree. 

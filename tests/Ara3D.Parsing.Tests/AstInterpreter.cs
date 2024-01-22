@@ -1,6 +1,6 @@
 ﻿using System.Reflection;
 
-namespace Parakeet.Tests
+namespace Ara3D.Parsing.Tests
 {
     public class Operators
     {

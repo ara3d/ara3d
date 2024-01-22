@@ -1,6 +1,6 @@
-﻿using Parakeet.Grammars;
+﻿using Ara3D.Parsing.Grammars;
 
-namespace Parakeet.Tests
+namespace Ara3D.Parsing.Tests
 {
     public static class CSharpTests
     {

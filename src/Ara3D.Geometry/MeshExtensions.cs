@@ -125,8 +125,8 @@ namespace Ara3D.Geometry
             => points.Maximize(float.MinValue, v => v.Distance(x));
 
         public static T SnapPoints<T>(this T mesh, float snapSize) where T: IDeformable<T>
-            => snapSize.Abs() >= Constants.Tolerance
-                ? mesh.Deform(v => (v * snapSize.Inverse()).Truncate() * snapSize)
+            => MathUtil.Abs(snapSize) >= Constants.Tolerance
+                ? mesh.Deform(v => (v * MathUtil.Inverse(snapSize)).Truncate() * snapSize)
                 : mesh.Deform(v => Vector3.Zero);
 
         /// <summary>

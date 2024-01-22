@@ -1,4 +1,4 @@
-﻿namespace Parakeet.Grammars.WIP
+﻿namespace Ara3D.Parsing.Grammars.WIP
 {
     // https://en.wikipedia.org/wiki/S-expression
     // https://en.wikipedia.org/wiki/Lisp_(programming_language)

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Parakeet
+namespace Ara3D.Parsing
 {
     public static class GrammarExtensions
     {

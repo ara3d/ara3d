@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
-    <Title></Title>
+    <Title>Ara3D.Utils</Title>
     <Authors>Ara3D</Authors>
     <Company>Ara3D.com</Company>
     <AssemblyName>Ara3D.Utils</AssemblyName>
@@ -10,6 +10,7 @@
     <RepositoryUrl>https://github.com/ara3d/ara3d</RepositoryUrl>
     <PackageLicenseFile>LICENSE.txt</PackageLicenseFile>
     <Copyright>MIT License, Ara 3D Inc.</Copyright>
+    <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
   </PropertyGroup>
 
   <ItemGroup>
@@ -17,7 +18,7 @@
       <Pack>True</Pack>
       <PackagePath>\</PackagePath>
     </None>
-    <None Update="readme.md">
+    <None Update="README.md">
       <Pack>True</Pack>
       <PackagePath>\</PackagePath>
     </None>

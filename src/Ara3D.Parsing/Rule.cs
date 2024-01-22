@@ -5,7 +5,7 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
 
-namespace Parakeet
+namespace Ara3D.Parsing
 {
     public abstract class Rule
     {

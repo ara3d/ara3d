@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.CompilerServices;
 
-namespace Parakeet
+namespace Ara3D.Parsing
 {
     /// <summary>
     /// A class inheriting from grammar contains a set of parsing rules. Each parse rule is defined as 

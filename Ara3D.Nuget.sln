@@ -5,6 +5,8 @@ VisualStudioVersion = 17.8.34309.116
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ara3D.Utils.Nuget", "src\Ara3D.Utils\Ara3D.Utils.Nuget.csproj", "{7B5121B6-9BA9-4499-BF3B-E3213E408890}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ara3D.Parsing.Nuget", "src\Ara3D.Parsing\Ara3D.Parsing.Nuget.csproj", "{2878ECC7-8516-4FF0-B423-F4246F5C7F0E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,10 @@ Global
 		{7B5121B6-9BA9-4499-BF3B-E3213E408890}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7B5121B6-9BA9-4499-BF3B-E3213E408890}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7B5121B6-9BA9-4499-BF3B-E3213E408890}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2878ECC7-8516-4FF0-B423-F4246F5C7F0E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2878ECC7-8516-4FF0-B423-F4246F5C7F0E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2878ECC7-8516-4FF0-B423-F4246F5C7F0E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2878ECC7-8516-4FF0-B423-F4246F5C7F0E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

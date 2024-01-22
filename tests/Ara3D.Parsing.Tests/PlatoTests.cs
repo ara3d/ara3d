@@ -1,8 +1,8 @@
 ﻿using System.Diagnostics;
+using Ara3D.Parsing.Grammars;
 using Ara3D.Utils;
-using Parakeet.Grammars;
 
-namespace Parakeet.Tests
+namespace Ara3D.Parsing.Tests
 {
     public static class PlatoTests
     {

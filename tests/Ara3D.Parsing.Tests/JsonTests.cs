@@ -1,8 +1,8 @@
 ﻿using Newtonsoft.Json.Linq;
-using Parakeet.Grammars;
 using System.Diagnostics;
+using Ara3D.Parsing.Grammars;
 
-namespace Parakeet.Tests
+namespace Ara3D.Parsing.Tests
 {
     public static class JsonTests
     {

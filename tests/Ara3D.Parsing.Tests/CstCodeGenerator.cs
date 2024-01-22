@@ -1,7 +1,6 @@
-using Parakeet.CST;
 using Ara3D.Utils;
 
-namespace Parakeet.Tests
+namespace Ara3D.Parsing.Tests
 {
     public static class CstCodeGenerator
     {
