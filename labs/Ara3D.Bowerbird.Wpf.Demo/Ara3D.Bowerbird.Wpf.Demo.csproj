@@ -7,8 +7,4 @@
     <UseWPF>true</UseWPF>
   </PropertyGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\Ara3D.Bowerbird.Core\Ara3D.Bowerbird.Core.csproj" />
-  </ItemGroup>
-
 </Project>
