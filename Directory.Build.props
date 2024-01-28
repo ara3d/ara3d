@@ -4,11 +4,5 @@
             DestinationFolder="$(SolutionDir)nuget-output" />
   </Target>
   <PropertyGroup>
-    <Authors>Ara3D</Authors>
-    <Company>Ara3D.com</Company>
-    <Copyright>MIT License, Ara 3D Inc.</Copyright>
-    <PackageReadmeFile>README.md</PackageReadmeFile>
-    <RepositoryUrl>https://github.com/ara3d/ara3d</RepositoryUrl>
-    <PackageLicenseFile>LICENSE.txt</PackageLicenseFile>
   </PropertyGroup>
 </Project>

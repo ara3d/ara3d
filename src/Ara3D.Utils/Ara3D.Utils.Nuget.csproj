@@ -3,14 +3,9 @@
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
     <Title>Ara3D.Utils</Title>
-    <Authors>Ara3D</Authors>
-    <Company>Ara3D.com</Company>
     <AssemblyName>Ara3D.Utils</AssemblyName>
-    <PackageReadmeFile>readme.md</PackageReadmeFile>
-    <RepositoryUrl>https://github.com/ara3d/ara3d</RepositoryUrl>
-    <PackageLicenseFile>LICENSE.txt</PackageLicenseFile>
-    <Copyright>MIT License, Ara 3D Inc.</Copyright>
     <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+    <Version>1.1.0</Version>
   </PropertyGroup>
 
   <ItemGroup>
