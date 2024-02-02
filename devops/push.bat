@@ -1,11 +1,7 @@
 echo off
 call :subroutine "%~dp0\..\plato" %1
-git status
-git add .
-git status
-git commit -m %1
-git push
-git status
+call :subroutine "%~dp0\..\parakeet" %1
+call :subroutine "%~dp0\.." %1
 exit /b
 
 rem <Directory> <message>
