@@ -36,7 +36,7 @@ namespace Ara3D.Services
         public IApi Api { get; }
         public List<IPlugin> LoadedPlugins { get; set; } = new List<IPlugin>();
         public List<IPlugin> ScriptedPlugins { get; set; } = new List<IPlugin>();
-        public CompilerService CompilerService { get; }
+        public DirectoryCompiler DirectoryCompiler { get; }
         public CommandService CommandService { get; }
         public CompilerRepo CompilerRepo { get; }
         public PluginRepo PluginRepo { get; }
@@ -56,10 +56,10 @@ namespace Ara3D.Services
             {
                 // TODO: we need to create this from the options passed to the PLugin service
                 var compilerOptions = CompilerOptions.CreateDefault();
-                CompilerService = new CompilerService(null, compilerOptions, options.ScriptsDirectory);
-                CompilerService.RecompileEvent += Controller_RecompileEvent;
-                CompilerService.AutoRecompile = true;
-                CompilerService.Recompile();
+                DirectoryCompiler = new DirectoryCompiler(null, options.ScriptsDirectory, null, true, compilerOptions);
+                DirectoryCompiler.RecompileEvent += Controller_RecompileEvent;
+                DirectoryCompiler.AutoRecompile = true;
+                DirectoryCompiler.Compile();
             }
 
             foreach (var dir in options.PluginDirectories ?? Array.Empty<string>())

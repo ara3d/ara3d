@@ -6,6 +6,9 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Security.Cryptography;
 using System.Text.RegularExpressions;
+using System.Threading;
+using System.Xml.Linq;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace Ara3D.Utils
 {
@@ -30,21 +33,75 @@ namespace Ara3D.Utils
             CharSetToRegex(Path.GetInvalidFileNameChars());
 
         /// <summary>
-        /// The normalized DateTime format, suitable for inclusion in a filename.
+        /// A DateTime format suitable for inclusion in a filename.
         /// </summary>
-        public const string NormalizedDateTimeFormat = "yyyy-MM-dd-HH-mm-ss";
+        public const string TimeStampFormat = "yyyy-MM-dd-HH-mm-ss";
 
         /// <summary>
-        /// Returns the normalized representation of the given DateTime.
+        /// Returns a time-stamp representation of the given DateTime.
         /// </summary>
-        public static string ToNormalizedString(this DateTime dateTime)
-            => dateTime.ToString(NormalizedDateTimeFormat);
+        public static string ToTimeStamp(this DateTime dateTime)
+            => dateTime.ToString(TimeStampFormat);
+
+        /// <summary>
+        /// Returns true or false depending on whether the file path has an extension 
+        /// </summary>
+        public static bool HasExtension(this FilePath filePath)
+            => !filePath.GetExtension().IsNullOrWhiteSpace();
+
+        /// <summary>
+        /// Takes a file extension (like .txt) and prepends a "*" to turn it into a mask.
+        /// If the file extension h
+        /// </summary>
+        public static string GetExtensionAsMask(this FilePath file)
+            => file.HasExtension() ? $"*.{file.GetExtension()}" : "*.*";
+
+        /// <summary>
+        /// Given a file name (e.g. c:\myfile.text) will append a count
+        /// tag to it. {c:\myfile{32}.text)
+        /// </summary>
+        public static string MakeCounted(this FilePath file, int n)
+        {
+            var dir = file.GetDirectory();
+            var ext = file.GetExtension();
+            var name = file.GetFileNameWithoutExtension();
+            return dir.RelativeFile($"{name}{{n}}{ext}");
+        }
+
+        /// <summary>
+        /// Number of files with the same base name and a "{X}" afterwards
+        /// </summary>
+        public static int NumCountedFiles(this FilePath file)
+        {
+            var name = file.GetFileNameWithoutExtension();
+            var ext = file.GetExtension();
+            return file.GetDirectory().GetFiles($"{name}{{*}}{ext}").Count();
+        }
+
+        /// <summary>
+        /// Returns file path if it doesn't exist. 
+        /// If the file exists (e.g., test.txt, creates a new file
+        /// named "test{0}.txt". If one or more files exists
+        /// with a similar name, then increments x, starting at n
+        /// (where n is the number of similarly named files).
+        /// Until a valid unused name is found (e.g., test{12}.txt).
+        /// </summary>
+        public static string MakeUniuqe(this FilePath file)
+        {
+            if (!file.Exists())
+                return file;
+            var i = file.NumCountedFiles();
+            var newName = MakeCounted(file, i);
+            while (File.Exists(newName))
+                newName = MakeCounted(file, ++i);
+            return newName;
+        }
 
         /// <summary>
         /// Returns the current date-time in a format appropriate for appending to files.
         /// </summary>
         public static string GetTimeStamp()
-            => DateTime.Now.ToNormalizedString();
+            => DateTime.Now.ToTimeStamp();
 
         public static string GetFileName(this FilePath filePath)
             => Path.GetFileName(filePath);
@@ -52,6 +109,10 @@ namespace Ara3D.Utils
         public static string GetFileNameWithoutExtension(this FilePath filePath)
             => Path.GetFileNameWithoutExtension(filePath);
 
+        /// <summary>
+        /// Returns the file name's extension with a period (.) before it,
+        /// or either of NULL or empty is none is 
+        /// </summary>
         public static string GetExtension(this FilePath filePath)
             => Path.GetExtension(filePath);
 
@@ -70,6 +131,14 @@ namespace Ara3D.Utils
         /// </summary>
         public static FilePath ToTimeStampedFileName(this FilePath filePath)
             => TransformName(filePath, name => $"{name}-{GetTimeStamp()}");
+
+        /// <summary>
+        /// Appends a time stamp to the time stamped filename and extension.
+        /// If not unique, adds a "{x}" to it, similar to how
+        /// Windows does it.
+        /// </summary>
+        public static FilePath ToUniqueTimeStampedFileName(this FilePath filePath)
+            => filePath.ToTimeStampedFileName().MakeUniuqe();
 
         public static FilePath Move(this FilePath filePath, FilePath destination)
         {
@@ -101,27 +170,24 @@ namespace Ara3D.Utils
             return newPath;
         }
 
-        // TODO: copying files would be useful. 
-        /*
-        public static void CopyDirectory(this DirectoryPath source, DirectoryPath target)
+        public static void CopyDirectory(this DirectoryPath source, DirectoryPath target, bool recursive = false)
         {
-            Directory.CreateDirectory(target.FullName);
+            target.Create();
 
             // Copy each file into the new directory.
-            foreach (var fi in source.GetFiles())
-            {
-                //Console.WriteLine(@"Copying {0}\{1}", target.FullName, fi.Name);
-                fi.CopyTo(Path.Combine(target.FullName, fi.Name), true);
-            }
+            foreach (var f in source.GetFiles())
+                f.CopyToFolder(target);
 
-            // Copy each subdirectory using recursion.
-            foreach (var diSourceSubDir in source.GetDirectories())
+            if (recursive)
             {
-                var nextTargetSubDir = target.CreateSubdirectory(diSourceSubDir.Name);
-                CopyAll(diSourceSubDir, nextTargetSubDir);
+                // Copy subfolders recursively
+                foreach (var d in source.GetSubFolders())
+                {
+                    var newDir = target.RelativeFolder(d.GetFolderName());
+                    CopyDirectory(d, newDir, true);
+                }
             }
         }
-        */
 
         /// <summary>
         /// Returns the size of the directory in bytes.
@@ -255,6 +321,12 @@ namespace Ara3D.Utils
         }
 
         /// <summary>
+        /// Tries to create and clear a directory, but swallows exceptions if any occur
+        /// </summary>
+        public static DirectoryPath TryToCreateAndClearDirectory(this DirectoryPath dirPath)
+            => FunctionUtils.TryGetValue(() => dirPath.CreateAndClearDirectory(), dirPath);
+
+        /// <summary>
         /// Returns true if the given directory contains no files or if the directory does not exist.
         /// </summary>
         public static bool IsEmpty(this DirectoryPath dirPath)
@@ -263,7 +335,7 @@ namespace Ara3D.Utils
         /// <summary>
         /// Deletes the target filepath if it exists and creates the containing directory.
         /// </summary>
-        public static string DeleteAndCreateDirectory(this FilePath filePath)
+        public static FilePath DeleteAndCreateDirectory(this FilePath filePath)
         {
             // Delete the filepath (or directory) if it already exists.
             if (filePath.Exists())
@@ -276,6 +348,12 @@ namespace Ara3D.Utils
             return filePath;
         }
 
+        /// <summary>
+        /// Get the base name of the specified directory 
+        /// </summary>
+        public static string GetFolderName(this DirectoryPath dirPath)
+            => Path.GetDirectoryName(dirPath);
+        
         /// <summary>
         /// Useful quick test to assure that we can create a file in the folder and write to it.
         /// </summary>

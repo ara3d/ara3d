@@ -47,7 +47,8 @@ namespace Ara3D.Utils
 
 
         /// <summary>
-        /// Returns the result of the getValue function. If getValue throws an exception, the onExceptionAction is invoked and the defaultValue is returned.
+        /// Returns the result of the getValue function.
+        /// If getValue throws an exception, the onExceptionAction is invoked and returned 
         /// </summary>
         public static T TryGetValue<T>(Func<T> getValue, Func<Exception, T> onException)
         {
@@ -60,5 +61,12 @@ namespace Ara3D.Utils
                 return onException(e);
             }
         }
+
+        /// <summary>
+        /// Returns the result of the getValue function.
+        /// If getValue throws an exception the defaultValue is returned.
+        /// </summary>
+        public static T TryGetValue<T>(Func<T> getValue, T defaultValue = default(T))
+            => TryGetValue(getValue, _ => defaultValue);
     }
 }
