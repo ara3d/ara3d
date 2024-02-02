@@ -1,0 +1,25 @@
+﻿  How to render in WPF!
+  //==
+
+  if (MyImage == null)
+      return Task.CompletedTask;
+
+  return Task.Run(() =>
+  {
+      for (var i = 0; i < Renderer.MaxIterations; i++)
+      {
+          var stage = Renderer.GetIteration(i);
+          stage.EvaluateInParallel(Bitmap);
+          var r = new Int32Rect(0, 0, Bitmap.Width, Bitmap.Height);
+          var stride = Bitmap.Width * 4;
+          var numBytes = (int)Bitmap.PixelBuffer.GetNumBytes();
+
+          Dispatcher.Invoke(() =>
+          {
+              // Write the pixels on the main thread
+              Bitmap.PixelBuffer.WithPointer(ptr =>
+                  Writeable.WritePixels(r, ptr, numBytes, stride));
+
+          });
+      }
+  });
