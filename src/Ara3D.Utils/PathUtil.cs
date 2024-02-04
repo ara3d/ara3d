@@ -146,9 +146,9 @@ namespace Ara3D.Utils
             return destination;
         }
 
-        public static FilePath Copy(this FilePath filePath, FilePath destination)
+        public static FilePath Copy(this FilePath filePath, FilePath destination, bool overWrite = true)
         {
-            File.Copy(filePath, destination);
+            File.Copy(filePath, destination, overWrite);
             return destination;
         }
 

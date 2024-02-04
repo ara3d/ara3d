@@ -1,0 +1,110 @@
+[
+  {
+    "RevitElementId": "-1",
+    "RevitSourceFile": "",
+    "RhinoId": "-1",
+    "RhinoSourceFile": "",
+    "IfcId": "-1",
+    "IfcSourceFile": "",
+    "Name": "Hello",
+    "DidCenterPointChange": true,
+    "OldCenterPoint": {
+      "X": 4,
+      "Y": 5,
+      "Z": 6
+    },
+    "NewCenterPoint": {
+      "X": 5,
+      "Y": 6,
+      "Z": 8
+    },
+    "CenterPointChange": {
+      "X": 1,
+      "Y": 1,
+      "Z": 2
+    },
+    "DidDimensionsChange": false,
+    "OldDimensions": {
+      "X": 3,
+      "Y": 3,
+      "Z": 3
+    },
+    "NewDimensions": {
+      "X": 3,
+      "Y": 3,
+      "Z": 3
+    },
+    "DimensionsChange": {
+      "X": 0,
+      "Y": 0,
+      "Z": 0
+    },
+    "OldParameters": {
+      "a": "123"
+    },
+    "NewParameters": {
+      "a": "456",
+      "b": "999"
+    },
+    "ParametersAdded": {},
+    "ParametersChanged": {},
+    "ParametersRemoved": {},
+    "DidGeometryChange": true,
+    "GeometryChangeDelta": 3.4,
+    "GeometryObjFile": "vue.obj"
+  },
+  {
+    "RevitElementId": "-1",
+    "RevitSourceFile": "",
+    "RhinoId": "-1",
+    "RhinoSourceFile": "",
+    "IfcId": "-1",
+    "IfcSourceFile": "",
+    "Name": "Hello",
+    "DidCenterPointChange": true,
+    "OldCenterPoint": {
+      "X": 4,
+      "Y": 5,
+      "Z": 6
+    },
+    "NewCenterPoint": {
+      "X": 5,
+      "Y": 6,
+      "Z": 8
+    },
+    "CenterPointChange": {
+      "X": 1,
+      "Y": 1,
+      "Z": 2
+    },
+    "DidDimensionsChange": false,
+    "OldDimensions": {
+      "X": 3,
+      "Y": 3,
+      "Z": 3
+    },
+    "NewDimensions": {
+      "X": 3,
+      "Y": 3,
+      "Z": 3
+    },
+    "DimensionsChange": {
+      "X": 0,
+      "Y": 0,
+      "Z": 0
+    },
+    "OldParameters": {
+      "a": "123"
+    },
+    "NewParameters": {
+      "a": "456",
+      "b": "999"
+    },
+    "ParametersAdded": {},
+    "ParametersChanged": {},
+    "ParametersRemoved": {},
+    "DidGeometryChange": true,
+    "GeometryChangeDelta": 3.4,
+    "GeometryObjFile": "vue.obj"
+  }
+]

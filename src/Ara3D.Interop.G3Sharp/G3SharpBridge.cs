@@ -76,10 +76,20 @@ namespace Ara3D
         {
             var tid = tree.FindNearestTriangle(point);
             if (tid == DMesh3.InvalidID)
-                return new Vector3d();
+                throw new Exception("Could not find nearest triangle");
 
             var dist = MeshQueries.TriangleDistance(tree.Mesh, tid, point);
             return dist.TriangleClosest;
+        }
+
+        public static double DistanceToTree(this DMeshAABBTree3 tree, Vector3d point)
+        {
+            var tid = tree.FindNearestTriangle(point);
+            if (tid == DMesh3.InvalidID)
+                throw new Exception("Could not find nearest triangle");
+
+            var dist = MeshQueries.TriangleDistance(tree.Mesh, tid, point);
+            return dist.GetSquared().Sqrt();
         }
 
         public static IArray<Vector3d> NearestPoints(this IMesh self, IArray<Vector3d> points)
@@ -126,6 +136,11 @@ namespace Ara3D
         public static Vector3 ToAra3D(this Vector3d self)
         {
             return new Vector3((float)self.x, (float)self.y, (float)self.z);
+        }
+
+        public static DAABox ToAra3D(this AxisAlignedBox3d box)
+        {
+            return ((box.Min.x, box.Min.y, box.Min.z), (box.Max.x, box.Max.y, box.Max.z));
         }
 
         public static IMesh ToAra3D(this DMesh3 self)

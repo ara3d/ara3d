@@ -17,7 +17,7 @@ namespace Ara3D.Utils
         public DirectoryPath Directory => Watcher.Path;
 
         public IEnumerable<FilePath> GetFiles()
-            => Directory.GetFiles(Watcher.Path, Watcher.IncludeSubdirectories);
+            => Directory.GetFiles(Watcher.Filter, Watcher.IncludeSubdirectories);
 
         private Action OnChange { get; set; }
 

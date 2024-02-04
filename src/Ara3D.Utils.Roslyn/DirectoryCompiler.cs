@@ -40,10 +40,11 @@ namespace Ara3D.Utils.Roslyn
         public FilePath GenerateUniqueFileName()
             => BaseFilePath.ToUniqueTimeStampedFileName();
 
-        public DirectoryCompiler(ILogger logger, DirectoryPath inputDir, DirectoryPath? libsDir, bool recursive = true, 
+        public DirectoryCompiler(ILogger logger, DirectoryPath inputDir, DirectoryPath? libsDir, bool recursive = false, 
             CompilerOptions options = null)
-        { 
-            Logger = logger.Create($"CompilerService: {inputDir}");
+        {
+            Logger = logger;
+            Log("Creating directory compiler");
             Options = options ?? CompilerOptions.CreateDefault();
             if (!inputDir.Exists())
                 throw new Exception($"Directory {inputDir} does not exist");
@@ -74,7 +75,7 @@ namespace Ara3D.Utils.Roslyn
                 Assembly = null;
 
                 Log($"Creating and clearing the output folder, if possible: {Directory}");
-                Directory.TryToCreateAndClearDirectory();
+                OutputFolder.TryToCreateAndClearDirectory();
 
                 Log($"Compilation task started of {Directory}");
                 var refsFile = Directory.RelativeFile(RefsFileName);
@@ -112,17 +113,19 @@ namespace Ara3D.Utils.Roslyn
                     }
                 }
 
+                // Add all locally loaded assemblies
+                foreach (var f in RoslynUtils.LoadedAssemblyLocations())
+                    Refs.Add(f);
+
                 Options = Options.WithNewReferences(Refs);
 
                 Log($"All references:");
                 foreach (var f in Options.MetadataReferences)
                     Log($"  Reference: {f.Display}");
 
-
                 Options = Options.WithNewOutputFilePath(GenerateUniqueFileName());
                 Log($"Generated new output file name = {OutputFile}");
 
-                
                 var inputFiles = Watcher.GetFiles().ToArray();
                 foreach (var f in inputFiles)
                     Log($"  Input file {f}");

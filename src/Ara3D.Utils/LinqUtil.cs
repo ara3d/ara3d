@@ -162,5 +162,13 @@ namespace Ara3D.Utils
             if (equals == null) throw new ArgumentNullException(nameof(equals));
             return new Comparer<T>(getHashCode, equals);
         }
+
+        /// <summary>
+        /// Not really LINQ, but sometimes we just want to sort a list using a LINQ type syntax.  
+        /// </summary>
+        public static void SortInPlaceBy<T0, T1>(this List<T0> list, Func<T0, T1> f) where T1: IComparable<T1>
+        {
+            list.Sort((a, b) => f(a).CompareTo(f(b)));
+        }
     }
 }
