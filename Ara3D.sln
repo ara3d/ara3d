@@ -149,7 +149,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Plato", "plato\Plato\Plato.
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "devops", "devops", "{73755E8C-EBC6-4894-9B03-9CC87DE2F0DB}"
 	ProjectSection(SolutionItems) = preProject
-		devops\push-plato.bat = devops\push-plato.bat
+		devops\push.bat = devops\push.bat
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "parakeet", "parakeet", "{7C5FAF8D-7DF2-4772-8609-2679912A58EF}"
