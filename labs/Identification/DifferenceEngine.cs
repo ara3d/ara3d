@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using Ara3D.Math;
 
 namespace Identification
@@ -10,11 +11,10 @@ namespace Identification
         public static DifferenceRecord CreateDifferenceRecord(this Entity e1, Entity e2)
         {
             var g1 = e1.Geometries[0];
-            var g2 = e2.Geometries[1];
+            var g2 = e2.Geometries[0];
 
             var m1 = ObjMesh.Load(g1.FileName);
             var m2 = ObjMesh.Load(g2.FileName);
-
 
             var d = m1.Distance(m2);
 
@@ -40,6 +40,17 @@ namespace Identification
         public static double Distance(this ObjMesh m1, ObjMesh m2)
             => Math.Max(m1.MaxDistanceFrom(m2), m2.MaxDistanceFrom(m1));
 
+        public static IEnumerable<DifferenceRecord> GetChangedEntities(this IdentityModel self, IdentityModel newModel)
+        {
+            foreach (var e in self.Entities)
+            {
+                if (!newModel.GetLookup().TryGetValue(e.Id, out var e2))
+                    continue;
+                var record = e.CreateDifferenceRecord(e2);
+                if (record != null)
+                    yield return record;
+            }
+        }
 
     }
 }

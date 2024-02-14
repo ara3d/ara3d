@@ -180,13 +180,15 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "PlatoAffineTypeExperiment",
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ara3D.Bowerbird.Interfaces", "..\ara3d-private\src\Ara3D.Bowerbird.Interfaces\Ara3D.Bowerbird.Interfaces.csproj", "{DFFE79F9-3966-4E43-AC9C-C5D5814CC7E8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Identification", "labs\Identification\Identification.csproj", "{3F3CD6D7-F253-4E0B-82A6-B131A24B0E70}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Identification", "labs\Identification\Identification.csproj", "{3F3CD6D7-F253-4E0B-82A6-B131A24B0E70}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IdentificationApp", "labs\IdentificationApp\IdentificationApp.csproj", "{630E1884-721E-44D7-B2AC-0E306DC81884}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IdentificationApp", "labs\IdentificationApp\IdentificationApp.csproj", "{630E1884-721E-44D7-B2AC-0E306DC81884}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ara3D.Bowerbird.Revit2024", "..\ara3d-private\src\Ara3D.Bowerbird.Revit\Ara3D.Bowerbird.Revit2024.csproj", "{5C778122-1116-47E2-8841-A4A09B562F77}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ara3D.RevitSampleBrowser", "..\revit-sample-browser\src\Ara3D.RevitSampleBrowser.csproj", "{EF12A6B4-ADE7-438D-A469-6A590548C266}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ara3D.UnityHost.Wpf", "labs\Ara3D.UnityHost.Wpf\Ara3D.UnityHost.Wpf.csproj", "{E4ED8DB1-F336-4A48-99CE-1B2F7187FBF7}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -1146,6 +1148,18 @@ Global
 		{EF12A6B4-ADE7-438D-A469-6A590548C266}.Release|x64.Build.0 = Release|x64
 		{EF12A6B4-ADE7-438D-A469-6A590548C266}.Release|x86.ActiveCfg = Release|x86
 		{EF12A6B4-ADE7-438D-A469-6A590548C266}.Release|x86.Build.0 = Release|x86
+		{E4ED8DB1-F336-4A48-99CE-1B2F7187FBF7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E4ED8DB1-F336-4A48-99CE-1B2F7187FBF7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E4ED8DB1-F336-4A48-99CE-1B2F7187FBF7}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{E4ED8DB1-F336-4A48-99CE-1B2F7187FBF7}.Debug|x64.Build.0 = Debug|Any CPU
+		{E4ED8DB1-F336-4A48-99CE-1B2F7187FBF7}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{E4ED8DB1-F336-4A48-99CE-1B2F7187FBF7}.Debug|x86.Build.0 = Debug|Any CPU
+		{E4ED8DB1-F336-4A48-99CE-1B2F7187FBF7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E4ED8DB1-F336-4A48-99CE-1B2F7187FBF7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E4ED8DB1-F336-4A48-99CE-1B2F7187FBF7}.Release|x64.ActiveCfg = Release|Any CPU
+		{E4ED8DB1-F336-4A48-99CE-1B2F7187FBF7}.Release|x64.Build.0 = Release|Any CPU
+		{E4ED8DB1-F336-4A48-99CE-1B2F7187FBF7}.Release|x86.ActiveCfg = Release|Any CPU
+		{E4ED8DB1-F336-4A48-99CE-1B2F7187FBF7}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -1237,6 +1251,7 @@ Global
 		{630E1884-721E-44D7-B2AC-0E306DC81884} = {29056796-3D9B-4DD1-A99F-93063C26D60D}
 		{5C778122-1116-47E2-8841-A4A09B562F77} = {CD7FC2B2-BE3B-422D-9481-4EAEF745894A}
 		{EF12A6B4-ADE7-438D-A469-6A590548C266} = {CD7FC2B2-BE3B-422D-9481-4EAEF745894A}
+		{E4ED8DB1-F336-4A48-99CE-1B2F7187FBF7} = {29056796-3D9B-4DD1-A99F-93063C26D60D}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {890503B7-C3A0-410B-A932-A031A4552050}

@@ -49,7 +49,7 @@ namespace Identification
                 e.Id = id;
                 var text = f.ReadAllText();
                 d.Add(id, e);
-                var ps = JsonSerializer.Deserialize<Dictionary<string, string>>(text);
+                var ps = JsonSerializer.Deserialize<Dictionary<string, string>>(text, JsonOptions);
                 ps.TryGetValue("filename", out sourceFile);
 
                 var comp = new ParameterSetComponent
@@ -85,20 +85,23 @@ namespace Identification
             return new IdentityModel(d.Values);
         }
 
-        public static IdentityModel Load(FilePath filePath)
-        {
-            return new IdentityModel(JsonSerializer.Deserialize<List<Entity>>(filePath.ReadAllText()));
-        }
-
-        public FilePath Serialize(FilePath filePath)
-        {
-            var json = JsonSerializer.Serialize(Entities, new JsonSerializerOptions()
+        public static JsonSerializerOptions JsonOptions =
+            new JsonSerializerOptions()
             {
                 IncludeFields = true,
                 WriteIndented = true,
                 IgnoreReadOnlyProperties = true,
-            });
+            };
 
+    public static IdentityModel Load(FilePath filePath)
+        {
+            return new IdentityModel(
+                JsonSerializer.Deserialize<List<Entity>>(filePath.ReadAllText(), JsonOptions));
+        }
+
+        public FilePath Serialize(FilePath filePath)
+        {
+            var json = JsonSerializer.Serialize(Entities, JsonOptions);
             return filePath.WriteAllText(json);
         }
 
@@ -107,19 +110,5 @@ namespace Identification
 
         public IEnumerable<Entity> GetAddedEntities(IdentityModel newModel)
             => newModel.GetRemovedEntities(this);
-
-        public IEnumerable<DifferenceRecord> GetChangedEntities(IdentityModel newModel)
-        {
-            foreach (var e in Entities)
-            {
-                if (!newModel.GetLookup().TryGetValue(e.Id, out var e2))
-                    continue;
-                var record = e.CreateDifferenceRecord(e2);
-                if (record != null)
-                    yield return record;
-            }
         }
-
-
-    }
 }
