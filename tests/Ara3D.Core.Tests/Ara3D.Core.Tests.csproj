@@ -18,7 +18,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\src\Ara3D.Domo\Ara3D.Domo.csproj" />
     <ProjectReference Include="..\..\src\Ara3D.Services\Ara3D.Services.csproj" />
     <ProjectReference Include="..\..\src\Ara3D.Utils\Ara3D.Utils.csproj" />
   </ItemGroup>
