@@ -1,4 +1,5 @@
 echo off
+call :subroutine "%~dp0\..\domo" %1
 call :subroutine "%~dp0\..\plato" %1
 call :subroutine "%~dp0\..\parakeet" %1
 call :subroutine "%~dp0\.." %1
