@@ -9,6 +9,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\domo\Ara3D.Domo\Ara3D.Domo.csproj" />
     <ProjectReference Include="..\Ara3D.Utils.Roslyn\Ara3D.Utils.Roslyn.csproj" />
     <ProjectReference Include="..\Ara3D.Utils\Ara3D.Utils.csproj" />
   </ItemGroup>

@@ -4,6 +4,10 @@ using System.Text;
 
 namespace Ara3D.Utils
 {
+    /// <summary>
+    /// Used as the base class for building code strings
+    /// that require indenting: like code, JSON, or XML.
+    /// </summary>
     public class CodeBuilder<T> where T : CodeBuilder<T>
     {
         public StringBuilder sb { get; set; } = new StringBuilder();

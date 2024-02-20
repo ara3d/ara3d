@@ -10,4 +10,11 @@
         public static Percent FromDecimalValue(double fractionalValue) => fractionalValue * 100.0;
         public double AsDecimalValue => Value / 100.0;
     }
+
+    public static class PercentUtil
+    {
+        public static Percent Percent(this double value) => new Percent(value);
+        public static Percent Percent(this int value) => new Percent(value);
+        public static Percent Percent(this float value) => new Percent(value);
+    }
 }

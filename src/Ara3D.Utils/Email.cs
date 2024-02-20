@@ -2,6 +2,9 @@
 
 namespace Ara3D.Utils
 {
+    /// <summary>
+    /// Wraps a string instance intended to be used for email. 
+    /// </summary>
     public struct Email
     {
         public Email(string value) => Value = value;

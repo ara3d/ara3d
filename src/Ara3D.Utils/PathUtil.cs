@@ -199,12 +199,12 @@ namespace Ara3D.Utils
         // https://stackoverflow.com/questions/211008/c-sharp-file-management
         // https://stackoverflow.com/questions/1358510/how-to-compare-2-files-fast-using-net?noredirect=1&lq=1
         // Should be faster than the SHA version, with no chance of a mismatch.
-        public static bool CompareFiles(string filePath1, string filePath2)
+        public static bool CompareFiles(this FilePath filePath1, FilePath filePath2)
         {
-            if (!File.Exists(filePath2) || !File.Exists(filePath2))
+            if (!filePath1.Exists() || !filePath2.Exists())
                 return false;
 
-            if (new FileInfo(filePath1).Length != new FileInfo(filePath2).Length)
+            if (filePath1.GetFileSize() != filePath2.GetFileSize())      
                 return false;
 
             // Default buffer size of File stream * 16.
@@ -369,7 +369,7 @@ namespace Ara3D.Utils
         /// https://stackoverflow.com/questions/2230826/remove-invalid-disallowed-bad-characters-from-filename-or-directory-folder?noredirect=1&lq=1
         /// https://stackoverflow.com/questions/10898338/c-sharp-string-replace-to-remove-illegal-characters?noredirect=1&lq=1
         /// </summary>
-        public static string ToValidFileName(string s)
+        public static string ToValidFileName(this string s)
             => InvalidFileNameRegex.Replace(s, m => "_");
 
         /// <summary>
@@ -406,22 +406,34 @@ namespace Ara3D.Utils
         public static DirectoryInfo GetInfo(this DirectoryPath path)
             => new DirectoryInfo(path);
 
-        public static DirectoryPath? GetParent(this DirectoryPath path)
+        public static DirectoryPath GetParent(this DirectoryPath path)
             => path.GetInfo().Parent?.FullName;
 
-        public static DirectoryPath? GetParent(this FilePath path)
+        public static DirectoryPath GetParent(this FilePath path)
             => path.GetDirectory().GetParent();
 
-        public static DirectoryPath? Up(this DirectoryPath path)
+        public static DirectoryPath Up(this DirectoryPath path)
             => path.GetParent();
 
-        public static DirectoryPath? Up(this FilePath path)
+        public static DirectoryPath Up(this FilePath path)
             => path.GetParent();
 
-        public static IEnumerable<DirectoryPath> GetSelfAndAncestors(this DirectoryPath? current)
+        public static FilePath FindFirstInAncestor(this DirectoryPath path, string searchPattern = "*.*")
         {
-            for (; current != null; current = current?.GetParent())
-                yield return current.Value;
+            foreach (var d in path.GetSelfAndAncestors())
+            {
+                var fs = d.GetFiles(searchPattern).ToList();
+                if (fs.Count > 0)
+                    return fs[0];
+            }
+
+            return null;
+        }
+
+        public static IEnumerable<DirectoryPath> GetSelfAndAncestors(this DirectoryPath current)
+        {
+            for (; current != null; current = current.GetParent())
+                yield return current;
         }
 
         public static bool HasWildCard(this FilePath filePath)

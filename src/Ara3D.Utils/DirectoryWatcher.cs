@@ -7,6 +7,8 @@ using System.Threading;
 namespace Ara3D.Utils
 {
     /// <summary>
+    /// A wrapper around the FileSystemWatcher class which is intended to
+    /// be used for watching a directory. 
     /// Be careful!
     /// https://failingfast.io/a-robust-solution-for-filesystemwatcher-firing-events-multiple-times/
     /// This runs on a separate thread and throttles before notifying. 

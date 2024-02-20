@@ -3,6 +3,9 @@ using System.Reflection;
 
 namespace Ara3D.Utils
 {
+    /// <summary>
+    /// Contains useful information describing an assembly. 
+    /// </summary>
     public class AssemblyData
     {
         public AssemblyData(Assembly asm)
@@ -18,15 +21,15 @@ namespace Ara3D.Utils
             CodeBase = asm.GetName().CodeBase ?? "";
         }
 
-        public string EntryPoint { get; }
-        public string FullName { get; }
-        public string ImageRuntimeVersion { get; }
-        public bool IsFullyTrusted { get; }
-        public FilePath Location { get; }
-        public string Architecture { get; }
-        public Version Version { get; }
-        public string ShortName { get; }
-        public string CodeBase { get; }
+        public readonly string EntryPoint;
+        public readonly string FullName;
+        public readonly string ImageRuntimeVersion;
+        public readonly bool IsFullyTrusted;
+        public readonly FilePath Location;
+        public readonly string Architecture;
+        public readonly Version Version;
+        public readonly string ShortName;
+        public readonly string CodeBase;
         public DirectoryPath LocationDir => Location.GetDirectory();
 
         public static AssemblyData Current => 

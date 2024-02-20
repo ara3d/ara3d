@@ -16,9 +16,9 @@ namespace Ara3D.Utils
     }
 
     public class CancelException : Exception
-    { }     
+    { }
 
-    public static class CancelableException
+    public static class CancelableUtil
     {
         public static T ThrowIfCanceled<T>(this T cancelable) where T : ICancelable
         {

@@ -1,6 +1,6 @@
 ﻿namespace Ara3D.Utils
 {
-    public readonly struct FilePath
+    public class FilePath
     {
         public string Value { get; }
         public FilePath(string path) => Value = path;

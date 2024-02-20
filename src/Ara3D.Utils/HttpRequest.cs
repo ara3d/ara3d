@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace Ara3D.Utils
 {
+    /// <summary>
+    /// Simplifies making an HTTP get request
+    /// </summary>
     public static class HttpRequest
     {
         public static async Task<HttpResponseMessage> GetAsync(
@@ -20,15 +23,10 @@ namespace Ara3D.Utils
             }
         }
 
-        public static bool HttpStatusCodeIsSuccess(int statusCode)
+        public static bool IsSuccess(this HttpStatusCode statusCode)
         {
-            // Make sure the status code exists among the standard HttpStatusCode values.
-            if (!Enum.IsDefined(typeof(HttpStatusCode), statusCode))
-            {
-                return false;
-            }
-
-            return statusCode >= 200 && statusCode < 300;
+            int code = (int)statusCode;
+            return code >= 200 && code < 300;
         }
     }
 }

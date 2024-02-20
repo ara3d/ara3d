@@ -5,6 +5,9 @@ using System.Reflection;
 
 namespace Ara3D.Utils
 {   
+    /// <summary>
+    /// Utility functions for working with assemblies.
+    /// </summary>
     public static class AssemblyUtil
     {
         public static AssemblyData ToAssemblyData(this Assembly assembly)
@@ -19,13 +22,13 @@ namespace Ara3D.Utils
 
         // https://stackoverflow.com/questions/2384592/is-there-a-way-to-force-all-referenced-assemblies-to-be-loaded-into-the-app-doma
         // https://github.com/microsoft/vs-mef/blob/main/doc/hosting.md#hosting-mef-in-an-extensible-application
-        public static void LoadAllAssembliesInFolder(DirectoryPath directory)
+        public static void LoadAllAssembliesInFolder(DirectoryPath directory, bool recurse = false)
         {
-            foreach (var path in directory.GetFiles("*.dll"))
+            foreach (var path in directory.GetFiles("*.dll", recurse))
             {
                 try
                 {
-                    // Don't load an already load
+                    // Don't load an already loaded assembly
                     var asmName = AssemblyName.GetAssemblyName(path);
                     if (!asmName.IsLoaded())
                         AppDomain.CurrentDomain.Load(asmName);

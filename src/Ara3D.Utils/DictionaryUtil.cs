@@ -3,6 +3,9 @@ using System.Linq;
 
 namespace Ara3D.Utils
 {
+    /// <summary>
+    /// Helper functions for working dictionaries. 
+    /// </summary>
     public static class DictionaryUtil
     {
         public static IReadOnlyDictionary<TKey, TValue> Remove<TKey, TValue>(

@@ -7,6 +7,9 @@ using System.Threading;
 
 namespace Ara3D.Utils
 {
+    /// <summary>
+    /// A simple web-server. 
+    /// </summary>
     public class WebServer
     {
         public delegate void CallBackDelegate(

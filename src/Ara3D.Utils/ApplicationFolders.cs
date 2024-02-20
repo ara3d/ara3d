@@ -2,12 +2,15 @@ using System.IO;
 
 namespace Ara3D.Utils
 {
+    /// <summary>
+    /// Given an application 
+    /// </summary>
     public class ApplicationFolders
     {
-        ApplicationData _appData { get; }
+        private readonly ApplicationData _appData;
 
         public string AppFolder
-            => Path.Combine(_appData.CompanyName, _appData.AppName);
+            => Path.Combine(_appData.OrgName, _appData.AppName);
 
         public ApplicationFolders(ApplicationData appData)
             => _appData = appData;

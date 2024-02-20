@@ -1,6 +1,11 @@
 ﻿namespace Ara3D.Utils
 {
-    public readonly struct DirectoryPath
+    /// <summary>
+    /// Wraps a string used to represent a path to a directory.
+    /// Implicitly casts to and from strings as needed. See PathUtil
+    /// for a number of useful functions.
+    /// </summary>
+    public class DirectoryPath
     {
         public string Value { get; }
         public DirectoryPath(string path) => Value = path;

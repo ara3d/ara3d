@@ -33,14 +33,14 @@ namespace Ara3D.Utils.Roslyn
 
         public const string BinaryFolderName = "bin";
         public static string BaseFileName => "output.dll";
-        public DirectoryPath? LibsDirectoryPath { get; }
+        public DirectoryPath LibsDirectoryPath { get; }
         public DirectoryPath OutputFolder => Directory.RelativeFolder(BinaryFolderName);
         public FilePath BaseFilePath => OutputFolder.RelativeFile(BaseFileName);
 
         public FilePath GenerateUniqueFileName()
             => BaseFilePath.ToUniqueTimeStampedFileName();
 
-        public DirectoryCompiler(ILogger logger, DirectoryPath inputDir, DirectoryPath? libsDir, bool recursive = false, 
+        public DirectoryCompiler(ILogger logger, DirectoryPath inputDir, DirectoryPath libsDir, bool recursive = false, 
             CompilerOptions options = null)
         {
             Logger = logger;

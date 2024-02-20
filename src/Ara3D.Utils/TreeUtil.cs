@@ -4,11 +4,6 @@ using System.Linq;
 
 namespace Ara3D.Utils
 {
-    public interface ITree<T>
-    {
-        IEnumerable<T> Children { get; }
-    }
-
     public static class TreeUtil
     {
         /// <summary>
