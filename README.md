@@ -21,13 +21,13 @@ and see if it could be useful for you!
 
 ## Using 
 
-To clone this repository then the following command can be used:
+To clone this repository the following command can be used:
 
 > `git clone --recursive git://github.com/ara3d/ara3d.git`
 
 ## Submodules 
 
-There are several submodules included with  this repository.   
+There are several submodules included with this repository.   
 
 * [Domo](https://github.com/ara3d/domo) - A state management library.
 * [Parakeet](https://github.com/ara3d/parakeet) - A text parsing library.
@@ -43,18 +43,22 @@ Code hosted in this repsitory is divided into two main sections:
 
 ## Design Goals 
 
-The Ara 3D library design goals are:
+The primary Ara 3D library design goals are roughly ordered as:
 
-* Portability
-* Simplicity
+* Correctness 
 * Robustness 
+* Simplicity
+* Portability
 * Flexibility
-* Minimize dependence
+* Discoverability
+* Performance
+
+This is not to say that performance is not important, but the other requirements must be addressed before performance 
+can be considered. Performance is irrelevant if code is not correct, and well-written code is much easier to
+validate and optimize.     
 
 Most libraries are .NET Standard 2.0, so that they can be used in a wide range of scenarios
 such as for plug-ins. 
-
-The libraries use functional programming idioms heavily. 
 
 ## Contributing 
 
@@ -67,6 +71,24 @@ We welcome contributions. We expect the following:
 5. You follow the design principles. 
 
 Everything will be code-reviewed kindly and rigorously. 
+
+## Coding Style and Programming Principles
+
+There is no formal written-down coding style guidelines. Upon reading the code
+the style should become apparent quickly. We expect consistency with existing code.
+
+In general we follow the [Microsoft coding conventions for C#](https://learn.microsoft.com/en-us/dotnet/csharp/fundamentals/coding-style/coding-conventions).
+We also use the [JetBrains ReSharper plug-in](https://www.jetbrains.com/resharper/) and follow many of the default coding recommendations it makes. 
+
+Some rules of thumb:
+* Prefer immutable data structures
+* Prefer explicit APIs to implicit (e.g., minimize annotations)
+* Keep interfaces small and single purpose
+* Prefer easy to read code to micro-optimizations
+* Default to making things public
+* Don't repeat yourself
+* Interfaces are a good thing, use them
+* Keep functions small, simple, and without side-effects
 
 # License 
 
