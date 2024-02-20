@@ -1,7 +1,7 @@
 ﻿using System;
 using System.IO;
 
-namespace Ara3D.Utils.Unsafe
+namespace Ara3D.Buffers
 {
     public static unsafe class UnsafeUtil
     {

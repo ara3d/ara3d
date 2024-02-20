@@ -1,0 +1,26 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\Ara3D.Geometry\Ara3D.Geometry.csproj" />
+    <ProjectReference Include="..\..\src\Ara3D.Graphics\Ara3D.Graphics.csproj" />
+    <ProjectReference Include="..\..\src\Ara3D.Interop.G3Sharp\Ara3D.Interop.G3Sharp.csproj" />
+    <ProjectReference Include="..\..\src\Ara3D.Interop.Unity\Ara3D.Interop.Unity.csproj" />
+    <ProjectReference Include="..\..\src\Ara3D.Math\Ara3D.Math.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="UnityEditor">
+      <HintPath>..\..\vendor\Unity\2021.3.15f1\Editor\Data\Managed\UnityEditor.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="UnityEngine">
+      <HintPath>..\..\vendor\Unity\2021.3.15f1\Editor\Data\Managed\UnityEngine.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+  </ItemGroup>
+
+</Project>

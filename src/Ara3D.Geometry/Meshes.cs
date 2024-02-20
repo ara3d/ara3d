@@ -9,7 +9,8 @@ namespace Ara3D.Geometry
          TSelf Deform(Func<Vector3, Vector3> f);
     }
 
-    public interface IMesh : IGeometry, ITransformable<IMesh>, IDeformable<IMesh>
+    public interface IMesh 
+        : IGeometry, ITransformable<IMesh>, IDeformable<IMesh>
     {
         IArray<Int3> Faces { get; }
         IArray<Vector3> Vertices { get; }
@@ -50,7 +51,8 @@ namespace Ara3D.Geometry
             => Deform(f);
     }
 
-    public class TriMesh : MeshImpl<Int3, Vector3, TriMesh>, IMesh, ITransformable<TriMesh>, IDeformable<TriMesh>
+    public class TriMesh : MeshImpl<Int3, Vector3, TriMesh>, 
+        IMesh, ITransformable<TriMesh>, IDeformable<TriMesh>
     {
         public TriMesh(IArray<Vector3> vertices, IArray<Int3> faces)
             : base(vertices, faces) { }
@@ -64,7 +66,8 @@ namespace Ara3D.Geometry
             => new TriMesh(Vertices.Select(deform), FaceData);
     }
 
-    public class QuadMesh : MeshImpl<Int4, Vector3, QuadMesh>, IMesh, ITransformable<QuadMesh>, IDeformable<QuadMesh>
+    public class QuadMesh 
+        : MeshImpl<Int4, Vector3, QuadMesh>, IMesh, ITransformable<QuadMesh>, IDeformable<QuadMesh>
     {
         public QuadMesh(IArray<Vector3> vertices, IArray<Int4> faces)
             : base(vertices, faces) { }

@@ -1,4 +1,6 @@
 ﻿using Ara3D;
+using Ara3D.Geometry;
+using Ara3D.UnityBridge;
 
 [UnityEngine.ExecuteAlways]
 public class SamplePrimitiveGeometry : ProceduralGeometryObject
@@ -13,7 +15,7 @@ public class SamplePrimitiveGeometry : ProceduralGeometryObject
 
     public GeometryType Type = GeometryType.Square;
 
-    public override IGeometry ComputeMesh()
+    public override IMesh ComputeMesh()
     {
         switch (Type)
         {

@@ -1,7 +1,6 @@
 ﻿using System.Diagnostics;
 using Ara3D.Buffers;
 using Ara3D.Utils;
-using Ara3D.Utils.Unsafe;
 
 namespace Ara3D.Graphics
 {

@@ -1,6 +1,5 @@
 ﻿using System;
 using System.IO;
-using Ara3D.Utils.Unsafe;
 
 namespace Ara3D.Buffers
 {

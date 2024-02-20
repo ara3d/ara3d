@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using Ara3D.Utils.Unsafe;
 
 namespace Ara3D.Buffers
 {
@@ -60,7 +59,7 @@ namespace Ara3D.Buffers
         /// Returns the array in the buffer, if it is of the correct type, or creates a new array of the create type and copies
         /// bytes into it, as necessary. 
         /// </summary>
-        public static unsafe T[] AsArray<T>(this IBuffer buffer) where T : unmanaged
+        public static T[] AsArray<T>(this IBuffer buffer) where T : unmanaged
             => buffer.Data is T[] r ? r : buffer.ToArray<T>();
 
         /// <summary>

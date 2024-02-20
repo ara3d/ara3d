@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using Ara3D;
+using Ara3D.UnityBridge;
 
 [UnityEngine.ExecuteAlways]
 public class MeshStats : MonoBehaviour

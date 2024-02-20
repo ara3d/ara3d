@@ -106,7 +106,6 @@ namespace Plato.Unity
 
         public void Update()
         {
-            Graphics.DrawMeshInstancedIndirect()
         }
     }
 
@@ -312,12 +311,7 @@ namespace Plato.Unity
     {
         public char KeyToListen;
     }
-
-    public class PCompare : PMeasure
-    {
-        public float Other;
-    }
-
+    
     public enum CompareType
     {
         LessThan,

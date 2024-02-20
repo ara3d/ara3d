@@ -10,7 +10,6 @@
     <ProjectReference Include="..\Ara3D.Geometry\Ara3D.Geometry.csproj" />
     <ProjectReference Include="..\Ara3D.Math\Ara3D.Math.csproj" />
     <ProjectReference Include="..\Ara3D.Buffers\Ara3D.Buffers.csproj" />
-    <ProjectReference Include="..\Ara3D.Utils.Unsafe\Ara3D.Utils.Unsafe.csproj" />
   </ItemGroup>
 
 </Project>

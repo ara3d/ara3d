@@ -1,4 +1,7 @@
 ﻿using Ara3D;
+using Ara3D.Geometry;
+using Ara3D.Math;
+using Ara3D.UnityBridge;
 
 [UnityEngine.ExecuteAlways]
 public class SampleTorus : ProceduralGeometryObject
@@ -18,6 +21,7 @@ public class SampleTorus : ProceduralGeometryObject
             tube * uv.Y.Sin());
     }
 
-    public override IGeometry ComputeMesh() 
-        => Geometry.QuadMesh(uv => TorusFunction(uv, Radius, Tube), USegments, VSegments);    
+    public override IMesh ComputeMesh() 
+        => new ParametricSurface(uv => TorusFunction(uv, Radius, Tube), true, true)
+            .Tesselate(USegments, VSegments);    
 }

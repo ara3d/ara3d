@@ -26,8 +26,8 @@ namespace Ara3D.Geometry
             => ToQuadMesh(new[] { a, b, c, d }.ToIArray());
         
         public static QuadMesh Cube
-            => SquareMesh.Translate(-Vector3.UnitZ / 2).Vertices.Concat(
-                SquareMesh.Translate(Vector3.UnitZ / 2).Vertices)
+            => Square.Translate(-Vector3.UnitZ / 2).Vertices.Concat(
+                Square.Translate(Vector3.UnitZ / 2).Vertices)
             .ToQuadMesh(new Int4[] {
                     (0, 1, 2, 3), 
                     (1, 5, 6, 2), 
@@ -40,9 +40,14 @@ namespace Ara3D.Geometry
         public static IMesh ToIMesh(this AABox box)
             => Cube.Scale(box.Extent).Translate(box.Center);
 
-        public static float Sqrt2 = 2.0f.Sqrt();
-        public static float Sqrt3 = 3.0f.Sqrt();
-        public static float HalfSqrt3 = Sqrt3 / 2;
+        public static float Sqrt2 
+            = 2.0f.Sqrt();
+
+        public static float Sqrt3 
+            = 3.0f.Sqrt();
+        
+        public static float HalfSqrt3 
+            = Sqrt3 / 2;
 
         public static readonly IMesh Tetrahedron
             = ToTriMesh(new Vector3[]
@@ -60,7 +65,8 @@ namespace Ara3D.Geometry
                 (0f, HalfSqrt3),
                 (0.5f, -HalfSqrt3));
 
-        public static TriMesh TriangleMesh = TrianglePoints.To3D().ToTriMesh();
+        public static TriMesh TriangleMesh 
+            = TrianglePoints.To3D().ToTriMesh();
 
         public static IArray<Vector2> SquarePoints
             = LinqArray.Create<Vector2>(
@@ -72,10 +78,15 @@ namespace Ara3D.Geometry
         public static IArray<Vector3> To3D(this IArray<Vector2> self)
             => self.Select(x => x.ToVector3());
 
-        public static readonly QuadMesh SquareMesh = SquarePoints.To3D().ToQuadMesh();
+        public static readonly QuadMesh Square 
+            = SquarePoints.To3D().ToQuadMesh();
 
         public static readonly TriMesh Octahedron
-            = SquareMesh.Vertices.Append(Vector3.UnitZ / 2, -Vector3.UnitZ / 2).Normalize().ToTriMesh(
+            = Square
+                .Vertices
+                .Append(Vector3.UnitZ / 2, -Vector3.UnitZ / 2)
+                .Normalize()
+                .ToTriMesh(
                 LinqArray.Create<Int3>(
                     (0, 1, 4), (1, 2, 4), (2, 3, 4),
                     (3, 2, 5), (2, 1, 5), (1, 0, 5)));
@@ -99,9 +110,9 @@ namespace Ara3D.Geometry
         // see: https://github.com/mrdoob/three.js/blob/9ef27d1af7809fa4d9943f8d4c4644e365ab6d2d/src/geometries/SphereBufferGeometry.js#L76
         public static Vector3 SphereFunction(Vector2 uv, float radius)
             => new Vector3(
-                (float)(-radius * System.Math.Cos(uv.X * Constants.TwoPi) * System.Math.Sin(uv.Y * Constants.Pi)),
-                (float)(radius * System.Math.Cos(uv.Y * Constants.Pi)),
-                (float)(radius * System.Math.Sin(uv.X * Constants.TwoPi) * System.Math.Sin(uv.Y * Constants.Pi)));
+                -radius * uv.X.Turns().Cos() * uv.Y.HalfTurns().Sin(),
+                radius * uv.Y.HalfTurns().Cos(),
+                radius * uv.X.Turns().Sin() * uv.Y.HalfTurns().Sin());
 
         public static ParametricSurface Sphere(float radius)
             => new ParametricSurface(uv => SphereFunction(uv, radius), true, true);
