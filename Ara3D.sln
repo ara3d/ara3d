@@ -165,6 +165,9 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ara3D.ProceduralGeometry.Unity", "labs\UnityProceduralGeometry\Ara3D.ProceduralGeometry.Unity.csproj", "{4B0B369C-C848-46FD-9DF7-4B5A6AEC0817}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "domo", "domo", "{6AC8A29B-E09E-47E2-95D2-1CC56760B305}"
+	ProjectSection(SolutionItems) = preProject
+		domo\README.md = domo\README.md
+	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ara3D.Domo", "domo\Ara3D.Domo\Ara3D.Domo.csproj", "{8BFD0CE5-7A21-401F-BACD-6062BBD4F2AE}"
 EndProject
