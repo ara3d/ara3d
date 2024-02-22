@@ -3,9 +3,6 @@ using Ara3D.Math;
 
 namespace Ara3D.Geometry
 {
-    public interface IBoundedRange { }
-    public interface IRestrictedDomain { }
-
     public class PointNormal
     {
         public Vector3 Point { get; }

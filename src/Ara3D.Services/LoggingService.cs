@@ -1,39 +1,37 @@
 ﻿using System;
 using System.Diagnostics;
-using Ara3D.Domo;
 using Ara3D.Utils;
 
 namespace Ara3D.Services
 {
     public class LogEntry
     {
-        public LogEntry(string text, int category, DateTimeOffset created)
-            => (Text, Category, Created) = (text, category, created);
+        public LogEntry(string text, string category, LogLevel level, DateTimeOffset created)
+            => (Text, Level, Created) = (text, level, created);
         public LogEntry() {}
         public readonly string Text;
-        public int Category;
-        public DateTimeOffset Created;
+        public readonly LogLevel Level;
+        public readonly DateTimeOffset Created;
     }
 
-    public class LogRepo : AggregateRepository<LogEntry>
+    /// <summary>
+    /// This serves as an example of a service, and
+    /// is such a common service that we just built it in. 
+    /// </summary>
+    public class LoggingService 
+        : AggregateModelBackedService<LogEntry>, ILogger
     {
-    }
-
-    public class LoggingService : BaseService, ILogger
-    {
-        public LogRepo Repo { get; set; }
         public Stopwatch Stopwatch { get; } = Stopwatch.StartNew();
 
-        public LoggingService(string category, IApi api, LogRepo repo)
-            : base(api)
+        public LoggingService(string category, IApplication app)
+            : base(app)
         {
             Category = category;
-            Repo = repo;
         }
 
         public ILogger Log(string message, LogLevel level = LogLevel.None)
         {
-            Repo.Add(new LogEntry(message, (int)level, DateTime.Now));
+            Repository.Add(new LogEntry(message, Category, level, DateTime.Now));
             Debug.WriteLine(Stopwatch.Elapsed.ToString("hh\\:mm\\:ss\\.ff") + " - " + message);
             return this;
         }

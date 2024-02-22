@@ -44,11 +44,6 @@ namespace Ara3D.RhinoReader
                     indices.Add(f.B);
                     indices.Add(f.C);
                 }
-                else
-                {
-                    throw new Exception("Not supported");
-                }
-                /*
                 else if (f.IsQuad)
                 {
                     indices.Add(f.A);
@@ -58,7 +53,11 @@ namespace Ara3D.RhinoReader
                     indices.Add(f.C);
                     indices.Add(f.D);
                     indices.Add(f.A);
-                }*/
+                }
+                else
+                {
+                    throw new Exception("Not supported");
+                }
             }
 
             var v = mesh.Vertices[0];

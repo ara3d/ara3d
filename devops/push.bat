@@ -7,7 +7,8 @@ exit /b
 
 rem <Directory> <message>
 :subroutine
-pushd %1 
+pushd %1
+echo %cd% 
 git status
 git add .
 git status

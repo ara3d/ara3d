@@ -3,6 +3,10 @@ using Ara3D.Math;
 
 namespace Ara3D.Geometry
 {
+    /// <summary>
+    /// An explicit surface is a function mapping UV coordinates
+    /// to Z values. 
+    /// </summary>
     public interface IExplicitSurface : IProcedural<Vector2, float>, IGeometry
     {
     }
@@ -95,5 +99,8 @@ namespace Ara3D.Geometry
             var p2 = parametricSurface.Eval(uv + (0, eps));
             return (p2 - p0).Cross((p1 - p0)).Normalize();
         }
+
+        public static IParametricSurface ToParametricSurface(this IExplicitSurface self)
+            => new ParametricSurface(uv => uv.ToVector3().SetX(self.Eval(uv)), false, false);
     }
 }

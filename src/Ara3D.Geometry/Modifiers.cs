@@ -14,11 +14,6 @@ namespace Ara3D.Geometry
         NegativeZ,
     }
 
-    public class Amount
-    {
-
-    }
-
     public static class Modifiers
     {
         public static IMesh Faceted(this IMesh self)
@@ -46,13 +41,13 @@ namespace Ara3D.Geometry
         public static Func<Vector3, Vector3> ApplyFallOff(Func<Vector3, Vector3> f, Func<Vector3, Amount> fallOff)
             => throw new NotImplementedException();
         
-        public static Func<Vector3, Amount> AmountAlongLine(Vector3 v, Line line)
+        public static Func<Vector3, float> AmountAlongLine(Vector3 v, Line line)
             => throw new NotImplementedException();
 
-        public static Func<Vector3, Amount> AmountAlongAxis(Vector3 v, AABox box, Axis axis)
+        public static Func<Vector3, float> AmountAlongAxis(Vector3 v, AABox box, Axis axis)
             => throw new NotImplementedException();
 
-        public static Func<Vector3, Amount> DistanceAsAmount(Vector3 v, Vector3 center, float max)
+        public static Func<Vector3, float> DistanceAsAmount(Vector3 v, Vector3 center, float max)
             => throw new NotImplementedException();
 
         public static Vector3 DeformAlong(Vector3 v, Func<Vector3, Vector3> deform)

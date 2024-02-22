@@ -6,15 +6,15 @@ namespace Ara3D.Services
 {
     public interface IRepositoryManager
     {
-        IEnumerable<IRepository> GetRepositories();
+        IReadOnlyList<IRepository> GetRepositories();
     }
 
     public class RepositoryManager : IRepositoryManager
     {
         public List<IRepository> Repositories { get; } = new List<IRepository>();
 
-        public IEnumerable<IRepository> GetRepositories()
-            => Repositories;
+        public IReadOnlyList<IRepository> GetRepositories()
+            => Repositories.ToList();
 
         public void AddRepository(IRepository repository)
             => Repositories.Add(repository);

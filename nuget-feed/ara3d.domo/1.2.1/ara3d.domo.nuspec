@@ -1,0 +1,18 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2012/06/nuspec.xsd">
+  <metadata>
+    <id>Ara3D.Domo</id>
+    <version>1.2.1</version>
+    <authors>Ara 3D Inc.</authors>
+    <license type="expression">MIT</license>
+    <licenseUrl>https://licenses.nuget.org/MIT</licenseUrl>
+    <readme>README.md</readme>
+    <projectUrl>https://github.com/ara3d/domo</projectUrl>
+    <description>Domo is a state management library for C# inspired by domain driven design.</description>
+    <copyright>Copyright (c) Ara 3D Inc 2024, Licensed under MIT</copyright>
+    <repository type="git" url="https://github.com/ara3d/domo" commit="29c6ef3b88bdd996990c4b80f9ff53462a4940df" />
+    <dependencies>
+      <group targetFramework=".NETStandard2.0" />
+    </dependencies>
+  </metadata>
+</package>

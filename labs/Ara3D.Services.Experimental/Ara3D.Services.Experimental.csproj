@@ -1,0 +1,12 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\domo\Ara3D.Domo\Ara3D.Domo.csproj" />
+    <ProjectReference Include="..\..\src\Ara3D.Services\Ara3D.Services.csproj" />
+  </ItemGroup>
+
+</Project>

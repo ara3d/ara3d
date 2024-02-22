@@ -2,12 +2,9 @@
 
 namespace Ara3D.Geometry
 {
-    public interface IGeometry : ITransformable<IGeometry>, IDeformable<IGeometry>
+    public interface IGeometry : 
+        ITransformable<IGeometry>, 
+        IDeformable<IGeometry>
     {
     }
-
-    // Examples:
-    // Point cloud
-    // Surfaces: Parameterized, 
-    // 
 }

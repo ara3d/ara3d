@@ -8,7 +8,7 @@ namespace Ara3D.Services
         public static void AddRepositoryAsPublisher(this IEventBus bus, IRepository repo)
         {
             var t = repo.ValueType;
-            var m = typeof(EventBusExtensions).GetMethod("AddTypedRepositoryAsPublisher");
+            var m = typeof(EventBusExtensions).GetMethod(nameof(AddTypedRepositoryAsPublisher));
             var gm = m.MakeGenericMethod(t);
             gm.Invoke(m, new object[] { bus, repo });
         }
