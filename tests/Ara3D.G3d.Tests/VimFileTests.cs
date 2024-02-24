@@ -1,12 +1,11 @@
 ﻿using System;
 using System.Diagnostics;
-using Ara3D.Core.Tests;
-using Ara3D.Serialization.VIM;
 using Ara3D.Serialization.BFAST;
-using NUnit.Framework;
+using Ara3D.Serialization.VIM;
 using Ara3D.Utils;
+using NUnit.Framework;
 
-namespace Vim.Format.Tests;
+namespace Ara3D.Serialization.G3D.Tests;
 
 public static class VimTests
 {
@@ -40,7 +39,7 @@ public static class VimTests
     {
         var f = Skanska;
         var sw = Stopwatch.StartNew();
-        BFastReader.Read(f, (name, view, index)
+        BFastReader.Read((string)f, (name, view, index)
             => OutputBFastBuffer(name, view, index, "  "));
         Console.WriteLine($@"Time to open file {sw.Elapsed.TotalSeconds}");
     }

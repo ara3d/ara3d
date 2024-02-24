@@ -1,7 +1,10 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
 using Ara3D.Utils;
-using NUnit.Framework.Legacy;
+using NUnit.Framework;
 
-namespace Ara3D.Core.Tests;
+namespace Ara3D.Serialization.G3D.Tests;
 
 public static class TestFolders
 {
@@ -15,13 +18,13 @@ public static class TestFolders
     [Test]
     public static void ValidateTestFolders()
     {
-        ClassicAssert.IsTrue(RepoRootPath.Exists());
-        ClassicAssert.IsTrue(SolutionFile.Exists());
+        Assert.IsTrue(RepoRootPath.Exists());
+        Assert.IsTrue(SolutionFile.Exists());
 
         // NOTE: this assumes that you have downloaded the "3d-format-shootout" repo 
         // and placed it in 
-        ClassicAssert.IsTrue(ShootOutRepo.Exists());
-        ClassicAssert.IsTrue(VimDataFilesDir.Exists());
+        Assert.IsTrue(ShootOutRepo.Exists());
+        Assert.IsTrue(VimDataFilesDir.Exists());
 
         foreach (var f in VimDataFiles )
         {
