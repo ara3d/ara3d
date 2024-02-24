@@ -38,7 +38,7 @@ namespace Ara3D.Geometry
         public static Vector3 Translate(Vector3 v, Vector3 amount)
             => throw new NotImplementedException();
 
-        public static Func<Vector3, Vector3> ApplyFallOff(Func<Vector3, Vector3> f, Func<Vector3, Amount> fallOff)
+        public static Func<Vector3, Vector3> ApplyFallOff(Func<Vector3, Vector3> f, Func<Vector3, float> fallOff)
             => throw new NotImplementedException();
         
         public static Func<Vector3, float> AmountAlongLine(Vector3 v, Line line)

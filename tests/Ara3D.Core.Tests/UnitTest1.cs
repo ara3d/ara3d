@@ -1,6 +1,8 @@
 using Ara3D.Domo;
 using Ara3D.Services;
 using Ara3D.Utils;
+using NUnit;
+using NUnit.Framework.Legacy;
 
 namespace Ara3D.Core.Tests
 {
@@ -17,10 +19,10 @@ namespace Ara3D.Core.Tests
             var folders = SpecialFolders.Temp;
             var tempFile = PathUtil.CreateTempFile();
             var repo = new SingletonRepository<TestModelData>();
-            Assert.IsTrue(repo.Value.FilePath.Value.IsNullOrEmpty());
+            ClassicAssert.IsTrue(repo.Value.FilePath.Value.IsNullOrEmpty());
             repo.GetDynamicModel().FilePath = tempFile;
-            Assert.AreEqual(tempFile, repo.GetDynamicModel().FilePath);
-            Assert.AreEqual(tempFile, repo.Value.FilePath);
+            ClassicAssert.AreEqual(tempFile, repo.GetDynamicModel().FilePath);
+            ClassicAssert.AreEqual(tempFile, repo.Value.FilePath);
 
             // TODO: it doesn't really make sense to have the "ToJson" in the services does it? 
             // makes the code less discoverable. 
@@ -28,9 +30,9 @@ namespace Ara3D.Core.Tests
             tempFile.WriteAllText(json);
 
             repo.Update(m => new TestModelData { FilePath = "Razzle" });
-            Assert.AreEqual("Razzle", repo.Value.FilePath.Value);
+            ClassicAssert.AreEqual("Razzle", repo.Value.FilePath.Value);
             repo.LoadFromJson(json);
-            Assert.AreEqual(tempFile, repo.Value.FilePath);
+            ClassicAssert.AreEqual(tempFile, repo.Value.FilePath);
         }
     }
 }

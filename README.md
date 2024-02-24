@@ -108,3 +108,23 @@ Everything will be code-reviewed kindly and rigorously.
 
 All code is licensed under the commercially friendly [MIT License](https://github.com/ara3d/ara3d?tab=MIT-1-ov-file#readme)
 
+# F.A.Q.
+
+Q: Some projects can't be found. 
+
+> A : It is normal that projects in "private" can't be found. You might not have recursively all submodules. 
+See the top of the README.md. 
+
+Q: Why so many projects? 
+
+> A : Small projects that do one thing and do it well (and are reliable, tested, and simple), 
+are easier to reuse, making us more productive in the long run.
+
+Q: Why use submodules?
+
+> A : Some of the work is of interest to the community as a standalone. This is the best way to help everyone 
+get the code, and consume it independently. 
+
+
+
+

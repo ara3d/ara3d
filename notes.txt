@@ -1,0 +1,26 @@
+# Notes
+
+This is a file for the developers to ask questions to themselves, to others, and to track to-do items. 
+
+This replaces complex and hard to use tools like JIRA. 
+
+# Todo
+
+## Bowerbird 
+
+* The Bowerbird tests are empty, fix-it. 
+* I would love a cleaning script to properly remove and clean all of the binary files. 
+	* Why does Bowerbird copy the WPF demo exe to the Revit plug-ins folder? 
+* This system will eventually use "3d-format-shootout" which is assumed to be a separate repo. 
+	* This will need to be documented.
+* If others work on this repository, I will want  
+* I need a "forwarding" file for development work on Bowerbird.
+	* This will say "read the files from here", where "here" 
+* Bowerbird will concievably need some kind of configuration file. 
+	* Where would that be? 
+	* Would this not be something that makes sense for all applications? 
+	* If so, shouldn't it be in the "applications folder"
+* Do I want or need a standalone tool with UI for viewing and doing conversions of files? 
+* Does bowerbird for Unity, kind of look like Unity scripts? 
+* Bowerbird probably needs some kind of installation guide.
+

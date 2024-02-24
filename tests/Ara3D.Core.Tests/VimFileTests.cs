@@ -1,12 +1,14 @@
 ﻿using System;
 using System.Diagnostics;
+using Ara3D.Core.Tests;
 using Ara3D.Serialization.VIM;
 using Ara3D.Serialization.BFAST;
 using NUnit.Framework;
+using Ara3D.Utils;
 
 namespace Vim.Format.Tests;
 
-public static class BigFileTest
+public static class VimTests
 {
     public static void OutputBFastBuffer(string name, MemoryMappedView view, int index, string indent = "")
     {
@@ -18,16 +20,12 @@ public static class BigFileTest
         }
     }
 
-    public const string File = @"C:\Users\cdigg\Documents\VIM\2023 - Hospital (2).vim";
+    public static FilePath Skanska 
+        => TestFolders.VimDataFilesDir.RelativeFile("skanska.vim");
 
-    [Test]
-    public static void G3dTest()
+    public static void OutputVimGeometryData(SerializableDocument doc)
     {
-        var sw = Stopwatch.StartNew();
-        var vim = Serializer.Deserialize(File);
-        Console.WriteLine($@"Time to open file {sw.Elapsed.TotalSeconds}");
-
-        var g = vim.Geometry;
+        var g = doc.Geometry;
         Console.WriteLine($"number of meshes {g.Meshes.Count}");
         Console.WriteLine($"number of vertices {g.Vertices.Count}");
         Console.WriteLine($"number of uvs {g.AllVertexUvs.Count}");
@@ -40,9 +38,7 @@ public static class BigFileTest
     [Test]
     public static void BFastLoaderTest()
     {
-        //var f = VimFormatRepoPaths.GetLatestWolfordResidenceVim();
-        var f = @"C:\Users\cdigg\Documents\VIM\kahua_navis_dedup.vim";
-
+        var f = Skanska;
         var sw = Stopwatch.StartNew();
         BFastReader.Read(f, (name, view, index)
             => OutputBFastBuffer(name, view, index, "  "));
@@ -50,13 +46,12 @@ public static class BigFileTest
     }
 
     [Test]
-    public static void VimLoaderTest()
+    public static void VimTest()
     {
-        //var f = VimFormatRepoPaths.GetLatestWolfordResidenceVim();
-        var f = @"C:\Users\cdigg\Documents\VIM\kahua_navis_dedup.vim";
         var sw = Stopwatch.StartNew();
-        var vim = Serializer.Deserialize(f);
-        
+        var vim = Serializer.Deserialize(Skanska);
         Console.WriteLine($@"Time to open file {sw.Elapsed.TotalSeconds}");
+        OutputVimGeometryData(vim);
     }
+
 }
