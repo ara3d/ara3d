@@ -89,6 +89,7 @@ namespace Ara3D.Serialization.VIM
             switch (name)
             {
                 case BufferNames.Header:
+                    // TODO:
                     //SerializableHeader.Parse(view.ReadString());
                     break;
 

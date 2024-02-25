@@ -1,7 +1,10 @@
 ﻿using System;
+using System.Collections.Generic;
 using Ara3D.Collections;
 using Ara3D.Geometry;
 using Ara3D.Math;
+using Ara3D.Serialization.G3D;
+using Ara3D.Serialization.VIM;
 using UnityEngine;
 using UnityEngine.Rendering;
 using Matrix4x4 = Ara3D.Math.Matrix4x4;
@@ -206,6 +209,62 @@ namespace Ara3D.UnityBridge
             transform.localScale = ScaleToUnity(scl);
         }
 
+        public static (UVector3 pos, UQuaternion rot, UVector3 scl) ToUnityTRS(this Matrix4x4 matrix)
+        {
+            var decomposed = Matrix4x4.Decompose(matrix, out var scl, out var rot, out var pos);
+            if (!decomposed)
+                throw new Exception("Can't decompose matrix");
+
+            return ToUnityTRS(pos, rot, scl);
+        }
+
+        public static UnityEngine.Matrix4x4 ToUnityFlipped(this Matrix4x4 matrix)
+        {
+            var decomposed = Matrix4x4.Decompose(matrix, out var scl, out var rot, out var pos);
+            if (!decomposed)
+                throw new Exception("Can't decompose matrix");
+
+            var (t, r, s) = ToUnityTRS(pos, rot, scl);
+            return UnityEngine.Matrix4x4.TRS(t, r, s);
+        }
+
+        /// <summary>
+        /// Converts the given VIM based coordinates into Unity coordinates.
+        /// </summary>
+        public static (UVector3 pos, UQuaternion rot, UVector3 scl) ToUnityTRS(
+            Vector3 pos,
+            Quaternion rot,
+            Vector3 scale
+        )
+        {
+            // Transform space is mirrored on X, and then rotated 90 degrees around X
+            var p = PositionToUnity(pos);
+
+            // Quaternion is mirrored the same way, but then negated via W = -W because that's just easier to read
+            var r = RotationToUnity(rot);
+
+            // TODO: test this, current scale is completely untested
+            var s = ScaleToUnity(scale);
+
+            return (p, r, s);
+        }
+
+        public static UnityEngine.Matrix4x4 ToUnityRaw(this Matrix4x4 matrix)
+            => new UnityEngine.Matrix4x4(
+                new UVector4(matrix.M11, matrix.M12, matrix.M13, matrix.M14),
+                new UVector4(matrix.M21, matrix.M22, matrix.M23, matrix.M24),
+                new UVector4(matrix.M31, matrix.M32, matrix.M33, matrix.M34),
+                new UVector4(matrix.M41, matrix.M42, matrix.M43, matrix.M44)
+            );
+
+        private const float ftm = 0.3408f;
+        public static UnityEngine.Matrix4x4 ConversionMatrix = new UnityEngine.Matrix4x4(
+            new UnityEngine.Vector4(-ftm, 0, 0, 0),
+            new UnityEngine.Vector4(0, 0, -ftm, 0),
+            new UnityEngine.Vector4(0, ftm, 0, 0),
+            new UnityEngine.Vector4(0, 0, 0, 1)
+        );
+
         public static Vector2 ToAra3D(this UVector2 v)
             => new Vector2(v.x, v.y);
 
@@ -233,5 +292,40 @@ namespace Ara3D.UnityBridge
         public static UVector4 ToUnity(this Vector4 v)
             => new UVector4(v.X, v.Y, v.Z, v.W);
 
+        public static UnityMesh ToUnity(this G3dMesh mesh)
+        {
+            return new UnityMesh()
+            {
+                UnityIndices = mesh.Indices.ToArray(),
+                UnityVertices = mesh.Vertices.Select(ToUnity).ToArray(),
+                // TODO: normals and UVs
+            };
+        }
+
+        public static UnityMeshScene ToUnity(this SerializableDocument doc)
+        {
+            var g = doc.Geometry;
+            var r = new UnityMeshScene();
+            foreach (var m in g.Meshes.ToEnumerable())
+            {
+                var set = new UnityMeshInstanceSet
+                {
+                    Mesh = m.ToUnity()
+                };
+                r.InstanceSets.Add(set);
+            }
+
+            for (var i = 0; i < g.InstanceTransforms.Count; i++)
+            {
+                var t = g.InstanceTransforms[i];
+                var idx = g.InstanceMeshes[i];
+                if (idx < 0) continue;
+                if (idx > r.InstanceSets.Count) continue;
+                var set = r.InstanceSets[idx];
+                set.Matrices.Add(t.ToUnityRaw());
+            }
+
+            return r;
+        }
     }
 }

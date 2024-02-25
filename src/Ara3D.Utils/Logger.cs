@@ -5,11 +5,20 @@ namespace Ara3D.Utils
 {
     public class LogEntry
     {
-        public TimeSpan TimeOffset { get; set; } 
-        public DateTimeOffset DateTime { get; set; } = DateTimeOffset.Now;
-        public string Category { get; set; } = "";
-        public string Message { get; set; } = "";
-        public LogLevel Level { get; set; } = LogLevel.Info;
+        public readonly DateTimeOffset DateTime = DateTimeOffset.Now;
+        public readonly string Category = "";
+        public readonly string Message = "";
+        public readonly LogLevel Level = LogLevel.Info;
+
+        public LogEntry() 
+        { }
+
+        public LogEntry(string message, string category = "", LogLevel level = LogLevel.Info)
+        {
+            Message = message;
+            Category = category;
+            Level = level;
+        }
     }
 
     public interface ILogWriter 
@@ -43,7 +52,7 @@ namespace Ara3D.Utils
 
         public ILogger Log(string message, LogLevel level)
         {
-            Writer.Write(new LogEntry { Category = Category, Level = level, Message = message });
+            Writer.Write(new LogEntry(message, Category, level));
             return this;
         }
     }

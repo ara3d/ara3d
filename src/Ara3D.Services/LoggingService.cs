@@ -4,22 +4,22 @@ using Ara3D.Utils;
 
 namespace Ara3D.Services
 {
-    public class LogEntry
-    {
-        public LogEntry(string text, string category, LogLevel level, DateTimeOffset created)
-            => (Text, Level, Created) = (text, level, created);
-        public LogEntry() {}
-        public readonly string Text;
-        public readonly LogLevel Level;
-        public readonly DateTimeOffset Created;
-    }
+    /// <summary>
+    /// This is a simple logging service. A design choice
+    /// was made to not store arbitrary objects like Serilog does. 
+    /// Normally we try to define abstractions for our services,
+    /// and link against them. This allows us to easily
+    /// have multiple implementations, and refactor code. 
+    /// </summary>
+    public interface ILoggingService : ILogger, IAggregateModelBackedService<LogEntry>
+    { }
 
     /// <summary>
     /// This serves as an example of a service, and
     /// is such a common service that we just built it in. 
     /// </summary>
     public class LoggingService 
-        : AggregateModelBackedService<LogEntry>, ILogger
+        : AggregateModelBackedService<LogEntry>, ILoggingService
     {
         public Stopwatch Stopwatch { get; } = Stopwatch.StartNew();
 
@@ -31,7 +31,7 @@ namespace Ara3D.Services
 
         public ILogger Log(string message, LogLevel level = LogLevel.None)
         {
-            Repository.Add(new LogEntry(message, Category, level, DateTime.Now));
+            Repository.Add(new LogEntry(message, Category, level));
             Debug.WriteLine(Stopwatch.Elapsed.ToString("hh\\:mm\\:ss\\.ff") + " - " + message);
             return this;
         }

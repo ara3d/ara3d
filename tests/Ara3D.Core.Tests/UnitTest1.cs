@@ -24,6 +24,9 @@ namespace Ara3D.Core.Tests
             ClassicAssert.AreEqual(tempFile, repo.GetDynamicModel().FilePath);
             ClassicAssert.AreEqual(tempFile, repo.Value.FilePath);
 
+            ClassicAssert.Fail("Need to reimplement serialization");
+
+            /*
             // TODO: it doesn't really make sense to have the "ToJson" in the services does it? 
             // makes the code less discoverable. 
             var json = repo.ToJson();
@@ -33,6 +36,7 @@ namespace Ara3D.Core.Tests
             ClassicAssert.AreEqual("Razzle", repo.Value.FilePath.Value);
             repo.LoadFromJson(json);
             ClassicAssert.AreEqual(tempFile, repo.Value.FilePath);
+            */
         }
     }
 }

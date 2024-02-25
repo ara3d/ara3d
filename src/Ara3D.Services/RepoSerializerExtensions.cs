@@ -2,8 +2,6 @@
 using System;
 using System.Linq;
 using Ara3D.Utils;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Serialization;
 using System.Reflection;
 
 namespace Ara3D.Services
@@ -11,6 +9,7 @@ namespace Ara3D.Services
 
     public static class RepoSerializerExtensions
     {
+        /*
         public class JsonIncludeReadonlyAutoPropertiesResolver : DefaultContractResolver
         {
             // See: https://github.com/JamesNK/Newtonsoft.Json/issues/703
@@ -69,5 +68,6 @@ namespace Ara3D.Services
 
             return repo;
         }
+        */
     }
 }

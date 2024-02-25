@@ -10,7 +10,11 @@ namespace Ara3D.Services
         public ServiceRegisteredEvent(IService service)
             => Service = service;
     }
-    
+
+    /// <summary>
+    /// Applications needs a Synchronization Context to work. 
+    /// This means that it has to be hosted in a Window: The synchronization context is null otherwise.  
+    /// </summary>
     public sealed class Application : IApplication
     {
         private readonly List<IService> _services = new List<IService>();

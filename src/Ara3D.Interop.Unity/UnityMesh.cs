@@ -33,12 +33,8 @@ namespace Ara3D.UnityBridge
         public IArray<Vector2> UVs => UnityUVs.ToIArray().Select(v => v.ToAra3D());
         public IArray<Vector3> Normals => UnityNormals.ToIArray().Select(v => v.ToAra3D());
 
-        // TODO: this needs to be improved (assumes TriMesh, etc.)
-        public void FromAra3D(IMesh g)
-        {
-            UnityIndices = g.Indices().ToArray();
-            UnityVertices = g.Vertices.Select(UnityConverters.ToUnity).ToArray();
-        }
+        public UnityMesh()
+        { }
 
         public UnityMesh(UnityMesh other)
         {

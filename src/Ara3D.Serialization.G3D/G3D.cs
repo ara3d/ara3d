@@ -68,7 +68,6 @@ namespace Ara3D.Serialization.G3D
         public IArray<float> MaterialSmoothness { get; }
         public IArray<G3dMaterial> Materials { get; }
 
-
         // Submeshes
         public IArray<int> SubmeshIndexOffsets { get; }
         public IArray<int> SubmeshIndexCount { get; }
