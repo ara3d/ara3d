@@ -27,7 +27,7 @@ public static class ModelLoader
     public static Model3DGroup ToModelGroup(this G3D g3D)
     {
         var r = new Model3DGroup();
-        var meshes = g3D.Meshes.Select(m => m.ToMeshGeometry3D()).Evaluate();
+        var meshes = g3D.Meshes.Select(m => m.ToMeshGeometry3D()).ToArray();
         var material = new DiffuseMaterial(Brushes.Silver);
         var models = g3D.InstanceMeshes
             .Where(i => i >= 0)

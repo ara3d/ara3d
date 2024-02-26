@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using Ara3D.UnityBridge;
 using UnityEngine;
 
@@ -11,26 +12,41 @@ namespace Ara3D.ProceduralGeometry.Unity
 
         public UnityMeshScene Scene;
         
-        private List<Mesh> meshes = new List<Mesh>();
+        private List<InstancedMeshDrawer> drawers = new List<InstancedMeshDrawer>();
         
         public void Update()
         {
-            for (var i = 0; i < meshes.Count; i++)
+            foreach (var drawer in drawers)
             {
-                var mesh = meshes[i];
-                var instanceSet = Scene.InstanceSets[i];
-                UnityEngine.Graphics.DrawMeshInstanced(mesh, 0, Material, instanceSet.Matrices);
+                drawer.Draw();
             }
         }
 
         public void Init(UnityMeshScene scene)
         {
-            meshes.Clear();
+            drawers.Clear();
             foreach (var set in scene.InstanceSets)
             {
+                // If there are no instances, skip it
+                if (set.Matrices.Count <= 0)
+                    continue;
+
+                // If there are no faces, skip it
+                if (set.Mesh.Faces.Count == 0)
+                    continue;
+
                 var mesh = new Mesh();
                 set.Mesh.AssignToMesh(mesh);
-                meshes.Add(mesh);
+                var drawer = new InstancedMeshDrawer(mesh, Material,
+                    set.Matrices.Select(m => 
+                        new InstanceProps()
+                        {
+                            color = set.Color,
+                            mat = m
+                        })
+                        .ToArray());
+
+                drawers.Add(drawer);
             }
             Scene = scene;
         }

@@ -259,11 +259,14 @@ namespace Ara3D.UnityBridge
 
         private const float ftm = 0.3408f;
         public static UnityEngine.Matrix4x4 ConversionMatrix = new UnityEngine.Matrix4x4(
-            new UnityEngine.Vector4(-ftm, 0, 0, 0),
-            new UnityEngine.Vector4(0, 0, -ftm, 0),
-            new UnityEngine.Vector4(0, ftm, 0, 0),
-            new UnityEngine.Vector4(0, 0, 0, 1)
+            new UVector4(-ftm, 0, 0, 0),
+            new UVector4(0, 0, -ftm, 0),
+            new UVector4(0, ftm, 0, 0),
+            new UVector4(0, 0, 0, 1)
         );
+
+        public static UnityEngine.Matrix4x4 ToUnity(this Matrix4x4 matrix)
+            => ConversionMatrix * ToUnityRaw(matrix);
 
         public static Vector2 ToAra3D(this UVector2 v)
             => new Vector2(v.x, v.y);
@@ -292,6 +295,9 @@ namespace Ara3D.UnityBridge
         public static UVector4 ToUnity(this Vector4 v)
             => new UVector4(v.X, v.Y, v.Z, v.W);
 
+        public static Color ToUnityColor(this Vector4 v)
+            => v.ToUnity();
+
         public static UnityMesh ToUnity(this G3dMesh mesh)
         {
             return new UnityMesh()
@@ -306,11 +312,22 @@ namespace Ara3D.UnityBridge
         {
             var g = doc.Geometry;
             var r = new UnityMeshScene();
-            foreach (var m in g.Meshes.ToEnumerable())
+            
+            var defaultColor = new Color(0.6f, 0.6f, 0.75f, 1f);
+            for (var i =0; i < g.Meshes.Count; i++)
             {
+                var m = g.Meshes[i];
+
+                var matIndex = m.Submeshes.Count > 0 
+                    ? m.Submeshes[0].MaterialIndex 
+                    : -1;
+                
                 var set = new UnityMeshInstanceSet
                 {
-                    Mesh = m.ToUnity()
+                    Mesh = m.ToUnity(),
+                    Color = matIndex >= 0
+                        ? g.MaterialColors[matIndex].ToUnityColor()
+                        : defaultColor
                 };
                 r.InstanceSets.Add(set);
             }
@@ -322,7 +339,7 @@ namespace Ara3D.UnityBridge
                 if (idx < 0) continue;
                 if (idx > r.InstanceSets.Count) continue;
                 var set = r.InstanceSets[idx];
-                set.Matrices.Add(t.ToUnityRaw());
+                set.Matrices.Add(t.ToUnity());
             }
 
             return r;

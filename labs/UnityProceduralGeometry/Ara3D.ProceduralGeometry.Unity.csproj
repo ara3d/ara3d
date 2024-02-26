@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
-    <BaseOutputPath>C:\Users\cdigg\My project\Assets\ProceduralGeometry</BaseOutputPath>
+    <BaseOutputPath>..\..\unity-projects\demo\Assets\ProceduralGeometry</BaseOutputPath>
   </PropertyGroup>
 
   <ItemGroup>

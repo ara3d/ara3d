@@ -7,66 +7,74 @@ namespace Ara3D.Serialization.G3D
 {
     /// <summary>
     /// A G3dMesh is a section of the G3D data that defines a mesh.
-    /// This does not implement IGeometryAttributes for performance reasons. 
     /// </summary>
     public class G3dMesh
     {
-        public G3D G3D { get; }
-        public int Index { get; }
+        public readonly int Index;
+        public readonly int IndexOffset;
+        public readonly int NumCorners;
+        public readonly int FaceOffset;
+        public readonly int NumFaces;
+        public readonly int NumVertices;
+        public readonly int VertexOffset;
+        public IReadOnlyList<G3dSubmesh> Submeshes;
 
-        public int VertexOffset => G3D.MeshVertexOffsets[Index];
-        public int NumVertices => G3D.MeshVertexCounts[Index];
-        public int IndexOffset => G3D.MeshIndexOffsets[Index];
-        public int NumCorners => G3D.MeshIndexCounts[Index];
-        public int FaceOffset => IndexOffset / NumCornersPerFace;
-        public int NumFaces => NumCorners / NumCornersPerFace;
-        public int NumCornersPerFace => G3D.NumCornersPerFace;
-
-        public G3dMesh(G3D parent, int index)
-        {
-            (G3D, Index) = (parent, index);
-            Vertices = G3D.Vertices?.SubArray(VertexOffset, NumVertices);
-            var offset = VertexOffset;
-            Indices = G3D.Indices?.SubArray(IndexOffset, NumCorners).Select(i => i - offset);
-            VertexUvs = G3D.VertexUvs?.SubArray(VertexOffset, NumVertices);
-            VertexNormals = G3D.VertexNormals?.SubArray(VertexOffset, NumVertices);
-            VertexColors = G3D.VertexColors?.SubArray(VertexOffset, NumVertices);
-            VertexTangents = G3D.VertexTangents?.SubArray(VertexOffset, NumVertices);
-            FaceNormals = G3D.FaceNormals?.SubArray(FaceOffset, NumFaces);
-
-            // TODO: Remove need for this.
-            var submeshArray = (G3D.SubmeshIndexOffsets as ArrayAdapter<int>).Array;
-            var submeshIndex = Array.BinarySearch(submeshArray, IndexOffset);
-            var submeshCount = 0;
-            for(var i = submeshIndex; i < submeshArray.Length; i++)
-            {
-                var indexOffset = submeshArray[i];
-                if (indexOffset - IndexOffset >= NumCorners)
-                    break;
-                submeshCount++;
-            }
-            SubmeshMaterials = G3D.SubmeshMaterials?.SubArray(submeshIndex, submeshCount);
-            SubmeshIndexOffsets = G3D.SubmeshIndexOffsets?.SubArray(submeshIndex, submeshCount).Select(i => i-IndexOffset);
-            MeshSubmeshOffset = new List<int>() {0}.ToIArray();
-        }
-
-        // Vertex buffer. Usually present.
+        // Vertex buffer slice containing only the used vertices .
         public IArray<Vector3> Vertices { get; }
 
         // Index buffer (one index per corner, and per half-edge)
+        // Computed based on the sliced vertices  
         public IArray<int> Indices { get; }
 
-        // Vertex associated data
+        // Vertex associated data, also sliced 
         public IArray<Vector2> VertexUvs { get; }
         public IArray<Vector3> VertexNormals { get; }
         public IArray<Vector4> VertexColors { get; }
         public IArray<Vector4> VertexTangents { get; }
 
-        // Face associated data.
+        // Face asssociated data.
         public IArray<Vector3> FaceNormals { get; }
 
-        public IArray<int> SubmeshMaterials { get; }
-        public IArray<int> SubmeshIndexOffsets { get; }
-        public IArray<int> MeshSubmeshOffset { get; }
+        public G3dMesh(G3D g3d, int index, IReadOnlyList<G3dSubmesh> subMeshes)
+        {
+            if (g3d.NumCornersPerFace != 3)
+                throw new Exception("Only triangular meshes supported");
+
+            Index = index;
+            Submeshes = subMeshes;
+
+            IndexOffset = g3d.MeshIndexOffsets[Index];
+            NumCorners = g3d.MeshIndexCounts[Index];
+            FaceOffset = IndexOffset / 3;
+            NumFaces = NumCorners / 3;
+
+            // NOTE: accessing this data is slow. 
+            // There is a lot of indirection, and a lot of function calls.
+
+            var lowestIndex = int.MaxValue;
+            var highestIndex = -1;
+            for (var i = 0; i < NumCorners; ++i)
+            {
+                var curIndex = g3d.Indices[i + IndexOffset];
+                if (curIndex < lowestIndex)
+                    lowestIndex = curIndex;
+                if (curIndex > highestIndex)
+                    highestIndex = curIndex;
+            }
+
+            // These are the offset indices into a subset of the vertex array 
+            VertexOffset = lowestIndex;
+            NumVertices = highestIndex - lowestIndex + 1;
+            var offset = VertexOffset;
+            Indices = g3d.Indices.SubArray(IndexOffset, NumCorners).Select(i => i - offset);
+
+            // Compute a subset of the vertices
+            Vertices = g3d.Vertices?.SubArray(VertexOffset, NumVertices);
+            VertexUvs = g3d.VertexUvs?.SubArray(VertexOffset, NumVertices);
+            VertexNormals = g3d.VertexNormals?.SubArray(VertexOffset, NumVertices);
+            VertexColors = g3d.VertexColors?.SubArray(VertexOffset, NumVertices);
+            VertexTangents = g3d.VertexTangents?.SubArray(VertexOffset, NumVertices);
+            FaceNormals = g3d.FaceNormals?.SubArray(FaceOffset, NumFaces);
+        }
     }
 }
