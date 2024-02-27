@@ -1,65 +1,68 @@
-﻿// https://docs.unity3d.com/Manual/SL-VertexFragmentShaderExamples.html
-// https://github.com/Toqozz/blog-code/blob/master/mesh_batching/Assets/InstancedIndirectColor.shader
-Shader "Custom/InstancedIndirectColor" 
+﻿Shader "Instanced/InstancedIndirect" 
 {
-    SubShader 
+	Properties
 	{
-        Tags { "RenderType" = "Opaque" }
-
-        Pass 
+		_MainTex("Albedo (RGB)", 2D) = "white" {}
+		_Glossiness("Smoothness", Range(0,1)) = 0.5
+		_Metallic("Metallic", Range(0,1)) = 0.0
+	}
+	SubShader
 	{
-            CGPROGRAM
-            #pragma vertex vert
-            #pragma fragment frag
-            
-            #include "UnityCG.cginc"
-            #include "UnityLightingCommon.cginc" // for _LightColor0
+		Tags{ "RenderType" = "Opaque" }
+		LOD 200
 
-            struct v2f {
-                float4 vertex   : SV_POSITION;
-		fixed4 diff : COLOR0; // diffuse lighting color
-                fixed4 color    : COLOR1;
-            }; 
+		CGPROGRAM
 
-            struct MeshProperties {
-                float4x4 mat;
-                float4 color;
-            };
+		// Physically based Standard lighting model
+		#pragma surface surf Standard addshadow
+		#pragma multi_compile_instancing
+		#pragma instancing_options procedural:setup
 
-            StructuredBuffer<MeshProperties> _Properties;
+		sampler2D _MainTex;
 
-            v2f vert(appdata_base i, uint instanceID: SV_InstanceID)
- 	    {
-                v2f o;
+		struct Input {
+			float2 uv_MainTex;
+		};
 
-                float4 pos = mul(_Properties[instanceID].mat, i.vertex);
-                o.vertex = UnityObjectToClipPos(pos);
-                o.color = _Properties[instanceID].color;
-		
-		// get vertex normal in world space
-                half3 worldNormal = UnityObjectToWorldNormal(mul(_Properties[instanceID].mat, i.normal));
+#ifdef UNITY_PROCEDURAL_INSTANCING_ENABLED
+		struct MeshProperties {
+            float4x4 mat;
+            float4 color;
+        };
 
-                // dot product between normal and light direction for
-                // standard diffuse (Lambert) lighting
-                half nl = max(0, dot(worldNormal, _WorldSpaceLightPos0.xyz));
-                
-		// factor in the light color
-                o.diff = nl * _LightColor0;
+    StructuredBuffer<MeshProperties> _Properties;
+#endif
 
-                // in addition to the diffuse lighting from the main light,
-                // add illumination from ambient or light probes
-                // ShadeSH9 function from UnityCG.cginc evaluates it,
-                // using world space normal
-                o.diff.rgb += ShadeSH9(half4(worldNormal,1));
+	void setup()
+	{
+#ifdef UNITY_PROCEDURAL_INSTANCING_ENABLED
+		unity_ObjectToWorld = _Properties[unity_InstanceID].mat;
+		unity_WorldToObject = unity_ObjectToWorld;
+		unity_WorldToObject._14_24_34 *= -1;
+		unity_WorldToObject._11_22_33 = 1.0f / unity_WorldToObject._11_22_33;
+#endif
+	}
 
-                return o;
-            }
-            
-            fixed4 frag(v2f i) : SV_Target {
-                return i.color * i.diff;
-            }
-            
-            ENDCG
-        }
-    }
+	half _Glossiness;
+	half _Metallic;
+
+	void surf(Input IN, inout SurfaceOutputStandard o) 
+	{
+		float4 col = 1.0f;
+
+#ifdef UNITY_PROCEDURAL_INSTANCING_ENABLED
+		col = _Properties[unity_InstanceID].color;
+#else
+		col = float4(0, 0, 1, 1);
+#endif
+
+		fixed4 c = tex2D(_MainTex, IN.uv_MainTex) * col;
+		o.Albedo = c.rgb;
+		o.Metallic = _Metallic;
+		o.Smoothness = _Glossiness;
+		o.Alpha = c.a;
+	}
+	ENDCG
+	}
+	FallBack "Diffuse"
 }

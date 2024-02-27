@@ -24,12 +24,15 @@ namespace Ara3D.ProceduralGeometry.Unity
         private int _count => _props.Length;
 
         private readonly ComputeBuffer _argsBuffer;
+        private readonly ComputeBuffer _propsBuffer;
         private readonly Bounds _bounds;
 
         public InstancedMeshDrawer(Mesh mesh, Material material, InstanceProps[] props)
         {
             _mesh = mesh;
+            
             _material = new Material(material);
+
             _props = props;
 
             // Boundary surrounding the meshes we will be drawing.  Used for occlusion.
@@ -47,9 +50,9 @@ namespace Ara3D.ProceduralGeometry.Unity
             _argsBuffer = new ComputeBuffer(1, args.Length * sizeof(uint), ComputeBufferType.IndirectArguments);
             _argsBuffer.SetData(args);
 
-            var meshPropertiesBuffer = new ComputeBuffer(_count, InstanceProps.Size());
-            meshPropertiesBuffer.SetData(_props);
-            _material.SetBuffer("_Properties", meshPropertiesBuffer);
+            _propsBuffer = new ComputeBuffer(_count, InstanceProps.Size());
+            _propsBuffer.SetData(_props);
+            _material.SetBuffer("_Properties", _propsBuffer);
         }
 
         public void Draw()
