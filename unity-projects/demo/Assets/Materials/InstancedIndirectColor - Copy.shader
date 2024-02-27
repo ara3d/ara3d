@@ -15,6 +15,12 @@ Shader "Custom/InstancedIndirectColor"
             #include "UnityCG.cginc"
             #include "UnityLightingCommon.cginc" // for _LightColor0
 
+            struct appdata_t {
+                float4 vertex   : POSITION;
+                float4 color    : COLOR;
+		float3 normal: NORMAL;
+            };
+
             struct v2f {
                 float4 vertex   : SV_POSITION;
 		fixed4 diff : COLOR0; // diffuse lighting color
@@ -28,7 +34,7 @@ Shader "Custom/InstancedIndirectColor"
 
             StructuredBuffer<MeshProperties> _Properties;
 
-            v2f vert(appdata_base i, uint instanceID: SV_InstanceID)
+            v2f vert(appdata_t i, uint instanceID: SV_InstanceID)
  	    {
                 v2f o;
 
@@ -37,21 +43,13 @@ Shader "Custom/InstancedIndirectColor"
                 o.color = _Properties[instanceID].color;
 		
 		// get vertex normal in world space
-                half3 worldNormal = UnityObjectToWorldNormal(mul(_Properties[instanceID].mat, i.normal));
-
+                half3 worldNormal = UnityObjectToWorldNormal(i.normal);
                 // dot product between normal and light direction for
                 // standard diffuse (Lambert) lighting
                 half nl = max(0, dot(worldNormal, _WorldSpaceLightPos0.xyz));
                 
 		// factor in the light color
                 o.diff = nl * _LightColor0;
-
-                // in addition to the diffuse lighting from the main light,
-                // add illumination from ambient or light probes
-                // ShadeSH9 function from UnityCG.cginc evaluates it,
-                // using world space normal
-                o.diff.rgb += ShadeSH9(half4(worldNormal,1));
-
                 return o;
             }
             

@@ -37,6 +37,7 @@ namespace Ara3D.ProceduralGeometry.Unity
 
                 var mesh = new Mesh();
                 set.Mesh.AssignToMesh(mesh);
+
                 var drawer = new InstancedMeshDrawer(mesh, Material,
                     set.Matrices.Select(m => 
                         new InstanceProps()

@@ -76,7 +76,15 @@ namespace Ara3D.UnityBridge
             if (UnityIndices != null) mesh.triangles = UnityIndices;
             if (UnityUVs != null) mesh.uv = UnityUVs;
             if (UnityColors != null) mesh.colors32 = UnityColors;
-            if (UnityNormals != null) mesh.normals = UnityNormals;
+            if (UnityNormals != null)
+            {
+                mesh.normals = UnityNormals;
+            }
+            else
+            {
+                mesh.RecalculateNormals();
+            }
+
         }
 
         IGeometry ITransformable<IGeometry>.Transform(Matrix4x4 mat)
