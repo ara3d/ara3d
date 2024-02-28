@@ -86,7 +86,7 @@ namespace Ara3D.Utils
         /// (where n is the number of similarly named files).
         /// Until a valid unused name is found (e.g., test{12}.txt).
         /// </summary>
-        public static string MakeUniuqe(this FilePath file)
+        public static string MakeUnique(this FilePath file)
         {
             if (!file.Exists())
                 return file;
@@ -138,7 +138,7 @@ namespace Ara3D.Utils
         /// Windows does it.
         /// </summary>
         public static FilePath ToUniqueTimeStampedFileName(this FilePath filePath)
-            => filePath.ToTimeStampedFileName().MakeUniuqe();
+            => filePath.ToTimeStampedFileName().MakeUnique();
 
         public static FilePath Move(this FilePath filePath, FilePath destination)
         {
