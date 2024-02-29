@@ -38,7 +38,7 @@ namespace Ara3D.ProceduralGeometry.Unity
             foreach (var set in scene.InstanceSets)
             {
                 var mesh = new Mesh();
-                set.Mesh.AssignToMesh(mesh);
+                set.TriMesh.AssignToMesh(mesh);
                 meshes.Add(mesh);
             }
             Scene = scene;

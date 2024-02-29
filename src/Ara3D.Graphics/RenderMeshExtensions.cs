@@ -50,15 +50,13 @@ namespace Ara3D.Graphics
         public static IRenderBuffer ToIndexBuffer(this IArray<Int3> indices)
             => indices.ToBuffer().ToIndexBuffer();
 
-        public static IRenderMesh ToRenderMesh(this IMesh mesh)
+        public static IRenderMesh ToRenderMesh(this ITriMesh triMesh)
             => new RenderMesh(
                 LinqArray.Create(
-                    mesh.Vertices?.ToVertexBuffer(), 
-                    mesh.Faces?.ToIndexBuffer(),
-                    mesh.Normals?.ToNormalBuffer(),
-                    mesh.UVs?.ToUvBuffer()));
+                    triMesh.Points?.ToVertexBuffer(), 
+                    triMesh.Indices?.ToIndexBuffer()));
 
-        public static IMesh ToIMesh(this IRenderMesh renderMesh)
+        public static ITriMesh ToIMesh(this IRenderMesh renderMesh)
             => renderMesh.PositionBuffer.Array.ToTriMesh(renderMesh.IndexBuffer.Array);
 
         public static IRenderMesh AddBuffer(this IRenderMesh renderMesh, IRenderBuffer buffer)

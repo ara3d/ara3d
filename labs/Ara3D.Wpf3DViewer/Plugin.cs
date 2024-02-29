@@ -36,7 +36,7 @@ public interface IPlugin
 
 public interface IMeshPlugin : IPlugin
 {
-    IMesh Generate();
+    ITriMesh Generate();
 }
 
 public class PropertyDescriptor : IPropertyDescriptor

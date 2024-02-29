@@ -9,18 +9,18 @@ namespace Ara3D.UnityBridge
     /// </summary>
     public abstract class Deformer : MonoBehaviour
     {
-        private UnityMesh _source;
+        private UnityTriMesh _source;
 
         public IRenderMesh SourceMesh { get; private set; }
 
-        public abstract IMesh Deform(IMesh g);
+        public abstract ITriMesh Deform(ITriMesh g);
 
         public virtual void Update()
         {
             //Debug.Log("Update called");
             var mesh = this.GetMesh();
             if (mesh == null) return;
-            _source = _source ?? (_source = new UnityMesh(mesh));
+            _source = _source ?? (_source = new UnityTriMesh(mesh));
 
             if (_source != null)
             {
@@ -28,7 +28,7 @@ namespace Ara3D.UnityBridge
 
                 // TODO: support more types
                 mesh.Clear();
-                mesh.vertices = g.Vertices.ToUnity();
+                mesh.vertices = g.Points.ToUnity();
                 mesh.triangles = g.Indices().ToUnityIndexBuffer();
                 mesh.RecalculateNormals();
             }

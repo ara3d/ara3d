@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Net;
 using Ara3D.Math;
 
 namespace Ara3D.Geometry
@@ -32,6 +31,12 @@ namespace Ara3D.Geometry
 
         public BoundedSurface(ISurface surface, AABox2D bounds)
             => (Bounds, Surface) = (bounds, surface);
+
+        public ITransformable TransformImpl(Matrix4x4 mat)
+            => DeformImpl(v => v.Transform(mat));
+
+        public IDeformable DeformImpl(Func<Vector3, Vector3> f)
+            => new BoundedSurface(Surface.Deform(f), Bounds);
     }
 
     /// <summary>

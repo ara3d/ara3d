@@ -21,7 +21,8 @@ public class SampleTorus : ProceduralGeometryObject
             tube * uv.Y.Sin());
     }
 
-    public override IMesh ComputeMesh() 
+    public override ITriMesh ComputeMesh() 
         => new ParametricSurface(uv => TorusFunction(uv, Radius, Tube), true, true)
-            .Tesselate(USegments, VSegments);    
+            .Tesselate(USegments, VSegments)
+            .Triangulate();    
 }

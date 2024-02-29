@@ -28,11 +28,11 @@ namespace Ara3D.Geometry
             return r;
         }
 
-        public TriMeshBuilder Add(IMesh m)
+        public TriMeshBuilder Add(ITriMesh m)
         {
             var offset = _vertices.Count;
-            _vertices.AddRange(m.Vertices);
-            _indices.AddRange(m.Faces.Select(i => i + offset));
+            _vertices.AddRange(m.Points);
+            _indices.AddRange(m.Indices.Select(i => i + offset));
             return this;
         }
     }

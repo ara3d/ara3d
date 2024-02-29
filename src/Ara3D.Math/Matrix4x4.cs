@@ -10,7 +10,7 @@ namespace Ara3D.Math
     /// A structure encapsulating a 4x4 matrix.
     /// </summary>
     [StructLayout(LayoutKind.Sequential), DataContract]
-    public struct Matrix4x4 : IEquatable<Matrix4x4>, ITransformable<Matrix4x4>
+    public struct Matrix4x4 : IEquatable<Matrix4x4>, ITransformable
     {
         public Vector3 Col0 => new Vector3(M11, M21, M31);
         public Vector3 Col1 => new Vector3(M12, M22, M32);
@@ -1994,7 +1994,7 @@ namespace Ara3D.Math
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public Matrix4x4 Transform(Matrix4x4 mat)
+        public ITransformable TransformImpl(Matrix4x4 mat)
             => this * mat;
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]

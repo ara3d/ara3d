@@ -5,14 +5,12 @@ namespace Ara3D.Math
     /// <summary>
     /// A structure encapsulating a 3D Plane
     /// </summary>
-    public partial struct Plane : ITransformable<Plane>
+    public partial struct Plane : ITransformable
     {
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public Plane(float x, float y, float z, float d)
             : this(new Vector3(x, y, z), d)
         { }
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public Plane(Vector4 v)
             : this(v.X, v.Y, v.Z, v.W)
         { }
@@ -20,7 +18,6 @@ namespace Ara3D.Math
         /// <summary>
         /// Creates a Plane that contains the three given points.
         /// </summary>
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Plane CreateFromVertices(Vector3 point1, Vector3 point2, Vector3 point3)
         {
             var a = point2 - point1;
@@ -33,7 +30,6 @@ namespace Ara3D.Math
         /// <summary>
         /// Creates a Plane with the given normal that contains the point
         /// </summary>
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Plane CreateFromNormalAndPoint(Vector3 normal, Vector3 point)
         {
             var n = normal.Normalize();
@@ -46,7 +42,6 @@ namespace Ara3D.Math
         /// Creates a new Plane whose normal vector is the source Plane's normal vector normalized.
         /// </summary>
         /// <param name="value">The source Plane.</param>
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public Plane Normalize()
         {
             const float FLT_EPSILON = 1.192092896e-07f; // smallest such that 1.0+FLT_EPSILON != 1.0
@@ -65,8 +60,7 @@ namespace Ara3D.Math
         /// <summary>
         /// Transforms a normalized Plane by a Matrix.
         /// </summary>
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public Plane Transform(Matrix4x4 matrix)
+        public ITransformable TransformImpl(Matrix4x4 matrix)
         {
             Matrix4x4.Invert(matrix, out var m);
             float x = Normal.X, y = Normal.Y, z = Normal.Z, w = D;
@@ -80,7 +74,6 @@ namespace Ara3D.Math
         /// <summary>
         ///  Transforms a normalized Plane by a Quaternion rotation.
         /// </summary>
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public Plane Transform(Quaternion rotation)
         {
             // Compute rotation matrix.
@@ -122,7 +115,6 @@ namespace Ara3D.Math
         /// <summary>
         /// Projects a point onto the plane
         /// </summary>
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Vector3 ProjectPointOntoPlane(Plane plane, Vector3 point)
         {
             var dist = point.Dot(plane.Normal) - plane.D;
@@ -132,21 +124,18 @@ namespace Ara3D.Math
         /// <summary>
         /// Calculates the dot product of a Plane and Vector4.
         /// </summary>
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public float Dot(Vector4 value)
             => ToVector4().Dot(value);
 
         /// <summary>
         /// Returns the dot product of a specified Vector3 and the normal vector of this Plane plus the distance (D) value of the Plane.
         /// </summary>
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public float DotCoordinate(Vector3 value)
             => DotNormal(value) + D;
 
         /// <summary>
         /// Returns the dot product of a specified Vector3 and the Normal vector of this Plane.
         /// </summary>
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public float DotNormal(Vector3 value)
             => Normal.Dot(value);
 
@@ -154,14 +143,12 @@ namespace Ara3D.Math
         /// Returns a value less than zero if the points is below the plane, above zero if above the plane, or zero if coplanar
         /// </summary>
         /// <param name="point"></param>
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public float ClassifyPoint(Vector3 point)
             => point.Dot(Normal) + D;
 
         /// <summary>
         /// Returns a Vector4 representation of the Plane
         /// </summary>
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public Vector4 ToVector4()
             => new Vector4(Normal.X, Normal.Y, Normal.Z, D);
     }

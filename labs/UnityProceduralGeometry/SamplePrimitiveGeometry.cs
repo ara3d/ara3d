@@ -15,12 +15,12 @@ public class SamplePrimitiveGeometry : ProceduralGeometryObject
 
     public GeometryType Type = GeometryType.Square;
 
-    public override IMesh ComputeMesh()
+    public override ITriMesh ComputeMesh()
     {
         switch (Type)
         {
-            case GeometryType.Square: return Primitives.Square;
-            case GeometryType.Cube: return Primitives.Cube;
+            case GeometryType.Square: return Primitives.Square.Triangulate();
+            case GeometryType.Cube: return Primitives.Cube.Triangulate();
             case GeometryType.Tetrahedron: return Primitives.Tetrahedron;
             case GeometryType.Octahedron: return Primitives.Octahedron;
         }

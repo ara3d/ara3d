@@ -1,14 +1,14 @@
-﻿using g3;
-using IMesh = Ara3D.Geometry.IMesh;
+﻿using Ara3D.Geometry;
+using g3;
 
 namespace Ara3D
 {
     public class Ara3DReducer
     {
-        public IMesh Source { get; }
-        public IMesh Result { get; }
+        public ITriMesh Source { get; }
+        public ITriMesh Result { get; }
 
-        public Ara3DReducer(IMesh source, int vertexCount, bool project = false)
+        public Ara3DReducer(ITriMesh source, int vertexCount, bool project = false)
         {
             Source = source;
             var dmesh = Source.ToG3Sharp();

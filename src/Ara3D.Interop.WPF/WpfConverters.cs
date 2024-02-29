@@ -89,12 +89,15 @@ public static class WpfConverters
         return r;
     }
 
-    public static MeshGeometry3D ToMeshGeometry3D(this IMesh mesh)
+    public static MeshGeometry3D ToMeshGeometry3D(this IQuadMesh quadMesh)
+        => quadMesh.Triangulate().ToMeshGeometry3D();
+
+    public static MeshGeometry3D ToMeshGeometry3D(this ITriMesh triMesh)
         => new MeshGeometry3D
         {
             //if (mesh.VertexNormals?.Count > 0) r.Normals = ToVectorCollection(mesh.VertexNormals);
             //if (mesh.VertexUvs?.Count > 0) r.TextureCoordinates = mesh.VertexUvs.ToPointCollection();
-            Positions = mesh.Vertices.ToPointCollection(),
-            TriangleIndices = ToIntCollection(mesh.Indices())
+            Positions = triMesh.Points.ToPointCollection(),
+            TriangleIndices = ToIntCollection(triMesh.Indices())
         };
 }

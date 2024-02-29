@@ -6,7 +6,6 @@ using System.Linq;
 using Ara3D.Collections;
 using Ara3D.Geometry;
 using Ara3D.Math;
-using IMesh = Ara3D.Geometry.IMesh;
 
 namespace Ara3D
 {
@@ -92,13 +91,13 @@ namespace Ara3D
             return dist.GetSquared().Sqrt();
         }
 
-        public static IArray<Vector3d> NearestPoints(this IMesh self, IArray<Vector3d> points)
+        public static IArray<Vector3d> NearestPoints(this ITriMesh self, IArray<Vector3d> points)
         {
             var tree = self.ToG3Sharp().AABBTree();
             return points.Select(tree.NearestPoint);
         }
 
-        public static IMesh ToAra3DMesh(this List<DMesh3> meshes)
+        public static ITriMesh ToAra3DMesh(this List<DMesh3> meshes)
             => meshes.ToIArray().Select(ToAra3D).Merge();
 
         public static List<DMesh3> LoadMeshes(string path)
@@ -143,7 +142,7 @@ namespace Ara3D
             return ((box.Min.x, box.Min.y, box.Min.z), (box.Max.x, box.Max.y, box.Max.z));
         }
 
-        public static IMesh ToAra3D(this DMesh3 self)
+        public static ITriMesh ToAra3D(this DMesh3 self)
         {
             var verts = self.Vertices().Select(ToAra3D).ToIArray();
             var indices = self.TrianglesBuffer.ToIArray();
@@ -156,10 +155,10 @@ namespace Ara3D
         public static Vector3d ToG3Sharp(this Vector3 self)
             => new Vector3d(self.X, self.Y, self.Z);        
 
-        public static DMesh3 ToG3Sharp(this IMesh self)
+        public static DMesh3 ToG3Sharp(this ITriMesh self)
         {
             var r = new DMesh3();
-            foreach (var v in self.Vertices.ToEnumerable())
+            foreach (var v in self.Points.ToEnumerable())
                 r.AppendVertex(v.ToVector3D());
             var indices = self.Indices();
             for (var i = 0; i < indices.Count; i += 3)
@@ -178,7 +177,7 @@ namespace Ara3D
             return r;
         }
 
-        public static IMesh Reduce(this IMesh self, float percent)
+        public static ITriMesh Reduce(this ITriMesh self, float percent)
             => self.ToG3Sharp().Reduce(percent).ToAra3D();        
     }
 }

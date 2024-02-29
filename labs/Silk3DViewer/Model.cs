@@ -51,7 +51,7 @@ namespace Tutorial
             //var mesh = Primitives.Icosahedron;
             //var mesh = Primitives.Cylinder(10, 5).Scale(10);
             //var mesh = Primitives.Pl
-            Meshes.Add(ToVAO(mesh));
+            Meshes.Add(ToVAO(mesh.Triangulate()));
         }
 
         public static Random Random = new Random();
@@ -63,10 +63,10 @@ namespace Tutorial
                 Random.NextSingle(), Random.NextSingle());
         }
 
-        public OpenGLVAO ToVAO(IMesh mesh)
+        public OpenGLVAO ToVAO(ITriMesh triMesh)
         {
             var c = NewRandomColor();
-            var rm = mesh.ToRenderMesh();
+            var rm = triMesh.ToRenderMesh();
             return new OpenGLVAO(_gl, rm);
         }
     }

@@ -3,7 +3,7 @@ using System.Runtime.CompilerServices;
 
 namespace Ara3D.Math
 {
-    public partial struct Triangle : ITransformable<Triangle>, IPoints, IMappable<Triangle, Vector3>
+    public partial struct Triangle : IPoints, IMappable<Triangle, Vector3>
     {
         public Triangle Transform(Matrix4x4 mat) => Map(x => x.Transform(mat));
         public int NumPoints => 3;

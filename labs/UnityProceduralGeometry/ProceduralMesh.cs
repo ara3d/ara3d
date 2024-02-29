@@ -7,14 +7,14 @@ namespace Ara3D.UnityBridge
     /// </summary>
     public class ProceduralMesh
     {
-        public UnityMesh Original { get; private set; }
-        public UnityMesh Buffer { get; private set; }
+        public UnityTriMesh Original { get; private set; }
+        public UnityTriMesh Buffer { get; private set; }
         public Mesh Target { get; private set; }
 
         public ProceduralMesh(Mesh mesh)
         {
             Target = mesh;
-            Original = new UnityMesh(Target);
+            Original = new UnityTriMesh(Target);
             Buffer = Original.Clone();  
         }
 

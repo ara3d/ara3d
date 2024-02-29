@@ -5,8 +5,8 @@ namespace Ara3D.UnityBridge
 {
     public abstract class ProceduralGeometryObject : MonoBehaviour
     {
-        private IMesh _newGeometry;
-        private IMesh _oldGeometry;
+        private ITriMesh _newGeometry;
+        private ITriMesh _oldGeometry;
 
         public virtual void Reset()
         {
@@ -42,6 +42,6 @@ namespace Ara3D.UnityBridge
             _newGeometry = ComputeMesh();
         }
 
-        public abstract IMesh ComputeMesh();
+        public abstract ITriMesh ComputeMesh();
     }
 }

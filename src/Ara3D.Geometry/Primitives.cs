@@ -26,8 +26,8 @@ namespace Ara3D.Geometry
             => ToQuadMesh(new[] { a, b, c, d }.ToIArray());
         
         public static QuadMesh Cube
-            => Square.Translate(-Vector3.UnitZ / 2).Vertices.Concat(
-                Square.Translate(Vector3.UnitZ / 2).Vertices)
+            => Square.Translate(-Vector3.UnitZ / 2).Points.Concat(
+                Square.Translate(Vector3.UnitZ / 2).Points)
             .ToQuadMesh(new Int4[] {
                     (0, 1, 2, 3), 
                     (1, 5, 6, 2), 
@@ -37,7 +37,7 @@ namespace Ara3D.Geometry
                     (3, 2, 6, 7),
                 }.ToIArray());
 
-        public static IMesh ToIMesh(this AABox box)
+        public static QuadMesh ToIMesh(this AABox box)
             => Cube.Scale(box.Extent).Translate(box.Center);
 
         public static float Sqrt2 
@@ -49,7 +49,7 @@ namespace Ara3D.Geometry
         public static float HalfSqrt3 
             = Sqrt3 / 2;
 
-        public static readonly IMesh Tetrahedron
+        public static readonly ITriMesh Tetrahedron
             = ToTriMesh(new Vector3[]
             {
                 (1f, 0.0f, -1f / Sqrt2), 
@@ -65,7 +65,7 @@ namespace Ara3D.Geometry
                 (0f, HalfSqrt3),
                 (0.5f, -HalfSqrt3));
 
-        public static TriMesh TriangleMesh 
+        public static TriMesh TriangleTriMesh 
             = TrianglePoints.To3D().ToTriMesh();
 
         public static IArray<Vector2> SquarePoints
@@ -83,7 +83,7 @@ namespace Ara3D.Geometry
 
         public static readonly TriMesh Octahedron
             = Square
-                .Vertices
+                .Points
                 .Append(Vector3.UnitZ / 2, -Vector3.UnitZ / 2)
                 .Normalize()
                 .ToTriMesh(
@@ -104,7 +104,7 @@ namespace Ara3D.Geometry
         public static ParametricSurface Torus(float radius, float tubeRadius)
             => new ParametricSurface(uv => TorusFunction(uv, radius, tubeRadius), false, false);
 
-        public static Surface TorusMesh(float radius, float tubeRadius, int uSegs, int vSegs)
+        public static TesselatedMesh TorusMesh(float radius, float tubeRadius, int uSegs, int vSegs)
             => Torus(radius, tubeRadius).Tesselate(uSegs, vSegs);
 
         // see: https://github.com/mrdoob/three.js/blob/9ef27d1af7809fa4d9943f8d4c4644e365ab6d2d/src/geometries/SphereBufferGeometry.js#L76
@@ -117,7 +117,7 @@ namespace Ara3D.Geometry
         public static ParametricSurface Sphere(float radius)
             => new ParametricSurface(uv => SphereFunction(uv, radius), true, true);
 
-        public static Surface SphereMesh(float radius, int segs)
+        public static TesselatedMesh SphereMesh(float radius, int segs)
             => Sphere(radius).Tesselate(segs, segs);
 
         /// <summary>
@@ -193,7 +193,7 @@ namespace Ara3D.Geometry
                     (3, 9, 4), (3, 4, 2), (3, 2, 6), (3, 6, 8), (3, 8, 9), 
                     (4, 9, 5), (2, 4, 11), (6, 2, 10), (8, 6, 7), (9, 8, 1)));
 
-        public static Surface Cylinder(int usegs, int vsegs)
+        public static TesselatedMesh Cylinder(int usegs, int vsegs)
             => PrimitiveFunctions.Cylinder.ToSurface(true, false).Tesselate(usegs, vsegs);
 
         public static Curve<Vector3> TorusKnotCurve(int p, int q)

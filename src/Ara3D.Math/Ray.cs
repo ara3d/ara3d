@@ -2,10 +2,9 @@
 
 namespace Ara3D.Math
 {
-    public partial struct Ray : ITransformable<Ray>
+    public partial struct Ray : ITransformable
     {
         // adapted from http://www.scratchapixel.com/lessons/3d-basic-lessons/lesson-7-intersecting-simple-shapes/ray-box-intersection/
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public float? Intersects(AABox box)
         {
             const float Epsilon = 1e-6f;
@@ -89,7 +88,6 @@ namespace Ara3D.Math
             return tMin;
         }
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public float? Intersects(Plane plane, float tolerance = Constants.Tolerance)
         {
             var den = Vector3.Dot(Direction, plane.Normal);
@@ -110,7 +108,6 @@ namespace Ara3D.Math
             return result;
         }
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public float? Intersects(Sphere sphere)
         {
             // Find the vector between where the ray starts the the sphere's centre
@@ -138,7 +135,7 @@ namespace Ara3D.Math
             return (dist < 0) ? null : distanceAlongRay - (float?)MathOps.Sqrt(dist);
         }
 
-        public Ray Transform(Matrix4x4 mat)
+        public ITransformable TransformImpl(Matrix4x4 mat)
             => new Ray(Position.Transform(mat), Direction.TransformNormal(mat));
 
         // Adapted from https://en.wikipedia.org/wiki/M%C3%B6ller%E2%80%93Trumbore_intersection_algorithm

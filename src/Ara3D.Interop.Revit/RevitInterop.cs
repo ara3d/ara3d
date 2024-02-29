@@ -22,7 +22,7 @@ namespace Ara3D.Interop.Revit
                 (int)tri.get_Index(1), 
                 (int)tri.get_Index(2));
 
-        public static IMesh ToAra(this Mesh mesh)
+        public static ITriMesh ToAra(this Autodesk.Revit.DB.Mesh mesh)
             => new TriMesh(
                 mesh.Vertices.Select(v => v.ToAra().Vector3).ToIArray(),
                 mesh.NumTriangles.Select(i => mesh.get_Triangle(i).ToAra()));

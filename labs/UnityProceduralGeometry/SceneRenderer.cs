@@ -32,11 +32,11 @@ namespace Ara3D.ProceduralGeometry.Unity
                     continue;
 
                 // If there are no faces, skip it
-                if (set.Mesh.Faces.Count == 0)
+                if (set.TriMesh.Indices.Count == 0)
                     continue;
 
                 var mesh = new Mesh();
-                set.Mesh.AssignToMesh(mesh);
+                set.TriMesh.AssignToMesh(mesh);
 
                 var drawer = new InstancedMeshDrawer(mesh, Material,
                     set.Matrices.Select(m => 

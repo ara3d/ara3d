@@ -9,7 +9,7 @@ namespace Ara3D.Geometry
 
         public PointNormal(Vector3 point, Vector3 normal)
             => (Point, Normal) = (point, normal);
-    }
+    }   
 
     public class PointNormal2D
     {

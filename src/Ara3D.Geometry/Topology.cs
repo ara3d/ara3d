@@ -66,7 +66,7 @@ namespace Ara3D.Geometry
     /// </summary>
     public class Topology
     {
-        public Topology(IMesh m)
+        public Topology(ITriMesh m)
         {
             if (m is TriMesh triMesh)
             {
@@ -83,10 +83,10 @@ namespace Ara3D.Geometry
             }
             Corners = m.Indices();
             Faces = m.GetNumFaces().Range();
-            Vertices = m.Vertices.Indices();
+            Vertices = m.Points.Indices();
 
             // Compute the mapping from vertex indices to faces that reference them 
-            VerticesToFaces = new List<int>[m.Vertices.Count];
+            VerticesToFaces = new List<int>[m.Points.Count];
             for (var c = 0; c < Corners.Count; ++c)
             {
                 var v = Corners[c];

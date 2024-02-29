@@ -5,6 +5,7 @@ using Ara3D.Collections;
 using Ara3D.Geometry;
 using Ara3D.Math;
 using Matrix4x4 = Ara3D.Math.Matrix4x4;
+using Mesh = UnityEngine.Mesh;
 using Vector2 = Ara3D.Math.Vector2;
 using Vector3 = Ara3D.Math.Vector3;
 
@@ -19,7 +20,7 @@ namespace Ara3D.UnityBridge
     /// TODO: consider uvs1 through 8, tangents, and boneWeights
     /// https://docs.unity3d.com/ScriptReference/BoneWeight.html
     /// </summary>
-    public class UnityMesh : IMesh
+    public class UnityTriMesh : ITriMesh
     {
         public UnityEngine.Vector2[] UnityUVs;
         public UnityEngine.Vector3[] UnityVertices;
@@ -28,25 +29,23 @@ namespace Ara3D.UnityBridge
         public int[] UnityIndices;
         public Color32[] UnityColors;
 
-        public IArray<Int3> Faces => UnityIndices.ToIArray().SelectTriplets((a, b, c) => new Int3(a, b, c));
-        public IArray<Vector3> Vertices => UnityVertices.ToIArray().Select(v => v.ToAra3D());
-        public IArray<Vector2> UVs => UnityUVs.ToIArray().Select(v => v.ToAra3D());
-        public IArray<Vector3> Normals => UnityNormals.ToIArray().Select(v => v.ToAra3D());
+        public IArray<Int3> Indices => UnityIndices.ToIArray().SelectTriplets((a, b, c) => new Int3(a, b, c));
+        public IArray<Vector3> Points => UnityVertices.ToIArray().Select(v => v.ToAra3D());
 
-        public UnityMesh()
+        public UnityTriMesh()
         { }
 
-        public UnityMesh(UnityMesh other)
+        public UnityTriMesh(UnityTriMesh other)
         {
             CopyFrom(other);
         }
 
-        public UnityMesh Clone()
+        public UnityTriMesh Clone()
         {
-            return new UnityMesh(this);
+            return new UnityTriMesh(this);
         }
 
-        public void CopyFrom(UnityMesh other)
+        public void CopyFrom(UnityTriMesh other)
         {
             UnityIndices = other.UnityIndices;
             UnityUVs = other.UnityUVs?.ToArray();
@@ -64,7 +63,7 @@ namespace Ara3D.UnityBridge
             UnityNormals = mesh.normals?.ToArray();
         }
 
-        public UnityMesh(Mesh mesh)
+        public UnityTriMesh(Mesh mesh)
         {
             CopyFrom(mesh);
         }
@@ -84,27 +83,18 @@ namespace Ara3D.UnityBridge
             {
                 mesh.RecalculateNormals();
             }
-
         }
 
-        IGeometry ITransformable<IGeometry>.Transform(Matrix4x4 mat)
-        {
-            throw new NotImplementedException();
-        }
+        public ITransformable TransformImpl(Matrix4x4 mat)
+            => DeformImpl(v => v.Transform(mat));
 
-        IGeometry IDeformable<IGeometry>.Deform(Func<Vector3, Vector3> f)
-        {
-            throw new NotImplementedException();
-        }
+        public IDeformable DeformImpl(Func<Vector3, Vector3> f)
+            => new UnityTriMesh(this)
+            {
+                UnityVertices = UnityVertices
+                    .Select(v => f(v.ToAra3D()).ToUnity())
+                    .ToArray()
+            };
 
-        IMesh ITransformable<IMesh>.Transform(Matrix4x4 mat)
-        {
-            throw new NotImplementedException();
-        }
-
-        IMesh IDeformable<IMesh>.Deform(Func<Vector3, Vector3> f)
-        {
-            throw new NotImplementedException();
-        }
     }
 }

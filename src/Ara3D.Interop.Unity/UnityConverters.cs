@@ -8,6 +8,7 @@ using Ara3D.Serialization.VIM;
 using UnityEngine;
 using UnityEngine.Rendering;
 using Matrix4x4 = Ara3D.Math.Matrix4x4;
+using Mesh = UnityEngine.Mesh;
 using MeshTopology = UnityEngine.MeshTopology;
 using Quaternion = Ara3D.Math.Quaternion;
 using Transform = UnityEngine.Transform;
@@ -150,12 +151,12 @@ namespace Ara3D.UnityBridge
             return mesh;
         }
 
-        public static Mesh UpdateMesh(this Mesh mesh, IMesh g)
+        public static Mesh UpdateMesh(this Mesh mesh, ITriMesh g)
         {
             if (mesh == null || g == null)
                 return mesh;
 
-            return mesh.UpdateMesh(g.Vertices, g.Indices(), 3);
+            return mesh.UpdateMesh(g.Points, g.Indices(), 3);
             
             // TODO: copy colors, normals, uvs1 through 8, tangents, and boneWeights
             //r.colors = g.VertexColors.Select();
@@ -173,7 +174,7 @@ namespace Ara3D.UnityBridge
         public static Mesh GetMesh(this GameObject obj)
             => obj == null ? null : obj.GetComponent<MeshFilter>().GetMesh();
 
-        public static Mesh UpdateMesh(this GameObject obj, IMesh m)
+        public static Mesh UpdateMesh(this GameObject obj, ITriMesh m)
             => obj == null ? null : UpdateMesh(obj.GetMesh(), m);
 
         public static Mesh CreateMesh(this MonoBehaviour mono, bool renderable = true)
@@ -194,10 +195,10 @@ namespace Ara3D.UnityBridge
         public static Mesh GetMesh(this MonoBehaviour mono)
             => mono.GetComponent<MeshFilter>().GetMesh();
 
-        public static Mesh UpdateMesh(this MonoBehaviour mono, IMesh m)
+        public static Mesh UpdateMesh(this MonoBehaviour mono, ITriMesh m)
             => UpdateMesh(mono.GetMesh(), m);
 
-        public static Mesh ToUnity(this IMesh m)
+        public static Mesh ToUnity(this ITriMesh m)
             => UpdateMesh(new Mesh(), m);
 
         public static void SetFromMatrix(this Transform transform, Matrix4x4 matrix) {
@@ -298,9 +299,9 @@ namespace Ara3D.UnityBridge
         public static Color ToUnityColor(this Vector4 v)
             => v.ToUnity();
 
-        public static UnityMesh ToUnity(this G3dMesh mesh)
+        public static UnityTriMesh ToUnity(this G3dMesh mesh)
         {
-            return new UnityMesh()
+            return new UnityTriMesh()
             {
                 UnityIndices = mesh.Indices.ToArray(),
                 UnityVertices = mesh.Vertices.Select(ToUnity).ToArray(),
@@ -324,7 +325,7 @@ namespace Ara3D.UnityBridge
                 
                 var set = new UnityMeshInstanceSet
                 {
-                    Mesh = m.ToUnity(),
+                    TriMesh = m.ToUnity(),
                     Color = matIndex >= 0
                         ? g.MaterialColors[matIndex].ToUnityColor()
                         : defaultColor
