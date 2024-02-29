@@ -2,20 +2,23 @@
 
 namespace Ara3D.Math
 {
-    public interface ITransformable<out TSelf> where TSelf: ITransformable<TSelf>
+    public interface ITransformable
     {
-        TSelf Transform(Matrix4x4 mat);
+        ITransformable TransformImpl(Matrix4x4 mat);
     }
 
     public static class Transformable3D
     {
+        public static T Transform<T>(this T self, Matrix4x4 mat) where T : ITransformable
+            => (T)self.TransformImpl(mat);
+
         public static Matrix4x4 Multiply(params Matrix4x4[] matrices)
             => matrices.Aggregate(Matrix4x4.Identity, (m1, m2) => m1 * m2);
 
         public static T Transform<T>(this T self, params Matrix4x4[] matrices) where T: ITransformable<T>
             => self.Transform(Multiply(matrices));
 
-        public static T Translate<T>(this T self, Vector3 offset) where T: ITransformable<T>
+        public static T Translate<T>(this T self, Vector3 offset) where T: ITransformable
             => self.Transform(Matrix4x4.CreateTranslation(offset));
 
         public static T Translate<T>(this T self, float x, float y, float z) where T: ITransformable<T>

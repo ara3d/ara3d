@@ -3,35 +3,15 @@ using Ara3D.Math;
 
 namespace Ara3D.Geometry
 {
-    public class PointNormal
-    {
-        public Vector3 Point { get; }
-        public Vector3 Normal { get; }
-
-        public PointNormal(Vector3 point, Vector3 normal)
-            => (Point, Normal) = (point, normal);
-    }
-
-    public interface IProcedural<TIn, TOut> 
+    public interface IProcedural<TIn, TOut>
     {
         TOut Eval(TIn x);
     }
 
-    public interface ICurve<T> : IProcedural<float, T>
-    {
-        bool Closed { get; }
-    }
-
-    public interface ICurve2D : ICurve<Vector2> { }
-    public interface ICurve3D : ICurve<Vector3> { }
-
-    public interface IOrientedCurve : ICurve<PointNormal> { }
-
     public interface IColorGradient : IProcedural<float, Vector4> { }
-
+    public interface IHeightMap : IExplicitSurface { }
     public interface IDistanceField2D : IProcedural<Vector2, float> { }
     public interface IVectorField2D : IProcedural<Vector2, Vector2> { }
-
 
     public interface IVolume : IProcedural<Vector3, bool> { }
     public interface IDistanceField3D : IProcedural<Vector3, float> { }
@@ -49,8 +29,15 @@ namespace Ara3D.Geometry
         public T2 Eval(T1 x) => _func(x);
     }
 
+    public class Procedural3D<T> : Procedural<T, Vector3>
+    {
+        public Procedural3D(Func<T, Vector3> func) : base(func)
+        { }
+    }
+
     public static class Procedurals
     {
+
         public static IProcedural<T1, T2> ToProcedural<T1,T2>(this Func<T1, T2> f)
             => new Procedural<T1, T2>(f);
 

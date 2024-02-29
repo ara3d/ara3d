@@ -21,9 +21,9 @@ namespace Ara3D.Geometry
     /// <summary>
     /// A topological face. 
     /// </summary>
-    public class Face : TopologicalElement
+    public class TopoFace : TopologicalElement
     {
-        public Face(Topology topology, int index)
+        public TopoFace(Topology topology, int index)
             : base(topology, index)
         { }
     }
@@ -32,9 +32,9 @@ namespace Ara3D.Geometry
     /// A directed edge around a polygon (aka a half-edge). There is exactly one half-edge per "corner" in a mesh.
     /// A non-border edge in a manifold mesh has exactly two half-edges, and a border edge has one edge.  
     /// </summary>
-    public class HalfEdge : TopologicalElement
+    public class TopoEdge : TopologicalElement
     {
-        public HalfEdge(Topology topology, int index)
+        public TopoEdge(Topology topology, int index)
             : base(topology, index)
         {}
     }
@@ -42,9 +42,9 @@ namespace Ara3D.Geometry
     /// <summary>
     /// A vertex in the mesh. 
     /// </summary>
-    public class Vertex : TopologicalElement
+    public class TopoVertex : TopologicalElement
     {
-        public Vertex(Topology topology, int index)
+        public TopoVertex(Topology topology, int index)
             : base(topology, index)
         { }
     }
@@ -53,9 +53,9 @@ namespace Ara3D.Geometry
     /// Also called a "face-corner". Associated with exactly one face, and one vertex.
     /// A vertex may be associated with multiple corners 
     /// </summary>
-    public class Corner : TopologicalElement
+    public class TopoCorner : TopologicalElement
     {
-        public Corner(Topology topology, int index)
+        public TopoCorner(Topology topology, int index)
             : base(topology, index)
         { }
     }

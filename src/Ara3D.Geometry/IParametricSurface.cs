@@ -1,24 +1,56 @@
 ﻿using System;
+using System.Net;
 using Ara3D.Math;
 
 namespace Ara3D.Geometry
 {
     /// <summary>
-    /// An explicit surface is a function mapping UV coordinates
-    /// to Z values. 
+    /// A surface is a continuous 3-dimensional shape with no volume.
+    /// Some examples of surfaces could be a sphere, cylinder, or torus.  
     /// </summary>
-    public interface IExplicitSurface : IProcedural<Vector2, float>, IGeometry
-    {
-    }
-
-    public interface IParametricSurface : IProcedural<Vector2, Vector3>, IGeometry
+    public interface ISurface : IGeometry
     {
         bool ClosedX { get; }
         bool ClosedY { get; }
     }
 
-    public interface IGraph2D : IProcedural<Vector2, float>
-    { }
+    /// <summary>
+    /// A bounded surface is a 2D sampling of a surface within some 
+    /// </summary>
+    public interface IBoundedSurface : ISurface
+    {
+        AABox2D Bounds { get; }
+        ISurface Surface { get; }
+    }
+
+    public class BoundedSurface : IBoundedSurface
+    {
+        public bool ClosedX => false;
+        public bool ClosedY => false;
+        public AABox2D Bounds { get; }
+        public ISurface Surface { get; }
+
+        public BoundedSurface(ISurface surface, AABox2D bounds)
+            => (Bounds, Surface) = (bounds, surface);
+    }
+
+    /// <summary>
+    /// An explicit surface is a function mapping UV coordinates
+    /// to real-numbers. It can be trivially converted to a parametric surface.
+    /// One application is as a height map.
+    /// </summary>
+    public interface IExplicitSurface : IProcedural<Vector2, float>, ISurface
+    {
+    }
+
+    /// <summary>
+    /// A parametric surface maps UV coordinates to 3-dimensional points in space.
+    /// Any explicit surface can be combined with a parametric surface by interpreting
+    /// the normals.  
+    /// </summary>
+    public interface IParametricSurface : IProcedural<Vector2, Vector3>, ISurface
+    {
+    }
 
     public class ParametricSurface : Procedural<Vector2, Vector3>, IParametricSurface
     {
@@ -31,14 +63,11 @@ namespace Ara3D.Geometry
         public IParametricSurface TransformInput(Func<Vector2, Vector2> f)
             => new ParametricSurface(x => Eval(f(x)), ClosedX, ClosedY);
 
-        public IParametricSurface TransformOutput(Func<Vector3, Vector3> f)
-            => new ParametricSurface(x => f(Eval(x)), ClosedX, ClosedY);
-
-        public IGeometry Transform(Matrix4x4 mat)
-            => Deform(v => v.Transform(mat));
+       public ITransformable TransformImpl(Matrix4x4 mat)
+            => DeformImpl(v => v.Transform(mat));
             
-        public IGeometry Deform(Func<Vector3, Vector3> f)
-            => TransformOutput(f);
+        public IDeformable DeformImpl(Func<Vector3, Vector3> f)
+            => new ParametricSurface(x => f(Eval(x)), ClosedX, ClosedY);
     }
 
     public class SurfacePoint
@@ -81,11 +110,11 @@ namespace Ara3D.Geometry
         public static Vector3 LerpAlongVector(this Vector3 v, Vector3 direction, float t)
             => v.Lerp(v + direction, t);
 
-        public static IParametricSurface Extrude(this ICurve<Vector3> profile, Vector3 vector)
+        public static IParametricSurface Extrude(this ICurve profile, Vector3 vector)
             => Create((uv) => profile.Eval(uv.X).LerpAlongVector(vector, uv.Y), profile.Closed, false);
 
         // TODO: this needs to be finished. 
-        public static IParametricSurface Loft(this ICurve<Vector3> profile, IOrientedCurve path)
+        public static IParametricSurface Loft(this ICurve profile, IOrientedCurve path)
             => throw new NotImplementedException();
 
         public static SurfacePoint GetPoint(this IParametricSurface parametricSurface, Vector2 uv)
@@ -102,5 +131,19 @@ namespace Ara3D.Geometry
 
         public static IParametricSurface ToParametricSurface(this IExplicitSurface self)
             => new ParametricSurface(uv => uv.ToVector3().SetX(self.Eval(uv)), false, false);
+    }
+
+    public static class CurveOperations
+    {
+        public static ICurve ToCurve3D(this ICurve2D curve, bool closed = false, int axis = 2)
+        {
+            switch (axis)
+            {
+                case 0: return new Curve3D(t => curve.Eval(t).ToVector3().ZXY, closed);
+                case 1: return new Curve3D(t => curve.Eval(t).ToVector3().XZY, closed);
+                case 2: return new Curve3D(t => curve.Eval(t).ToVector3(), closed);
+                default: throw new ArgumentOutOfRangeException(nameof(axis));
+            }
+        }
     }
 }
