@@ -1,6 +1,4 @@
-﻿using System.Runtime.CompilerServices;
-
-namespace Ara3D.Math
+﻿namespace Ara3D.Math
 {
     public partial struct Ray : ITransformable
     {

@@ -1,7 +1,6 @@
 ﻿using System.Linq;
 using System.Windows.Media;
 using System.Windows.Media.Media3D;
-using Ara3D.Collections;
 using Ara3D.Interop.WPF;
 using Ara3D.Serialization.G3D;
 using Ara3D.Utils;

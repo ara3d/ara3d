@@ -1,5 +1,4 @@
-﻿using Ara3D;
-using Ara3D.Geometry;
+﻿using Ara3D.Geometry;
 using Ara3D.Math;
 using Ara3D.UnityBridge;
 

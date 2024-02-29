@@ -1,14 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Linq;
 using Ara3D.Collections;
 using Ara3D.Geometry;
 using Ara3D.Math;
-using Autodesk.Revit;
 using Autodesk.Revit.DB;
-using Transform = Ara3D.Math.Transform;
 
 namespace Ara3D.Interop.Revit
 {

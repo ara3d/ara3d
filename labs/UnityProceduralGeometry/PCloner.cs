@@ -2,9 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using UnityEngine;
-using UnityEngine.PlayerLoop;
 using Component = UnityEngine.Component;
-using Random = UnityEngine.Random;
 
 
 namespace Plato.Unity

@@ -3,7 +3,6 @@ using System.Diagnostics;
 using Ara3D.Collections;
 using Ara3D.Serialization.BFAST;
 using Ara3D.Serialization.VIM;
-using Ara3D.UnityBridge;
 using Ara3D.Utils;
 using NUnit.Framework;
 

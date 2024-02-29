@@ -6,9 +6,6 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Security.Cryptography;
 using System.Text.RegularExpressions;
-using System.Threading;
-using System.Xml.Linq;
-using static System.Net.Mime.MediaTypeNames;
 
 namespace Ara3D.Utils
 {

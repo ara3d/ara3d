@@ -1,6 +1,4 @@
 ﻿using Ara3D.Serialization.VIM;
-using System;
-using System.Text;
 using Ara3D.UnityBridge;
 using UnityEngine;
 
