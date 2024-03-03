@@ -4,19 +4,19 @@
             DestinationFolder="$(SolutionDir)nuget-output" />
   </Target>
   <PropertyGroup>
-    <Version>1.2.1</Version>
-    <AssemblyVersion>1.2.1</AssemblyVersion>
-    <AssemblyFileVersion>1.2.1</AssemblyFileVersion>
+    <Version>1.3.0</Version>
+    <AssemblyVersion>1.3.0</AssemblyVersion>
+    <AssemblyFileVersion>1.3.0</AssemblyFileVersion>
     <Authors>Ara 3D Inc.</Authors>
     <PackageProjectUrl>https://github.com/ara3d/ara3d</PackageProjectUrl>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
-    <Copyright>Copyright (c) Ara 3D Inc 2024, Licensed under MIT</Copyright>
+    <Copyright>Copyright (c) Ara 3D Inc 2024, Licensed under MIT License</Copyright>
     <PackageReadmeFile>README.md</PackageReadmeFile>
-    <Icon>ara3d-144x144.png</Icon>
+    <PackageIcon>ara3d-128x128.png</PackageIcon>
   </PropertyGroup>
 
   <ItemGroup>
-    <None Include="$(SolutionDir)ara3d-144x144.png">
+    <None Include="$(SolutionDir)ara3d-128x128.png">
       <Pack>True</Pack>
       <PackagePath>\</PackagePath>
     </None>

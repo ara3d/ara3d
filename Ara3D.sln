@@ -137,6 +137,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "devops", "devops", "{73755E
 	ProjectSection(SolutionItems) = preProject
 		devops\nuget-init.bat = devops\nuget-init.bat
 		devops\push.bat = devops\push.bat
+		devops\README.md = devops\README.md
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "parakeet", "parakeet", "{7C5FAF8D-7DF2-4772-8609-2679912A58EF}"
@@ -199,11 +200,13 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ara3D.Bowerbird.Wpf.Net48.L
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ara3D.Harvester", "..\harvester\src\Ara3D.Harvester\Ara3D.Harvester.csproj", "{F0AD189F-E30E-4113-AE63-C539290C09CE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ara3D.Static.Blogger", "labs\Ara3D.Static.Blogger\Ara3D.Static.Blogger.csproj", "{ACAC19F3-A056-473B-BAD8-57823CCB9D26}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ara3D.Static.Blogger", "labs\Ara3D.Static.Blogger\Ara3D.Static.Blogger.csproj", "{ACAC19F3-A056-473B-BAD8-57823CCB9D26}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ara3D.Templating.Mustache", "src\Ara3D.Templating.Mustache\Ara3D.Templating.Mustache.csproj", "{EC17427B-78E3-4960-820A-EACB291B5E98}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ara3D.Templating.Mustache", "src\Ara3D.Templating.Mustache\Ara3D.Templating.Mustache.csproj", "{EC17427B-78E3-4960-820A-EACB291B5E98}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ara3D.Parsing.Markdown", "src\Ara3D.Parsing.Markdown\Ara3D.Parsing.Markdown.csproj", "{41A35A1F-5977-4894-B08D-DC542B75DDC2}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ara3D.Parsing.Markdown", "src\Ara3D.Parsing.Markdown\Ara3D.Parsing.Markdown.csproj", "{41A35A1F-5977-4894-B08D-DC542B75DDC2}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ara3D.Parsing", "src\Ara3D.Parsing\Ara3D.Parsing.csproj", "{38AB9D38-57D8-402C-A379-A7E0E9E70CAB}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -1187,6 +1190,18 @@ Global
 		{41A35A1F-5977-4894-B08D-DC542B75DDC2}.Release|x64.Build.0 = Release|Any CPU
 		{41A35A1F-5977-4894-B08D-DC542B75DDC2}.Release|x86.ActiveCfg = Release|Any CPU
 		{41A35A1F-5977-4894-B08D-DC542B75DDC2}.Release|x86.Build.0 = Release|Any CPU
+		{38AB9D38-57D8-402C-A379-A7E0E9E70CAB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{38AB9D38-57D8-402C-A379-A7E0E9E70CAB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{38AB9D38-57D8-402C-A379-A7E0E9E70CAB}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{38AB9D38-57D8-402C-A379-A7E0E9E70CAB}.Debug|x64.Build.0 = Debug|Any CPU
+		{38AB9D38-57D8-402C-A379-A7E0E9E70CAB}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{38AB9D38-57D8-402C-A379-A7E0E9E70CAB}.Debug|x86.Build.0 = Debug|Any CPU
+		{38AB9D38-57D8-402C-A379-A7E0E9E70CAB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{38AB9D38-57D8-402C-A379-A7E0E9E70CAB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{38AB9D38-57D8-402C-A379-A7E0E9E70CAB}.Release|x64.ActiveCfg = Release|Any CPU
+		{38AB9D38-57D8-402C-A379-A7E0E9E70CAB}.Release|x64.Build.0 = Release|Any CPU
+		{38AB9D38-57D8-402C-A379-A7E0E9E70CAB}.Release|x86.ActiveCfg = Release|Any CPU
+		{38AB9D38-57D8-402C-A379-A7E0E9E70CAB}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -1273,6 +1288,7 @@ Global
 		{ACAC19F3-A056-473B-BAD8-57823CCB9D26} = {29056796-3D9B-4DD1-A99F-93063C26D60D}
 		{EC17427B-78E3-4960-820A-EACB291B5E98} = {E2A52810-CFFE-4ADA-8654-E0282492AB3F}
 		{41A35A1F-5977-4894-B08D-DC542B75DDC2} = {E2A52810-CFFE-4ADA-8654-E0282492AB3F}
+		{38AB9D38-57D8-402C-A379-A7E0E9E70CAB} = {E2A52810-CFFE-4ADA-8654-E0282492AB3F}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {890503B7-C3A0-410B-A932-A031A4552050}

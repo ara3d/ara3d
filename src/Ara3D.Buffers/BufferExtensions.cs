@@ -83,7 +83,9 @@ namespace Ara3D.Buffers
         public static Buffer<byte> ReadBuffer(this Stream stream, int numBytes)
             => stream.ReadBuffer<byte>(numBytes);
 
-        public static void Write(this Stream stream, IBuffer buffer)
-            => buffer.Write(stream);
+        public static unsafe void Write(this Stream stream, IBuffer buffer)
+            => buffer.WithPointer(ptr => {
+                stream.WriteBytesBuffered((byte*)ptr.ToPointer(), buffer.GetNumBytes());
+            });
     }
 }

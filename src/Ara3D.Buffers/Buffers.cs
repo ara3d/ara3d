@@ -4,23 +4,22 @@ using System.IO;
 namespace Ara3D.Buffers
 {
     /// <summary>
-    /// Provides an interface to an object that manages a potentially large array of elements all of the same unmanaged type.
+    /// Provides an interface to an object that manages a potentially
+    /// large array of elements all of the same unmanaged type.
     /// </summary>
     public interface IBuffer
     {
         Array Data { get; }
         void WithPointer(Action<IntPtr> action);
         int ElementSize { get; }
-        // TODO: why would this be required as part of the interface?
-        void Write(Stream stream);
     }
 
     /// <summary>
-    /// A version of the IBuffer interface when the element types are known
+    /// A version of the IBuffer interface when the element types are known.
     /// </summary>
     public interface IBuffer<out T> : IBuffer
+        where T: unmanaged
     {
-        // TODO: Shouldn't this be an extension method on IBuffer?
         T[] GetTypedData();
     }
 
@@ -35,7 +34,8 @@ namespace Ara3D.Buffers
     /// <summary>
     /// A version of the INamedBuffer interface when the element types are known
     /// </summary>
-    public interface INamedBuffer<T> : INamedBuffer, IBuffer<T>
+    public interface INamedBuffer<out T> 
+        : INamedBuffer, IBuffer<T> where T: unmanaged
     {
     }
 
@@ -58,7 +58,6 @@ namespace Ara3D.Buffers
         public Array Data => _data;
         private readonly T[] _data;
         public T[] GetTypedData() => _data;
-        public void Write(Stream stream) => stream.Write(GetTypedData());
     }
 
     /// <summary>
@@ -72,7 +71,6 @@ namespace Ara3D.Buffers
         public void WithPointer(Action<IntPtr> action) => Buffer.WithPointer(action);
         public int ElementSize => Buffer.ElementSize;
         public Array Data => Buffer.Data;
-        public void Write(Stream stream) => Buffer.Write(stream);
     }
 
     /// <summary>

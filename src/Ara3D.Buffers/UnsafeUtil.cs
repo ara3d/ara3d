@@ -34,8 +34,8 @@ namespace Ara3D.Buffers
             {
                 while (count > 0)
                 {
-                    var toWrite = (int)System.Math.Min(count, buffer.Length);
-                    Buffer.MemoryCopy(src, pBuffer, buffer.Length, toWrite);
+                    var toWrite = (int)Math.Min(count, bufferSize);
+                    Buffer.MemoryCopy(src, pBuffer, bufferSize, toWrite);
                     stream.Write(buffer, 0, toWrite);
                     count -= toWrite;
                     src += toWrite;
