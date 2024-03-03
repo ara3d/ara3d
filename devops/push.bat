@@ -1,4 +1,4 @@
-rem echo off
+echo off
 if "%~1" == "" (echo "No message provided" && exit /b)
 call :subroutine "%~dp0\..\domo" %1 %2
 call :subroutine "%~dp0\..\plato" %1 %2 
