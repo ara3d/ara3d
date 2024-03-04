@@ -1,24 +1,24 @@
 ﻿using System;
 using Ara3D.Collections;
 using Ara3D.Geometry;
-using Ara3D.Math;
+using Ara3D.Mathematics;
 using Ara3D.Serialization.G3D;
 using Ara3D.Serialization.VIM;
 using UnityEngine;
 using UnityEngine.Rendering;
-using Matrix4x4 = Ara3D.Math.Matrix4x4;
+using Matrix4x4 = Ara3D.Mathematics.Matrix4x4;
 using Mesh = UnityEngine.Mesh;
 using MeshTopology = UnityEngine.MeshTopology;
-using Quaternion = Ara3D.Math.Quaternion;
+using Quaternion = Ara3D.Mathematics.Quaternion;
 using Transform = UnityEngine.Transform;
 // Explicitly specify math types to make it clear what each function does
 using UVector4 = UnityEngine.Vector4;
 using UVector3 = UnityEngine.Vector3;
 using UVector2 = UnityEngine.Vector2;
 using UQuaternion = UnityEngine.Quaternion;
-using Vector2 = Ara3D.Math.Vector2;
-using Vector3 = Ara3D.Math.Vector3;
-using Vector4 = Ara3D.Math.Vector4;
+using Vector2 = Ara3D.Mathematics.Vector2;
+using Vector3 = Ara3D.Mathematics.Vector3;
+using Vector4 = Ara3D.Mathematics.Vector4;
 
 namespace Ara3D.UnityBridge
 {

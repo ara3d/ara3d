@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Runtime.CompilerServices;
 
-namespace Ara3D.Math
+namespace Ara3D.Mathematics
 {
 
     public static partial class MathOps

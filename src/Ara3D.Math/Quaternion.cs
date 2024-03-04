@@ -1,6 +1,6 @@
 using System.Runtime.CompilerServices;
 
-namespace Ara3D.Math
+namespace Ara3D.Mathematics
 {
     // TODO: many of these functions are static and should be member functions.
     /// <summary>
@@ -140,7 +140,7 @@ namespace Ara3D.Math
             var lengthSquared = axis.LengthSquared();
             if (lengthSquared > 0.0f)
             {
-                return CreateFromAxisAngle(axis / (float)System.Math.Sqrt(lengthSquared), (float)System.Math.Acos(MathOps.Clamp(fromA.Dot(toB), -1, 1)));
+                return CreateFromAxisAngle(axis / lengthSquared.Sqrt(), fromA.Dot(toB).Clamp(-1, 1).Acos());
             }
             else
             {

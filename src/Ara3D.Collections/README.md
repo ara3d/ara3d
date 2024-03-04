@@ -1,5 +1,7 @@
 # LinqArray
 
+[![NuGet Version](https://img.shields.io/nuget/v/Ara3D.Buffers)](https://www.nuget.org/packages/Ara3D.Buffers)
+
 **LinqArray** is a pure functional .NET library from **[VIM AEC](https://vimaec.com)** that provides LINQ functionality for 
 immutable (read only) arrays, rather than `IEnumerable` (which is effectively a stream), 
 while preserving `O(1)` complexity when retrieving the count or items by index. 

@@ -3,7 +3,7 @@ using System.IO;
 using Ara3D.Serialization.G3D;
 using UnityEditor.AssetImporters;
 using UnityEngine;
-using Matrix4x4 = Ara3D.Math.Matrix4x4;
+using Matrix4x4 = Ara3D.Mathematics.Matrix4x4;
 using Transform = UnityEngine.Transform;
 
 namespace Ara3D.UnityBridge

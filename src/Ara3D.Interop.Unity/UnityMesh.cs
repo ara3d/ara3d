@@ -3,10 +3,10 @@ using System.Linq;
 using System;
 using Ara3D.Collections;
 using Ara3D.Geometry;
-using Ara3D.Math;
-using Matrix4x4 = Ara3D.Math.Matrix4x4;
+using Ara3D.Mathematics;
+using Matrix4x4 = Ara3D.Mathematics.Matrix4x4;
 using Mesh = UnityEngine.Mesh;
-using Vector3 = Ara3D.Math.Vector3;
+using Vector3 = Ara3D.Mathematics.Vector3;
 
 namespace Ara3D.UnityBridge
 {

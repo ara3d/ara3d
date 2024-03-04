@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using Ara3D;
-using Ara3D.Math;
+using Ara3D.Mathematics;
 using Ara3D.Utils;
 using g3;
 

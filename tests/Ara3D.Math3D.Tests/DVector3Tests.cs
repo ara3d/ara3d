@@ -1,4 +1,5 @@
-﻿using NUnit.Framework;
+﻿using Ara3D.Mathematics;
+using NUnit.Framework;
 
 namespace Ara3D.Math.Tests
 {
@@ -14,7 +15,7 @@ namespace Ara3D.Math.Tests
             var expected = new DVector3(0.0d, 0.0d, 1.0d);
             DVector3 actual;
 
-            actual = MathOps.Cross(a, b);
+            actual = Mathematics.MathOps.Cross(a, b);
             Assert.True(MathHelper.Equal(expected, actual), "Vector3f.Cross did not return the expected value.");
         }
     }

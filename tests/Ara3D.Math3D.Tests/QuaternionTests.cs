@@ -3,6 +3,7 @@
 // See the LICENSE file in the project root for more information.
 
 using System.Runtime.InteropServices;
+using Ara3D.Mathematics;
 using NUnit.Framework;
 
 namespace Ara3D.Math.Tests
@@ -62,7 +63,7 @@ namespace Ara3D.Math.Tests
         [Test]
         public void QuaternionLerpTest()
         {
-            var axis = MathOps.Normalize(new Vector3(1.0f, 2.0f, 3.0f));
+            var axis = Mathematics.MathOps.Normalize(new Vector3(1.0f, 2.0f, 3.0f));
             var a = Quaternion.CreateFromAxisAngle(axis, MathHelper.ToRadians(10.0f));
             var b = Quaternion.CreateFromAxisAngle(axis, MathHelper.ToRadians(30.0f));
 
@@ -85,7 +86,7 @@ namespace Ara3D.Math.Tests
         [Test]
         public void QuaternionLerpTest1()
         {
-            var axis = MathOps.Normalize(new Vector3(1.0f, 2.0f, 3.0f));
+            var axis = Mathematics.MathOps.Normalize(new Vector3(1.0f, 2.0f, 3.0f));
             var a = Quaternion.CreateFromAxisAngle(axis, MathHelper.ToRadians(10.0f));
             var b = Quaternion.CreateFromAxisAngle(axis, MathHelper.ToRadians(30.0f));
 
@@ -101,7 +102,7 @@ namespace Ara3D.Math.Tests
         [Test]
         public void QuaternionLerpTest2()
         {
-            var axis = MathOps.Normalize(new Vector3(1.0f, 2.0f, 3.0f));
+            var axis = Mathematics.MathOps.Normalize(new Vector3(1.0f, 2.0f, 3.0f));
             var a = Quaternion.CreateFromAxisAngle(axis, MathHelper.ToRadians(10.0f));
             var b = Quaternion.CreateFromAxisAngle(axis, MathHelper.ToRadians(30.0f));
 
@@ -117,7 +118,7 @@ namespace Ara3D.Math.Tests
         [Test]
         public void QuaternionLerpTest3()
         {
-            var axis = MathOps.Normalize(new Vector3(1.0f, 2.0f, 3.0f));
+            var axis = Mathematics.MathOps.Normalize(new Vector3(1.0f, 2.0f, 3.0f));
             var a = Quaternion.CreateFromAxisAngle(axis, MathHelper.ToRadians(10.0f));
             var b = -a;
 
@@ -288,7 +289,7 @@ namespace Ara3D.Math.Tests
         [Test]
         public void QuaternionCreateFromAxisAngleTest()
         {
-            var axis = MathOps.Normalize(new Vector3(1.0f, 2.0f, 3.0f));
+            var axis = Mathematics.MathOps.Normalize(new Vector3(1.0f, 2.0f, 3.0f));
             var angle = MathHelper.ToRadians(30.0f);
 
             var expected = new Quaternion(0.0691723f, 0.1383446f, 0.207516879f, 0.9659258f);
@@ -392,7 +393,7 @@ namespace Ara3D.Math.Tests
         [Test]
         public void QuaternionSlerpTest()
         {
-            var axis = MathOps.Normalize(new Vector3(1.0f, 2.0f, 3.0f));
+            var axis = Mathematics.MathOps.Normalize(new Vector3(1.0f, 2.0f, 3.0f));
             var a = Quaternion.CreateFromAxisAngle(axis, MathHelper.ToRadians(10.0f));
             var b = Quaternion.CreateFromAxisAngle(axis, MathHelper.ToRadians(30.0f));
 
@@ -415,7 +416,7 @@ namespace Ara3D.Math.Tests
         [Test]
         public void QuaternionSlerpTest1()
         {
-            var axis = MathOps.Normalize(new Vector3(1.0f, 2.0f, 3.0f));
+            var axis = Mathematics.MathOps.Normalize(new Vector3(1.0f, 2.0f, 3.0f));
             var a = Quaternion.CreateFromAxisAngle(axis, MathHelper.ToRadians(10.0f));
             var b = Quaternion.CreateFromAxisAngle(axis, MathHelper.ToRadians(30.0f));
 
@@ -431,7 +432,7 @@ namespace Ara3D.Math.Tests
         [Test]
         public void QuaternionSlerpTest2()
         {
-            var axis = MathOps.Normalize(new Vector3(1.0f, 2.0f, 3.0f));
+            var axis = Mathematics.MathOps.Normalize(new Vector3(1.0f, 2.0f, 3.0f));
             var a = Quaternion.CreateFromAxisAngle(axis, MathHelper.ToRadians(10.0f));
             var b = Quaternion.CreateFromAxisAngle(axis, MathHelper.ToRadians(30.0f));
 
@@ -447,7 +448,7 @@ namespace Ara3D.Math.Tests
         [Test]
         public void QuaternionSlerpTest3()
         {
-            var axis = MathOps.Normalize(new Vector3(1.0f, 2.0f, 3.0f));
+            var axis = Mathematics.MathOps.Normalize(new Vector3(1.0f, 2.0f, 3.0f));
             var a = Quaternion.CreateFromAxisAngle(axis, MathHelper.ToRadians(10.0f));
             var b = -a;
 
@@ -466,7 +467,7 @@ namespace Ara3D.Math.Tests
         [Test]
         public void QuaternionSlerpTest4()
         {
-            var axis = MathOps.Normalize(new Vector3(1.0f, 2.0f, 3.0f));
+            var axis = Mathematics.MathOps.Normalize(new Vector3(1.0f, 2.0f, 3.0f));
             var a = Quaternion.CreateFromAxisAngle(axis, MathHelper.ToRadians(10.0f));
             var b = -Quaternion.CreateFromAxisAngle(axis, MathHelper.ToRadians(30.0f));
 

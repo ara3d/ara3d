@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Ara3D.Collections;
-using Ara3D.Math;
+using Ara3D.Mathematics;
 
 namespace Ara3D.Serialization.G3D
 {

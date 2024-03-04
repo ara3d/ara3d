@@ -1,5 +1,5 @@
 ﻿using Ara3D.Geometry;
-using Ara3D.Math;
+using Ara3D.Mathematics;
 using Ara3D.UnityBridge;
 
 [UnityEngine.ExecuteAlways]

@@ -167,7 +167,7 @@ namespace Ara3D.Parsing.Markdown
         {
             if (!(CstTreeRoot is CstDocument doc))
                 throw new Exception("Expected a tree root");
-            Content = new MarkdownContent(doc);
+                Content = new MarkdownContent(doc);
         }
 
         public MarkdownContent Content { get; }

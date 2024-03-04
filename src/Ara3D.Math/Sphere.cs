@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Ara3D.Math
+namespace Ara3D.Mathematics
 {
     /// <summary>
     /// Describes a sphere in 3D-space for bounding operations.
@@ -181,7 +181,7 @@ namespace Ara3D.Math
                 var sqDist = diff.LengthSquared();
                 if (sqDist > sqRadius)
                 {
-                    var distance = (float)System.Math.Sqrt(sqDist); // equal to diff.Length();
+                    var distance = (float)Math.Sqrt(sqDist); // equal to diff.Length();
                     var direction = diff / distance;
                     var G = center - radius * direction;
                     center = (G + pt) / 2;
@@ -218,9 +218,9 @@ namespace Ara3D.Math
                 }
             }
             //else find center of new sphere and radius
-            var leftRadius = System.Math.Max(Radius - distance, additional.Radius);
-            var Rightradius = System.Math.Max(Radius + distance, additional.Radius);
-            ocenterToaCenter = ocenterToaCenter + ((leftRadius - Rightradius) / (2 * ocenterToaCenter.Length()) * ocenterToaCenter);
+            var leftRadius = Math.Max(Radius - distance, additional.Radius);
+            var Rightradius = Math.Max(Radius + distance, additional.Radius);
+            ocenterToaCenter = ocenterToaCenter + (leftRadius - Rightradius) / (2 * ocenterToaCenter.Length()) * ocenterToaCenter;
             return new Sphere(Center + ocenterToaCenter, (leftRadius + Rightradius) / 2);
         }
 
@@ -261,10 +261,10 @@ namespace Ara3D.Math
 
         public ITransformable TransformImpl(Matrix4x4 m)
             => new Sphere(Center.Transform(m),
-                Radius * (MathOps.Sqrt(
-                    System.Math.Max((m.M11 * m.M11) + (m.M12 * m.M12) + (m.M13 * m.M13),
-                        System.Math.Max((m.M21 * m.M21) + (m.M22 * m.M22) + (m.M23 * m.M23),
-                    (m.M31 * m.M31) + (m.M32 * m.M32) + (m.M33 * m.M33))))));
+                Radius * Math.Max(m.M11 * m.M11 + m.M12 * m.M12 + m.M13 * m.M13,
+                        Math.Max(m.M21 * m.M21 + m.M22 * m.M22 + m.M23 * m.M23,
+                            m.M31 * m.M31 + m.M32 * m.M32 + m.M33 * m.M33))
+                .Sqrt());
 
         public Sphere Translate(Vector3 offset)
             => new Sphere(Center + offset, Radius);

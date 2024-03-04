@@ -1,6 +1,6 @@
-﻿using Ara3D.Math;
-using System;
+﻿using System;
 using System.Collections.Generic;
+using Ara3D.Mathematics;
 
 namespace Identification
 {

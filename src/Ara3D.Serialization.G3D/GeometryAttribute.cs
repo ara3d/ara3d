@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Ara3D.Serialization.BFAST;
 using Ara3D.Collections;
-using Ara3D.Math;
+using Ara3D.Mathematics;
 
 namespace Ara3D.Serialization.G3D
 {

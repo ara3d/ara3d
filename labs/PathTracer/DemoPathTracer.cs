@@ -1,5 +1,5 @@
 ﻿using Ara3D.Graphics;
-using Ara3D.Math;
+using Ara3D.Mathematics;
 
 namespace PathTracer
 {

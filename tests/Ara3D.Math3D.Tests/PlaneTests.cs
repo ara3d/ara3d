@@ -3,6 +3,7 @@
 // See the LICENSE file in the project root for more information.
 
 using System.Runtime.InteropServices;
+using Ara3D.Mathematics;
 using NUnit.Framework;
 
 namespace Ara3D.Math.Tests

@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using Ara3D.Math;
+using Ara3D.Mathematics;
 
 namespace Identification
 {

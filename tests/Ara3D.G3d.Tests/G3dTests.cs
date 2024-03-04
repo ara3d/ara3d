@@ -5,7 +5,7 @@ using System.Linq;
 using Ara3D.Bindings.Assimp;
 using NUnit.Framework;
 using Ara3D.Collections;
-using Ara3D.Math;
+using Ara3D.Mathematics;
 using Assimp;
 
 namespace Ara3D.Serialization.G3D.Tests

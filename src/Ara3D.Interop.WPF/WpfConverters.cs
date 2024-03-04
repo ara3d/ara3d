@@ -4,7 +4,7 @@ using System.Windows.Media;
 using System.Windows.Media.Media3D;
 using Ara3D.Collections;
 using Ara3D.Geometry;
-using Ara3D.Math;
+using Ara3D.Mathematics;
 using Ara3D.Serialization.G3D;
 
 namespace Ara3D.Interop.WPF;

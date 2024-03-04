@@ -5,11 +5,9 @@
     <Description>A collection of general purpose utility classes and functions.</Description>
     <GenerateDocumentationFile>True</GenerateDocumentationFile>
     <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
-    <PackageProjectUrl>https://github.com/ara3d/ara3d</PackageProjectUrl>
+    <PackageProjectUrl>https://github.com/ara3d/ara3d/tree/main/src/Ara3D.Utils</PackageProjectUrl>
     <RepositoryUrl>https://github.com/ara3d/ara3d</RepositoryUrl>
-    <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageReadmeFile>README.md</PackageReadmeFile>
-    <BaseOutputPath></BaseOutputPath>
   </PropertyGroup>
 
   <ItemGroup>

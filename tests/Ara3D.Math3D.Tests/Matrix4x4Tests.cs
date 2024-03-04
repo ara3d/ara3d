@@ -5,6 +5,7 @@
 using System;
 using System.Globalization;
 using System.Runtime.InteropServices;
+using Ara3D.Mathematics;
 using NUnit.Framework;
 
 namespace Ara3D.Math.Tests
@@ -533,8 +534,8 @@ namespace Ara3D.Math.Tests
             actual = Matrix4x4.CreateFromAxisAngle(Vector3.UnitZ, radians);
             Assert.True(MathHelper.Equal(expected, actual));
 
-            expected = Matrix4x4.CreateFromQuaternion(Quaternion.CreateFromAxisAngle(MathOps.Normalize(Vector3.One), radians));
-            actual = Matrix4x4.CreateFromAxisAngle(MathOps.Normalize(Vector3.One), radians);
+            expected = Matrix4x4.CreateFromQuaternion(Quaternion.CreateFromAxisAngle(Mathematics.MathOps.Normalize(Vector3.One), radians));
+            actual = Matrix4x4.CreateFromAxisAngle(Mathematics.MathOps.Normalize(Vector3.One), radians);
             Assert.True(MathHelper.Equal(expected, actual));
 
             const int rotCount = 16;
@@ -678,7 +679,7 @@ namespace Ara3D.Math.Tests
                 {
                     if (lightDirInfo.Length() < 0.1f)
                         continue;
-                    var lightDir = MathOps.Normalize(lightDirInfo);
+                    var lightDir = Mathematics.MathOps.Normalize(lightDirInfo);
 
                     if (plane.DotNormal(lightDir) < 0.1f)
                         continue;
@@ -689,7 +690,7 @@ namespace Ara3D.Math.Tests
                     //
                     foreach (var point in points)
                     {
-                        var v4 = MathOps.TransformToVector4(point, m);
+                        var v4 = Mathematics.MathOps.TransformToVector4(point, m);
 
                         var sp = new Vector3(v4.X, v4.Y, v4.Z) / v4.W;
 
@@ -699,9 +700,9 @@ namespace Ara3D.Math.Tests
                         Assert.True(MathHelper.Equal(d, 0), "Matrix4x4.CreateShadow did not provide expected value.");
 
                         // make sure direction between transformed position and original position are same as light direction.
-                        if (MathOps.Dot(point - pp, plane.Normal) > 0.0001f)
+                        if (Mathematics.MathOps.Dot(point - pp, plane.Normal) > 0.0001f)
                         {
-                            var dir = MathOps.Normalize(point - sp);
+                            var dir = Mathematics.MathOps.Normalize(point - sp);
                             Assert.True(MathHelper.Equal(dir, lightDir), "Matrix4x4.CreateShadow did not provide expected value.");
                         }
                     }
@@ -860,8 +861,8 @@ namespace Ara3D.Math.Tests
             Assert.True(MathHelper.Equal(expected, actual), "Matrix4x4.CreateWorld did not return the expected value.");
 
             Assert.AreEqual(objectPosition, actual.Translation);
-            Assert.True(Vector3.Dot(MathOps.Normalize(objectUpVector), new Vector3(actual.M21, actual.M22, actual.M23)) > 0);
-            Assert.True(Vector3.Dot(MathOps.Normalize(objectForwardDirection), new Vector3(-actual.M31, -actual.M32, -actual.M33)) > 0.999f);
+            Assert.True(Vector3.Dot(Mathematics.MathOps.Normalize(objectUpVector), new Vector3(actual.M21, actual.M22, actual.M23)) > 0);
+            Assert.True(Vector3.Dot(Mathematics.MathOps.Normalize(objectForwardDirection), new Vector3(-actual.M31, -actual.M32, -actual.M33)) > 0.999f);
         }
 
         // A test for CreateOrtho (float, float, float, float)
@@ -1363,7 +1364,7 @@ namespace Ara3D.Math.Tests
         [Test]
         public void Matrix4x4FromQuaternionTest1()
         {
-            var axis = MathOps.Normalize(new Vector3(1.0f, 2.0f, 3.0f));
+            var axis = Mathematics.MathOps.Normalize(new Vector3(1.0f, 2.0f, 3.0f));
             var q = Quaternion.CreateFromAxisAngle(axis, MathHelper.ToRadians(30.0f));
 
             var expected = new Matrix4x4();

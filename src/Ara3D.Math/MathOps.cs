@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 
 // ReSharper disable once CheckNamespace
-namespace Ara3D.Math
+namespace Ara3D.Mathematics
 {
     public static partial class MathOps
     {

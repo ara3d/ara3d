@@ -3,17 +3,6 @@
 A collection of open-source libraries for rapid application development in C#. 
 This is the main development repository for work done by [Ara3D.com](https://ara3d.com).
 
-## Ara3D.Utils
-
-This is also the home repository for the [Ara3D.Utils Nuget package](https://www.nuget.org/packages/Ara3D.Utils). 
-
-**Ara3D.Utils** is a collection of hundreds of useful functions and classes written in portable C# 
-(C# version 7.3 and .NET Standard 2.0). 
-The library is intended to reduce the amount of code we have to write, and to lighten the cognitive load 
-making us more effective at programming. 
-
-Many of the code was adapted from solutions to problems found on StackOverflow.com. 
-
 ## Documentation 
 
 The code is written in a simple and straightforward manner, and should serve mostly as its own documentation.
@@ -45,10 +34,14 @@ There are several submodules included with this repository.
 
 ## Organization
 
-Code hosted in this repsitory is divided into two main sections:
+Code hosted in this repsitory (excluding code in submodules) 
+is divided into the following main sections:
 
-1. `dev` - code which is intended for eventual use in production environments
-2. `labs` - code which is used for experiments and investigation
+1. [`src`](https://github.com/ara3d/ara3d/tree/main/src) - projects intended for use in production environments
+1. [`labs`](https://github.com/ara3d/ara3d/tree/main/labs) - projects for experiments and investigation
+1. [`tests`](https://github.com/ara3d/ara3d/tree/main/tests) - NUnit-based test projects 
+1. [`unity-projects`](https://github.com/ara3d/ara3d/tree/main/unity-projects) - Unity projects 
+1. [`devops`](https://github.com/ara3d/ara3d/tree/main/devops) - scripts and tools to simplify develolpment  
 
 ## Design Goals 
 
@@ -88,9 +81,10 @@ Some rules of thumb:
 * Prefer easy to read code to micro-optimizations
 * Default to making things public
 * Don't repeat yourself
-* Interfaces are a good thing, use them
+* Interfaces are a good thing, use them frequently 
 * Keep functions small, simple, and without side-effects
-* When it makes sense, prefer extension methods
+* When it makes sense use extension methods, they make code more generic, readable, and discoverable 
+* Support as many platforms as you can (e.g., default to using .NET Standard 2.0)
 
 ## Contributing 
 
@@ -128,6 +122,7 @@ get the code, and consume it independently.
 
 Q: Where are the build tasks and properties?  
 
-Many of the build tasks and properties are controlled by the `Directory.Build.props` file. 
+Many of the build tasks and properties are controlled within the `Directory.Build.props` file
+whic is automatically included by all projects. 
 
 

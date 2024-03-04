@@ -2,7 +2,7 @@
 using System.Windows;
 using System.Windows.Controls;
 using System.Xml;
-using Ara3D.Math;
+using Ara3D.Mathematics;
 using Ara3D.Utils.Wpf;
 using Microsoft.Web.WebView2.Core;
 using Newtonsoft.Json;

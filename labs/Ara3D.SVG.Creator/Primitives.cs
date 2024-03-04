@@ -1,5 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using Ara3D.Math;
+using Ara3D.Mathematics;
 using Color = System.Drawing.Color;
 
 namespace Ara3D.SVG.Creator;

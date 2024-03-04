@@ -1,4 +1,4 @@
-﻿namespace Ara3D.Math
+﻿namespace Ara3D.Mathematics
 {
     /// <summary>
     /// Defines the intersection between a Plane and a bounding volume.

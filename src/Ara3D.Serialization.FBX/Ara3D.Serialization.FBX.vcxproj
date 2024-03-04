@@ -105,7 +105,13 @@
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Ara3D.Math\Ara3D.Math.csproj">
+    <None Include="MathOps.tt" />
+    <None Include="packages.config" />
+    <None Include="Structs.tt" />
+    <None Include="TemplateHelpers.tt" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Ara3D.Math\Ara3D.Mathematics.csproj">
       <Project>{9ddeb13c-a6d4-49e6-8e50-21a3c5931414}</Project>
     </ProjectReference>
   </ItemGroup>

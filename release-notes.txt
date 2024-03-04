@@ -1,0 +1,28 @@
+# Release Notes 
+
+### 2024-03-04
+
+* Moving to version 1.3.2
+* Just found and fixed issue with Ara3D.Domo - change from x64 to AnyCPU
+* Started adding badges (shields.io) to the readmes.
+* Had to investigate between badgen and shields - shields has 10x more stars, and badge readme had broken badges on its readme!
+* Started adding Source link to the packages for improved - https://github.com/dotnet/sourcelink 
+* Renaming Ara3D.Math to Ara3D.Mathematics - hopefully prevent static name clashes with "math" name
+* Fixed a lot of resulting compilation errors. 
+* Found a bunch of cruft in the Ara3D.Math library inherited from Vim.Math3D which is cleaned up
+* Starting the experiment of tracking release-notes 
+* Nuget add command is now proceeded by a nuget remove.
+* Added and created the Ara3D.Mathematics readme. 
+
+### 2024-03-03
+
+* Version 1.3.1 
+* Worked on the devops side
+* Removed the 'nuget-init.bat' script
+* Figured out how to automate adding a generated package to nuget-feed post build 
+* A lot of work spent studying and learning how MSBuild tasks work and what the correct macros to use are 
+* Added the capability to create tags - now push.bat can also tag versions 
+* More projects reference each other using Nuget packages
+* Working on the Markdown to HTML converter 
+* Working on the generic Ara3D.Parsing library and the parser class
+* Added some HTML building code 

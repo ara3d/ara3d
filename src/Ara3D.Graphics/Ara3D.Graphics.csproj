@@ -8,7 +8,7 @@
   <ItemGroup>
     <ProjectReference Include="..\Ara3D.Collections\Ara3D.Collections.csproj" />
     <ProjectReference Include="..\Ara3D.Geometry\Ara3D.Geometry.csproj" />
-    <ProjectReference Include="..\Ara3D.Math\Ara3D.Math.csproj" />
+    <ProjectReference Include="..\Ara3D.Math\Ara3D.Mathematics.csproj" />
     <ProjectReference Include="..\Ara3D.Buffers\Ara3D.Buffers.csproj" />
   </ItemGroup>
 

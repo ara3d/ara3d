@@ -8,7 +8,7 @@ namespace Ara3D
         {
             using namespace System;
             using namespace System::Collections::Generic;
-            using namespace Ara3D::Math;
+            using namespace Ara3D::Mathematics;
 
             public ref class DotNetFbxMaterial
             {

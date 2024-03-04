@@ -1,6 +1,8 @@
 ﻿# Ara3D.Buffers
 
-A collection of utilities for working with large arrays of unmanaged types.
+[![NuGet Version](https://img.shields.io/nuget/v/Ara3D.Buffers)](https://www.nuget.org/packages/Ara3D.Buffers)
+
+Utilities for working with large arrays of unmanaged types.
 
 ## IBuffer
 

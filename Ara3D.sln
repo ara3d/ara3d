@@ -10,6 +10,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "_solution", "_solution", "{
 		LICENSE.txt = LICENSE.txt
 		notes.txt = notes.txt
 		README.md = README.md
+		release-notes.txt = release-notes.txt
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{8C9F014E-97FC-4A6E-9C4D-05DF71C3B209}"
@@ -26,7 +27,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ara3D.Serialization.VIM", "
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ara3D.Serialization.G3D", "src\Ara3D.Serialization.G3D\Ara3D.Serialization.G3D.csproj", "{C2A1F310-166F-49B4-B9B9-ECB937D53FE2}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ara3D.Math", "src\Ara3D.Math\Ara3D.Math.csproj", "{9DDEB13C-A6D4-49E6-8E50-21A3C5931414}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ara3D.Mathematics", "src\Ara3D.Math\Ara3D.Mathematics.csproj", "{9DDEB13C-A6D4-49E6-8E50-21A3C5931414}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ara3D.Interop.Assimp", "src\Ara3D.Interop.Assimp\Ara3D.Interop.Assimp.csproj", "{2BB0F7C3-4EFC-4F9E-985D-CFF963AE5353}"
 EndProject
@@ -164,9 +165,6 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ara3D.ProceduralGeometry.Unity", "labs\UnityProceduralGeometry\Ara3D.ProceduralGeometry.Unity.csproj", "{4B0B369C-C848-46FD-9DF7-4B5A6AEC0817}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "domo", "domo", "{6AC8A29B-E09E-47E2-95D2-1CC56760B305}"
-	ProjectSection(SolutionItems) = preProject
-		domo\README.md = domo\README.md
-	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ara3D.Domo", "domo\Ara3D.Domo\Ara3D.Domo.csproj", "{8BFD0CE5-7A21-401F-BACD-6062BBD4F2AE}"
 EndProject

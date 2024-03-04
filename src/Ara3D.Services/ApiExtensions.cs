@@ -1,5 +1,5 @@
-﻿using System.Linq;
-using Ara3D.Domo;
+﻿using Ara3D.Domo;
+using System.Linq;
 
 namespace Ara3D.Services
 {

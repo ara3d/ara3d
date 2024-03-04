@@ -22,7 +22,7 @@ var allUnaryOps = sysUnaryOps.Concat(araUnaryOps);
 #>
 
 using Ara3D.Collections;
-using Ara3D.Math;
+using Ara3D.Mathematics;
 
 namespace Vim.Format.Geometry
 {

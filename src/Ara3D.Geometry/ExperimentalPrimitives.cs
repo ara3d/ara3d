@@ -1,6 +1,6 @@
 ﻿using System;
 using Ara3D.Collections;
-using Ara3D.Math;
+using Ara3D.Mathematics;
 
 // https://en.wikipedia.org/wiki/Boy%27s_surface
 // https://en.wikipedia.org/wiki/Roman_surface

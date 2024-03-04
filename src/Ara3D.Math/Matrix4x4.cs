@@ -4,7 +4,7 @@ using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using System.Runtime.Serialization;
 
-namespace Ara3D.Math
+namespace Ara3D.Mathematics
 {
     /// <summary>
     /// A structure encapsulating a 4x4 matrix.

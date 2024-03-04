@@ -5,7 +5,7 @@
 #include <map>
 #include <algorithm>
 
-using namespace Ara3D::Math;
+using namespace Ara3D::Mathematics;
 using namespace System;
 
 namespace Ara3D 

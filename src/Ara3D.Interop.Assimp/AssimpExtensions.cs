@@ -3,7 +3,8 @@ using System.Linq;
 using Ara3D.Serialization.G3D;
 using Assimp;
 using Ara3D.Collections;
-using Ara3D.Math;
+using Ara3D.Mathematics;
+using Matrix4x4 = Ara3D.Mathematics.Matrix4x4;
 
 namespace Ara3D.Bindings.Assimp
 {
@@ -21,8 +22,8 @@ namespace Ara3D.Bindings.Assimp
         public static Vector4 ToMath3D(this Color4D v)
             => new Vector4(v.R, v.G, v.B, v.A);
 
-        public static Ara3D.Math.Matrix4x4 ToMath3D(this global::Assimp.Matrix4x4 m)
-            => new Ara3D.Math.Matrix4x4(
+        public static Matrix4x4 ToMath3D(this global::Assimp.Matrix4x4 m)
+            => new Matrix4x4(
                 m.A1, m.A2, m.A3, m.A4,
                 m.B1, m.B2, m.B3, m.B4,
                 m.C1, m.C2, m.C3, m.C4,

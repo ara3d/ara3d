@@ -1,4 +1,4 @@
-namespace Ara3D.Math
+namespace Ara3D.Mathematics
 {
     /// <summary>
     /// A structure encapsulating a 3D Plane

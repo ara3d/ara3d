@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Ara3D.Math
+namespace Ara3D.Mathematics
 {
     public partial struct ColorRGBA
     {

@@ -3,6 +3,7 @@
 // See the LICENSE file in the project root for more information.
 
 using System.Runtime.InteropServices;
+using Ara3D.Mathematics;
 using NUnit.Framework;
 
 namespace Ara3D.Math.Tests
@@ -51,7 +52,7 @@ namespace Ara3D.Math.Tests
             var expected = 64.0f;
             float actual;
 
-            actual = MathOps.DistanceSquared(a, b);
+            actual = Mathematics.MathOps.DistanceSquared(a, b);
             Assert.True(MathHelper.Equal(expected, actual), "Vector4f.DistanceSquared did not return the expected value.");
         }
 
@@ -65,7 +66,7 @@ namespace Ara3D.Math.Tests
             var expected = 8.0f;
             float actual;
 
-            actual = MathOps.Distance(a, b);
+            actual = Mathematics.MathOps.Distance(a, b);
             Assert.True(MathHelper.Equal(expected, actual), "Vector4f.Distance did not return the expected value.");
         }
 
@@ -78,7 +79,7 @@ namespace Ara3D.Math.Tests
             var b = new Vector4(new Vector3(1.051f, 2.05f, 3.478f), 0.0f);
             b = b.SetW(1f);
 
-            var actual = MathOps.Distance(a, b);
+            var actual = Mathematics.MathOps.Distance(a, b);
             Assert.AreEqual(0.0f, actual);
         }
 
@@ -92,7 +93,7 @@ namespace Ara3D.Math.Tests
             var expected = 70.0f;
             float actual;
 
-            actual = MathOps.Dot(a, b);
+            actual = Mathematics.MathOps.Dot(a, b);
             Assert.True(MathHelper.Equal(expected, actual), "Vector4f.Dot did not return the expected value.");
         }
 
@@ -103,12 +104,12 @@ namespace Ara3D.Math.Tests
         {
             var a = new Vector3(1.55f, 1.55f, 1);
             var b = new Vector3(2.5f, 3, 1.5f);
-            var c = MathOps.Cross(a, b);
+            var c = Mathematics.MathOps.Cross(a, b);
 
             var d = new Vector4(a, 0);
             var e = new Vector4(c, 0);
 
-            var actual = MathOps.Dot(d, e);
+            var actual = Mathematics.MathOps.Dot(d, e);
             Assert.True(MathHelper.Equal(0.0f, actual), "Vector4f.Dot did not return the expected value.");
         }
 
@@ -168,7 +169,7 @@ namespace Ara3D.Math.Tests
 
             var expected = new Vector4(-1.0f, 1.0f, -3.0f, 0.0f);
             Vector4 actual;
-            actual = MathOps.Min(a, b);
+            actual = Mathematics.MathOps.Min(a, b);
             Assert.True(MathHelper.Equal(expected, actual), "Vector4f.Min did not return the expected value.");
         }
 
@@ -181,7 +182,7 @@ namespace Ara3D.Math.Tests
 
             var expected = new Vector4(2.0f, 4.0f, -1.0f, 1000.0f);
             Vector4 actual;
-            actual = MathOps.Max(a, b);
+            actual = Mathematics.MathOps.Max(a, b);
             Assert.True(MathHelper.Equal(expected, actual), "Vector4f.Max did not return the expected value.");
         }
 
@@ -193,17 +194,17 @@ namespace Ara3D.Math.Tests
             Vector4 actual;
 
             // Min.
-            actual = MathOps.Min(min, max);
+            actual = Mathematics.MathOps.Min(min, max);
             Assert.AreEqual(actual, min);
 
-            actual = MathOps.Min(max, min);
+            actual = Mathematics.MathOps.Min(max, min);
             Assert.AreEqual(actual, min);
 
             // Max.
-            actual = MathOps.Max(min, max);
+            actual = Mathematics.MathOps.Max(min, max);
             Assert.AreEqual(actual, max);
 
-            actual = MathOps.Max(max, min);
+            actual = Mathematics.MathOps.Max(max, min);
             Assert.AreEqual(actual, max);
         }
 
@@ -218,26 +219,26 @@ namespace Ara3D.Math.Tests
             // Normal case.
             // Case N1: specified value is in the range.
             var expected = new Vector4(0.5f, 0.3f, 0.33f, 0.44f);
-            var actual = MathOps.Clamp(a, min, max);
+            var actual = Mathematics.MathOps.Clamp(a, min, max);
             Assert.True(MathHelper.Equal(expected, actual), "Vector4f.Clamp did not return the expected value.");
 
             // Normal case.
             // Case N2: specified value is bigger than max value.
             a = new Vector4(2.0f, 3.0f, 4.0f, 5.0f);
             expected = max;
-            actual = MathOps.Clamp(a, min, max);
+            actual = Mathematics.MathOps.Clamp(a, min, max);
             Assert.True(MathHelper.Equal(expected, actual), "Vector4f.Clamp did not return the expected value.");
 
             // Case N3: specified value is smaller than max value.
             a = new Vector4(-2.0f, -3.0f, -4.0f, -5.0f);
             expected = min;
-            actual = MathOps.Clamp(a, min, max);
+            actual = Mathematics.MathOps.Clamp(a, min, max);
             Assert.True(MathHelper.Equal(expected, actual), "Vector4f.Clamp did not return the expected value.");
 
             // Case N4: combination case.
             a = new Vector4(-2.0f, 0.5f, 4.0f, -5.0f);
             expected = new Vector4(min.X, a.Y, max.Z, min.W);
-            actual = MathOps.Clamp(a, min, max);
+            actual = Mathematics.MathOps.Clamp(a, min, max);
             Assert.True(MathHelper.Equal(expected, actual), "Vector4f.Clamp did not return the expected value.");
 
             // User specified min value is bigger than max value.
@@ -247,20 +248,20 @@ namespace Ara3D.Math.Tests
             // Case W1: specified value is in the range.
             a = new Vector4(0.5f, 0.3f, 0.33f, 0.44f);
             expected = min;
-            actual = MathOps.Clamp(a, min, max);
+            actual = Mathematics.MathOps.Clamp(a, min, max);
             Assert.True(MathHelper.Equal(expected, actual), "Vector4f.Clamp did not return the expected value.");
 
             // Normal case.
             // Case W2: specified value is bigger than max and min value.
             a = new Vector4(2.0f, 3.0f, 4.0f, 5.0f);
             expected = min;
-            actual = MathOps.Clamp(a, min, max);
+            actual = Mathematics.MathOps.Clamp(a, min, max);
             Assert.True(MathHelper.Equal(expected, actual), "Vector4f.Clamp did not return the expected value.");
 
             // Case W3: specified value is smaller than min and max value.
             a = new Vector4(-2.0f, -3.0f, -4.0f, -5.0f);
             expected = min;
-            actual = MathOps.Clamp(a, min, max);
+            actual = Mathematics.MathOps.Clamp(a, min, max);
             Assert.True(MathHelper.Equal(expected, actual), "Vector4f.Clamp did not return the expected value.");
         }
 
@@ -276,7 +277,7 @@ namespace Ara3D.Math.Tests
             var expected = new Vector4(3.0f, 4.0f, 5.0f, 6.0f);
             Vector4 actual;
 
-            actual = MathOps.Lerp(a, b, t);
+            actual = Mathematics.MathOps.Lerp(a, b, t);
             Assert.True(MathHelper.Equal(expected, actual), "Vector4f.Lerp did not return the expected value.");
         }
 
@@ -290,7 +291,7 @@ namespace Ara3D.Math.Tests
 
             var t = 0.0f;
             var expected = new Vector4(1.0f, 2.0f, 3.0f, 4.0f);
-            var actual = MathOps.Lerp(a, b, t);
+            var actual = Mathematics.MathOps.Lerp(a, b, t);
             Assert.True(MathHelper.Equal(expected, actual), "Vector4f.Lerp did not return the expected value.");
         }
 
@@ -304,7 +305,7 @@ namespace Ara3D.Math.Tests
 
             var t = 1.0f;
             var expected = new Vector4(4.0f, 5.0f, 6.0f, 7.0f);
-            var actual = MathOps.Lerp(a, b, t);
+            var actual = Mathematics.MathOps.Lerp(a, b, t);
             Assert.True(MathHelper.Equal(expected, actual), "Vector4f.Lerp did not return the expected value.");
         }
 
@@ -318,7 +319,7 @@ namespace Ara3D.Math.Tests
 
             var t = 2.0f;
             var expected = new Vector4(8.0f, 10.0f, 12.0f, 14.0f);
-            var actual = MathOps.Lerp(a, b, t);
+            var actual = Mathematics.MathOps.Lerp(a, b, t);
             Assert.True(MathHelper.Equal(expected, actual), "Vector4f.Lerp did not return the expected value.");
         }
 
@@ -332,7 +333,7 @@ namespace Ara3D.Math.Tests
 
             var t = -2.0f;
             var expected = -(b * 2);
-            var actual = MathOps.Lerp(a, b, t);
+            var actual = Mathematics.MathOps.Lerp(a, b, t);
             Assert.True(MathHelper.Equal(expected, actual), "Vector4f.Lerp did not return the expected value.");
         }
 
@@ -346,7 +347,7 @@ namespace Ara3D.Math.Tests
 
             var t = 0.85f;
             var expected = a;
-            var actual = MathOps.Lerp(a, b, t);
+            var actual = Mathematics.MathOps.Lerp(a, b, t);
             Assert.True(MathHelper.Equal(expected, actual), "Vector4f.Lerp did not return the expected value.");
         }
 
@@ -367,7 +368,7 @@ namespace Ara3D.Math.Tests
             var expected = new Vector4(10.316987f, 22.183012f, 30.3660259f, 1.0f);
             Vector4 actual;
 
-            actual = MathOps.TransformToVector4(v, m);
+            actual = Mathematics.MathOps.TransformToVector4(v, m);
             Assert.True(MathHelper.Equal(expected, actual), "Vector4f.Transform did not return the expected value.");
         }
 
@@ -388,7 +389,7 @@ namespace Ara3D.Math.Tests
             var expected = new Vector4(12.19198728f, 21.53349376f, 32.61602545f, 1.0f);
             Vector4 actual;
 
-            actual = MathOps.TransformToVector4(v, m);
+            actual = Mathematics.MathOps.TransformToVector4(v, m);
             Assert.True(MathHelper.Equal(expected, actual), "MathOps.Transform did not return the expected value.");
         }
 
@@ -409,14 +410,14 @@ namespace Ara3D.Math.Tests
             var expected = new Vector4(2.19198728f, 1.53349376f, 2.61602545f, 0.0f);
             Vector4 actual;
 
-            actual = MathOps.Transform(v, m);
+            actual = Mathematics.MathOps.Transform(v, m);
             Assert.True(MathHelper.Equal(expected, actual), "Vector4f.Transform did not return the expected value.");
 
             // 
             v = v.SetW(1f);
 
             expected = new Vector4(12.19198728f, 21.53349376f, 32.61602545f, 1.0f);
-            actual = MathOps.Transform(v, m);
+            actual = Mathematics.MathOps.Transform(v, m);
             Assert.True(MathHelper.Equal(expected, actual), "Vector4f.Transform did not return the expected value.");
         }
 
@@ -429,7 +430,7 @@ namespace Ara3D.Math.Tests
             var m = new Matrix4x4();
             var expected = new Vector4(0, 0, 0, 0);
 
-            var actual = MathOps.Transform(v, m);
+            var actual = Mathematics.MathOps.Transform(v, m);
             Assert.True(MathHelper.Equal(expected, actual), "Vector4f.Transform did not return the expected value.");
         }
 
@@ -442,7 +443,7 @@ namespace Ara3D.Math.Tests
             var m = Matrix4x4.Identity;
             var expected = new Vector4(1.0f, 2.0f, 3.0f, 0.0f);
 
-            var actual = MathOps.Transform(v, m);
+            var actual = Mathematics.MathOps.Transform(v, m);
             Assert.True(MathHelper.Equal(expected, actual), "Vector4f.Transform did not return the expected value.");
         }
 
@@ -461,8 +462,8 @@ namespace Ara3D.Math.Tests
             m.M42 = 20.0f;
             m.M43 = 30.0f;
 
-            var expected = MathOps.Transform(new Vector4(v, 1.0f), m);
-            var actual = MathOps.TransformToVector4(v, m);
+            var expected = Mathematics.MathOps.Transform(new Vector4(v, 1.0f), m);
+            var actual = Mathematics.MathOps.TransformToVector4(v, m);
             Assert.True(MathHelper.Equal(expected, actual), "Vector4f.Transform did not return the expected value.");
         }
 
@@ -475,7 +476,7 @@ namespace Ara3D.Math.Tests
             var m = new Matrix4x4();
             var expected = new Vector4(0, 0, 0, 0);
 
-            var actual = MathOps.TransformToVector4(v, m);
+            var actual = Mathematics.MathOps.TransformToVector4(v, m);
             Assert.True(MathHelper.Equal(expected, actual), "Vector4f.Transform did not return the expected value.");
         }
 
@@ -488,7 +489,7 @@ namespace Ara3D.Math.Tests
             var m = Matrix4x4.Identity;
             var expected = new Vector4(1.0f, 2.0f, 3.0f, 1.0f);
 
-            var actual = MathOps.TransformToVector4(v, m);
+            var actual = Mathematics.MathOps.TransformToVector4(v, m);
             Assert.True(MathHelper.Equal(expected, actual), "Vector4f.Transform did not return the expected value.");
         }
 
@@ -507,8 +508,8 @@ namespace Ara3D.Math.Tests
             m.M42 = 20.0f;
             m.M43 = 30.0f;
 
-            var expected = MathOps.Transform(new Vector4(v, 0.0f, 1.0f), m);
-            var actual = MathOps.TransformToVector4(v, m);
+            var expected = Mathematics.MathOps.Transform(new Vector4(v, 0.0f, 1.0f), m);
+            var actual = Mathematics.MathOps.TransformToVector4(v, m);
             Assert.True(MathHelper.Equal(expected, actual), "Vector4f.Transform did not return the expected value.");
         }
 
@@ -521,7 +522,7 @@ namespace Ara3D.Math.Tests
             var m = new Matrix4x4();
             var expected = new Vector4(0, 0, 0, 0);
 
-            var actual = MathOps.TransformToVector4(v, m);
+            var actual = Mathematics.MathOps.TransformToVector4(v, m);
             Assert.True(MathHelper.Equal(expected, actual), "Vector4f.Transform did not return the expected value.");
         }
 
@@ -534,7 +535,7 @@ namespace Ara3D.Math.Tests
             var m = Matrix4x4.Identity;
             var expected = new Vector4(1.0f, 2.0f, 0, 1.0f);
 
-            var actual = MathOps.TransformToVector4(v, m);
+            var actual = Mathematics.MathOps.TransformToVector4(v, m);
             Assert.True(MathHelper.Equal(expected, actual), "Vector4f.Transform did not return the expected value.");
         }
 
@@ -551,10 +552,10 @@ namespace Ara3D.Math.Tests
 
             var q = Quaternion.CreateFromRotationMatrix(m);
 
-            var expected = MathOps.TransformToVector4(v, m);
+            var expected = Mathematics.MathOps.TransformToVector4(v, m);
             Vector4 actual;
 
-            actual = MathOps.TransformToVector4(v, q);
+            actual = Mathematics.MathOps.TransformToVector4(v, q);
             Assert.True(MathHelper.Equal(expected, actual), "Vector4f.Transform did not return the expected value.");
         }
 
@@ -570,10 +571,10 @@ namespace Ara3D.Math.Tests
                 Matrix4x4.CreateRotationZ(MathHelper.ToRadians(30.0f));
             var q = Quaternion.CreateFromRotationMatrix(m);
 
-            var expected = MathOps.TransformToVector4(v, m);
+            var expected = Mathematics.MathOps.TransformToVector4(v, m);
             Vector4 actual;
 
-            actual = MathOps.TransformToVector4(v, q);
+            actual = Mathematics.MathOps.TransformToVector4(v, q);
             Assert.True(MathHelper.Equal(expected, actual), "MathOps.Transform did not return the expected value.");
         }
 
@@ -589,16 +590,16 @@ namespace Ara3D.Math.Tests
                 Matrix4x4.CreateRotationZ(MathHelper.ToRadians(30.0f));
             var q = Quaternion.CreateFromRotationMatrix(m);
 
-            var expected = MathOps.Transform(v, m);
+            var expected = Mathematics.MathOps.Transform(v, m);
             Vector4 actual;
 
-            actual = MathOps.Transform(v, q);
+            actual = Mathematics.MathOps.Transform(v, q);
             Assert.True(MathHelper.Equal(expected, actual), "Vector4f.Transform did not return the expected value.");
 
             // 
             v = v.SetW(1f);
             expected = expected.SetW(1f);
-            actual = MathOps.Transform(v, q);
+            actual = Mathematics.MathOps.Transform(v, q);
             Assert.True(MathHelper.Equal(expected, actual), "Vector4f.Transform did not return the expected value.");
         }
 
@@ -611,7 +612,7 @@ namespace Ara3D.Math.Tests
             var q = new Quaternion();
             var expected = v;
 
-            var actual = MathOps.Transform(v, q);
+            var actual = Mathematics.MathOps.Transform(v, q);
             Assert.True(MathHelper.Equal(expected, actual), "Vector4f.Transform did not return the expected value.");
         }
 
@@ -624,7 +625,7 @@ namespace Ara3D.Math.Tests
             var q = Quaternion.Identity;
             var expected = new Vector4(1.0f, 2.0f, 3.0f, 0.0f);
 
-            var actual = MathOps.Transform(v, q);
+            var actual = Mathematics.MathOps.Transform(v, q);
             Assert.True(MathHelper.Equal(expected, actual), "Vector4f.Transform did not return the expected value.");
         }
 
@@ -641,8 +642,8 @@ namespace Ara3D.Math.Tests
                 Matrix4x4.CreateRotationZ(MathHelper.ToRadians(30.0f));
             var q = Quaternion.CreateFromRotationMatrix(m);
 
-            var expected = MathOps.TransformToVector4(v, m);
-            var actual = MathOps.TransformToVector4(v, q);
+            var expected = Mathematics.MathOps.TransformToVector4(v, m);
+            var actual = Mathematics.MathOps.TransformToVector4(v, q);
             Assert.True(MathHelper.Equal(expected, actual), "Vector4f.Transform did not return the expected value.");
         }
 
@@ -655,7 +656,7 @@ namespace Ara3D.Math.Tests
             var q = new Quaternion();
             var expected = new Vector4(v, 1.0f);
 
-            var actual = MathOps.TransformToVector4(v, q);
+            var actual = Mathematics.MathOps.TransformToVector4(v, q);
             Assert.True(MathHelper.Equal(expected, actual), "Vector4f.Transform did not return the expected value.");
         }
 
@@ -668,7 +669,7 @@ namespace Ara3D.Math.Tests
             var q = Quaternion.Identity;
             var expected = new Vector4(1.0f, 2.0f, 3.0f, 1.0f);
 
-            var actual = MathOps.TransformToVector4(v, q);
+            var actual = Mathematics.MathOps.TransformToVector4(v, q);
             Assert.True(MathHelper.Equal(expected, actual), "Vector4f.Transform did not return the expected value.");
         }
 
@@ -685,8 +686,8 @@ namespace Ara3D.Math.Tests
                 Matrix4x4.CreateRotationZ(MathHelper.ToRadians(30.0f));
             var q = Quaternion.CreateFromRotationMatrix(m);
 
-            var expected = MathOps.TransformToVector4(v, m);
-            var actual = MathOps.TransformToVector4(v, q);
+            var expected = Mathematics.MathOps.TransformToVector4(v, m);
+            var actual = Mathematics.MathOps.TransformToVector4(v, q);
             Assert.True(MathHelper.Equal(expected, actual), "Vector4f.Transform did not return the expected value.");
         }
 
@@ -699,7 +700,7 @@ namespace Ara3D.Math.Tests
             var q = new Quaternion();
             var expected = new Vector4(1.0f, 2.0f, 0, 1.0f);
 
-            var actual = MathOps.TransformToVector4(v, q);
+            var actual = Mathematics.MathOps.TransformToVector4(v, q);
             Assert.True(MathHelper.Equal(expected, actual), "Vector4f.Transform did not return the expected value.");
         }
 
@@ -712,7 +713,7 @@ namespace Ara3D.Math.Tests
             var q = Quaternion.Identity;
             var expected = new Vector4(1.0f, 2.0f, 0, 1.0f);
 
-            var actual = MathOps.TransformToVector4(v, q);
+            var actual = Mathematics.MathOps.TransformToVector4(v, q);
             Assert.True(MathHelper.Equal(expected, actual), "Vector4f.Transform did not return the expected value.");
         }
 
@@ -729,7 +730,7 @@ namespace Ara3D.Math.Tests
                 0.7302967433402214846092930437344f);
             Vector4 actual;
 
-            actual = MathOps.Normalize(a);
+            actual = Mathematics.MathOps.Normalize(a);
             Assert.True(MathHelper.Equal(expected, actual), "Vector4f.Normalize did not return the expected value.");
         }
 
@@ -741,7 +742,7 @@ namespace Ara3D.Math.Tests
             var a = new Vector4(1.0f, 0.0f, 0.0f, 0.0f);
 
             var expected = new Vector4(1.0f, 0.0f, 0.0f, 0.0f);
-            var actual = MathOps.Normalize(a);
+            var actual = Mathematics.MathOps.Normalize(a);
             Assert.True(MathHelper.Equal(expected, actual), "Vector4f.Normalize did not return the expected value.");
         }
 
@@ -753,7 +754,7 @@ namespace Ara3D.Math.Tests
             var a = new Vector4(0.0f, 0.0f, 0.0f, 0.0f);
 
             var expected = new Vector4(0.0f, 0.0f, 0.0f, 0.0f);
-            var actual = MathOps.Normalize(a);
+            var actual = Mathematics.MathOps.Normalize(a);
             Assert.True(float.IsNaN(actual.X) && float.IsNaN(actual.Y) && float.IsNaN(actual.Z) && float.IsNaN(actual.W), "Vector4f.Normalize did not return the expected value.");
         }
 
@@ -1005,7 +1006,7 @@ namespace Ara3D.Math.Tests
             var expected = new Vector4(6.0f, 8.0f, 10.0f, 12.0f);
             Vector4 actual;
 
-            actual = MathOps.Add(a, b);
+            actual = Mathematics.MathOps.Add(a, b);
             Assert.AreEqual(expected, actual);
         }
 
@@ -1029,7 +1030,7 @@ namespace Ara3D.Math.Tests
             var expected = new Vector4(1.0f / 5.0f, 6.0f / 2.0f, 7.0f / 3.0f, 4.0f / 8.0f);
             Vector4 actual;
 
-            actual = MathOps.Divide(a, b);
+            actual = Mathematics.MathOps.Divide(a, b);
             Assert.AreEqual(expected, actual);
         }
 
@@ -1097,7 +1098,7 @@ namespace Ara3D.Math.Tests
             var expected = new Vector4(5.0f, 12.0f, 21.0f, 32.0f);
             Vector4 actual;
 
-            actual = MathOps.Multiply(a, b);
+            actual = Mathematics.MathOps.Multiply(a, b);
             Assert.AreEqual(expected, actual);
         }
 
@@ -1110,7 +1111,7 @@ namespace Ara3D.Math.Tests
             var expected = new Vector4(-1.0f, -2.0f, -3.0f, -4.0f);
             Vector4 actual;
 
-            actual = MathOps.Negate(a);
+            actual = Mathematics.MathOps.Negate(a);
             Assert.AreEqual(expected, actual);
         }
 
@@ -1162,7 +1163,7 @@ namespace Ara3D.Math.Tests
             var expected = new Vector4(-4.0f, 4.0f, 0.0f, -5.0f);
             Vector4 actual;
 
-            actual = MathOps.Subtract(a, b);
+            actual = Mathematics.MathOps.Subtract(a, b);
 
             Assert.AreEqual(expected, actual);
         }
@@ -1281,8 +1282,8 @@ namespace Ara3D.Math.Tests
         public void Vector4AbsTest()
         {
             var v1 = new Vector4(-2.5f, 2.0f, 3.0f, 3.3f);
-            var v3 = MathOps.Abs(new Vector4(float.PositiveInfinity, 0.0f, float.NegativeInfinity, float.NaN));
-            var v = MathOps.Abs(v1);
+            var v3 = Mathematics.MathOps.Abs(new Vector4(float.PositiveInfinity, 0.0f, float.NegativeInfinity, float.NaN));
+            var v = Mathematics.MathOps.Abs(v1);
             Assert.AreEqual(2.5f, v.X);
             Assert.AreEqual(2.0f, v.Y);
             Assert.AreEqual(3.0f, v.Z);
@@ -1298,11 +1299,11 @@ namespace Ara3D.Math.Tests
         {
             var v1 = new Vector4(-2.5f, 2.0f, 3.0f, 3.3f);
             var v2 = new Vector4(5.5f, 4.5f, 6.5f, 7.5f);
-            Assert.AreEqual(2, (int)MathOps.SquareRoot(v2).X);
-            Assert.AreEqual(2, (int)MathOps.SquareRoot(v2).Y);
-            Assert.AreEqual(2, (int)MathOps.SquareRoot(v2).Z);
-            Assert.AreEqual(2, (int)MathOps.SquareRoot(v2).W);
-            Assert.AreEqual(float.NaN, MathOps.SquareRoot(v1).X);
+            Assert.AreEqual(2, (int)Mathematics.MathOps.SquareRoot(v2).X);
+            Assert.AreEqual(2, (int)Mathematics.MathOps.SquareRoot(v2).Y);
+            Assert.AreEqual(2, (int)Mathematics.MathOps.SquareRoot(v2).Z);
+            Assert.AreEqual(2, (int)Mathematics.MathOps.SquareRoot(v2).W);
+            Assert.AreEqual(float.NaN, Mathematics.MathOps.SquareRoot(v1).X);
         }
 
         [StructLayout(LayoutKind.Sequential)]

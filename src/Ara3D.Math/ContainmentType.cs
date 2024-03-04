@@ -1,4 +1,4 @@
-﻿namespace Ara3D.Math
+﻿namespace Ara3D.Mathematics
 {
     /// <summary>
     /// Defines how the bounding volumes intersects or contain one another.

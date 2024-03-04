@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.CompilerServices;
 
-namespace Ara3D.Math
+namespace Ara3D.Mathematics
 {
     public partial struct AABox2D
     {

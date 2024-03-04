@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
-using Ara3D.Math;
+using Ara3D.Mathematics;
 using HorizontalAlignment = System.Windows.HorizontalAlignment;
 using ListBox = System.Windows.Controls.ListBox;
 using TabControl = System.Windows.Controls.TabControl;

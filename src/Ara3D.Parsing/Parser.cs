@@ -45,6 +45,12 @@ namespace Ara3D.Parsing
                 ? NodeFactory.Create(ParseTreeRoot) 
                 : null;
         }
+
+        public string ParseTreeXml 
+            => ParseTreeRoot?.ToXml() ?? "";
+
+        public string CstTreeXml
+            => CstTreeRoot?.ToXml().ToString();
     }
 }
     

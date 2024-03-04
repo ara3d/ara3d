@@ -1,5 +1,5 @@
-﻿using Ara3D.Math;
-using System;
+﻿using System;
+using Ara3D.Mathematics;
 
 namespace Ara3D.Geometry
 {

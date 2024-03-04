@@ -1,4 +1,5 @@
 ﻿using System;
+using Ara3D.Mathematics;
 using NUnit.Framework;
 
 namespace Ara3D.Math.Tests

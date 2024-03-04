@@ -22,5 +22,19 @@ This replaces complex and hard to use tools like JIRA.
 	* If so, shouldn't it be in the "applications folder"
 * Do I want or need a standalone tool with UI for viewing and doing conversions of files? 
 * Does bowerbird for Unity, kind of look like Unity scripts? 
-* Bowerbird probably needs some kind of installation guide.
+* Bowerbird probably needs some kind of installation gu
 
+### 2024-03-04
+
+* I want to write an article about Ara3D.Mathematics
+* I want to run my tests, and make it easier to run tests.
+* Run tests in both debug and release build 
+* Make a tagged release 
+* Publish the stuff online 
+* Maybe a version upgrading system would be nice
+* Something to parse and update the various XML files. 
+* Especially for versions and stuff.
+* Need to do double builds I think ...? 
+	* Because the proper version won't get picked up if changes happen but the version stays the same. 
+	* Or do I need to do a "restore" step of some kind? 
+* I want to work on the Geometry libraries, this is quite important. 

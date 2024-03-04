@@ -10,7 +10,7 @@ using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using System.Runtime.Serialization;
 
-namespace Ara3D.Math
+namespace Ara3D.Mathematics
 {
     /// <summary>
     /// Contains basic statistics that can be computed in a single pass over a collection.

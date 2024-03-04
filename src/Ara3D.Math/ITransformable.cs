@@ -1,6 +1,6 @@
 ﻿using System.Linq;
 
-namespace Ara3D.Math
+namespace Ara3D.Mathematics
 {
     public interface ITransformable
     {

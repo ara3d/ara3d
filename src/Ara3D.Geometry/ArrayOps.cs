@@ -3,7 +3,11 @@
 // This file is generated from ArrayOps.tt
 
 using Ara3D.Collections;
-using Ara3D.Math;
+using Ara3D.Mathematics;
+using MathOps = Ara3D.Mathematics.MathOps;
+using Vector2 = Ara3D.Mathematics.Vector2;
+using Vector3 = Ara3D.Mathematics.Vector3;
+using Vector4 = Ara3D.Mathematics.Vector4;
 
 
 namespace Ara3D.Geometry

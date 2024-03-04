@@ -3,7 +3,7 @@ using System.Runtime.CompilerServices;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
-using Ara3D.Math;
+using Ara3D.Mathematics;
 using Ara3D.Utils.Wpf;
 
 namespace Ara3D.SVG.Creator

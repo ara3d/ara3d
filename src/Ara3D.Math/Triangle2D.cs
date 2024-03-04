@@ -1,4 +1,4 @@
-﻿namespace Ara3D.Math
+﻿namespace Ara3D.Mathematics
 {
     public partial struct Triangle2D
     {

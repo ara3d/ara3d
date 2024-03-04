@@ -1,6 +1,7 @@
 ﻿using NUnit.Framework;
 using System;
 using System.Diagnostics;
+using Ara3D.Mathematics;
 
 namespace Ara3D.Math.Tests
 {

@@ -1,5 +1,5 @@
-﻿using System;
-using Ara3D.Domo;
+﻿using Ara3D.Domo;
+using System;
 
 namespace Ara3D.Services
 {

@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Ara3D.Math
+namespace Ara3D.Mathematics
 {
     public static class Hash
     {

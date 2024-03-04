@@ -1,6 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using Ara3D.Domo;
+using System.Collections.Generic;
 using System.Linq;
-using Ara3D.Domo;
 
 namespace Ara3D.Services
 {

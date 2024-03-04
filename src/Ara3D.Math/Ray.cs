@@ -1,15 +1,13 @@
-﻿namespace Ara3D.Math
+﻿namespace Ara3D.Mathematics
 {
     public partial struct Ray : ITransformable
     {
         // adapted from http://www.scratchapixel.com/lessons/3d-basic-lessons/lesson-7-intersecting-simple-shapes/ray-box-intersection/
         public float? Intersects(AABox box)
         {
-            const float Epsilon = 1e-6f;
-
             float? tMin = null, tMax = null;
 
-            if (MathOps.Abs(Direction.X) < Epsilon)
+            if (Direction.X.AlmostZero())
             {
                 if (Position.X < box.Min.X || Position.X > box.Max.X)
                     return null;
@@ -27,7 +25,7 @@
                 }
             }
 
-            if (MathOps.Abs(Direction.Y) < Epsilon)
+            if (Direction.Y.AlmostZero())
             {
                 if (Position.Y < box.Min.Y || Position.Y > box.Max.Y)
                     return null;
@@ -51,7 +49,7 @@
                 if (!tMax.HasValue || tMaxY < tMax) tMax = tMaxY;
             }
 
-            if (MathOps.Abs(Direction.Z) < Epsilon)
+            if (Direction.Z.AlmostZero())
             {
                 if (Position.Z < box.Min.Z || Position.Z > box.Max.Z)
                     return null;
@@ -130,7 +128,7 @@
             // if z = the distance we've travelled along the ray
             // if x^2 + z^2 - y^2 < 0, we do not intersect
             var dist = sphereRadiusSquared + distanceAlongRay.Sqr() - differenceLengthSquared;
-            return (dist < 0) ? null : distanceAlongRay - (float?)MathOps.Sqrt(dist);
+            return (dist < 0) ? null : (float?)(distanceAlongRay - dist.Sqrt());
         }
 
         public ITransformable TransformImpl(Matrix4x4 mat)

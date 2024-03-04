@@ -1,7 +1,7 @@
 ﻿using Ara3D.Serialization.FBX;
 using Ara3D.Collections;
 using Ara3D.Geometry;
-using Ara3D.Math;
+using Ara3D.Mathematics;
 using Ara3D.Serialization.G3D;
 
 namespace FBXtoG3D

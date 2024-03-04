@@ -1,9 +1,9 @@
 ﻿using System;
-using Ara3D.Math;
+using Ara3D.Mathematics;
 using UnityEngine;
-using Matrix4x4 = Ara3D.Math.Matrix4x4;
-using Quaternion = Ara3D.Math.Quaternion;
-using Vector3 = Ara3D.Math.Vector3;
+using Matrix4x4 = Ara3D.Mathematics.Matrix4x4;
+using Quaternion = Ara3D.Mathematics.Quaternion;
+using Vector3 = Ara3D.Mathematics.Vector3;
 
 namespace Ara3D.UnityBridge
 {
@@ -44,7 +44,7 @@ namespace Ara3D.UnityBridge
         [Range(-360, 360)] public float Z;
 
         public Vector3 EulerDegrees => new Vector3(X, Y, Z);
-        public Quaternion Quaternion => Ara3D.Math.Quaternion.CreateFromYawPitchRoll(
+        public Quaternion Quaternion => Quaternion.CreateFromYawPitchRoll(
             Y * (float)Constants.DegreesToRadians,
             X * (float)Constants.DegreesToRadians,
             Z * (float)Constants.DegreesToRadians);

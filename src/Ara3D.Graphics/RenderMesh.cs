@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using Ara3D.Collections;
-using Ara3D.Math;
 using Ara3D.Buffers;
+using Ara3D.Mathematics;
 using Ara3D.Utils;
 
 namespace Ara3D.Graphics

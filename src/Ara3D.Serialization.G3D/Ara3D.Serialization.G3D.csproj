@@ -36,7 +36,7 @@ It can be easily and efficiently deserialized and rendered in different language
   <ItemGroup>
     <ProjectReference Include="..\Ara3D.Serialization.BFAST\Ara3D.Serialization.BFAST.csproj" />
     <ProjectReference Include="..\Ara3D.Collections\Ara3D.Collections.csproj" />
-    <ProjectReference Include="..\Ara3D.Math\Ara3D.Math.csproj" />
+    <ProjectReference Include="..\Ara3D.Math\Ara3D.Mathematics.csproj" />
   </ItemGroup>
 
 </Project>

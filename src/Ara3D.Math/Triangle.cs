@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Runtime.CompilerServices;
 
-namespace Ara3D.Math
+namespace Ara3D.Mathematics
 {
     public partial struct Triangle : IPoints, IMappable<Triangle, Vector3>
     {
