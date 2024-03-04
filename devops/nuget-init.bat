@@ -1,1 +1,0 @@
-"%~dp0\nuget.exe" init "%~dp0\..\nuget-output" "%~dp0\..\nuget-feed"

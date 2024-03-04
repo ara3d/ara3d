@@ -160,23 +160,16 @@ namespace Ara3D.Parsing.Markdown
         }
     }
 
-    public class Markdown
+    public class MarkdownParser : Parser<MarkdownBlockGrammar, CstNodeFactory>
     {
-        public Markdown(string input)
+        public MarkdownParser(string input)
+            : base(input)
         {
-            State = MarkdownBlockGrammar.Instance.Parse(input);
-            var node = State?.Node;
-            var tree = node?.ToParseTree();
-            if (tree != null)
-            {
-                var factory = new CstNodeFactory();
-                var cstNode = factory.Create(tree);
-                if (cstNode is CstDocument doc)
-                    Content = new MarkdownContent(doc);
-            }
+            if (!(CstTreeRoot is CstDocument doc))
+                throw new Exception("Expected a tree root");
+            Content = new MarkdownContent(doc);
         }
 
-        public ParserState State { get; }
         public MarkdownContent Content { get; }
     }
 }

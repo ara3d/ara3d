@@ -106,7 +106,8 @@ Everything will be code-reviewed kindly and rigorously.
 
 # License 
 
-All code is licensed under the commercially friendly [MIT License](https://github.com/ara3d/ara3d?tab=MIT-1-ov-file#readme)
+All code is licensed under the commercially friendly 
+[MIT License](https://github.com/ara3d/ara3d?tab=MIT-1-ov-file#readme)
 
 # F.A.Q.
 
@@ -125,6 +126,8 @@ Q: Why use submodules?
 > A : Some of the work is of interest to the community as a standalone. This is the best way to help everyone 
 get the code, and consume it independently. 
 
+Q: Where are the build tasks and properties?  
 
+Many of the build tasks and properties are controlled by the `Directory.Build.props` file. 
 
 

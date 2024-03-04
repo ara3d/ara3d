@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.4.33122.133
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ara3d", "ara3d", "{3293BA18-D81D-4AD9-9D7C-9CD2F0D5D376}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "_solution", "_solution", "{3293BA18-D81D-4AD9-9D7C-9CD2F0D5D376}"
 	ProjectSection(SolutionItems) = preProject
 		.editorconfig = .editorconfig
 		.gitignore = .gitignore
@@ -135,7 +135,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Plato", "plato\Plato\Plato.
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "devops", "devops", "{73755E8C-EBC6-4894-9B03-9CC87DE2F0DB}"
 	ProjectSection(SolutionItems) = preProject
-		devops\nuget-init.bat = devops\nuget-init.bat
 		devops\push.bat = devops\push.bat
 		devops\README.md = devops\README.md
 	EndProjectSection
@@ -207,6 +206,8 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ara3D.Parsing.Markdown", "src\Ara3D.Parsing.Markdown\Ara3D.Parsing.Markdown.csproj", "{41A35A1F-5977-4894-B08D-DC542B75DDC2}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ara3D.Parsing", "src\Ara3D.Parsing\Ara3D.Parsing.csproj", "{38AB9D38-57D8-402C-A379-A7E0E9E70CAB}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ara3D.Extra.Tests", "tests\Ara3D.Extra.Tests\Ara3D.Extra.Tests.csproj", "{66F07A1C-3C6F-4BF4-A965-7CCCE14E94E7}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -1202,6 +1203,18 @@ Global
 		{38AB9D38-57D8-402C-A379-A7E0E9E70CAB}.Release|x64.Build.0 = Release|Any CPU
 		{38AB9D38-57D8-402C-A379-A7E0E9E70CAB}.Release|x86.ActiveCfg = Release|Any CPU
 		{38AB9D38-57D8-402C-A379-A7E0E9E70CAB}.Release|x86.Build.0 = Release|Any CPU
+		{66F07A1C-3C6F-4BF4-A965-7CCCE14E94E7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{66F07A1C-3C6F-4BF4-A965-7CCCE14E94E7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{66F07A1C-3C6F-4BF4-A965-7CCCE14E94E7}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{66F07A1C-3C6F-4BF4-A965-7CCCE14E94E7}.Debug|x64.Build.0 = Debug|Any CPU
+		{66F07A1C-3C6F-4BF4-A965-7CCCE14E94E7}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{66F07A1C-3C6F-4BF4-A965-7CCCE14E94E7}.Debug|x86.Build.0 = Debug|Any CPU
+		{66F07A1C-3C6F-4BF4-A965-7CCCE14E94E7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{66F07A1C-3C6F-4BF4-A965-7CCCE14E94E7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{66F07A1C-3C6F-4BF4-A965-7CCCE14E94E7}.Release|x64.ActiveCfg = Release|Any CPU
+		{66F07A1C-3C6F-4BF4-A965-7CCCE14E94E7}.Release|x64.Build.0 = Release|Any CPU
+		{66F07A1C-3C6F-4BF4-A965-7CCCE14E94E7}.Release|x86.ActiveCfg = Release|Any CPU
+		{66F07A1C-3C6F-4BF4-A965-7CCCE14E94E7}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -1289,6 +1302,7 @@ Global
 		{EC17427B-78E3-4960-820A-EACB291B5E98} = {E2A52810-CFFE-4ADA-8654-E0282492AB3F}
 		{41A35A1F-5977-4894-B08D-DC542B75DDC2} = {E2A52810-CFFE-4ADA-8654-E0282492AB3F}
 		{38AB9D38-57D8-402C-A379-A7E0E9E70CAB} = {E2A52810-CFFE-4ADA-8654-E0282492AB3F}
+		{66F07A1C-3C6F-4BF4-A965-7CCCE14E94E7} = {8C9F014E-97FC-4A6E-9C4D-05DF71C3B209}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {890503B7-C3A0-410B-A932-A031A4552050}

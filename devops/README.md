@@ -45,10 +45,9 @@ and pushed online.
 ## Updating a Local Nuget
 
 Some projects reference a nuget package, but to avoid the slow turnaround of publishing 
-online, [a local nuget feed can be easily configured on your computer](https://learn.microsoft.com/en-us/nuget/hosting-packages/local-feeds). 
+online, a local nuget feed folder `nuget-feed` is provided. 
 
-A local nuget feed is a special directory. It is created by calling a `nuget init` command.
-The script `.\devops\nuget-init.bat` is provided to simplify creating the nuget feed process. 
+[provided be easily configured on your computer](https://learn.microsoft.com/en-us/nuget/hosting-packages/local-feeds). 
 
 ## Publishing to Nuget 
 

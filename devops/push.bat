@@ -5,7 +5,6 @@ call :subroutine "%~dp0\..\plato" %1 %2
 call :subroutine "%~dp0\..\parakeet" %1 %2
 call :subroutine "%~dp0\..\bowerbird" %1 %2
 call :subroutine "%~dp0\.." %1 %2
-call "%~dp0\nuget-init.bat"
 exit /b
 
 rem <Directory> <message>
