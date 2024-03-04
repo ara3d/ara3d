@@ -2,11 +2,12 @@
   <Target Name="CopyNupkg" AfterTargets="Pack">
       <Copy SourceFiles="$(OutputPath)..\$(PackageId).$(PackageVersion).nupkg" 
             DestinationFolder="$(SolutionDir)nuget-output" />
+      <Exec Command="$(SolutionDir)devops\nuget.exe add &quot;$(TargetDir)..\$(PackageId).$(PackageVersion).nupkg&quot; -Source &quot;$(SolutionDir)nuget-feed&quot;"/>  
   </Target>
   <PropertyGroup>
-    <Version>1.3.0</Version>
-    <AssemblyVersion>1.3.0</AssemblyVersion>
-    <AssemblyFileVersion>1.3.0</AssemblyFileVersion>
+    <Version>1.3.1</Version>
+    <AssemblyVersion>1.3.1</AssemblyVersion>
+    <AssemblyFileVersion>1.3.1</AssemblyFileVersion>
     <Authors>Ara 3D Inc.</Authors>
     <PackageProjectUrl>https://github.com/ara3d/ara3d</PackageProjectUrl>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>

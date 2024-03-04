@@ -92,24 +92,16 @@ namespace Ara3D.Utils
         }
 
         public T Brace(Func<T, T> f)
-        {
-            return f(Write("{").Indent().WriteLine()).Dedent().WriteLine("}");
-        }
-
+            => f(Write("{").Indent().WriteLine()).Dedent().WriteLine("}");
+       
         public T WriteIf(bool condition, Func<T, T> f)
-        {
-            return condition ? f(this as T) : this as T;
-        }
+            => condition ? f(this as T) : this as T;
 
         public override string ToString()
-        {
-            return sb.ToString();
-        }
-
-        public T Space()
-        {
-            return Write(" ");
-        }
+            => sb.ToString();
+       
+        public T WriteSpace()
+            => Write(" ");
 
         public T WriteStartBlock()
             => WriteLine("{").Indent();
