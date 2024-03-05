@@ -22,7 +22,10 @@ namespace Ara3D.Collections
 
         public static ISequence<T> Where<T>(this ISequence<T> seq, Func<T, bool> predicate) => seq.Iterator.Where(predicate).ToSequence();
         public static ISequence<T> Where<T>(this ISequence<T> seq, Func<T, int, bool> predicate) => seq.Iterator.Where(predicate).ToSequence();
-        public static ISequence<U> Select<T, U>(this ISequence<T> seq, Func<T, U> mapFunc) => seq.Iterator.Select(mapFunc).ToSequence();
+        
+        // TODO: this is a problem. It interferes in my usage of Select on IArray, causing ambiguous calls. 
+        //public static ISequence<U> Select<T, U>(this ISequence<T> seq, Func<T, U> mapFunc) => seq.Iterator.Select(mapFunc).ToSequence();
+        
         public static ISequence<U> Select<T, U>(this ISequence<T> seq, Func<T, int, U> mapFunc) => seq.Iterator.Select(mapFunc).ToSequence();
         public static ISequence<T> Take<T>(this ISequence<T> seq, int n) => seq.Iterator.Take(n).ToSequence();
         public static ISequence<T> TakeWhile<T>(this ISequence<T> seq, Func<T, bool> predicate) => seq.Iterator.TakeWhile(predicate).ToSequence();

@@ -256,6 +256,12 @@ namespace Ara3D.Mathematics
             => new HorizontalCoordinate(vector.X, vector.Y);
     }
 
+    public partial struct Interval
+    {
+        public float Lerp(float amount)
+            => Min.Lerp(Max, amount);
+    }
+
     public static class MovementExtensions
     {
         /*

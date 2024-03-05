@@ -144,6 +144,12 @@ namespace Ara3D.Collections
             => Select(self, i => i);
 
         /// <summary>
+        /// Creates an IArray of integers from a to one less than b.
+        /// </summary>
+        public static IArray<int> Upto(this int a, int b)
+            => Select((b - a), i => i + a);
+
+        /// <summary>
         /// Returns the first item in the array.
         /// </summary>
         public static T First<T>(this IArray<T> self, T @default = default)
@@ -814,6 +820,12 @@ namespace Ara3D.Collections
             => indices.Prepend(0).Zip(indices.Append(self.Count), (x, y) => self.Slice(x, y));
 
         /// <summary>
+        /// Returns two arrays, one for which the predicate is true, and the second for which it is false.
+        /// </summary>
+        public static (IArray<T>, IArray<T>) Split<T>(this IArray<T> self, Func<T, bool> predicate)
+            => (self.Where(predicate).ToIArray(), self.Where(x => !predicate(x)).ToIArray());
+
+        /// <summary>
         /// Creates an array of arrays, split at the given index.
         /// </summary>
         public static IArray<IArray<T>> Split<T>(this IArray<T> self, int index)
@@ -824,7 +836,6 @@ namespace Ara3D.Collections
         /// </summary>
         public static (IArray<T1>, IArray<T2>) Unzip<T1, T2>(this IArray<(T1, T2)> self)
             => (self.Select(pair => pair.Item1), self.Select(pair => pair.Item2));
-
 
         /// <summary>
         /// Returns true if the predicate is true for all of the elements in the array

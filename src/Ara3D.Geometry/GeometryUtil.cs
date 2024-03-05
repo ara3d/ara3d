@@ -28,7 +28,7 @@ namespace Ara3D.Geometry
             => AABox.Create(vertices.ToEnumerable());
 
         public static IArray<float> SampleZeroToOneInclusive(this int count)
-            => (count + 1).Select(i => i / (float)count);
+            => (count).Select(i => i / (float)(count - 1));
 
         public static IArray<float> SampleZeroToOneExclusive(this int count)
             => count.Select(i => i / (float)count);

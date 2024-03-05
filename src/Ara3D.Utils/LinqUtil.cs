@@ -170,5 +170,17 @@ namespace Ara3D.Utils
         {
             list.Sort((a, b) => f(a).CompareTo(f(b)));
         }
+
+        /// <summary>
+        /// A convenience function to make call code a bit more readable. 
+        /// </summary>
+        public static IEnumerable<T> WhereNot<T>(this IEnumerable<T> self, Func<T, bool> f)
+            => self.Where(x => !f(x));
+        W
+        /// <summary>
+        /// Returns two IEnumerables, the first where the predicate is true, and the second where it isn't. 
+        /// </summary>
+        public static (IEnumerable<T>, IEnumerable<T>) Split<T>(this IEnumerable<T> self, Func<T, bool> f)
+            => (self.Where(f), self.WhereNot(f));
     }
 }

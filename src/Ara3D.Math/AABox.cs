@@ -200,6 +200,12 @@ namespace Ara3D.Mathematics
             return new AABox(minVec, maxVec);
         }
 
+        /// <summary>
+        /// Create a box for a single point.
+        /// </summary>
+        public static AABox Create(Vector3 point)
+            => new AABox(point, point);
+
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static AABox Create(params Vector3[] points)
             => Create(points.AsEnumerable());

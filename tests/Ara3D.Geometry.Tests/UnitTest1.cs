@@ -1,46 +1,22 @@
+using Ara3D.Collections;
+using Ara3D.Mathematics;
+
 namespace Ara3D.Geometry.Tests
 {
-    public interface IDazzler
+    public static class GeometryTests
     {
-        IDazzler Razzle();
-    }
-
-    public class Dazzler : IDazzler
-    {
-        public IDazzler Razzle()
+        [SetUp]
+        public static void SetUp()
         {
-            Console.WriteLine("Dazzlers will Razzle");
-            return this;
+            if (!MoldFlowDirectoryPath.Exists())
+                throw new Exception($"Could not find data directory {MoldFlowDirectoryPath}");
         }
-    }
 
-    public class Razzler : IDazzler
-    {
-        public IDazzler Razzle()
-        {
-            Console.WriteLine("Razzlers will Razzle");
-            return this;
-        }
-    }
+        public static DirectoryPath MoldFlowDirectoryPath =
+            SourceCodeLocation.GetFolder()
+                .RelativeFolder("..", "..", "..", "3d-format-shootout", "data", "files", "moldflow");
 
-    public static class Extensions
-    {
-        public static T Razzle<T>(this T self) where T : IDazzler
-        {
-            Console.WriteLine("Everyone will Razzle");
-            return (T)self.Razzle();
-        }
-    }
 
-    public class Tests
-    {
-        [Test]
-        public void Test1()
-        {
-            var a = new Dazzler();
-            var b = new Razzler();
-            a.Razzle<Dazzler>();
-            b.Razzle<Razzler>();
-        }
+
     }
 }

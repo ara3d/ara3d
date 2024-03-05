@@ -17,4 +17,9 @@
     <PackageReference Include="coverlet.collector" Version="3.2.0" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\Ara3D.Geometry\Ara3D.Geometry.csproj" />
+    <ProjectReference Include="..\..\src\Ara3D.Utils\Ara3D.Utils.csproj" />
+  </ItemGroup>
+
 </Project>
