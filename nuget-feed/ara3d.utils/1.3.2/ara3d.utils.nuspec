@@ -11,7 +11,7 @@
     <projectUrl>https://github.com/ara3d/ara3d/tree/main/src/Ara3D.Utils</projectUrl>
     <description>A collection of general purpose utility classes and functions.</description>
     <copyright>Copyright (c) Ara 3D Inc 2024, Licensed under MIT License</copyright>
-    <repository type="git" url="https://github.com/ara3d/ara3d" commit="b3d8e38669f2ad5fd5972b61f4093197892c1729" />
+    <repository type="git" url="https://github.com/ara3d/ara3d" commit="03b03fcd9a01b251c38fadb1d284a108028dec38" />
     <dependencies>
       <group targetFramework=".NETStandard2.0" />
     </dependencies>

@@ -11,7 +11,7 @@
     <projectUrl>https://github.com/ara3d/domo</projectUrl>
     <description>Domo is a state management library for C# inspired by domain driven design.</description>
     <copyright>Copyright (c) Ara 3D Inc 2024, Licensed under MIT License</copyright>
-    <repository type="git" url="https://github.com/ara3d/domo" commit="07896df218d628ad7dcb04cbb366035496e73fb5" />
+    <repository type="git" url="https://github.com/ara3d/domo" commit="358f2e0fcca409ab022180116921e80351b41cef" />
     <dependencies>
       <group targetFramework=".NETStandard2.0" />
     </dependencies>

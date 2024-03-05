@@ -50,8 +50,5 @@ namespace Ara3D.Geometry
         public static Func<Vector3, float> DistanceAsAmount(Vector3 v, Vector3 center, float max)
             => throw new NotImplementedException();
 
-        public static Vector3 DeformAlong(Vector3 v, Func<Vector3, Vector3> deform)
-            => throw new NotImplementedException();
-
     }
 }

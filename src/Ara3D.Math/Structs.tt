@@ -78,6 +78,6 @@ namespace Ara3D.Mathematics
     CreateVectorStruct("GeoCoordinate", new[] { "Latitude", "Longitude" }, "double");
 
     CreateStruct("AxisAngle", new[] { "Axis", "Angle" }, new[] { "DVector3", "double" });
-    CreateVectorStruct("Euler", new[] { "Yaw", "Pitch", "Roll" }, "float");
+    CreateVectorStruct("Euler", new[] { "Yaw", "Pitch", "Roll" }, "double");
 #>
 }

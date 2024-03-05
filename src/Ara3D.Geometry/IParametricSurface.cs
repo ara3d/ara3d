@@ -91,6 +91,7 @@ namespace Ara3D.Geometry
 
     public static class SurfaceOperations
     {
+        // TODO: this really should be in the transformable extensions. 
         public static Vector3 RotateAround(Vector3 point, Vector3 axis, float angleInRad)
             => point.Transform(Quaternion.CreateFromAxisAngle(axis, angleInRad));
 

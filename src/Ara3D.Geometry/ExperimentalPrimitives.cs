@@ -23,8 +23,6 @@ using Ara3D.Mathematics;
 
 namespace Ara3D.Geometry
 {
-    using Polygon = PolyLine<Vector2>;
-
     public static class NumberExtensions
     {
         public const float TwoPi = Pi * 2f;
@@ -67,50 +65,7 @@ namespace Ara3D.Geometry
         // Quadrilateral
     }
 
-    public static class RegularPolygons
-    {
-        public static IArray<float> SampleFloats(this int n) 
-            => n.Select(x => (float)x / n);
 
-        public static PolyLine<Vector2> ToPolyLine(this IArray<Vector2> points)
-            => new PolyLine<Vector2>(points, false);
-
-        public static Polygon ToPolygon(this IArray<Vector2> points) 
-            => new Polygon(points, true);
-        
-        public static IArray<T> Sample<T>(this Func<float, T> func, int n) 
-            => n.SampleFloats().Select(func);
-        
-        public static Polygon Polygon(int n) 
-            => PrimitiveFunctions.Circle.Sample(n).ToPolygon();
-        
-        public static Polygon Triangle = Polygon(3);
-        public static Polygon Square = Polygon(4);
-        public static Polygon Pentagon = Polygon(5);
-        public static Polygon Hexagon = Polygon(6);
-        public static Polygon Septagon = Polygon(7);
-        public static Polygon Octagon = Polygon(8);
-        public static Polygon Decagon = Polygon(10);
-        public static Polygon Dodecagon = Polygon(12);
-        public static Polygon Icosagon = Polygon(20);   
-    }
-
-    public static class Surfaces
-    {
-        public static IParametricSurface Plane = PrimitiveFunctions.Plane.ToSurface();
-        public static IParametricSurface Cylinder = PrimitiveFunctions.Cylinder.ToSurface(true);
-        public static IParametricSurface Sphere = PrimitiveFunctions.Sphere.ToSurface(true, true);
-        public static IParametricSurface MonkeySaddle = PrimitiveFunctions.MonkeySaddle.ToSurface();
-        public static IParametricSurface TorusKnot = PrimitiveFunctions.Torus.ToSurface();
-
-        public static IParametricSurface ToSurface(this Func<Vector2, Vector3> func, bool closedX = false, bool closedY = false)
-            => new ParametricSurface(func, closedX, closedY);
-
-        public static IParametricSurface ToSurface(this Func<Vector2, float> func, bool closedX = false, bool closedY = false)
-            => new ParametricSurface(uv => new Vector3(uv.X, uv.Y, func(uv)), closedX, closedY);
-    }
-
-        
     // http://paulbourke.net/geometry/mecon/
 
     // https://stackoverflow.com/questions/69856578/how-to-move-along-a-bezier-curve-with-a-constant-velocity-without-a-costly-preco
