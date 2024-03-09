@@ -16,5 +16,8 @@
             Writer.Write(new LogEntry(message, Name, level));
             return this;
         }
+
+        public static ILogger Default
+            = new Logger(LogWriter.Default, "");
     }
 }

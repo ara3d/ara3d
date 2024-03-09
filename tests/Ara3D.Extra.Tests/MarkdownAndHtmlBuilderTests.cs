@@ -32,7 +32,7 @@ namespace Ara3D.Extra.Tests
         {
             var markdown = filePath.ReadAllText();
             var p = new MarkdownParser(markdown);
-            return p.Content.ToHtml().ToString();
+            return p.Document.ToHtml().ToString();
         }
     }
 }

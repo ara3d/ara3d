@@ -1,4 +1,5 @@
 ﻿using System.Diagnostics;
+using Ara3D.Logging;
 using Ara3D.Utils;
 
 namespace Ara3D.Services
@@ -22,19 +23,19 @@ namespace Ara3D.Services
     {
         public Stopwatch Stopwatch { get; } = Stopwatch.StartNew();
 
-        public LoggingService(string category, IApplication app)
+        public LoggingService(string name, IApplication app)
             : base(app)
         {
-            Category = category;
+            Name = name;
         }
 
         public ILogger Log(string message, LogLevel level = LogLevel.None)
         {
-            Repository.Add(new LogEntry(message, Category, level));
+            Repository.Add(new LogEntry(message, Name, level));
             Debug.WriteLine(Stopwatch.Elapsed.ToString("hh\\:mm\\:ss\\.ff") + " - " + message);
             return this;
         }
 
-        public string Category { get; }
+        public string Name { get; }
     }
 }

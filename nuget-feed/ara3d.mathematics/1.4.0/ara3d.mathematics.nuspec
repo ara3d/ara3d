@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<package xmlns="http://schemas.microsoft.com/packaging/2013/05/nuspec.xsd">
+<package xmlns="http://schemas.microsoft.com/packaging/2012/06/nuspec.xsd">
   <metadata>
     <id>Ara3D.Mathematics</id>
     <version>1.4.0</version>
@@ -11,14 +11,9 @@
     <projectUrl>https://github.com/ara3d/ara3d/tree/main/src/Ara3D.Math</projectUrl>
     <description>Ara3D.Mathematics is an efficient math library forked from System.Numerics, MonoGame, and Vim.Math3D with additional functionality and a strict struct layout for cross platform serialization.</description>
     <copyright>Copyright (c) Ara 3D Inc 2024, Licensed under MIT License</copyright>
-    <repository type="git" url="https://github.com/ara3d/ara3d" commit="cd003de8caeab61bff165d423b7724a46f2c33c6" />
+    <repository type="git" url="https://github.com/ara3d/ara3d" commit="f9dd6026f09da4d22a53d82b2a0607d0e40157ad" />
     <dependencies>
       <group targetFramework=".NETStandard2.0" />
     </dependencies>
-    <contentFiles>
-      <files include="any/netstandard2.0/MathOps.tt" buildAction="Content" />
-      <files include="any/netstandard2.0/Structs.tt" buildAction="Content" />
-      <files include="any/netstandard2.0/TemplateHelpers.tt" buildAction="Content" />
-    </contentFiles>
   </metadata>
 </package>

@@ -58,7 +58,7 @@ namespace Ara3D.Parsing.Markdown
                     return new MdHeader(
                         HeadingOperatorToLevel(
                             h.HeadingOperator.Node),
-                            new MdText(h.Line.Text));
+                            h.TextLine.Node.ToMdText());
 
                 case CstHeadingUnderlined h:
                     return 

@@ -5,7 +5,7 @@ namespace Ara3D.DevOpToolsAsTests
     public static class DevOpTools
     {
         public static IEnumerable<FilePath> GetAllProjects()
-            => SourceCodeLocation.GetSolutionFile().GetDirectory().GetFiles("*.csproj");
+            => SourceCodeLocation.GetFolder().RelativeFolder("..", "..").GetFiles("*.csproj", true);
         
         [Test, Explicit]
         public static void UpgradeVersion()
@@ -15,6 +15,7 @@ namespace Ara3D.DevOpToolsAsTests
 
             foreach (var project in GetAllProjects())
             {
+                Console.WriteLine($"Loading {project}");
                 project.LoadXml()
                     .SetAttributesWhere(x => x.Name == "PackageReference"
                                              && x.Attribute("Include")?.Value?.StartsWith("Ara3D.") == true

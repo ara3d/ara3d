@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using Ara3D.Parakeet;
 using Ara3D.Parakeet.Cst.MarkdownBlockGrammarNameSpace;
 using Ara3D.Parakeet.Grammars;
 
@@ -13,9 +11,9 @@ namespace Ara3D.Parsing.Markdown
         {
             if (!(CstTreeRoot is CstDocument doc))
                 throw new Exception("Expected a tree root");
-                Content = new MarkdownContent(doc);
+            Document = (MdDocument)doc.ToMdBlock();
         }
 
-        public MarkdownContent Content { get; }
+        public MdDocument Document { get; }
     }
 }

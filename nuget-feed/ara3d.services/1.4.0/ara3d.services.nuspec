@@ -11,11 +11,11 @@
     <projectUrl>https://github.com/ara3d/ara3d</projectUrl>
     <description>Infrastructure for creating well architected software.</description>
     <copyright>Copyright (c) Ara 3D Inc 2024, Licensed under MIT License</copyright>
-    <repository type="git" url="https://github.com/ara3d/ara3d" commit="cd003de8caeab61bff165d423b7724a46f2c33c6" />
+    <repository type="git" url="https://github.com/ara3d/ara3d" commit="f9dd6026f09da4d22a53d82b2a0607d0e40157ad" />
     <dependencies>
       <group targetFramework=".NETStandard2.0">
-        <dependency id="Ara3D.Domo" version="1.3.1" exclude="Build,Analyzers" />
-        <dependency id="Ara3D.Utils" version="1.3.1" exclude="Build,Analyzers" />
+        <dependency id="Ara3D.Domo" version="1.4.0" exclude="Build,Analyzers" />
+        <dependency id="Ara3D.Logging" version="1.4.0" exclude="Build,Analyzers" />
       </group>
     </dependencies>
   </metadata>

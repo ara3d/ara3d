@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
-using Ara3D.Utils;
+
 
 namespace Ara3D.Logging
 {
@@ -10,8 +10,9 @@ namespace Ara3D.Logging
     /// They can also be started, stopped.
     /// </summary>
     public interface IJob 
-        : ICancelable, IProgress, ILogger, INamed, IStatus<JobStatus>, IErrorHandler, ICompletionHandler, IPausable
+        : ICancelable, IProgress, ILogger, IStatus<JobStatus>, IErrorHandler, ICompletionHandler, IPausable
     {
+        string Name { get; }
         IReadOnlyList<IJob> SubJobs { get; }
         Task Start();
         object Result { get; }
