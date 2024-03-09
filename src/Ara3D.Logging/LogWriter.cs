@@ -19,17 +19,20 @@ namespace Ara3D.Logging
         public void Write(LogEntry logEntry)
             => OnLogEntry?.Invoke(CurrentTimeElapsed, logEntry);
 
-        public static void DefaultAction(string msg)
-        {
-            Console.WriteLine(msg);
-            Debug.WriteLine(msg);
-        }
+        public static void DebugWriteLine(string msg)
+            => Debug.WriteLine(msg);
+
+        public static void ConsoleWriteLine(string msg)
+            => Console.WriteLine(msg);
 
         public static ILogWriter Create(Action<string> onLogMessage)
             => new LogWriter((elapsed, logEntry) 
                 => onLogMessage(FormatLogEntry(elapsed, logEntry)));
 
-        public static ILogWriter Default 
-            => Create(DefaultAction);
+        public static ILogWriter DefaultWriter 
+            => Create(DebugWriteLine);
+
+        public static ILogWriter ConsoleWriter
+            => Create(ConsoleWriteLine);
     }
 }

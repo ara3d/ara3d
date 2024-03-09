@@ -18,6 +18,6 @@
         }
 
         public static ILogger Default
-            = new Logger(LogWriter.Default, "");
+            = new Logger(LogWriter.DefaultWriter, "");
     }
 }

@@ -1,19 +1,23 @@
 ﻿using System;
+using Ara3D.Logging;
+using Ara3D.Parakeet;
 using Ara3D.Parakeet.Cst.MarkdownBlockGrammarNameSpace;
-using Ara3D.Parakeet.Grammars;
 
 namespace Ara3D.Parsing.Markdown
 {
-    public class MarkdownParser : Parser<MarkdownBlockGrammar, CstNodeFactory>
+    public class MarkdownParser
     {
-        public MarkdownParser(string input)
-            : base(input)
+        public MarkdownParser(string input, ILogger logger = null)
         {
-            if (!(CstTreeRoot is CstDocument doc))
+            Input = input;
+            Parser = CommonParsers.MarkdownBlockParser(Input, logger);
+            if (!(Parser.Cst is CstDocument doc))
                 throw new Exception("Expected a tree root");
             Document = (MdDocument)doc.ToMdBlock();
         }
 
+        public ParserInput Input { get; }
+        public Parser Parser { get; }
         public MdDocument Document { get; }
     }
 }
