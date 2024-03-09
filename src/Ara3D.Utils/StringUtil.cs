@@ -139,5 +139,25 @@ namespace Ara3D.Utils
 
         public static string DecapitalizeFirst(this string text)
             => text.IsNullOrEmpty() ? text : text[0].ToLower() + text.Substring(1);
+
+        /// <summary>
+        /// Removes the end part of a string if it matches a sub-string.
+        /// </summary>
+        public static string RemoveSuffix(this string text, string subtext)
+        {
+            var i = text.LastIndexOf(subtext);
+            if (i < 0) return text;
+            return text.Substring(0, i);
+        }
+
+        /// <summary>
+        /// Removes the start part of a string if it matches a sub-sting.
+        /// </summary>
+        public static string RemovePrefix(this string text, string subtext)
+        {
+            if (text.StartsWith(subtext))
+                return text.Substring(subtext.Length);
+            return text;
+        }
     }
 }
