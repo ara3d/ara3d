@@ -1,14 +1,22 @@
 # Release Notes 
 
+### 2024-03-09
+
+* Adding an interface to distinguish types of CstNodes according to grammar. 
+* Added a string functions to remove and add prefix
+* Working on Plato to AST generation. 
+
 ### 2024-03-08
 
 * Moving to version 1.4.0 
 * Created new project called Ara3D.Logging - unfinished (stuck on design of IJob)
 * Moved a lot of code out of Ara3D.Utils to the logging library
-* Markdown to HTML was getting improved, but is currently broken
+* Working on fixing bugs in Markdown to HTML
 * Added many new types, concepts, and mathematical functions to Plato (particularly for geometry)
 * Plato standard libraries got split up in multiple files  
 * Redoing the Plato.Winform compiler, so that it works again and is fixed to some stuff 
+* Developing a "Pausable" concept
+* Trying to make job system work well with tasks and asynchronous code. 
 
 ### 2024-03-04
 

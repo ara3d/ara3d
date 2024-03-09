@@ -11,7 +11,7 @@
     <projectUrl>https://github.com/ara3d/parakeet</projectUrl>
     <description>A PEG parsing libray.</description>
     <copyright>Copyright (c) Ara 3D Inc 2024, Licensed under MIT License</copyright>
-    <repository type="git" url="https://github.com/ara3d/parakeet" commit="9f0316eaceb66da62bf97bf68bec42bffaa2f251" />
+    <repository type="git" url="https://github.com/ara3d/parakeet" commit="506f28cb921e9e1d5529594391d01e8f8185774b" />
     <dependencies>
       <group targetFramework=".NETStandard2.0">
         <dependency id="Ara3D.Utils" version="1.4.0" exclude="Build,Analyzers" />
