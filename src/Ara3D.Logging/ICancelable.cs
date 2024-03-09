@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Ara3D.Utils
+namespace Ara3D.Logging
 {
     /// <summary>
     /// Combines a Cancellation event observer (CancellationToken) and a cancellation requester (CancelTokenSource). 
@@ -11,7 +11,7 @@ namespace Ara3D.Utils
     /// </summary>
     public interface ICancelable
     {
-        bool IsCancelRequested();
+        bool IsCancelRequested { get; }
         void Cancel();
     }
 
@@ -22,7 +22,7 @@ namespace Ara3D.Utils
     {
         public static T ThrowIfCanceled<T>(this T cancelable) where T : ICancelable
         {
-            if (cancelable?.IsCancelRequested() == true)
+            if (cancelable?.IsCancelRequested == true)
                 throw new CancelException();
             return cancelable;
         }

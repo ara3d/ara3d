@@ -3,8 +3,13 @@ using Ara3D.Utils;
 
 namespace Ara3D.Extra.Tests
 {
-    public class Tests
+    public static class MarkdownAndHtmlBuilderTests
     {
+        public static void SetUp()
+        {
+            OutputFolder.Create();
+        }
+
         public static DirectoryPath OutputFolder
             => SourceCodeLocation.GetFolder().RelativeFolder("..", "..", "output", "markdown-to-html");
 
@@ -14,21 +19,20 @@ namespace Ara3D.Extra.Tests
             return rootFolder.GetFiles("*.md", true).Where(fp => !fp.Value.Contains("unity"));
         }
 
-        [Test]
-        public static void ConvertMarkdownToHtml()
+        [TestCaseSource(nameof(TestMarkdownFiles))]
+        public static void TestMarkdownToHtml(FilePath filePath)
         {
-            OutputFolder.CreateAndClearDirectory();
-            foreach (var file in TestMarkdownFiles())
-                ConvertMarkdownToHtml(file);
+            var html = ConvertMarkdownToHtml(filePath);
+            Console.WriteLine(html);
+            var outputFile = filePath.ChangeDirectoryAndExt(OutputFolder, "html");
+            outputFile.WriteAllText(html);
         }
 
-        public static void ConvertMarkdownToHtml(FilePath filePath)
+        public static string ConvertMarkdownToHtml(FilePath filePath)
         {
             var markdown = filePath.ReadAllText();
             var p = new MarkdownParser(markdown);
-            var html = p.Content.ToHtml().ToString();
-            var outputFile = filePath.ChangeDirectoryAndExt(OutputFolder, "html");
-            outputFile.WriteAllText(html);
+            return p.Content.ToHtml().ToString();
         }
     }
 }

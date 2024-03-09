@@ -11,4 +11,14 @@ namespace Ara3D.Geometry
     {
         IDeformable DeformImpl(Func<Vector3, Vector3> f);
     }
+    
+    /// <summary>
+    /// A deformable shape, can accept an arbitrary function from R3 -> R3 and
+    /// produce a new shape.
+    /// </summary>
+    public interface IDeformable2D : ITransformable
+    {
+        IDeformable2D DeformImpl(Func<Vector2, Vector2> f);
+    }
+
 }

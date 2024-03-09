@@ -176,7 +176,7 @@ namespace Ara3D.Utils
         /// </summary>
         public static IEnumerable<T> WhereNot<T>(this IEnumerable<T> self, Func<T, bool> f)
             => self.Where(x => !f(x));
-        W
+        
         /// <summary>
         /// Returns two IEnumerables, the first where the predicate is true, and the second where it isn't. 
         /// </summary>

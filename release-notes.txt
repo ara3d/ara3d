@@ -1,5 +1,15 @@
 # Release Notes 
 
+### 2024-03-08
+
+* Moving to version 1.4.0 
+* Created new project called Ara3D.Logging - unfinished (stuck on design of IJob)
+* Moved a lot of code out of Ara3D.Utils to the logging library
+* Markdown to HTML was getting improved, but is currently broken
+* Added many new types, concepts, and mathematical functions to Plato (particularly for geometry)
+* Plato standard libraries got split up in multiple files  
+* Redoing the Plato.Winform compiler, so that it works again and is fixed to some stuff 
+
 ### 2024-03-04
 
 * Moving to version 1.3.2

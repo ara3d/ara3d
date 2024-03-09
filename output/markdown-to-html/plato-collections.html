@@ -1,0 +1,166 @@
+<h1>Plato.Collections
+
+</h1>
+<br/>Plato.Collections is a library of thread-safe immutable collections for .NET Standard 2.0 inspired by LINQ.
+
+<br/>The definition of the interfaces can be found at [Collections.cs](Collections.cs).
+
+<br/><h2>About Plato 
+
+</h2>
+<br/>Plato.Collections is written using [Plato](https://github.com/cdiggins/plato), a strict subset of C# that
+
+leverages Roslyn source generators to enforce rules and add extra code. 
+
+<br/>Plato enforces that code is pure functional. In other words classes are immutable and thread-safe and functions 
+
+have no side-effects. 
+
+<br/><h2>Design Principles
+
+</h2>
+<br/>Plato.Collections follow a simple set of design principles:
+
+<br/>
+<ol>
+<li>All collections are immutable, side-effect free, and thread-safe. 
+
+</li>
+
+<ol>
+<li>Required API for an Interfaces should each be as small as possible
+
+</li>
+
+<ol>
+<li>Each interface should describe a single well-defined concept 
+
+</li>
+
+<ol>
+<li>Data types with different algorithmic complexity need different representations 
+
+</li>
+
+<ol>
+<li>Low-level performance concerns beyond should be primarily the concern of optimization tools  
+
+</li>
+
+<ol>
+<li>Construction of new instances of interfaces is expressed as extension methods 
+
+</li>
+<br/><h2>How Plato.Collections Differs from LINQ and System.Collections
+
+</h2>
+<br/>Plato redesigned the entire hierarchy of collections, interface, and enumerable types 
+
+from scratch while enforcing immutability and thread-safety.
+
+<br/>Most types in the `Plato.Collections` namespace provides the same LINQ operations 
+
+as `IEnumerable`, with the only difference being the types that are returned. 
+
+<br/>Some of the `Plato.Collections` interfaces include the following:
+
+<br/><pre>
+
+</pre>
+<br/><br/>These interfaces are defined in [Collections.cs](Collections.cs).
+
+<br/><h2>Enumerator Example
+
+</h2>
+<br/>In pseudo-code the default .NET libraries an enumerator looks like:
+
+<br/><pre>
+
+</pre>
+<br/><br/>All methods and properties in an enumerator have potential side-effects, even the `Current` property
+
+can trigger an error in the case that is "invalidated due to changes made in the collection".
+
+<br/>Plato offers a side-effect-free alternative called `IGenerator` designed for immutable collections:
+
+<br/><pre>
+
+</pre>
+<br/><br/>Unlike `IEnumerator` the `IGenerator` will never throw exceptions. If `Current` is queried while `HasValue` is 
+
+`false` then a default value will be returned. 
+
+<br/><h3>Replacing IEnumerable with ISequence 
+
+</h3>
+<br/>In order to differentiate from `IEnumerable`, Plato introduces a new core interface that many collection 
+
+derive from called `ISequence` which has one property:
+
+<br/><pre>
+
+</pre>
+<br/><br/><h2>IArray vs LINQ on Array
+
+</h2>
+<br/>LINQ operations are available on arrays through the C# System libraries. The problem is that once a LINQ operation (like Select`, or `Take`)
+
+is performed on an array the result is an `IEnumerable`, and no longer an array. 
+
+<br/>This means that there is no longer any guarantee of the algorithmic complexity of O(1) for element indexing or retrieving the number of 
+
+elements, when it would be trivial to provide those guarantees. 
+
+<br/>Plato offers an interface called `IArray` that has a number of LINQ style operations that return `IArray` ensuring the same algorithmic 
+
+properties. 
+
+<br/><pre>
+
+</pre>
+<br/><br/><h2>Similar Work
+
+</h2>
+<br/>The `IArray<T>` implementation is based on the [LinqArray](https://github.com/vimaec/LinqArray) library, which in turn
+
+is based on article at CodeProject.com called [LINQ for Immutable Arrays](https://www.codeproject.com/Articles/517728/LINQ-for-Immutable-Arrays). 
+
+<br/><br/><h2>IMap as a generalization of IArray and IDictionary 
+
+</h2>
+<br/>Dictionaries and arrays both map from some input type (a domain) to an output type (a codomain). In the case of arrays the domain is integers. 
+
+<br/>An `IMap` represents the abstract concept of a mathematical mapping. The difference between an `IMap` and an `IDictionary` is that a dictionary 
+
+is a specialization of an `IMap` that has a finite set of ordered keys and values.
+
+<br/>This is illustrated by the interface definition. 
+
+<br/><pre>
+
+</pre>
+<br/><br/><h2>Sets 
+
+</h2>
+<br/>A set is defined by the ability simply to query membership:
+
+<br/><pre>
+
+</pre>
+<br/><br/>By keeping the interface minimal, it is possible to implement infinite sets, and provide efficient representation of operations 
+
+like set complement.
+
+<br/><h2>Explicit Ordering 
+
+</h2>
+<br/>Collections that have been created with a specific ordering, store the ordering function explicitly. This has an impact on algorithmic 
+
+complexity of certain operation. For example an `ISortedSequence` that has the property of faster search `O(Log N)` compared to the 
+
+regular `O(N)` for the `IndexOf` operation, and related derived operations.
+
+<br/><pre>
+
+</pre>
+<br/><br/><br/><br/>

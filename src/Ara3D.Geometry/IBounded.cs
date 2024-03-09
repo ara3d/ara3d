@@ -8,6 +8,11 @@ namespace Ara3D.Geometry
         AABox Bounds { get; }
     }
 
+    public interface IBounded2D
+    {
+        AABox2D Bounds { get; }
+    }
+
     public static class Bounded
     {
         public static AABox UpdateBounds(this IBounded self, AABox box)
@@ -17,5 +22,13 @@ namespace Ara3D.Geometry
             => items.Any() 
                 ? items.Aggregate(items.First().Bounds, (box,item) => UpdateBounds(item, box)) 
                 : AABox.Empty;
+
+        public static AABox2D UpdateBounds(this IBounded2D self, AABox2D box)
+            => box.Merge(self.Bounds);
+
+        public static AABox2D GetBounds2D<T>(this IArray<T> items) where T : IBounded2D
+            => items.Any()
+                ? items.Aggregate(items.First().Bounds, (box, item) => UpdateBounds(item, box))
+                : AABox2D.Empty;
     }
 }

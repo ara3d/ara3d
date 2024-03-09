@@ -132,7 +132,7 @@ namespace Ara3D.Geometry
         public static Vector2 CirclePoint(int i, int numPoints)
             => new Vector2((i * (Constants.TwoPi / numPoints)).Cos(), (i * (Constants.TwoPi / numPoints)).Sin());
 
-        private static readonly float _t = (float)((1.0 + System.Math.Sqrt(5.0)) / 2.0);
+        private static readonly float _t = (float)((1.0 + 5.0.Sqrt()) / 2.0);
         private static readonly float _rt = _t.Inverse();
 
         // https://mathworld.wolfram.com/RegularDodecahedron.html

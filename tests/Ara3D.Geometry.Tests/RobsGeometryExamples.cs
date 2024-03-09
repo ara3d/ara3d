@@ -233,9 +233,9 @@ public static class RobsGeometryExamples
 
         // result circle
         var center = p1 + (u * tt * u.Dot(v) - t * uu * t.Dot(v)) * iwsl2;
-        var radius = (tt * uu * Vector3.Dot(v, v) * iwsl2 * 0.5f).Sqrt();
-        var circAxis = w / wsl.Sqrt();
-        return new Circle3D((center, circAxis), radius);
+        var radius = (tt * uu * v.Dot(v) * iwsl2 * 0.5f).Sqrt();
+        var axis = w / wsl.Sqrt();
+        return new Circle3D((center, axis), radius);
     }
 
     /// <summary>
@@ -296,5 +296,5 @@ public static class RobsGeometryExamples
     /// Converts from radians starting in a clock wise manner from 12 O'Clock to counter clock wise degrees starting from 3 O'Clock  
     /// </summary>
     public static float ConvertAngleFromMoldflowUser(float f)
-        => (-f).ToDegrees() + 90;
+        => (-f).ToDegrees() - 90;
 }

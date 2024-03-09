@@ -1,5 +1,6 @@
 using Ara3D.Collections;
 using Ara3D.Mathematics;
+using Ara3D.Utils;
 
 namespace Ara3D.Geometry.Tests
 {
@@ -15,8 +16,5 @@ namespace Ara3D.Geometry.Tests
         public static DirectoryPath MoldFlowDirectoryPath =
             SourceCodeLocation.GetFolder()
                 .RelativeFolder("..", "..", "..", "3d-format-shootout", "data", "files", "moldflow");
-
-
-
     }
 }

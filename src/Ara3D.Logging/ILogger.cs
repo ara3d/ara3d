@@ -1,7 +1,8 @@
 ﻿using System;
 using System.Diagnostics;
+using Ara3D.Utils;
 
-namespace Ara3D.Utils
+namespace Ara3D.Logging
 {
     public enum LogLevel
     {
@@ -14,10 +15,9 @@ namespace Ara3D.Utils
         Profiling = 6,
     }
 
-    public interface ILogger
+    public interface ILogger : INamed
     {
         ILogger Log(string message, LogLevel level);
-        string Category { get; }
     }
 
     public static class LoggerExtensions
@@ -48,9 +48,10 @@ namespace Ara3D.Utils
         }
 
         public static Logger SetWriter(this ILogger logger, ILogWriter writer = null)
-            => new Logger(writer, logger.Category);
+            => new Logger(writer, logger.Name);
         
+        // TODO: should the writer not be inherited from the previous logger? 
         public static Logger Create(this ILogger logger, string category, ILogWriter writer = null)
-            => new Logger(writer ?? new LogWriter(), category);
+            => new Logger(writer ?? LogWriter.Default, category);
     }
 }

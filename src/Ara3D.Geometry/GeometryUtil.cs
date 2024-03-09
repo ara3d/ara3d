@@ -28,10 +28,16 @@ namespace Ara3D.Geometry
             => AABox.Create(vertices.ToEnumerable());
 
         public static IArray<float> SampleZeroToOneInclusive(this int count)
-            => (count).Select(i => i / (float)(count - 1));
+            => count <= 0
+                ? LinqArray.Empty<float>()
+                : count == 1
+                    ? LinqArray.Create(0f)
+                    : count.Select(i => i / (float)(count - 1));
 
         public static IArray<float> SampleZeroToOneExclusive(this int count)
-            => count.Select(i => i / (float)count);
+            => count <= 0
+                ? LinqArray.Empty<float>()
+                : count.Select(i => i / (float)count);
 
         public static IArray<Vector3> InterpolateInclusive(this int count, Func<float, Vector3> function)
             => count.SampleZeroToOneInclusive().Select(function);

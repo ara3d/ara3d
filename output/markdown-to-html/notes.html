@@ -1,0 +1,99 @@
+<h1>Syntax for Constraining Type Parameters 
+
+</h1>
+<br/>Musings on the Plato language design. 
+
+<br/><h2>2024-01-10
+
+</h2>
+<br/>While working on the [Plato mathematics library](https://github.com/cdiggins/Plato.Mathematics.NET) 
+
+I encountered an interesting challenge while working on the `Interval` concept which I thought 
+
+I would write about. Specifically the syntax of Plato currently only allows type parameters 
+
+to express a single constraint, and it turns out to be inadequate.  
+
+<br/>A concept is kind of like an interface, it defines a set of operations. 
+
+Functions can then be written which apply to all types which implement the interface, 
+
+kind of like extension methods in C#. 
+
+<br/>Here is the first naive version of the Interval concept. 
+
+<br/><pre>
+
+</pre>
+<br/><br/>In a concept the keyword `Self`` is an implicit type parameter, representing the type that is passed. 
+
+<br/>The idea is that an interval can be defined over numbers, points, even times.
+
+The only requirement is that I can Compare over that value, which is 
+
+described by the `Comparable` concept: 
+
+<br/><pre>
+
+</pre>
+<br/><br/>Some example of types implementing the `Interval` concept are: 
+
+<br/><pre>
+
+</pre>
+<br/><br/>The advantage of Plato is that in a library I can define a function like `Contains` which works 
+
+on all types which implement the `Interval` concept. 
+
+<br/><pre>
+
+</pre>
+<br/><br/><br/>The thing is that if we look at most intervals, they usually have other properties. 
+
+For example usually you can interpolate between the two values. If you have that constraint,
+
+then some additional functions can be defined on `Interval`, which make it even more useful. 
+
+Now I can define functions like the following `Clamp` function in a very generic way. 
+
+<br/><pre>
+
+</pre>
+<br/><br/>The function `Lerp` is basically a weighted average, while `Unlerp` computes the weighting towards
+
+given a value and two others. The `Interpolatable` concept is described as follows:
+
+<br/><pre>
+
+</pre>
+<br/><br/>The problem now becomes, if an `Interval` requires both constraints how do I combine them? The language syntax as it 
+
+stands currently only allows you to provide one concept as a constraint to a type 
+
+parameter. 
+
+<br/>One option I considered was the syntax of `TypeScript` and to start enabling an algebra of types: 
+
+<br/><pre>
+
+</pre>
+<br/><br/>As powerful as this is, it implies being able to use other operators for types in different places and could quickly get out of control. 
+
+I think introducing more symbols would make Plato too unapproachable, for what it strive to accomplish.  
+
+<br/>If I nudge the Plato syntax a bit closer to C# it could instead look like this:
+
+<br/><pre>
+
+</pre>
+<br/><br/>This gives us more freedom, and doesn't force us to merge concepts or create new concepts artificially. 
+
+<br/><h2>Conclusion
+
+</h2>
+<br/>I have pretty much decided now to go the route of expressing constraints like we do in C#. 
+
+Making a syntax change this big now requires some significant refactoring, but I think leaving out the possibility 
+
+of multiple constraints for type parameters would be too limiting in the long run. 
+
