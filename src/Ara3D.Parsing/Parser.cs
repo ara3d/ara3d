@@ -10,7 +10,7 @@ namespace Ara3D.Parsing
     /// <summary>
     /// Combines common parsing tasks.
     /// Provides robust error handling, logging, and optional CST generation.
-    /// Can be used for tokenization: provide a tokenization grammar, and only look at ParseNode list 
+    /// Can be used for tokenization: you can provide a tokenization grammar and look at generated ParseNode list 
     /// </summary>
     public class Parser
     {
