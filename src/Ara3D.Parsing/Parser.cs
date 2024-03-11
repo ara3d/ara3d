@@ -1,4 +1,4 @@
-﻿using System;
+﻿    using System;
 using System.Collections.Generic;
 using System.Linq;
 using Ara3D.Logging;
@@ -97,7 +97,7 @@ namespace Ara3D.Parsing
         {
             // TODO: convert to a proper error message. 
             ParserErrors.Add(error);
-            var msg = error.Message;
+            var msg = error.ToString();
             Logger.Log(msg, LogLevel.Error);
             ErrorMessages.Add(msg);
         }
@@ -137,7 +137,7 @@ namespace Ara3D.Parsing
                 {
                     if (!ParseResult.AtEnd())
                     {
-                        LogError($"Parsing failed to reach end of input: {ParseResult.Position}/{ParseResult.Input.Length}");
+                        LogError($"Parsing failed to reach end of input, stopped at: {ParseResult}");
                         succeeded = false;
                     }
                     else
@@ -162,7 +162,7 @@ namespace Ara3D.Parsing
                         LogInfo($"Unsuccessfully completed parsing");
                     }
 
-                    ParserNodes.AddRange(ParseResult.AllNodes());
+                    ParserNodes.AddRange(ParseResult.AllEndNodes());
                     LogInfo($"{ParserNodes.Count} parse nodes");
                 }
 

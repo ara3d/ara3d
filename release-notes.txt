@@ -1,5 +1,18 @@
 # Release Notes 
 
+### 2024-03-11
+
+* Improving error recovery within Plato grammar, leveraging tools. 
+* Double clicking on file list goes to correct editor
+* Double clicking on error message, highlights location in editor
+* Found issues in the Plato input. 
+
+### 2024-03-10
+
+* Improved error reporting in Parakeet (and as result Plato compiler)
+* parse nodes now are created as pairs (begin and end)
+* Changed the UI significantly of the Plato.Winforms tool. 
+
 ### 2024-03-09
 
 * Adding an interface to distinguish types of CstNodes according to grammar. 
@@ -7,7 +20,7 @@
 * Working on Plato to AST generation. 
 * Merging PlatoParser code into Ara3D.Parsing 
 * Improving the Plato.Winforms.Compiler
-* NOTE: can't get published (I need to find)
+* NOTE: can't get published (I need to find way to conditionally build using Nuget references)
 
 ### 2024-03-08
 

@@ -98,5 +98,9 @@ namespace Ara3D.Utils
 
         public static void SetProcessExitCallbackCurrentDomain(Action<object, EventArgs> handler)
             => AppDomain.CurrentDomain.ProcessExit += (sender, args) => handler(sender, args);
+
+        // https://stackoverflow.com/questions/7693429/process-start-to-open-an-url-getting-an-exception
+        public static void OpenUrl(string url)
+            => Process.Start(new ProcessStartInfo(url) { UseShellExecute = true, Verb = "open"  });
     }
 }
