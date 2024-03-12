@@ -213,6 +213,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ara3D.Logging", "src\Ara3D.
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ara3D.DevOpToolsAsTests", "devops\Ara3D.DevOpToolsAsTests\Ara3D.DevOpToolsAsTests.csproj", "{3CDC836B-438B-4F88-B72E-CC32D6504791}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ara3D.Bowerbird.WinForms.Net48", "bowerbird\Ara3D.Bowerbird.WinForms.Net48\Ara3D.Bowerbird.WinForms.Net48.csproj", "{1E290060-8249-4BB0-A41E-ED238D2F6346}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -1231,6 +1233,18 @@ Global
 		{3CDC836B-438B-4F88-B72E-CC32D6504791}.Release|x64.Build.0 = Release|Any CPU
 		{3CDC836B-438B-4F88-B72E-CC32D6504791}.Release|x86.ActiveCfg = Release|Any CPU
 		{3CDC836B-438B-4F88-B72E-CC32D6504791}.Release|x86.Build.0 = Release|Any CPU
+		{1E290060-8249-4BB0-A41E-ED238D2F6346}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1E290060-8249-4BB0-A41E-ED238D2F6346}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1E290060-8249-4BB0-A41E-ED238D2F6346}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{1E290060-8249-4BB0-A41E-ED238D2F6346}.Debug|x64.Build.0 = Debug|Any CPU
+		{1E290060-8249-4BB0-A41E-ED238D2F6346}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{1E290060-8249-4BB0-A41E-ED238D2F6346}.Debug|x86.Build.0 = Debug|Any CPU
+		{1E290060-8249-4BB0-A41E-ED238D2F6346}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1E290060-8249-4BB0-A41E-ED238D2F6346}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1E290060-8249-4BB0-A41E-ED238D2F6346}.Release|x64.ActiveCfg = Release|Any CPU
+		{1E290060-8249-4BB0-A41E-ED238D2F6346}.Release|x64.Build.0 = Release|Any CPU
+		{1E290060-8249-4BB0-A41E-ED238D2F6346}.Release|x86.ActiveCfg = Release|Any CPU
+		{1E290060-8249-4BB0-A41E-ED238D2F6346}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -1320,6 +1334,7 @@ Global
 		{66F07A1C-3C6F-4BF4-A965-7CCCE14E94E7} = {8C9F014E-97FC-4A6E-9C4D-05DF71C3B209}
 		{0C314213-C685-48B9-B2AD-7F80DC015086} = {E2A52810-CFFE-4ADA-8654-E0282492AB3F}
 		{3CDC836B-438B-4F88-B72E-CC32D6504791} = {73755E8C-EBC6-4894-9B03-9CC87DE2F0DB}
+		{1E290060-8249-4BB0-A41E-ED238D2F6346} = {78EE113F-A1DD-4295-A09A-D5E557D60FAB}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {890503B7-C3A0-410B-A932-A031A4552050}
