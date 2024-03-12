@@ -1,0 +1,23 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2013/05/nuspec.xsd">
+  <metadata>
+    <id>Ara3D.Geometry</id>
+    <version>1.4.1</version>
+    <authors>Ara 3D Inc.</authors>
+    <license type="expression">MIT</license>
+    <licenseUrl>https://licenses.nuget.org/MIT</licenseUrl>
+    <icon>ara3d-128x128.png</icon>
+    <readme>README.md</readme>
+    <projectUrl>https://github.com/ara3d/ara3d/tree/main/src/Ara3D.Geometry</projectUrl>
+    <description>A library of functional geometry.</description>
+    <copyright>Copyright (c) Ara 3D Inc 2024, Licensed under MIT License</copyright>
+    <repository type="git" url="https://github.com/ara3d/ara3d" commit="76efa3bc0cee52a3515bb29207976f47f90f3cee" />
+    <dependencies>
+      <group targetFramework=".NETStandard2.0">
+        <dependency id="Ara3D.Collections" version="1.4.1" exclude="Build,Analyzers" />
+        <dependency id="Ara3D.Mathematics" version="1.4.1" exclude="Build,Analyzers" />
+        <dependency id="Ara3D.Utils" version="1.4.1" exclude="Build,Analyzers" />
+      </group>
+    </dependencies>
+  </metadata>
+</package>

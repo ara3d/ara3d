@@ -65,23 +65,7 @@ namespace Ara3D.Collections
         IBinaryTree<T> Left { get; }
         IBinaryTree<T> Right { get; }
     }
-
-    public interface IBinaryTree<T, TNode> : ITree<T, TNode>
-    {
-        TNode GetLeft(TNode node);
-        TNode GetRight(TNode node);
-    }
-
-    public interface IGraph<T, TEdge, TNode>
-    {
-        ISequence<TEdge> Edges { get; }
-        ISequence<TNode> Nodes { get; }
-        ISequence<TEdge> GetOutgoingEdges(TNode node);
-        TNode GetSourceNode(TEdge edge);
-        TNode GetTargetNode(TEdge edge);
-        T GetValue(TNode node);
-    }
-
+    
     public interface IMap<TKey, TValue>
     {
         TValue this[TKey key] { get; }
@@ -101,17 +85,6 @@ namespace Ara3D.Collections
         : IMultiMap<TKey, TValue>
     {
         IMultiMap<TValue, TKey> Keys { get; }
-    }
-
-    public interface IBuilder<TBuilder, T> 
-    {
-        TBuilder Add(T value);
-    }
-
-    public interface IContainer<TContainer, T>
-        : IBuilder<TContainer, T>
-    {
-        TContainer Remove(T value);
     }
 
     public interface ISet<T>
@@ -162,5 +135,13 @@ namespace Ara3D.Collections
     /// </summary>
     public interface IOrderedSequence<T> : ISequence<T>, IOrdered<T>
     {
+    }
+
+    /// <summary>
+    /// A monotonically increasing sequence of integers 
+    /// </summary>
+    public interface IRange : IOrderedArray<int>, ISet<int>
+    {
+        int From { get; }
     }
 }

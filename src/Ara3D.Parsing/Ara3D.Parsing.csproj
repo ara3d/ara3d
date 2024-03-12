@@ -2,7 +2,17 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
+    <Description>Ara3D.Parsing is wrapper around the Parakeet parsing library with additional functionality.</Description>
+    <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+    <PackageProjectUrl>https://github.com/ara3d/ara3d/tree/main/src/Ara3D.Parsing</PackageProjectUrl>
+    <TargetFramework>netstandard2.0</TargetFramework>
   </PropertyGroup>
+
+  <ItemGroup Condition="'$(Configuration)' == 'Release'">
+    <PackageReference Include="Ara3D.Parakeet.Cst" Version="*" />
+    <PackageReference Include="Ara3D.Parakeet.Grammars" Version="*" />
+    <PackageReference Include="Ara3D.Logging" Version="*" />
+  </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\..\parakeet\Parakeet.Cst\Ara3D.Parakeet.Cst.csproj" />
@@ -10,4 +20,10 @@
     <ProjectReference Include="..\Ara3D.Logging\Ara3D.Logging.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Update="README.md">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
+  </ItemGroup>
 </Project>

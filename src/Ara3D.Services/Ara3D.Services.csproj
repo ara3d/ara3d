@@ -4,15 +4,17 @@
     <TargetFramework>netstandard2.0</TargetFramework>
     <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
     <Description>Infrastructure for creating well architected software. </Description>
-    <PackageReadmeFile>README.md</PackageReadmeFile>
+    <PackageProjectUrl>https://github.com/ara3d/ara3d/tree/main/src/Ara3D.Services</PackageProjectUrl>
   </PropertyGroup>
+
+  <ItemGroup Condition="'$(Configuration)' == 'Release'">
+    <PackageReference Include="Ara3D.Domo" Version="*" />
+    <PackageReference Include="Ara3D.Logging" Version="*" />
+  </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\..\domo\Ara3D.Domo\Ara3D.Domo.csproj" />
     <ProjectReference Include="..\Ara3D.Logging\Ara3D.Logging.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
     <None Update="README.md">
       <Pack>True</Pack>
       <PackagePath>\</PackagePath>

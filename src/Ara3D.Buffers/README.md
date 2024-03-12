@@ -2,7 +2,7 @@
 
 [![NuGet Version](https://img.shields.io/nuget/v/Ara3D.Buffers)](https://www.nuget.org/packages/Ara3D.Buffers)
 
-Utilities for working with large arrays of unmanaged types.
+Utilities for working with large arrays of unmanaged types. 
 
 ## IBuffer
 
@@ -12,11 +12,7 @@ array of unmanaged types, where the type is not known at compile-time.
 This allows us to work more easily with collections of buffers where the 
 underlying type can vary at run-time. 
  
- ```
-    /// <summary>
-    /// Provides an interface to an object that manages a potentially
-    /// large array of elements all of the same unmanaged type.
-    /// </summary>
+ ```csharp
     public interface IBuffer
     {
         Array Data { get; }
@@ -28,14 +24,14 @@ underlying type can vary at run-time.
 The total number of bytes is determined by multiply the data array by the element size.
 This is provided in an extension function
 
-```
+```csharp
     public static long GetNumBytes(this IBuffer buffer)
         => (long)buffer.NumElements() * buffer.ElementSize;
 ```
 
 Accessing the raw bytes can be done using a pattern similar to:
 
-```
+```csharp
     public static unsafe void Write(this Stream stream, IBuffer buffer)
         => buffer.WithPointer(ptr => {
             stream.WriteBytesBuffered((byte*)ptr.ToPointer(), buffer.GetNumBytes());
@@ -46,6 +42,30 @@ Accessing the raw bytes can be done using a pattern similar to:
 
 Frequently a buffer is associated with a name or identifier. 
 The `INamedBuffer` introduces a string name property, for convenience.   
+
+```csharp
+    public interface INamedBuffer : IBuffer
+    {
+        string Name { get; }
+    }
+```
+
+## Generic Versions
+
+There exist generic versions of the interfaces as well, which provide access to the underlying data array.  
+
+```csharp
+    public interface IBuffer<out T> : IBuffer
+        where T: unmanaged
+    {
+        T[] GetTypedData();
+    }
+
+    public interface INamedBuffer<out T> 
+        : INamedBuffer, IBuffer<T> where T: unmanaged
+    {
+    }
+```
 
 ## Use Case
 

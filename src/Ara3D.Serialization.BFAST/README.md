@@ -1,6 +1,6 @@
 # BFAST
 
-[<img src="https://img.shields.io/nuget/v/Vim.Bfast.svg">](https://www.nuget.org/packages/Vim.Bfast) 
+[<img src="https://img.shields.io/nuget/v/Ara3D.Serialization.BFAST.svg">](https://www.nuget.org/packages/Ara3D.Serialization.BFAST) 
 
 BFAST stands for the **B**inary **F**ormat for **A**rray **S**erialization and **T**ransmission.
 
@@ -31,8 +31,6 @@ collections of files, etc. and to scale to data that must be processed out of co
 that the format could be easily and efficiently decoded using JavaScript on most modern web-browsers
 with very little code.
 
-BFAST is maintained by [VIMaec LLC](https://www.vimaec.com) and is licensed under the terms of 
-the MIT License.
 
 ## Features
 

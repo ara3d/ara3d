@@ -11,12 +11,11 @@
       <Exec Command="$(SolutionDir)devops\nuget.exe add &quot;$(TargetDir)..\$(PackageId).$(PackageVersion).nupkg&quot; -Source &quot;$(SolutionDir)nuget-feed&quot;"/>  
   </Target>
   <PropertyGroup>
-    <Version>1.4.0</Version>
-    <AssemblyVersion>1.4.0</AssemblyVersion>
-    <AssemblyFileVersion>1.4.0</AssemblyFileVersion>
+    <Version>1.4.1</Version>
+    <AssemblyVersion>1.4.1</AssemblyVersion>
+    <AssemblyFileVersion>1.4.1</AssemblyFileVersion>
     <Authors>Ara 3D Inc.</Authors>
     <PackageProjectUrl>https://github.com/ara3d/ara3d</PackageProjectUrl>
-    <RepositoryUrl>https://github.com/ara3d/ara3d</RepositoryUrl>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <Copyright>Copyright (c) Ara 3D Inc 2024, Licensed under MIT License</Copyright>
     <PackageReadmeFile>README.md</PackageReadmeFile>
@@ -26,13 +25,13 @@
     
     <!-- Publish the repository URL in the built .nupkg (in the NuSpec <Repository> element) -->
     <PublishRepositoryUrl>true</PublishRepositoryUrl>
+    <RepositoryUrl>https://github.com/ara3d/ara3d</RepositoryUrl>
 
     <!-- Embed source files that are not tracked by the source control manager in the PDB -->
     <EmbedUntrackedSources>true</EmbedUntrackedSources>
 
     <!-- Recommended: Embed symbols containing Source Link in the main file (exe/dll) -->
     <DebugType>embedded</DebugType>  
-
     <IncludeSymbols>true</IncludeSymbols>
   </PropertyGroup>
 
@@ -43,6 +42,4 @@
     </None>
     <PackageReference Include="Microsoft.SourceLink.GitHub" Version="8.0.0" PrivateAssets="All"/>
   </ItemGroup>
-
-
 </Project>

@@ -2,12 +2,9 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
-    <Description>A collection of utility classes and functions for logging and high-level task management.</Description>
-    <GenerateDocumentationFile>True</GenerateDocumentationFile>
     <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+    <Description>A collection of utility classes and functions for logging and high-level task management.</Description>
     <PackageProjectUrl>https://github.com/ara3d/ara3d/tree/main/src/Ara3D.Logging</PackageProjectUrl>
-    <RepositoryUrl>https://github.com/ara3d/ara3d</RepositoryUrl>
-    <PackageReadmeFile>README.md</PackageReadmeFile>
   </PropertyGroup>
 
   <ItemGroup>
@@ -15,6 +12,10 @@
       <Pack>True</Pack>
       <PackagePath>\</PackagePath>
     </None>
+  </ItemGroup>
+  
+  <ItemGroup Condition="'$(Configuration)' == 'Release'">
+    <PackageReference Include="Ara3D.Utils" Version="*" />
   </ItemGroup>
 
   <ItemGroup>

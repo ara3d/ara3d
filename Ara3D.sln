@@ -32,6 +32,10 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ara3D.Interop.Assimp", "src\Ara3D.Interop.Assimp\Ara3D.Interop.Assimp.csproj", "{2BB0F7C3-4EFC-4F9E-985D-CFF963AE5353}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ara3D.Geometry", "src\Ara3D.Geometry\Ara3D.Geometry.csproj", "{D5AA20AA-79D7-4D58-9CAF-45A07340C354}"
+	ProjectSection(ProjectDependencies) = postProject
+		{6B8EA878-A82D-43AF-BFEF-0E5106117F55} = {6B8EA878-A82D-43AF-BFEF-0E5106117F55}
+		{9DDEB13C-A6D4-49E6-8E50-21A3C5931414} = {9DDEB13C-A6D4-49E6-8E50-21A3C5931414}
+	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ara3D.Collections", "src\Ara3D.Collections\Ara3D.Collections.csproj", "{31E7BD94-C662-4A29-8048-9801742E0A9A}"
 EndProject

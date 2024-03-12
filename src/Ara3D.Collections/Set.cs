@@ -9,14 +9,4 @@ namespace Ara3D.Collections
         public Func<T, bool> Predicate { get; }
         public bool Contains(T item) => Predicate(item);
     }
-
-    /// <summary>
-    /// A monotonically increasing sequence of integers 
-    /// </summary>
-    public interface IRange : IOrderedArray<int>, ISet<int>
-    {
-        int From { get; }
-    }
-
-
 }

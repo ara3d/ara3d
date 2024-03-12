@@ -2,14 +2,17 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
-    <Description>A library of collections.</Description>
-    <PackageLicenseExpression>MIT</PackageLicenseExpression>
-    <PackageProjectUrl>https://github.com/ara3d/ara3d</PackageProjectUrl>
-    <RepositoryUrl>https://github.com/ara3d/ara3d</RepositoryUrl>
-    <RepositoryType>GitHub</RepositoryType>
-    <PublishRepositoryUrl>true</PublishRepositoryUrl>
-    <Title>Ara3D.Collections</Title>
+    <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+    <Description>A library of immutable collections.</Description>
+    <PackageProjectUrl>https://github.com/ara3d/ara3d/src/Ara3D.Collections</PackageProjectUrl>
   </PropertyGroup>
+
+  <ItemGroup>
+    <None Include="README.md">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
+  </ItemGroup>
 
 </Project>
   
