@@ -11,7 +11,7 @@
     <projectUrl>https://github.com/ara3d/ara3d/tree/main/src/Ara3D.Logging</projectUrl>
     <description>A collection of utility classes and functions for logging and high-level task management.</description>
     <copyright>Copyright (c) Ara 3D Inc 2024, Licensed under MIT License</copyright>
-    <repository type="git" url="https://github.com/ara3d/ara3d" commit="f99d07178b32c23e95c3ef11e08ab83376f1d778" />
+    <repository type="git" url="https://github.com/ara3d/ara3d" commit="9595e651f5c103a982be25ee1b96dbc1d821b423" />
     <dependencies>
       <group targetFramework=".NETStandard2.0">
         <dependency id="Ara3D.Utils" version="1.4.1" exclude="Build,Analyzers" />
