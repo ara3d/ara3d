@@ -14,7 +14,7 @@ namespace Ara3D.Logging
             => OnLogEntry = onLogEntry;
 
         public static string FormatLogEntry(TimeSpan elapsed, LogEntry entry)
-            => $"[{elapsed.ToFixedWidthTimeStamp()}] [{entry.Level}] [{entry.Name}] {entry.Message}";
+            => $"[{elapsed.ToFixedWidthTimeStamp()}] [{entry.Level}] {entry.Message}";
 
         public void Write(LogEntry logEntry)
             => OnLogEntry?.Invoke(CurrentTimeElapsed, logEntry);

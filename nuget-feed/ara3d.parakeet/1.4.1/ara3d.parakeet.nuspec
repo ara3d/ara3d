@@ -11,7 +11,7 @@
     <projectUrl>https://github.com/ara3d/parakeet</projectUrl>
     <description>A PEG parsing library that uses operator overloading to allow grammars to be written in cross-platform C#.</description>
     <copyright>Copyright (c) Ara 3D Inc 2024, Licensed under MIT License</copyright>
-    <repository type="git" url="https://github.com/ara3d/parakeet" commit="437a85566159ed043d81701fbcd3cb68eff6c65e" />
+    <repository type="git" url="https://github.com/ara3d/parakeet" commit="4f49218f7f24494f851cf396f4d2c57538ba4cd8" />
     <dependencies>
       <group targetFramework=".NETStandard2.0">
         <dependency id="Ara3D.Utils" version="1.4.1" exclude="Build,Analyzers" />

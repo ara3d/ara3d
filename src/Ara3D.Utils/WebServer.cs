@@ -23,10 +23,16 @@ namespace Ara3D.Utils
         private HttpListener _listener;
         private Thread _listenerThread;
 
+        public CancellationTokenSource CancellationTokenSource { get; }
+        public CancellationToken Token { get; }
+        
         public string Uri { get; }
 
-        public WebServer(CallBackDelegate callback, string uri = "http://localhost:8081/")
+        public WebServer(CallBackDelegate callback, string uri = "http://localhost:8074/")
         {
+            CancellationTokenSource = new CancellationTokenSource();
+            Token = CancellationTokenSource.Token;
+
             Uri = uri;
             _callback = callback;
             _listener = new HttpListener();
@@ -46,20 +52,25 @@ namespace Ara3D.Utils
             => _listenerThread.IsAlive;
 
         public void Stop()
-            => _listenerThread.Abort();
-
-        public void SleepWhileActive()
         {
-            while (Active)
-                Thread.Sleep(100);
+            CancellationTokenSource.Cancel();
         }
-
+        
         private void StartListener()
         {
             while (true)
             {
                 var result = _listener.BeginGetContext(ListenerCallback, _listener);
-                result.AsyncWaitHandle.WaitOne();
+
+                // Every X msec, check for a cancelation request
+                while (!result.AsyncWaitHandle.WaitOne(100))
+                {
+                    if (Token.IsCancellationRequested)
+                    {
+                        _listener.Close();
+                        return;
+                    }
+                }
             }
             // ReSharper disable once FunctionNeverReturns
         }
@@ -79,9 +90,17 @@ namespace Ara3D.Utils
 
         private void ListenerCallback(IAsyncResult result)
         {
-            var context = _listener.EndGetContext(result);
-            ProcessQuery(context.Request, context.Response);
-            context.Response.Close();
+            try
+            {
+                var context = _listener.EndGetContext(result);
+                ProcessQuery(context.Request, context.Response);
+                context.Response.Close();
+            }
+            catch (Exception e)
+            {
+                // An exception will be normal when the server is stopped .
+                Debug.WriteLine(e);
+            }
         }
     }
 }

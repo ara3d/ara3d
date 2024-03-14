@@ -101,6 +101,9 @@ namespace Ara3D.Utils
 
         // https://stackoverflow.com/questions/7693429/process-start-to-open-an-url-getting-an-exception
         public static void OpenUrl(string url)
-            => Process.Start(new ProcessStartInfo(url) { UseShellExecute = true, Verb = "open"  });
+            => OpenDefaultHandler(url);
+
+        public static void OpenDefaultHandler(string fileOrUrl)
+            => Process.Start(new ProcessStartInfo(fileOrUrl) { UseShellExecute = true, Verb = "open" });
     }
 }
