@@ -28,15 +28,15 @@ namespace Ara3D.Utils
         
         public string Uri { get; }
 
-        public WebServer(CallBackDelegate callback, string uri = "http://localhost:8074/")
+        public WebServer(CallBackDelegate callback, int port = 8074)
         {
             CancellationTokenSource = new CancellationTokenSource();
             Token = CancellationTokenSource.Token;
 
-            Uri = uri;
+            Uri = $"http://localhost:{port}/";
             _callback = callback;
             _listener = new HttpListener();
-            _listener.Prefixes.Add(uri);
+            _listener.Prefixes.Add(Uri);
             _listener.AuthenticationSchemes = AuthenticationSchemes.Anonymous;
             _listener.Start();
             _listenerThread = new Thread(StartListener);

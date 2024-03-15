@@ -11,9 +11,9 @@
       <Exec Command="$(SolutionDir)devops\nuget.exe add &quot;$(TargetDir)..\$(PackageId).$(PackageVersion).nupkg&quot; -Source &quot;$(SolutionDir)nuget-feed&quot;"/>  
   </Target>
   <PropertyGroup>
-    <Version>1.4.1</Version>
-    <AssemblyVersion>1.4.1</AssemblyVersion>
-    <AssemblyFileVersion>1.4.1</AssemblyFileVersion>
+    <Version>1.4.2</Version>
+    <AssemblyVersion>1.4.2</AssemblyVersion>
+    <AssemblyFileVersion>1.4.2</AssemblyFileVersion>
     <Authors>Ara 3D Inc.</Authors>
     <PackageProjectUrl>https://github.com/ara3d/ara3d</PackageProjectUrl>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>

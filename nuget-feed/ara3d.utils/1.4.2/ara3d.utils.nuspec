@@ -1,0 +1,19 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2012/06/nuspec.xsd">
+  <metadata>
+    <id>Ara3D.Utils</id>
+    <version>1.4.2</version>
+    <authors>Ara 3D Inc.</authors>
+    <license type="expression">MIT</license>
+    <licenseUrl>https://licenses.nuget.org/MIT</licenseUrl>
+    <icon>ara3d-128x128.png</icon>
+    <readme>README.md</readme>
+    <projectUrl>https://github.com/ara3d/ara3d/tree/main/src/Ara3D.Utils</projectUrl>
+    <description>A collection of general purpose utility classes and functions.</description>
+    <copyright>Copyright (c) Ara 3D Inc 2024, Licensed under MIT License</copyright>
+    <repository type="git" url="https://github.com/ara3d/ara3d" commit="1d56c78985e1763de4147b14d14865f87ebeb83c" />
+    <dependencies>
+      <group targetFramework=".NETStandard2.0" />
+    </dependencies>
+  </metadata>
+</package>

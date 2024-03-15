@@ -97,6 +97,7 @@ namespace Ara3D.Utils
         public void Dispose()
         {
             DisconnectEvents();
+            Thread.Abort();
         }
 
         private void Watcher_Error(object sender, ErrorEventArgs e)

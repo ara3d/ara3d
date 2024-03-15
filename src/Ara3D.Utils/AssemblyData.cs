@@ -1,4 +1,5 @@
 using System;
+using System.Diagnostics;
 using System.Reflection;
 
 namespace Ara3D.Utils
@@ -30,6 +31,7 @@ namespace Ara3D.Utils
         public readonly Version Version;
         public readonly string ShortName;
         public readonly string CodeBase;
+        public FileVersionInfo FileVersionInfo => Location.GetVersionInfo();
         public DirectoryPath LocationDir => Location.GetDirectory();
 
         public static AssemblyData Current => 

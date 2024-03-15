@@ -107,7 +107,7 @@ namespace Ara3D.Services
 
         public IApplication App { get; }
 
-        public void Dispose()
+        public virtual void Dispose()
         {
             Disposing?.Invoke(this, EventArgs.Empty);
             Disposing = null;

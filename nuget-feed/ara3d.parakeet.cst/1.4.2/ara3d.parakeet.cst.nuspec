@@ -1,0 +1,22 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2013/05/nuspec.xsd">
+  <metadata>
+    <id>Ara3D.Parakeet.Cst</id>
+    <version>1.4.2</version>
+    <authors>Ara 3D Inc.</authors>
+    <license type="expression">MIT</license>
+    <licenseUrl>https://licenses.nuget.org/MIT</licenseUrl>
+    <icon>ara3d-128x128.png</icon>
+    <readme>README.md</readme>
+    <projectUrl>https://github.com/ara3d/parakeet</projectUrl>
+    <description>A library of strongly typed CST nodes and factories for select Parakeet grammars. Mostly auto-generated.</description>
+    <copyright>Copyright (c) Ara 3D Inc 2024, Licensed under MIT License</copyright>
+    <repository type="git" url="https://github.com/ara3d/parakeet" commit="4f49218f7f24494f851cf396f4d2c57538ba4cd8" />
+    <dependencies>
+      <group targetFramework=".NETStandard2.0">
+        <dependency id="Ara3D.Parakeet.Grammars" version="1.4.2" exclude="Build,Analyzers" />
+        <dependency id="Ara3D.Parakeet" version="1.4.2" exclude="Build,Analyzers" />
+      </group>
+    </dependencies>
+  </metadata>
+</package>
