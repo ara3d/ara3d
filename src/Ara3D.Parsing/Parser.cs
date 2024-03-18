@@ -71,6 +71,12 @@ namespace Ara3D.Parsing
         public List<ParserNode> ParserNodes { get; } = new List<ParserNode>();
 
         /// <summary>
+        /// Each node converted to a string and concatenated together 
+        /// </summary>
+        public string ParserNodesString
+            => ParserNodes.JoinStrings(Environment.NewLine);
+
+        /// <summary>
         /// Generates an XML representation of the CST if present. 
         /// </summary>
         public string CstXml =>
