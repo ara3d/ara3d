@@ -61,6 +61,12 @@ namespace Ara3D.Parsing
         public List<string> ErrorMessages { get; } = new List<string>();
 
         /// <summary>
+        /// All error strings concatenated together 
+        /// </summary>
+        public string ParserErrorsString
+            => ErrorMessages.JoinStringsWithNewLine();
+
+        /// <summary>
         /// List of all of the caught error during parsing. 
         /// </summary>
         public List<ParserError> ParserErrors { get; } = new List<ParserError>();
@@ -74,7 +80,7 @@ namespace Ara3D.Parsing
         /// Each node converted to a string and concatenated together 
         /// </summary>
         public string ParserNodesString
-            => ParserNodes.JoinStrings(Environment.NewLine);
+            => ParserNodes.JoinStringsWithNewLine();
 
         /// <summary>
         /// Generates an XML representation of the CST if present. 

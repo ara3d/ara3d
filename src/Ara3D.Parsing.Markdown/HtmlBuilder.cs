@@ -11,7 +11,7 @@ namespace Ara3D.Parsing.Markdown
         public readonly string Value;
 
         public HtmlAttribute(string name, string value)
-            => (Name,Value) = (name,value);
+            => (Name,Value) = (name,value.Trim());
 
         public static implicit operator (string, string)(HtmlAttribute attr)
             => (attr.Name, attr.Value);
@@ -54,5 +54,14 @@ namespace Ara3D.Parsing.Markdown
 
         public HtmlBuilder WriteEmptyTag(string tagName, params HtmlAttribute[] attributes)
             => Write($"<{tagName}").Write(attributes).Write("/>");
+
+        public HtmlBuilder WriteEscaped(string text)
+            => Write(text.EscapeCommonHtmlEntities());
+
+        public HtmlBuilder WriteEscapedLine(string text)
+            => WriteEscaped(text).WriteLine();
+
+        public HtmlBuilder WriteTaggedText(string tag, string text)
+            => WriteStartTag(tag).WriteEscaped(text).WriteEndTag(tag);
     }
 }

@@ -1,99 +1,151 @@
+<html>
+<body>
 <h1>Syntax for Constraining Type Parameters 
-
-</h1>
-<br/>Musings on the Plato language design. 
-
-<br/><h2>2024-01-10
-
-</h2>
-<br/>While working on the [Plato mathematics library](https://github.com/cdiggins/Plato.Mathematics.NET) 
-
-I encountered an interesting challenge while working on the `Interval` concept which I thought 
-
+</h1><br/>
+Musings on the Plato language design. 
+<br/>
+<h2>2024-01-10
+</h2><br/>
+While working on the <a href = 'https://github.com/cdiggins/Plato.Mathematics.NET'>Plato mathematics library</a>
+I encountered an interesting challenge while working on the <code>Interval</code>concept which I thought 
 I would write about. Specifically the syntax of Plato currently only allows type parameters 
-
 to express a single constraint, and it turns out to be inadequate.  
-
-<br/>A concept is kind of like an interface, it defines a set of operations. 
-
+<br/>
+A concept is kind of like an interface, it defines a set of operations. 
 Functions can then be written which apply to all types which implement the interface, 
-
 kind of like extension methods in C#. 
+<br/>
+Here is the first naive version of the Interval concept. 
+<br/>
+<pre lang = 'plato'>
+    concept Interval&amp;lt;TValue: Comparable>
+{
+    Min(x: Self): TValue;
+    Max(x: Self): TValue;
+}
 
-<br/>Here is the first naive version of the Interval concept. 
-
-<br/><pre>
 
 </pre>
-<br/><br/>In a concept the keyword `Self`` is an implicit type parameter, representing the type that is passed. 
-
-<br/>The idea is that an interval can be defined over numbers, points, even times.
-
+<br/>
+<br/>
+In a concept the keyword <code>Self</code>is an implicit type parameter, representing the type that is passed. 
+<br/>
+The idea is that an interval can be defined over numbers, points, even times.
 The only requirement is that I can Compare over that value, which is 
+described by the <code>Comparable</code>concept: 
+<br/>
+<pre lang = 'plato'>
+    concept Comparable
+{
+    Compare(x: Self, y: Self): Integer;
+}
 
-described by the `Comparable` concept: 
-
-<br/><pre>
-
-</pre>
-<br/><br/>Some example of types implementing the `Interval` concept are: 
-
-<br/><pre>
-
-</pre>
-<br/><br/>The advantage of Plato is that in a library I can define a function like `Contains` which works 
-
-on all types which implement the `Interval` concept. 
-
-<br/><pre>
 
 </pre>
-<br/><br/><br/>The thing is that if we look at most intervals, they usually have other properties. 
+<br/>
+<br/>
+Some example of types implementing the <code>Interval</code>concept are: 
+<br/>
+<pre lang = 'plato'>
+    type AngleInterval implements Interval&amp;lt;Angle>
+{
+    Start: Angle;
+    End: Angle;
+}
+type RealInterval implements Interval&amp;lt;Number>
+{
+    A: Number;
+    B: Number;
+}
+type Line2D implements Interval&amp;lt;Point2D>
+{
+    A: Point2D;
+    B: Point2D;
+}
 
+
+</pre>
+<br/>
+<br/>
+The advantage of Plato is that in a library I can define a function like <code>Contains</code>which works 
+on all types which implement the <code>Interval</code>concept. 
+<br/>
+<pre lang = 'plato'>
+    Contains(x: Interval, value: Comparable): Boolean 
+        => x.Min &amp;lt;= value &amp;&amp; value &amp;lt;= x.Max;
+
+
+</pre>
+<br/>
+<br/>
+<br/>
+The thing is that if we look at most intervals, they usually have other properties. 
 For example usually you can interpolate between the two values. If you have that constraint,
+then some additional functions can be defined on <code>Interval</code>, which make it even more useful. 
+Now I can define functions like the following <code>Clamp</code>function in a very generic way. 
+<br/>
+<pre lang = 'plato'>
+    Clamp(x: Interval, value: Interpolatable): Interpolatable 
+        => value.Lerp(x.Min, x.Max, value.Unlerp(x.Min, x.Max).Clamp(0, 1));
 
-then some additional functions can be defined on `Interval`, which make it even more useful. 
-
-Now I can define functions like the following `Clamp` function in a very generic way. 
-
-<br/><pre>
-
-</pre>
-<br/><br/>The function `Lerp` is basically a weighted average, while `Unlerp` computes the weighting towards
-
-given a value and two others. The `Interpolatable` concept is described as follows:
-
-<br/><pre>
 
 </pre>
-<br/><br/>The problem now becomes, if an `Interval` requires both constraints how do I combine them? The language syntax as it 
+<br/>
+<br/>
+The function <code>Lerp</code>is basically a weighted average, while <code>Unlerp</code>computes the weighting towards
+given a value and two others. The <code>Interpolatable</code>concept is described as follows:
+<br/>
+<pre lang = 'plato'>
+    concept Interpolatable
+{
+    Lerp(a: Self, b: Self, amount: Number): Self;
+    Unlerp(v: Self, a: Self, b: Self): Number;
+}
 
+
+</pre>
+<br/>
+<br/>
+The problem now becomes, if an <code>Interval</code>requires both constraints how do I combine them? The language syntax as it 
 stands currently only allows you to provide one concept as a constraint to a type 
-
 parameter. 
+<br/>
+One option I considered was the syntax of <code>TypeScript</code>and to start enabling an algebra of types: 
+<br/>
+<pre lang = 'plato'>
+    concept Interval&amp;lt;TValue: Interpolatable &amp; Comparable>
+{
+    Min(x: Self): TValue;
+    Max(x: Self): TValue;
+}
 
-<br/>One option I considered was the syntax of `TypeScript` and to start enabling an algebra of types: 
-
-<br/><pre>
 
 </pre>
-<br/><br/>As powerful as this is, it implies being able to use other operators for types in different places and could quickly get out of control. 
-
+<br/>
+<br/>
+As powerful as this is, it implies being able to use other operators for types in different places and could quickly get out of control. 
 I think introducing more symbols would make Plato too unapproachable, for what it strive to accomplish.  
+<br/>
+If I nudge the Plato syntax a bit closer to C# it could instead look like this:
+<br/>
+<pre lang = 'plato'>
+    concept Interval&amp;lt;TValue>
+    where TValue: Interpolatable, Comparable
+{
+    Min(x: Self): TValue;
+    Max(x: Self): TValue;
+}
 
-<br/>If I nudge the Plato syntax a bit closer to C# it could instead look like this:
-
-<br/><pre>
 
 </pre>
-<br/><br/>This gives us more freedom, and doesn't force us to merge concepts or create new concepts artificially. 
-
-<br/><h2>Conclusion
-
-</h2>
-<br/>I have pretty much decided now to go the route of expressing constraints like we do in C#. 
-
+<br/>
+<br/>
+This gives us more freedom, and doesn't force us to merge concepts or create new concepts artificially. 
+<br/>
+<h2>Conclusion
+</h2><br/>
+I have pretty much decided now to go the route of expressing constraints like we do in C#. 
 Making a syntax change this big now requires some significant refactoring, but I think leaving out the possibility 
-
 of multiple constraints for type parameters would be too limiting in the long run. 
-
+</body>
+</html>

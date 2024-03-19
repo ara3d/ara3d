@@ -1,5 +1,7 @@
 ﻿# Ara3D.Logging
 
+[![NuGet Version](https://img.shields.io/nuget/v/Ara3D.Logging)](https://www.nuget.org/packages/Ara3D.Logging)
+
 Ara3D.Logging is a very simple cross-platform library for logging and reporting. 
 It was designed particularly for desktop application. 
 

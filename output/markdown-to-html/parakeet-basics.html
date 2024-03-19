@@ -1,0 +1,193 @@
+<html>
+<body>
+<h1>The Basics of Using the Parakeet Text Parser in C#
+</h1><br/>
+<a href = 'https://github.com/ara3d/parakeet'>Parakeet</a>is a C# recursive descent library parser that uses operator overloading to make it easy to declare grammars 
+in a readable format. It is an attempt to combine the advantages of parser generator tools and hand-rolled parsers.  
+<br/>
+Parakeet allows parsers to be defined using collections of parsing rules called grammars
+which support operator overloading, thus parsers can be defined using an embedded domain specific language (DSL). 
+<br/>
+<h2>Points of Interest 
+</h2><br/>
+This is my fourth parsing library. My previous work can be found here; 
+<br/>
+<li>
+YARD Parser - C++ Parsing Library - https://www.codeproject.com/Articles/9121/Parsing-XML-in-C-using-the-YARD-Parser
+</li>
+which inspired a popular C++ library PEGTL (https://github.com/taocpp/PEGTL/blob/main/doc/Changelog.md).
+<li>
+Jigsaw Parser - C# Parsing Library https://www.codeproject.com/Articles/272494/Implementing-Programming-Languages-using-Csharp
+</li>
+<li>
+Myna Parser - TypeScript Parsing Library https://github.com/cdiggins/myna-parser
+</li>
+<br/>
+A very popular C++ parsing library called "PEGTL" was based on https://github.com/taocpp/PEGTL
+<br/>
+The <a href = 'https://github.com/cdiggins/plato'>Plato language implementation</a>is being built using Parakeet.
+<br/>
+This article was authored in Markdown and converted into HTML using Parakeet. 
+See the code here at <a href = 'https://github.com/ara3d/ara3d/tree/main/src/Ara3D.Parsing.Markdown'>https://github.com/ara3d/ara3d/tree/main/src/Ara3D.Parsing.Markdown</a>. 
+<br/>
+<h2>Parsing Rules
+</h2><br/>
+A Parsing rule, also colliqually called a "parser", is an instance of a class derived from <code>Rule</code>which provides 
+a <code>ParserState Match(ParserState state)</code>member function. 
+<br/>
+If the rule matches the input at the current position a new <code>ParserState</code>instance will be returned, otherwise
+the function returns <code>null</code>. 
+<br/>
+<h2>Rule Combinator
+</h2><br/>
+A rule combinator creates a rule from other rules, similar to the core operations of a PEG grammar.
+For example: <code>Choice</code>, <code>Sequence</code>, <code>ZeroOrMore</code>, <code>OneOrMore</code>, <code>NotAt</code>, etc. 
+<br/>
+There are several ways to create rules from other rules:
+<br/>
+<li>
+Creating instances of the combinator classes (i.e., using <code>new</code>)
+</li>
+<li>
+Calling one of the extension methods on <code>Rule</code>(e.g., <code>Optional()</code>, <code>NotAt()</code>, etc.)
+</li>
+<li>
+Using operator overloading
+    </li>
+<li>
+<code>+</code>=<code>Sequence</code>
+    </li>
+<li>
+<code>|</code>=<code>Choice</code>
+    </li>
+<li>
+<code></code>=<code>NotAt</code>
+</li>
+<br/>
+For more information see the <a href = 'https://en.wikipedia.org/wiki/Parsing_expression_grammar'>Wikipedia Article on Parsing Expression Grammars</a>.
+<br/>
+<h2>ParserState - The Input and Output of Rule Matching 
+</h2><br/>
+A ParserState is an immutable class that contains
+<br/>
+<li>
+A pointer to the input - a string combined with look-up tables for quickly determining line and columns from indexes)
+</li>
+<li>
+An offset from the beginning of the input string
+</li>
+<li>
+A pointer to a linked list of  parse nodes  
+</li>
+<li>
+A pointer to a linked list of error.   
+</li>
+<br/>
+The fields of a <code>ParserState</code>instance are. 
+<br/>
+<pre lang = 'csharp'>
+    public class ParserState 
+{
+    public readonly ParserInput Input;
+    public readonly int Position;
+    public readonly ParserNode Node;
+    public readonly ParserError LastError;
+    ...
+}
+
+
+</pre>
+<br/>
+<br/>
+<h2>Definining Grammars
+</h2><br/>
+A Parakeet grammar is a class derived from the <code>Grammar</code>class. 
+A class deriving from <code>Grammar</code>is required to provide an
+overidden definition of the starting rule, and an optional whitespace rule.
+<br/>
+<li>
+<code>abstract Rule StartRule {get;}</code>
+</li>
+<li>
+<code>virtual Rule WS {get;}</code>
+</li>
+<br/>
+Most rules are defined as computed properties, but can also be
+functions or fields. It is up to the programmer.
+<br/>
+Top-level rules, those that are directly associated with properties in the grammar
+are usually either <code>Node</code>rules or <code>Named</code>rules. 
+<br/>
+Named rules simply return the result of matching a child rule. They help
+with grammar debugging and diagnostics. 
+<br/>
+<h2>Node Rules
+</h2><br/>
+A <code>Node</code>rule is liked a <code>NamedRule</code>in that it has a name but if matched successfully 
+will return a <code>ParserState</code>that has at least two new <code>ParserNode</code>instances 
+added to the linked list of nodes. One node points the beginning of the match, and the
+other node points to the end.   
+<br/>
+A <code>ParserNode</code>looks like this:
+<br/>
+<pre lang = 'csharp'>
+    public class ParserNode
+{
+    public readonly ParserRange Range;
+    public readonly string Name;
+    public readonly ParserNode Previous;
+    ...
+}
+
+
+</pre>
+<br/>
+<br/>
+A <code>ParserNode</code>linked list can be converted into a parse tree using the <code>ParseTreeNode ToParseTree()</code>method.
+<br/>
+<h2>Generating Parsing Errors with OnFail Rules  
+</h2><br/>
+There are several ways that a parsing rule might not match successfully:
+<br/>
+<li>
+Returning <code>null</code>- a normal failure to match 
+</li>
+<li>
+Not reaching the end of the input <code>ParserState.AtEnd == false</code>
+</li>
+<li>
+Accumulating one or more <code>ParserError</code>in a linked list.
+</li>
+<br/>
+A special rule called <code>OnFail</code>is used to generate <code>ParserError</code>. The <code>OnFail</code>rule is expected to appear as a child
+of a <code>SequenceRule</code>. 
+<br/>
+It indicates that if the preceding child rules succeed, then any failure in the following rule will generate a <code>ParserError</code>.
+The <code>OnFail</code>has an optional recovery rule as a parameter, allowing the parser to advance to the next location, such
+as just past the end of statement, and attempt to continue. 
+ <br/>
+The following is a snippet from the <a href = 'https://github.com/ara3d/parakeet/blob/master/Parakeet.Grammars/PlatoGrammar.cs'>Plato grammar</a>
+which demonstrates how the error handling and recovery occurs.  
+<br/>
+<pre lang = 'csharp'>
+    public Rule AdvanceOnFail => 
+    OnFail(Token.RepeatUntilPast(EOS | "}"));
+
+public Rule IfStatement =>
+    Node(Keyword("if") + AdvanceOnFail + ParenthesizedExpression + Statement + ElseClause.Optional());
+
+
+</pre>
+<br/>
+<br/>
+The <code>IfStatement</code>rule indicates that if the keyword <code>if</code>is matched then it must be followed 
+by an expression enclosed in parenthesis, then a valid statement, anad then optionally an else clause. 
+<br/>
+If a failure occurs after the keyword <code>if</code>then we know there was a parsing error. The parser will consume tokens until 
+it passes the end of statement (EOS) marker (<code>;</code>) or a closing brace (<code>}</code>). The IfStatement rule will return a 
+valid ParserState, but it will have a new <code>ParserError</code>prepended to the linked list of errors.  
+<br/>
+<br/>
+<br/>
+</body>
+</html>

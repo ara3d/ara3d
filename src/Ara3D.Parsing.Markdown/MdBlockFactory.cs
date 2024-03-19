@@ -26,21 +26,27 @@ namespace Ara3D.Parsing.Markdown
             {
                 case CstDocument doc:
                     return new MdDocument(doc.Children.ToMdBlocks());
-                
+
                 case CstBlankLine _:
                     return new MdBr();
                 
                 case CstBlock block:
-                    return block.Line.Present ? block.Line.ToMdBlock()
-                        : block.Comment.Present ? block.Comment.ToMdBlock()
-                        : block.CodeBlock.Present ? block.CodeBlock.ToMdBlock()
+                    return block.Line.Present ? block.Line.Node.ToMdBlock()
+                        : block.Comment.Present ? block.Comment.Node.ToMdBlock()
+                        : block.CodeBlock.Present ? block.CodeBlock.Node.ToMdBlock()
                         : null;
 
                 case CstBlockQuotedLine bq:
-                    return new MdQuote(bq.Line.ToMdBlock());
+                    return new MdQuote(bq.RestOfLine.Node.ToMdBlock());
+
+                case CstRestOfLine restOfLine:
+                    if (restOfLine.Children.Count > 1)
+                        throw new Exception("Internal error expected single line");
+                    return restOfLine.Line.Node.ToMdBlock();
 
                 case CstCodeBlock cb:
-                    return new MdCodeBlock(cb.Text);
+                    return new MdCodeBlock(cb.CodeBlockLang.Node?.Text ?? "", 
+                        cb.CodeBlockText.Node.Text);
 
                 case CstH1Underline h1:
                     throw new Exception($"Unexpected node {node}");
@@ -50,8 +56,8 @@ namespace Ara3D.Parsing.Markdown
 
                 case CstHeading h:
                     return 
-                        h.HeadingUnderlined.Present ? h.HeadingUnderlined.ToMdBlock() : 
-                        h.HeadingWithOperator.Present ? h.HeadingWithOperator.ToMdBlock() : 
+                        h.HeadingUnderlined.Present ? h.HeadingUnderlined.Node.ToMdBlock() : 
+                        h.HeadingWithOperator.Present ? h.HeadingWithOperator.Node.ToMdBlock() : 
                         throw new Exception($"Expected heading");
 
                 case CstHeadingWithOperator h:
@@ -67,16 +73,23 @@ namespace Ara3D.Parsing.Markdown
                         throw new Exception($"Expected heading");
                 
                 case CstLine line:
-                    break;
+                    return line.Node.ToMdBlock();
                 
-                case CstUnorderedListItem _:
-                    break;
+                case CstUnorderedListItem uli:
+                    return new MdListItem(uli.Indents.Count, false, uli.TextLine.Node.ToMdBlock());
                 
-                case CstOrderedListItem _:
-                    break;
-                
-                case CstTextLine _:
-                    break; ;
+                case CstOrderedListItem oli:
+                    return new MdListItem(oli.Indents.Count, true, oli.TextLine.Node.ToMdBlock());
+
+                case CstTextLine tl:
+                    return new MdText(tl.Text);
+
+                case CstNonEmptyTextLine nonEmptyText:
+                    return new MdText(nonEmptyText.Text);
+
+                case CstComment cstComment:
+                    // For now just return empty text. 
+                    return new MdText("");
             }
 
             throw new NotImplementedException($"Not handled node type {node}");

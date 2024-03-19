@@ -93,6 +93,9 @@ namespace Ara3D.Utils
         public static string JoinStringsWithComma<T>(this IEnumerable<T> self)
             => self.JoinStrings(", ");
 
+        public static string JoinStringsWithNewLine<T>(this IEnumerable<T> self)
+            => self.JoinStrings(Environment.NewLine);
+
         /// <summary>
         /// Remove starting and ending quotes.
         /// </summary>

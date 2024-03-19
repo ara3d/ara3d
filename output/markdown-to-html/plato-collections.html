@@ -1,166 +1,221 @@
+<html>
+<body>
 <h1>Plato.Collections
-
-</h1>
-<br/>Plato.Collections is a library of thread-safe immutable collections for .NET Standard 2.0 inspired by LINQ.
-
-<br/>The definition of the interfaces can be found at [Collections.cs](Collections.cs).
-
-<br/><h2>About Plato 
-
-</h2>
-<br/>Plato.Collections is written using [Plato](https://github.com/cdiggins/plato), a strict subset of C# that
-
-leverages Roslyn source generators to enforce rules and add extra code. 
-
-<br/>Plato enforces that code is pure functional. In other words classes are immutable and thread-safe and functions 
-
-have no side-effects. 
-
-<br/><h2>Design Principles
-
-</h2>
-<br/>Plato.Collections follow a simple set of design principles:
-
+</h1><br/>
+Plato.Collections is a library of thread-safe immutable collections for .NET Standard 2.0 inspired by LINQ.
 <br/>
-<ol>
-<li>All collections are immutable, side-effect free, and thread-safe. 
-
+The definition of the interfaces can be found at <a href = 'Collections.cs'>Collections.cs</a>.
+<br/>
+<h2>About Plato 
+</h2><br/>
+Plato.Collections is written using <a href = 'https://github.com/cdiggins/plato'>Plato</a>, a strict subset of C# that
+leverages Roslyn source generators to enforce rules and add extra code. 
+<br/>
+Plato enforces that code is pure functional. In other words classes are immutable and thread-safe and functions 
+have no side-effects. 
+<br/>
+<h2>Design Principles
+</h2><br/>
+Plato.Collections follow a simple set of design principles:
+<br/>
+<li>
+All collections are immutable, side-effect free, and thread-safe. 
 </li>
-
-<ol>
-<li>Required API for an Interfaces should each be as small as possible
-
+<li>
+Required API for an Interfaces should each be as small as possible
 </li>
-
-<ol>
-<li>Each interface should describe a single well-defined concept 
-
+<li>
+Each interface should describe a single well-defined concept 
 </li>
-
-<ol>
-<li>Data types with different algorithmic complexity need different representations 
-
+<li>
+Data types with different algorithmic complexity need different representations 
 </li>
-
-<ol>
-<li>Low-level performance concerns beyond should be primarily the concern of optimization tools  
-
+<li>
+Low-level performance concerns beyond should be primarily the concern of optimization tools  
 </li>
-
-<ol>
-<li>Construction of new instances of interfaces is expressed as extension methods 
-
+<li>
+Construction of new instances of interfaces is expressed as extension methods 
 </li>
-<br/><h2>How Plato.Collections Differs from LINQ and System.Collections
-
-</h2>
-<br/>Plato redesigned the entire hierarchy of collections, interface, and enumerable types 
-
+<br/>
+<h2>How Plato.Collections Differs from LINQ and System.Collections
+</h2><br/>
+Plato redesigned the entire hierarchy of collections, interface, and enumerable types 
 from scratch while enforcing immutability and thread-safety.
+<br/>
+Most types in the <code>Plato.Collections</code>namespace provides the same LINQ operations 
+as <code>IEnumerable</code>, with the only difference being the types that are returned. 
+<br/>
+Some of the <code>Plato.Collections</code>interfaces include the following:
+<br/>
+<pre lang = 'csharp'>
+    interface IMap&amp;lt;TDomain, TCoDomain> {}
+interface IArray&amp;lt;T> : IMap&amp;lt;int, T>, ISequence&amp;lt;T> {}
+interface ISet&amp;lt;T> {}
+interface IGenerator&amp;lt;T> {}
+interface ISequence&amp;lt;T> {}
+interface IContainer&amp;lt;T> : ISet&amp;lt;T> {}
+interface IList&amp;lt;T> : ISequence&amp;lt;T> {} 
+interface ISorted&amp;lt;T> {}
+interface ISortedArray&amp;lt;T> : IArray&amp;lt;T>, ISorted&amp;lt;T> {}
+interface ISortedBag&amp;lt;T> : IBag&amp;lt;T>, ISorted&amp;lt;T> {}
+interface ISortedContainer&amp;lt;T> : IContainer&amp;lt;T>, ISorted&amp;lt;T> {}
+interface ISortedSequence&amp;lt;T> : ISequence&amp;lt;T>, ISortedBag&amp;lt;T> {}
+interface ITree&amp;lt;T> : ISequence&amp;lt;T> {}
+interface ISortedTree&amp;lt;T> : ITree&amp;lt;T>, ISorted&amp;lt;T> {}
+interface IHeap&amp;lt;T> : ITree&amp;lt;T>, ISorted&amp;lt;T> {}
+interface IStack&amp;lt;T> {}
+interface IQueue&amp;lt;T> {}
+interface IDeque&amp;lt;T> {}
+interface IPriorityQueue&amp;lt;TKey, TValue> : ISorted&amp;lt;TKey>, IStack&amp;lt;(TKey, TValue)> {}
+interface IDictionary&amp;lt;TKey, TValue> : IMap&amp;lt;TKey, TValue>, ISorted&amp;lt;TKey>, ISet&amp;lt;TKey> {}
+interface IMultiDictionary&amp;lt;TKey, TValue> : IDictionary&amp;lt;TKey, ISequence&amp;lt;TValue>>  {}
+interface IBiDictionary&amp;lt;TKey, TValue> : IDictionary&amp;lt;TKey, TValue> {}
+interface ISubSequence&amp;lt;T> : ISequence&amp;lt;T> {}
+interface ISlice&amp;lt;T> : IArray&amp;lt;T> {}
 
-<br/>Most types in the `Plato.Collections` namespace provides the same LINQ operations 
-
-as `IEnumerable`, with the only difference being the types that are returned. 
-
-<br/>Some of the `Plato.Collections` interfaces include the following:
-
-<br/><pre>
 
 </pre>
-<br/><br/>These interfaces are defined in [Collections.cs](Collections.cs).
+<br/>
+<br/>
+These interfaces are defined in <a href = 'Collections.cs'>Collections.cs</a>.
+<br/>
+<h2>Enumerator Example
+</h2><br/>
+In pseudo-code the default .NET libraries an enumerator looks like:
+<br/>
+<pre lang = 'csharp'>
+    interface IEnumerator&amp;lt;T> 
+{    
+    T Current { get; }
+    bool MoveNext(); 
+    void Reset();
+    void Dispose();
+}
 
-<br/><h2>Enumerator Example
-
-</h2>
-<br/>In pseudo-code the default .NET libraries an enumerator looks like:
-
-<br/><pre>
 
 </pre>
-<br/><br/>All methods and properties in an enumerator have potential side-effects, even the `Current` property
-
+<br/>
+<br/>
+All methods and properties in an enumerator have potential side-effects, even the <code>Current</code>property
 can trigger an error in the case that is "invalidated due to changes made in the collection".
+<br/>
+Plato offers a side-effect-free alternative called <code>IGenerator</code>designed for immutable collections:
+<br/>
+<pre lang = 'csharp'>
+    interface IGenerator&amp;lt;T>
+{
+    T Current { get; }
+    IGenerator&amp;lt;T>? Next { get; }
+    bool HasValue { get; }
+}
 
-<br/>Plato offers a side-effect-free alternative called `IGenerator` designed for immutable collections:
-
-<br/><pre>
-
-</pre>
-<br/><br/>Unlike `IEnumerator` the `IGenerator` will never throw exceptions. If `Current` is queried while `HasValue` is 
-
-`false` then a default value will be returned. 
-
-<br/><h3>Replacing IEnumerable with ISequence 
-
-</h3>
-<br/>In order to differentiate from `IEnumerable`, Plato introduces a new core interface that many collection 
-
-derive from called `ISequence` which has one property:
-
-<br/><pre>
 
 </pre>
-<br/><br/><h2>IArray vs LINQ on Array
+<br/>
+<br/>
+Unlike <code>IEnumerator</code>the <code>IGenerator</code>will never throw exceptions. If <code>Current</code>is queried while <code>HasValue</code>is 
+<code>false</code>then a default value will be returned. 
+<br/>
+<h3>Replacing IEnumerable with ISequence 
+</h3><br/>
+In order to differentiate from <code>IEnumerable</code>, Plato introduces a new core interface that many collection 
+derive from called <code>ISequence</code>which has one property:
+<br/>
+<pre lang = 'csharp'>
+    interface ISequence&amp;lt;T>
+{
+    IGenerator&amp;lt;T> Generator { get; }
+}
 
-</h2>
-<br/>LINQ operations are available on arrays through the C# System libraries. The problem is that once a LINQ operation (like Select`, or `Take`)
 
-is performed on an array the result is an `IEnumerable`, and no longer an array. 
-
-<br/>This means that there is no longer any guarantee of the algorithmic complexity of O(1) for element indexing or retrieving the number of 
-
+</pre>
+<br/>
+<br/>
+<h2>IArray vs LINQ on Array
+</h2><br/>
+LINQ operations are available on arrays through the C# System libraries. The problem is that once a LINQ operation (like Select<code>, or </code>Take)
+is performed on an array the result is an <code>IEnumerable</code>, and no longer an array. 
+<br/>
+This means that there is no longer any guarantee of the algorithmic complexity of O(1) for element indexing or retrieving the number of 
 elements, when it would be trivial to provide those guarantees. 
-
-<br/>Plato offers an interface called `IArray` that has a number of LINQ style operations that return `IArray` ensuring the same algorithmic 
-
+<br/>
+Plato offers an interface called <code>IArray</code>that has a number of LINQ style operations that return <code>IArray</code>ensuring the same algorithmic 
 properties. 
+<br/>
+<pre lang = 'csharp'>
+    interface IArray&amp;lt;T> 
+{
+    int Count { get; }
+    this[int n] { get; }
+}
 
-<br/><pre>
-
-</pre>
-<br/><br/><h2>Similar Work
-
-</h2>
-<br/>The `IArray<T>` implementation is based on the [LinqArray](https://github.com/vimaec/LinqArray) library, which in turn
-
-is based on article at CodeProject.com called [LINQ for Immutable Arrays](https://www.codeproject.com/Articles/517728/LINQ-for-Immutable-Arrays). 
-
-<br/><br/><h2>IMap as a generalization of IArray and IDictionary 
-
-</h2>
-<br/>Dictionaries and arrays both map from some input type (a domain) to an output type (a codomain). In the case of arrays the domain is integers. 
-
-<br/>An `IMap` represents the abstract concept of a mathematical mapping. The difference between an `IMap` and an `IDictionary` is that a dictionary 
-
-is a specialization of an `IMap` that has a finite set of ordered keys and values.
-
-<br/>This is illustrated by the interface definition. 
-
-<br/><pre>
 
 </pre>
-<br/><br/><h2>Sets 
+<br/>
+<br/>
+<h2>Similar Work
+</h2><br/>
+The <code>IArray</code>implementation is based on the <a href = 'https://github.com/vimaec/LinqArray'>LinqArray</a>library, which in turn
+is based on article at CodeProject.com called <a href = 'https://www.codeproject.com/Articles/517728/LINQ-for-Immutable-Arrays'>LINQ for Immutable Arrays</a>. 
+<br/>
+<br/>
+<h2>IMap as a generalization of IArray and IDictionary 
+</h2><br/>
+Dictionaries and arrays both map from some input type (a domain) to an output type (a codomain). In the case of arrays the domain is integers. 
+<br/>
+An <code>IMap</code>represents the abstract concept of a mathematical mapping. The difference between an <code>IMap</code>and an <code>IDictionary</code>is that a dictionary 
+is a specialization of an <code>IMap</code>that has a finite set of ordered keys and values.
+<br/>
+This is illustrated by the interface definition. 
+<br/>
+<pre lang = 'csharp'>
+    interface IDictionary&amp;lt;TKey, TValue> : 
+    IMap&amp;lt;TKey, TValue>, ISorted&amp;lt;TKey>, ISet&amp;lt;TKey>
+{ }
 
-</h2>
-<br/>A set is defined by the ability simply to query membership:
-
-<br/><pre>
 
 </pre>
-<br/><br/>By keeping the interface minimal, it is possible to implement infinite sets, and provide efficient representation of operations 
+<br/>
+<br/>
+<h2>Sets 
+</h2><br/>
+A set is defined by the ability simply to query membership:
+<br/>
+<pre lang = 'csharp'>
+    interface ISet&amp;lt;T>
+{
+    bool Contains(T item);
+}
 
+
+</pre>
+<br/>
+<br/>
+By keeping the interface minimal, it is possible to implement infinite sets, and provide efficient representation of operations 
 like set complement.
+<br/>
+<h2>Explicit Ordering 
+</h2><br/>
+Collections that have been created with a specific ordering, store the ordering function explicitly. This has an impact on algorithmic 
+complexity of certain operation. For example an <code>ISortedSequence</code>that has the property of faster search <code>O(Log N)</code>compared to the 
+regular <code>O(N)</code>for the <code>IndexOf</code>operation, and related derived operations.
+<br/>
+<pre lang = 'csharp'>
+    interface ISorted&amp;lt;T> 
+{
+    Func&amp;lt;T, T, int> Ordering { get; }
+}
 
-<br/><h2>Explicit Ordering 
+interface ISortedBag&amp;lt;T> : IBag&amp;lt;T>, ISorted&amp;lt;T>
+{
+    ISortedSequence&amp;lt;T> ToSequence();
+}
 
-</h2>
-<br/>Collections that have been created with a specific ordering, store the ordering function explicitly. This has an impact on algorithmic 
-
-complexity of certain operation. For example an `ISortedSequence` that has the property of faster search `O(Log N)` compared to the 
-
-regular `O(N)` for the `IndexOf` operation, and related derived operations.
-
-<br/><pre>
 
 </pre>
-<br/><br/><br/><br/>
+<br/>
+<br/>
+<br/>
+<br/>
+</body>
+</html>

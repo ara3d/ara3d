@@ -8,6 +8,7 @@ namespace Ara3D.Parsing.Markdown
         public MdBlock(params MdBlock[] children)
             => Children = children;
     }
+
     public class MdDocument : MdBlock
     {
         public MdDocument(params MdBlock[] children)
@@ -17,20 +18,11 @@ namespace Ara3D.Parsing.Markdown
 
     public class MdList : MdBlock
     {
-        public MdList(bool ordered, params MdListItem[] items) : base(items)
-            => (Ordered, Items) = (ordered, items);
+        public MdList(int nesting, bool ordered, params MdListItem[] items) : base(items)
+            => (Nesting, Ordered, Items) = (nesting, ordered, items);
         public IReadOnlyList<MdListItem> Items { get; }
         public bool Ordered { get; }
-    }
-
-    public class MdUnorderedList : MdList
-    {
-        public MdUnorderedList(params MdListItem[] items) : base(false, items) { }
-    }
-
-    public class MdOrderedList : MdList
-    {
-        public MdOrderedList(params MdListItem[] items) : base(true, items) { }
+        public int Nesting { get; }
     }
 
     public class MdQuote : MdBlock
@@ -49,16 +41,20 @@ namespace Ara3D.Parsing.Markdown
 
     public class MdCodeBlock : MdBlock
     {
+        public readonly string Lang;
         public readonly string Text;
-        public MdCodeBlock(string text)
-            => Text = text;
+        public MdCodeBlock(string lang, string text)
+            => (Lang, Text) = (lang, text);
     }
 
     public class MdListItem : MdBlock
     {
-        public MdListItem(params MdBlock[] children)
+        public MdListItem(int nesting, bool ordered, params MdBlock[] children)
             : base(children)
-        { }
+            => (Nesting, Ordered) = (nesting, ordered);
+
+        public bool Ordered { get; }
+        public int Nesting { get; }
     }
 
     public class MdBr : MdBlock

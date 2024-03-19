@@ -28,11 +28,27 @@ namespace Ara3D.Extra.Tests
             outputFile.WriteAllText(html);
         }
 
+
+        [TestCaseSource(nameof(TestMarkdownFiles))]
+        public static void TestMarkdownParserOutput(FilePath filePath)
+        {
+            var p = new MarkdownBlockParser(filePath.ReadAllText());
+            
+            Console.WriteLine($"Parser Errors");
+            Console.WriteLine(p.Parser.ParserErrorsString);
+            
+            Console.WriteLine($"Parser Nodes");
+            Console.WriteLine(p.Parser.ParserNodesString);
+
+            Console.WriteLine($"Parse XML");
+            Console.WriteLine(p.Parser.ParseXml);
+        }
+
         public static string ConvertMarkdownToHtml(FilePath filePath)
         {
             var markdown = filePath.ReadAllText();
-            var p = new MarkdownParser(markdown);
-            return p.Document.ToHtml().ToString();
+            var p = new MarkdownBlockParser(markdown);
+            return p.Document.ToHtml();
         }
     }
 }

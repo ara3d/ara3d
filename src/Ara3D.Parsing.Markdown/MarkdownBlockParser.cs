@@ -5,9 +5,9 @@ using Ara3D.Parakeet.Cst.MarkdownBlockGrammarNameSpace;
 
 namespace Ara3D.Parsing.Markdown
 {
-    public class MarkdownParser
+    public class MarkdownBlockParser
     {
-        public MarkdownParser(string input, ILogger logger = null)
+        public MarkdownBlockParser(string input, ILogger logger = null)
         {
             Input = input;
             Parser = CommonParsers.MarkdownBlockParser(Input, logger);
@@ -19,5 +19,18 @@ namespace Ara3D.Parsing.Markdown
         public ParserInput Input { get; }
         public Parser Parser { get; }
         public MdDocument Document { get; }
+    }
+
+    public class MarkdownInlineParser
+    {
+        public MarkdownInlineParser(string input, ILogger logger = null)
+        {
+            Input = input;
+            Parser = CommonParsers.MarkdownInlineParser(Input, logger);
+        }
+
+        public ParserInput Input { get; }
+        public Parser Parser { get; }
+        public CstNode Cst => Parser.Cst;
     }
 }
