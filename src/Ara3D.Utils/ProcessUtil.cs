@@ -101,6 +101,6 @@ namespace Ara3D.Utils
 
         // https://stackoverflow.com/questions/7693429/process-start-to-open-an-url-getting-an-exception
         public static void OpenUrl(string url)
-            => OpenDefaultProcess(url);
+            => ShellExecute(url);
     }
 }
