@@ -667,5 +667,8 @@ namespace Ara3D.Utils
 
         public static FilePath RelativeFile(this FilePath path, params string[] parts)
             => Path.Combine(parts.Prepend(path.Value).ToArray());
+            
+        public static bool IsSameFile(this FilePath path, FilePath other)
+            => path.GetFullPath().Value.ToLowerInvariant() == other.GetFullPath().Value.ToLowerInvariant();
     }
 }

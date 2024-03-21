@@ -1,5 +1,27 @@
 # Release Notes 
 
+### 2024-03-21
+
+* Double clicking on error in general log now goes to correct file tab
+* Log uses fixed-width font, which improves readability 
+* Errors in log are now highlighted a color. 
+* Added a new class (FileAndRange) to utils for storing and reporting file positions 
+* Starting on version 1.4.3.
+* Currently at 268 resolution errors
+* Observed that tuple errors are a big reason for the errors 
+* Added function for comparing paths (resolving to absolute path)
+* Founds some code for fast updates of Unity meshes, and added sample scenes. 
+
+### 2024-03-19
+
+* Plato code viewer reports symbol resolution errors
+* Markdown to HTML generator works much better
+* CST contains errors 
+* Working version of Bowerbird for Revit 2023
+* Fixed web-server in utilities
+* Plato code viewer has several more stages 
+* Added a dog to the default scene in the Unity viewer 
+
 ### 2024-03-11
 
 * Improving error recovery within Plato grammar, leveraging tools. 
