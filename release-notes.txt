@@ -11,6 +11,8 @@
 * Observed that tuple errors are a big reason for the errors 
 * Added function for comparing paths (resolving to absolute path)
 * Founds some code for fast updates of Unity meshes, and added sample scenes. 
+* Down to 204 resolution errors. 
+* Added proper resolution of Tuples, and types are now valid expressions (references and definitions). 
 
 ### 2024-03-19
 
