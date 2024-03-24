@@ -9,7 +9,7 @@ namespace Ara3D.Geometry
         public static IParametricSurface Cylinder = PrimitiveFunctions.Cylinder.ToSurface(true);
         public static IParametricSurface Sphere = PrimitiveFunctions.Sphere.ToSurface(true, true);
         public static IParametricSurface MonkeySaddle = PrimitiveFunctions.MonkeySaddle.ToSurface();
-        public static IParametricSurface TorusKnot = PrimitiveFunctions.Torus.ToSurface();
+        public static IParametricSurface TorusKnot = ToSurface(uv => PrimitiveFunctions.Torus(uv, 8, 1));
 
         public static IParametricSurface ToSurface(this Func<Vector2, Vector3> func, bool closedX = false, bool closedY = false)
             => new ParametricSurface(func, closedX, closedY);

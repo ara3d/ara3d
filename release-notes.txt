@@ -1,5 +1,15 @@
 # Release Notes 
 
+### 2024-03-24
+
+* Created a parametric surface primitive for testing in Unity
+* Fixed flaw in sphere function
+* Improving some of the functions.
+* Found bug: "closedU or closedV" will break the parametric surfaces
+* Found bug: normals of parametric surface are wrong in the torus  
+* Reorganized the primitive functions.  
+* Started work on Quadray type
+
 ### 2024-03-21
 
 * Double clicking on error in general log now goes to correct file tab
@@ -12,7 +22,9 @@
 * Added function for comparing paths (resolving to absolute path)
 * Founds some code for fast updates of Unity meshes, and added sample scenes. 
 * Down to 204 resolution errors. 
-* Added proper resolution of Tuples, and types are now valid expressions (references and definitions). 
+* Added proper resolution of Tuples, and types are now valid expressions (references and definitions).
+* Down to 95 resolution errors.
+* Type variables are now named correctly. 
 
 ### 2024-03-19
 
