@@ -60,7 +60,7 @@ namespace SvgEditorWinForms.Models
         public double Opacity { get; set; } = 1;
 
         // https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/transform
-        //public Transform Transform;
+        //public Pose Pose;
     }
 
     public class LinearGradientModel : ColorServerModel

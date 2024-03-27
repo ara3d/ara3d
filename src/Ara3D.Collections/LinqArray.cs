@@ -700,7 +700,7 @@ namespace Ara3D.Collections
         /// Returns the element at the nth position, where n is modulo the number of items in the arrays.
         /// </summary>
         public static T ElementAtModulo<T>(this IArray<T> self, int n)
-            => self.ElementAt(n % self.Count);
+            => self.ElementAt((n % self.Count + self.Count) % self.Count);
 
         /// <summary>
         /// Returns the Nth element of the array, or a default value if out of range/

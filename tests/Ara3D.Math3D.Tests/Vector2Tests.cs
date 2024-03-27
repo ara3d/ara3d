@@ -378,7 +378,7 @@ namespace Ara3D.Math.Tests
             Assert.True(MathHelper.Equal(expected, actual), "Vector2f.Lerp did not return the expected value.");
         }
 
-        // A test for Transform(Vector2f, Matrix4x4)
+        // A test for Pose(Vector2f, Matrix4x4)
         [Test]
         public void Vector2TransformTest()
         {
@@ -395,7 +395,7 @@ namespace Ara3D.Math.Tests
             Vector2 actual;
 
             actual = Mathematics.MathOps.Transform(v, m);
-            Assert.True(MathHelper.Equal(expected, actual), "Vector2f.Transform did not return the expected value.");
+            Assert.True(MathHelper.Equal(expected, actual), "Vector2f.Pose did not return the expected value.");
         }
 
         // A test for TransformNormal (Vector2f, Matrix4x4)
@@ -418,7 +418,7 @@ namespace Ara3D.Math.Tests
             Assert.True(MathHelper.Equal(expected, actual), "Vector2f.Tranform did not return the expected value.");
         }
 
-        // A test for Transform (Vector2f, Quaternion)
+        // A test for Pose (Vector2f, Quaternion)
         [Test]
         public void Vector2TransformByQuaternionTest()
         {
@@ -435,8 +435,8 @@ namespace Ara3D.Math.Tests
             Assert.True(expected.AlmostEquals(actual));
         }
 
-        // A test for Transform (Vector2f, Quaternion)
-        // Transform Vector2f with zero quaternion
+        // A test for Pose (Vector2f, Quaternion)
+        // Pose Vector2f with zero quaternion
         [Test]
         public void Vector2TransformByQuaternionTest1()
         {
@@ -445,11 +445,11 @@ namespace Ara3D.Math.Tests
             var expected = v;
 
             var actual = Mathematics.MathOps.Transform(v, q);
-            Assert.True(MathHelper.Equal(expected, actual), "Vector2f.Transform did not return the expected value.");
+            Assert.True(MathHelper.Equal(expected, actual), "Vector2f.Pose did not return the expected value.");
         }
 
-        // A test for Transform (Vector2f, Quaternion)
-        // Transform Vector2f with identity quaternion
+        // A test for Pose (Vector2f, Quaternion)
+        // Pose Vector2f with identity quaternion
         [Test]
         public void Vector2TransformByQuaternionTest2()
         {
@@ -458,7 +458,7 @@ namespace Ara3D.Math.Tests
             var expected = v;
 
             var actual = Mathematics.MathOps.Transform(v, q);
-            Assert.True(MathHelper.Equal(expected, actual), "Vector2f.Transform did not return the expected value.");
+            Assert.True(MathHelper.Equal(expected, actual), "Vector2f.Pose did not return the expected value.");
         }
 
         // A test for Normalize (Vector2f)

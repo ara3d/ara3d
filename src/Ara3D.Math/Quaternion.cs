@@ -466,5 +466,11 @@ namespace Ara3D.Mathematics
 
         public static implicit operator HorizontalCoordinate(Quaternion q)
             => q.ToSphericalAngle();
+
+        public Quaternion RotationalDifference(Quaternion q)
+            => Inverse() * q;
+
+        public Quaternion CombineRotation(Quaternion q)
+            => this * q;
     }
 }

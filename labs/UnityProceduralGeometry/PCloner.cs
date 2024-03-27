@@ -163,7 +163,7 @@ namespace Plato.Unity
     [Description("Transforms nodes")]
     public class PTransform : PNode
     {
-        public UnityEngine.Transform Transform = (new GameObject("POffset Transform")).transform;
+        public UnityEngine.Transform Transform = (new GameObject("POffset Pose")).transform;
         public bool Incremental = true;
         public bool Local = true;
     }

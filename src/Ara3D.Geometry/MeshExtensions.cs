@@ -37,8 +37,8 @@ namespace Ara3D.Geometry
             Int4 QuadMeshFaceVertices(int row, int col)
             {
                 var a = row * cols + col;
-                var b = row * cols + (col + 1) % cols;
-                var c = (row + 1) % rows * cols + (col + 1) % cols;
+                var b = row * cols + (col + 1) % us.Count;
+                var c = (row + 1) % rows * cols + (col + 1) % vs.Count;
                 var d = (row + 1) % rows * cols + col;
                 return (a, b, c, d);
             }

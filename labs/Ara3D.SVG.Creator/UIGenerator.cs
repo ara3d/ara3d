@@ -2,6 +2,7 @@
 using System.Reflection;
 using System.Windows;
 using System.Windows.Controls;
+using Ara3D.Mathematics;
 using Ara3D.Utils;
 using ColorPicker;
 using Color = System.Drawing.Color;
@@ -58,7 +59,7 @@ public static class UIGenerator
         PropertyChangeNotifier notifier)
     {
         var r = new PropertyRowControl() { Name = name };
-        var ctrl = r.AddProperty("θ", Colors.LightCyan, 5, 0, getValue(), x => setValue(new Angle(x)));
+        var ctrl = r.AddProperty("θ", Colors.LightCyan, 5, 0, getValue(), x => setValue(new Angle((float)x)));
         notifier.PropertyChanged += (_, _) => ctrl.Value = getValue();
         return r;
     }

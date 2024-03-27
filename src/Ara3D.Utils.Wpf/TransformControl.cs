@@ -4,7 +4,7 @@ using Ara3D.Mathematics;
 
 namespace Ara3D.Utils.Wpf
 {
-    public class TransformControl : MathControl<Transform>
+    public class TransformControl : MathControl<Pose>
     {
         public TransformControl()
         {

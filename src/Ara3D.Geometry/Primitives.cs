@@ -1,10 +1,8 @@
-﻿using System;
-using Ara3D.Collections;
+﻿using Ara3D.Collections;
 using Ara3D.Mathematics;
 
 namespace Ara3D.Geometry
 {
-    // TODO: plane, cylinder, cone, ruled face, 
     public static class Primitives
     {
         public static TriMesh ToTriMesh(this IArray<Vector3> vertices, IArray<int> indices = null)
@@ -93,30 +91,6 @@ namespace Ara3D.Geometry
                         (0, 1, 4), (1, 2, 4), (2, 3, 4),
                         (3, 2, 5), (2, 1, 5), (1, 0, 5)));
 
-        public static ParametricSurface Torus(float radius, float tubeRadius)
-            => new ParametricSurface(uv => PrimitiveFunctions.Torus(uv, radius, tubeRadius), false, false);
-
-        public static TesselatedMesh TorusMesh(float radius, float tubeRadius, int uSegs, int vSegs)
-            => Torus(radius, tubeRadius).Tesselate(uSegs, vSegs);
-
-        public static ParametricSurface Sphere()
-            => new ParametricSurface(uv => PrimitiveFunctions.Sphere(uv), true, true);
-
-        public static TesselatedMesh SphereMesh(int segs)
-            => Sphere().Tesselate(segs, segs);
-
-        /// <summary>
-        /// Returns a collection of circular points.
-        /// </summary>
-        public static IArray<Vector2> CirclePoints(float radius, int numPoints)
-            => CirclePoints(numPoints).Select(x => x * radius);
-
-        public static IArray<Vector2> CirclePoints(int numPoints)
-            => numPoints.Select(i => CirclePoint(i, numPoints));
-
-        public static Vector2 CirclePoint(int i, int numPoints)
-            => new Vector2((i * (Constants.TwoPi / numPoints)).Cos(), (i * (Constants.TwoPi / numPoints)).Sin());
-
         private static readonly float _t = (float)((1.0 + 5.0.Sqrt()) / 2.0);
         private static readonly float _rt = _t.Inverse();
 
@@ -178,10 +152,8 @@ namespace Ara3D.Geometry
                     (3, 9, 4), (3, 4, 2), (3, 2, 6), (3, 6, 8), (3, 8, 9),
                     (4, 9, 5), (2, 4, 11), (6, 2, 10), (8, 6, 7), (9, 8, 1)));
 
-        public static TesselatedMesh Cylinder(int usegs, int vsegs)
-            => PrimitiveFunctions.Cylinder.ToSurface(true, false).Tesselate(usegs, vsegs);
+        public static TesselatedMesh TorusMesh(float r1, float r2, int uSegs, int vSegs)
+            => PrimitiveSurfaces.Torus(r1, r2).Tesselate(uSegs, vSegs);
 
-        public static Curve<Vector3> TorusKnotCurve(int p, int q)
-            => new Curve<Vector3>(PrimitiveFunctions.TorusKnotFunction(p, q), true);
     }
 }

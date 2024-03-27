@@ -14,8 +14,11 @@ namespace Ara3D.Mathematics
         public static double Ln(this double x)
             => System.Math.Log(x);
 
+        public static double Lerp(this double v1, double v2, double t) 
+            => v1 + (v2 - v1) * t;
+
         /// <summary>
-        /// Expresses two vlaues as a ratio
+        /// Expresses two values as a ratio
         /// </summary>
         public static double Percentage(double denominator, double numerator)
             => (numerator / denominator) * 100.0;
@@ -566,7 +569,7 @@ namespace Ara3D.Mathematics
         /// Returns a matri for translation and then rotation. 
         /// </summary>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Matrix4x4 ToMatrix(this Transform self)
+        public static Matrix4x4 ToMatrix(this Pose self)
             => Matrix4x4.CreateTRS(self.Position, self.Orientation, Vector3.One);
     }
 }

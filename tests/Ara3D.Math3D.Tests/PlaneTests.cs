@@ -162,7 +162,7 @@ namespace Ara3D.Math.Tests
         }
 
         [Test]
-        // Transform by matrix
+        // Pose by matrix
         public void PlaneTransformTest1()
         {
             var target = new Plane(1, 2, 3, 4);
@@ -187,11 +187,11 @@ namespace Ara3D.Math.Tests
             var D = x * itm.M14 + y * itm.M24 + z * itm.M34 + w * itm.M44;
             var expected = new Plane(Normal, D);
             var actual = target.Transform(m);
-            Assert.True(MathHelper.Equal(expected, actual), "Plane.Transform did not return the expected value.");
+            Assert.True(MathHelper.Equal(expected, actual), "Plane.Pose did not return the expected value.");
         }
 
         [Test]
-        // Transform by quaternion
+        // Pose by quaternion
         public void PlaneTransformTest2()
         {
             var target = new Plane(1, 2, 3, 4);
@@ -211,7 +211,7 @@ namespace Ara3D.Math.Tests
             var D = x * m.M14 + y * m.M24 + z * m.M34 + w * m.M44;
             var expected = new Plane(Normal, D);
             var actual = target.Transform(q);
-            Assert.True(MathHelper.Equal(expected, actual), "Plane.Transform did not return the expected value.");
+            Assert.True(MathHelper.Equal(expected, actual), "Plane.Pose did not return the expected value.");
         }
 
         // A test for Plane comparison involving NaN values

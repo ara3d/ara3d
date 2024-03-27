@@ -392,7 +392,7 @@ namespace Ara3D.Math.Tests
             Assert.False(Matrix4x4.Decompose(GenerateMatrixNumberFrom1To16(), out scales, out rotation, out translation), "decompose should have failed.");
         }
 
-        // Transform by quaternion test
+        // Pose by quaternion test
         [Test]
         public void Matrix4x4TransformTest()
         {
@@ -408,7 +408,7 @@ namespace Ara3D.Math.Tests
             var expected = target * m;
             Matrix4x4 actual;
             actual = Matrix4x4.Transform(target, q);
-            Assert.True(MathHelper.Equal(expected, actual), "Matrix4x4.Transform did not return the expected value.");
+            Assert.True(MathHelper.Equal(expected, actual), "Matrix4x4.Pose did not return the expected value.");
         }
 
         // A test for CreateRotationX (float)

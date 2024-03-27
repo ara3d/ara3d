@@ -2001,6 +2001,16 @@ namespace Ara3D.Mathematics
         public static Matrix4x4 CreateTRS(Vector3 translation, Quaternion rotation, Vector3 scale)
             => CreateTranslation(translation) * CreateRotation(rotation) * CreateScale(scale);
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Matrix4x4 CreateTranslationRotation(Vector3 translation, Quaternion rotation)
+            => CreateTranslation(translation) * CreateRotation(rotation);
+
+        public static implicit operator Matrix4x4(Quaternion q)
+            => CreateRotation(q);
+
+        public static implicit operator Matrix4x4(Vector3 v)
+            => CreateTranslation(v);
+
         /// <summary>
         /// Get's the scale factor of each axis.  This implementation extracts the scale exclusively,
         /// so it attempts to ignore rotation.  This is contrary to most math libraries

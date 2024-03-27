@@ -20,9 +20,10 @@ namespace Ara3D.Geometry
 
         public static PolyLine<Vector2> ToPolygon(this IArray<Vector2> points) 
             => new PolyLine<Vector2>(points, true);
-        
-        public static PolyLine<Vector2> Polygon(int n) 
-            => PrimitiveFunctions.Circle.Sample(n).ToPolygon();
+
+        public static PolyLine<Vector2> Polygon(int n)
+            => throw new NotImplementedException();    
+        //=> Curves.Circle.Sample(n).ToPolygon();
         
         public static PolyLine<Vector2> Triangle = Polygon(3);
         public static PolyLine<Vector2> Square = Polygon(4);

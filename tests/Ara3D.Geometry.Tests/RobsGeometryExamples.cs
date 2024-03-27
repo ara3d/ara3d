@@ -78,13 +78,13 @@ public readonly struct Arc
 /// </summary>
 public readonly struct TransformedBox
 {
-    public readonly Transform Transform;
+    public readonly Pose Pose;
     public Vector3 Dimensions { get; }
-    public Quaternion Rotation => Transform.Orientation;
-    public Vector3 Center => Transform.Position;
+    public Quaternion Rotation => Pose.Orientation;
+    public Vector3 Center => Pose.Position;
 
-    public TransformedBox(Transform transform, Vector3 dimensions)
-        => (Transform, Dimensions) = (transform, dimensions);
+    public TransformedBox(Pose pose, Vector3 dimensions)
+        => (Pose, Dimensions) = (pose, dimensions);
 }
 
 /// <summary>
@@ -279,7 +279,7 @@ public static class RobsGeometryExamples
 
     /// <summary>
     /// </summary>
-    public static IArray<Vector3> TransformCoordinateSystem(this IEnumerable<Vector3> points, Transform transform)
+    public static IArray<Vector3> TransformCoordinateSystem(this IEnumerable<Vector3> points, Pose pose)
         => throw new NotImplementedException("Coordinate systems (or frames of reference) typically refer to only translation and rotation,");
 
     //==

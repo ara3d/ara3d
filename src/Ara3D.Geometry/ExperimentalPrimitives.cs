@@ -23,27 +23,6 @@ using Ara3D.Mathematics;
 
 namespace Ara3D.Geometry
 {
-    public static class NumberExtensions
-    {
-        public const float TwoPi = Pi * 2f;
-        public const float Pi = (float)System.Math.PI;
-
-        public static double Degrees(this float t)
-            => (t / 360f).Turns();
-
-        public static float Turns(this float t)
-            => t * TwoPi;
-
-        public static float HalfTurns(this float t)
-            => t.Turns() * 2;
-    }
-
-    public static class FunctionExtensions
-    {
-        public static Vector2 Circle(this float f)
-            => PrimitiveFunctions.Circle(f);
-    }
-
     public class PolyLine<T>
     {
         public PolyLine(IArray<T> points, bool closed)
@@ -64,7 +43,6 @@ namespace Ara3D.Geometry
         // public static PolyLine Path 
         // Quadrilateral
     }
-
 
     // http://paulbourke.net/geometry/mecon/
 

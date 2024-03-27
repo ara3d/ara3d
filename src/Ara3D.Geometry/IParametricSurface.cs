@@ -14,11 +14,13 @@ namespace Ara3D.Geometry
     }
 
     /// <summary>
-    /// A bounded surface is a 2D sampling of a surface within some 
+    /// A bounded surface is a 2D sampling of a surface with
+    /// an approximate bounded-box.
+    /// The bounding box is intended for use with proportional deformations. 
     /// </summary>
     public interface IBoundedSurface : ISurface
     {
-        AABox2D Bounds { get; }
+        AABox Bounds { get; }
         ISurface Surface { get; }
     }
 
@@ -26,10 +28,10 @@ namespace Ara3D.Geometry
     {
         public bool ClosedX => false;
         public bool ClosedY => false;
-        public AABox2D Bounds { get; }
+        public AABox Bounds { get; }
         public ISurface Surface { get; }
 
-        public BoundedSurface(ISurface surface, AABox2D bounds)
+        public BoundedSurface(ISurface surface, AABox bounds)
             => (Bounds, Surface) = (bounds, surface);
 
         public ITransformable TransformImpl(Matrix4x4 mat)
@@ -41,7 +43,8 @@ namespace Ara3D.Geometry
 
     /// <summary>
     /// An explicit surface is a function mapping UV coordinates
-    /// to real-numbers. It can be trivially converted to a parametric surface.
+    /// to real-numbers. It can be trivially converted to a parametric surface,
+    /// which converts UV coordinates to X,Y,Z coordinates. 
     /// One application is as a height map.
     /// </summary>
     public interface IExplicitSurface : IProcedural<Vector2, float>, ISurface
@@ -73,20 +76,6 @@ namespace Ara3D.Geometry
             
         public IDeformable DeformImpl(Func<Vector3, Vector3> f)
             => new ParametricSurface(x => f(Eval(x)), ClosedX, ClosedY);
-    }
-
-    public class SurfacePoint
-    {
-        public Vector2 UV { get; }
-        public Vector3 Position { get; }
-        public Vector3 Normal { get; }
-
-        public SurfacePoint(Vector2 uV, Vector3 position, Vector3 normal)
-        {
-            UV = uV;
-            Position = position;
-            Normal = normal;
-        }
     }
 
     public static class SurfaceOperations
@@ -123,8 +112,16 @@ namespace Ara3D.Geometry
         public static IParametricSurface Loft(this ICurve profile, IOrientedCurve path)
             => throw new NotImplementedException();
 
+        public static float Epsilon => 1 / 1000000f;
+
         public static SurfacePoint GetPoint(this IParametricSurface parametricSurface, Vector2 uv)
-            => new SurfacePoint(uv, parametricSurface.Eval(uv), parametricSurface.GetNormal(uv));
+            => new SurfacePoint(
+                parametricSurface.Eval(uv),
+                uv,
+                parametricSurface.Eval(uv + (0, Epsilon)),
+                parametricSurface.Eval(uv + (Epsilon, 0)),
+                parametricSurface.Eval(uv + (0, -Epsilon)),
+                parametricSurface.Eval(uv + (-Epsilon, 0)));
 
         public static Vector3 GetNormal(this IParametricSurface parametricSurface, Vector2 uv)
         {
@@ -139,16 +136,23 @@ namespace Ara3D.Geometry
             => new ParametricSurface(uv => uv.ToVector3().SetX(self.Eval(uv)), false, false);
     }
 
+    public enum StandardPlane
+    {
+        Xy,
+        Xz,
+        Yz,
+    }
+
     public static class CurveOperations
     {
-        public static ICurve ToCurve3D(this ICurve2D curve, bool closed = false, int axis = 2)
+        public static ICurve ToCurve3D(this ICurve2D curve, StandardPlane plane = StandardPlane.Xy)
         {
-            switch (axis)
+            switch (plane)
             {
-                case 0: return new Curve3D(t => curve.Eval(t).ToVector3().ZXY, closed);
-                case 1: return new Curve3D(t => curve.Eval(t).ToVector3().XZY, closed);
-                case 2: return new Curve3D(t => curve.Eval(t).ToVector3(), closed);
-                default: throw new ArgumentOutOfRangeException(nameof(axis));
+                case StandardPlane.Yz: return new Curve3D(t => curve.Eval(t).ToVector3().ZXY, curve.Closed);
+                case StandardPlane.Xz: return new Curve3D(t => curve.Eval(t).ToVector3().XZY, curve.Closed);
+                case StandardPlane.Xy: return new Curve3D(t => curve.Eval(t).ToVector3(), curve.Closed);
+                default: throw new ArgumentOutOfRangeException(nameof(plane));
             }
         }
     }

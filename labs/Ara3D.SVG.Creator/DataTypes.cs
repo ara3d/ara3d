@@ -23,14 +23,6 @@ public class Position
     public static implicit operator Position(DVector2 v) => new(v.X, v.Y);
 }
 
-public class Angle
-{
-    public double Degrees { get; set; }
-    public Angle(double x) => Degrees = x;
-    public static implicit operator Angle(double x) => new(x);
-    public static implicit operator double(Angle x) => x.Degrees;
-}
-
 public class StrokeWidth
 {
     public double Amount { get; set; }

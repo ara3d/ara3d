@@ -351,7 +351,7 @@ namespace Ara3D.Math.Tests
             Assert.True(MathHelper.Equal(expected, actual), "Vector4f.Lerp did not return the expected value.");
         }
 
-        // A test for Transform (Vector2f, Matrix4x4)
+        // A test for Pose (Vector2f, Matrix4x4)
         [Test]
         public void Vector4TransformTest1()
         {
@@ -369,10 +369,10 @@ namespace Ara3D.Math.Tests
             Vector4 actual;
 
             actual = Mathematics.MathOps.TransformToVector4(v, m);
-            Assert.True(MathHelper.Equal(expected, actual), "Vector4f.Transform did not return the expected value.");
+            Assert.True(MathHelper.Equal(expected, actual), "Vector4f.Pose did not return the expected value.");
         }
 
-        // A test for Transform (Vector3f, Matrix4x4)
+        // A test for Pose (Vector3f, Matrix4x4)
         [Test]
         public void Vector4TransformTest2()
         {
@@ -390,10 +390,10 @@ namespace Ara3D.Math.Tests
             Vector4 actual;
 
             actual = Mathematics.MathOps.TransformToVector4(v, m);
-            Assert.True(MathHelper.Equal(expected, actual), "MathOps.Transform did not return the expected value.");
+            Assert.True(MathHelper.Equal(expected, actual), "MathOps.Pose did not return the expected value.");
         }
 
-        // A test for Transform (Vector4f, Matrix4x4)
+        // A test for Pose (Vector4f, Matrix4x4)
         [Test]
         public void Vector4TransformVector4Test()
         {
@@ -411,18 +411,18 @@ namespace Ara3D.Math.Tests
             Vector4 actual;
 
             actual = Mathematics.MathOps.Transform(v, m);
-            Assert.True(MathHelper.Equal(expected, actual), "Vector4f.Transform did not return the expected value.");
+            Assert.True(MathHelper.Equal(expected, actual), "Vector4f.Pose did not return the expected value.");
 
             // 
             v = v.SetW(1f);
 
             expected = new Vector4(12.19198728f, 21.53349376f, 32.61602545f, 1.0f);
             actual = Mathematics.MathOps.Transform(v, m);
-            Assert.True(MathHelper.Equal(expected, actual), "Vector4f.Transform did not return the expected value.");
+            Assert.True(MathHelper.Equal(expected, actual), "Vector4f.Pose did not return the expected value.");
         }
 
-        // A test for Transform (Vector4f, Matrix4x4)
-        // Transform vector4 with zero matrix
+        // A test for Pose (Vector4f, Matrix4x4)
+        // Pose vector4 with zero matrix
         [Test]
         public void Vector4TransformVector4Test1()
         {
@@ -431,11 +431,11 @@ namespace Ara3D.Math.Tests
             var expected = new Vector4(0, 0, 0, 0);
 
             var actual = Mathematics.MathOps.Transform(v, m);
-            Assert.True(MathHelper.Equal(expected, actual), "Vector4f.Transform did not return the expected value.");
+            Assert.True(MathHelper.Equal(expected, actual), "Vector4f.Pose did not return the expected value.");
         }
 
-        // A test for Transform (Vector4f, Matrix4x4)
-        // Transform vector4 with identity matrix
+        // A test for Pose (Vector4f, Matrix4x4)
+        // Pose vector4 with identity matrix
         [Test]
         public void Vector4TransformVector4Test2()
         {
@@ -444,11 +444,11 @@ namespace Ara3D.Math.Tests
             var expected = new Vector4(1.0f, 2.0f, 3.0f, 0.0f);
 
             var actual = Mathematics.MathOps.Transform(v, m);
-            Assert.True(MathHelper.Equal(expected, actual), "Vector4f.Transform did not return the expected value.");
+            Assert.True(MathHelper.Equal(expected, actual), "Vector4f.Pose did not return the expected value.");
         }
 
-        // A test for Transform (Vector3f, Matrix4x4)
-        // Transform Vector3f test
+        // A test for Pose (Vector3f, Matrix4x4)
+        // Pose Vector3f test
         [Test]
         public void Vector4TransformVector3Test()
         {
@@ -464,11 +464,11 @@ namespace Ara3D.Math.Tests
 
             var expected = Mathematics.MathOps.Transform(new Vector4(v, 1.0f), m);
             var actual = Mathematics.MathOps.TransformToVector4(v, m);
-            Assert.True(MathHelper.Equal(expected, actual), "Vector4f.Transform did not return the expected value.");
+            Assert.True(MathHelper.Equal(expected, actual), "Vector4f.Pose did not return the expected value.");
         }
 
-        // A test for Transform (Vector3f, Matrix4x4)
-        // Transform vector3 with zero matrix
+        // A test for Pose (Vector3f, Matrix4x4)
+        // Pose vector3 with zero matrix
         [Test]
         public void Vector4TransformVector3Test1()
         {
@@ -477,11 +477,11 @@ namespace Ara3D.Math.Tests
             var expected = new Vector4(0, 0, 0, 0);
 
             var actual = Mathematics.MathOps.TransformToVector4(v, m);
-            Assert.True(MathHelper.Equal(expected, actual), "Vector4f.Transform did not return the expected value.");
+            Assert.True(MathHelper.Equal(expected, actual), "Vector4f.Pose did not return the expected value.");
         }
 
-        // A test for Transform (Vector3f, Matrix4x4)
-        // Transform vector3 with identity matrix
+        // A test for Pose (Vector3f, Matrix4x4)
+        // Pose vector3 with identity matrix
         [Test]
         public void Vector4TransformVector3Test2()
         {
@@ -490,11 +490,11 @@ namespace Ara3D.Math.Tests
             var expected = new Vector4(1.0f, 2.0f, 3.0f, 1.0f);
 
             var actual = Mathematics.MathOps.TransformToVector4(v, m);
-            Assert.True(MathHelper.Equal(expected, actual), "Vector4f.Transform did not return the expected value.");
+            Assert.True(MathHelper.Equal(expected, actual), "Vector4f.Pose did not return the expected value.");
         }
 
-        // A test for Transform (Vector2f, Matrix4x4)
-        // Transform Vector2f test
+        // A test for Pose (Vector2f, Matrix4x4)
+        // Pose Vector2f test
         [Test]
         public void Vector4TransformVector2Test()
         {
@@ -510,11 +510,11 @@ namespace Ara3D.Math.Tests
 
             var expected = Mathematics.MathOps.Transform(new Vector4(v, 0.0f, 1.0f), m);
             var actual = Mathematics.MathOps.TransformToVector4(v, m);
-            Assert.True(MathHelper.Equal(expected, actual), "Vector4f.Transform did not return the expected value.");
+            Assert.True(MathHelper.Equal(expected, actual), "Vector4f.Pose did not return the expected value.");
         }
 
-        // A test for Transform (Vector2f, Matrix4x4)
-        // Transform Vector2f with zero matrix
+        // A test for Pose (Vector2f, Matrix4x4)
+        // Pose Vector2f with zero matrix
         [Test]
         public void Vector4TransformVector2Test1()
         {
@@ -523,11 +523,11 @@ namespace Ara3D.Math.Tests
             var expected = new Vector4(0, 0, 0, 0);
 
             var actual = Mathematics.MathOps.TransformToVector4(v, m);
-            Assert.True(MathHelper.Equal(expected, actual), "Vector4f.Transform did not return the expected value.");
+            Assert.True(MathHelper.Equal(expected, actual), "Vector4f.Pose did not return the expected value.");
         }
 
-        // A test for Transform (Vector2f, Matrix4x4)
-        // Transform vector2 with identity matrix
+        // A test for Pose (Vector2f, Matrix4x4)
+        // Pose vector2 with identity matrix
         [Test]
         public void Vector4TransformVector2Test2()
         {
@@ -536,10 +536,10 @@ namespace Ara3D.Math.Tests
             var expected = new Vector4(1.0f, 2.0f, 0, 1.0f);
 
             var actual = Mathematics.MathOps.TransformToVector4(v, m);
-            Assert.True(MathHelper.Equal(expected, actual), "Vector4f.Transform did not return the expected value.");
+            Assert.True(MathHelper.Equal(expected, actual), "Vector4f.Pose did not return the expected value.");
         }
 
-        // A test for Transform (Vector2f, Quaternion)
+        // A test for Pose (Vector2f, Quaternion)
         [Test]
         public void Vector4TransformVector2QuatanionTest()
         {
@@ -556,10 +556,10 @@ namespace Ara3D.Math.Tests
             Vector4 actual;
 
             actual = Mathematics.MathOps.TransformToVector4(v, q);
-            Assert.True(MathHelper.Equal(expected, actual), "Vector4f.Transform did not return the expected value.");
+            Assert.True(MathHelper.Equal(expected, actual), "Vector4f.Pose did not return the expected value.");
         }
 
-        // A test for Transform (Vector3f, Quaternion)
+        // A test for Pose (Vector3f, Quaternion)
         [Test]
         public void Vector4TransformVector3Quaternion()
         {
@@ -575,10 +575,10 @@ namespace Ara3D.Math.Tests
             Vector4 actual;
 
             actual = Mathematics.MathOps.TransformToVector4(v, q);
-            Assert.True(MathHelper.Equal(expected, actual), "MathOps.Transform did not return the expected value.");
+            Assert.True(MathHelper.Equal(expected, actual), "MathOps.Pose did not return the expected value.");
         }
 
-        // A test for Transform (Vector4f, Quaternion)
+        // A test for Pose (Vector4f, Quaternion)
         [Test]
         public void Vector4TransformVector4QuaternionTest()
         {
@@ -594,17 +594,17 @@ namespace Ara3D.Math.Tests
             Vector4 actual;
 
             actual = Mathematics.MathOps.Transform(v, q);
-            Assert.True(MathHelper.Equal(expected, actual), "Vector4f.Transform did not return the expected value.");
+            Assert.True(MathHelper.Equal(expected, actual), "Vector4f.Pose did not return the expected value.");
 
             // 
             v = v.SetW(1f);
             expected = expected.SetW(1f);
             actual = Mathematics.MathOps.Transform(v, q);
-            Assert.True(MathHelper.Equal(expected, actual), "Vector4f.Transform did not return the expected value.");
+            Assert.True(MathHelper.Equal(expected, actual), "Vector4f.Pose did not return the expected value.");
         }
 
-        // A test for Transform (Vector4f, Quaternion)
-        // Transform vector4 with zero quaternion
+        // A test for Pose (Vector4f, Quaternion)
+        // Pose vector4 with zero quaternion
         [Test]
         public void Vector4TransformVector4QuaternionTest1()
         {
@@ -613,11 +613,11 @@ namespace Ara3D.Math.Tests
             var expected = v;
 
             var actual = Mathematics.MathOps.Transform(v, q);
-            Assert.True(MathHelper.Equal(expected, actual), "Vector4f.Transform did not return the expected value.");
+            Assert.True(MathHelper.Equal(expected, actual), "Vector4f.Pose did not return the expected value.");
         }
 
-        // A test for Transform (Vector4f, Quaternion)
-        // Transform vector4 with identity matrix
+        // A test for Pose (Vector4f, Quaternion)
+        // Pose vector4 with identity matrix
         [Test]
         public void Vector4TransformVector4QuaternionTest2()
         {
@@ -626,11 +626,11 @@ namespace Ara3D.Math.Tests
             var expected = new Vector4(1.0f, 2.0f, 3.0f, 0.0f);
 
             var actual = Mathematics.MathOps.Transform(v, q);
-            Assert.True(MathHelper.Equal(expected, actual), "Vector4f.Transform did not return the expected value.");
+            Assert.True(MathHelper.Equal(expected, actual), "Vector4f.Pose did not return the expected value.");
         }
 
-        // A test for Transform (Vector3f, Quaternion)
-        // Transform Vector3f test
+        // A test for Pose (Vector3f, Quaternion)
+        // Pose Vector3f test
         [Test]
         public void Vector4TransformVector3QuaternionTest()
         {
@@ -644,11 +644,11 @@ namespace Ara3D.Math.Tests
 
             var expected = Mathematics.MathOps.TransformToVector4(v, m);
             var actual = Mathematics.MathOps.TransformToVector4(v, q);
-            Assert.True(MathHelper.Equal(expected, actual), "Vector4f.Transform did not return the expected value.");
+            Assert.True(MathHelper.Equal(expected, actual), "Vector4f.Pose did not return the expected value.");
         }
 
-        // A test for Transform (Vector3f, Quaternion)
-        // Transform vector3 with zero quaternion
+        // A test for Pose (Vector3f, Quaternion)
+        // Pose vector3 with zero quaternion
         [Test]
         public void Vector4TransformVector3QuaternionTest1()
         {
@@ -657,11 +657,11 @@ namespace Ara3D.Math.Tests
             var expected = new Vector4(v, 1.0f);
 
             var actual = Mathematics.MathOps.TransformToVector4(v, q);
-            Assert.True(MathHelper.Equal(expected, actual), "Vector4f.Transform did not return the expected value.");
+            Assert.True(MathHelper.Equal(expected, actual), "Vector4f.Pose did not return the expected value.");
         }
 
-        // A test for Transform (Vector3f, Quaternion)
-        // Transform vector3 with identity quaternion
+        // A test for Pose (Vector3f, Quaternion)
+        // Pose vector3 with identity quaternion
         [Test]
         public void Vector4TransformVector3QuaternionTest2()
         {
@@ -670,11 +670,11 @@ namespace Ara3D.Math.Tests
             var expected = new Vector4(1.0f, 2.0f, 3.0f, 1.0f);
 
             var actual = Mathematics.MathOps.TransformToVector4(v, q);
-            Assert.True(MathHelper.Equal(expected, actual), "Vector4f.Transform did not return the expected value.");
+            Assert.True(MathHelper.Equal(expected, actual), "Vector4f.Pose did not return the expected value.");
         }
 
-        // A test for Transform (Vector2f, Quaternion)
-        // Transform Vector2f by quaternion test
+        // A test for Pose (Vector2f, Quaternion)
+        // Pose Vector2f by quaternion test
         [Test]
         public void Vector4TransformVector2QuaternionTest()
         {
@@ -688,11 +688,11 @@ namespace Ara3D.Math.Tests
 
             var expected = Mathematics.MathOps.TransformToVector4(v, m);
             var actual = Mathematics.MathOps.TransformToVector4(v, q);
-            Assert.True(MathHelper.Equal(expected, actual), "Vector4f.Transform did not return the expected value.");
+            Assert.True(MathHelper.Equal(expected, actual), "Vector4f.Pose did not return the expected value.");
         }
 
-        // A test for Transform (Vector2f, Quaternion)
-        // Transform Vector2f with zero quaternion
+        // A test for Pose (Vector2f, Quaternion)
+        // Pose Vector2f with zero quaternion
         [Test]
         public void Vector4TransformVector2QuaternionTest1()
         {
@@ -701,11 +701,11 @@ namespace Ara3D.Math.Tests
             var expected = new Vector4(1.0f, 2.0f, 0, 1.0f);
 
             var actual = Mathematics.MathOps.TransformToVector4(v, q);
-            Assert.True(MathHelper.Equal(expected, actual), "Vector4f.Transform did not return the expected value.");
+            Assert.True(MathHelper.Equal(expected, actual), "Vector4f.Pose did not return the expected value.");
         }
 
-        // A test for Transform (Vector2f, Matrix4x4)
-        // Transform vector2 with identity Quaternion
+        // A test for Pose (Vector2f, Matrix4x4)
+        // Pose vector2 with identity Quaternion
         [Test]
         public void Vector4TransformVector2QuaternionTest2()
         {
@@ -714,7 +714,7 @@ namespace Ara3D.Math.Tests
             var expected = new Vector4(1.0f, 2.0f, 0, 1.0f);
 
             var actual = Mathematics.MathOps.TransformToVector4(v, q);
-            Assert.True(MathHelper.Equal(expected, actual), "Vector4f.Transform did not return the expected value.");
+            Assert.True(MathHelper.Equal(expected, actual), "Vector4f.Pose did not return the expected value.");
         }
 
         // A test for Normalize (Vector4f)

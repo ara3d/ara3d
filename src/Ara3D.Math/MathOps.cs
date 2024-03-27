@@ -22,6 +22,7 @@ namespace Ara3D.Mathematics
         [MethodImpl(MethodImplOptions.AggressiveInlining)] public static double Sqrt(this double x) => System.Math.Sqrt(x);
         [MethodImpl(MethodImplOptions.AggressiveInlining)] public static double Tan(this double x) => System.Math.Tan(x);
         [MethodImpl(MethodImplOptions.AggressiveInlining)] public static double Tanh(this double x) => System.Math.Tanh(x);
+        [MethodImpl(MethodImplOptions.AggressiveInlining)] public static double Cot(this double x) => x.Cos() / x.Sin();
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)] public static float Abs(this float x) => (float)System.Math.Abs(x);
         [MethodImpl(MethodImplOptions.AggressiveInlining)] public static float Acos(this float x) => (float)System.Math.Acos(x);
@@ -36,6 +37,8 @@ namespace Ara3D.Mathematics
         [MethodImpl(MethodImplOptions.AggressiveInlining)] public static float Sqrt(this float x) => (float)System.Math.Sqrt(x);
         [MethodImpl(MethodImplOptions.AggressiveInlining)] public static float Tan(this float x) => (float)System.Math.Tan(x);
         [MethodImpl(MethodImplOptions.AggressiveInlining)] public static float Tanh(this float x) => (float)System.Math.Tanh(x);
+        [MethodImpl(MethodImplOptions.AggressiveInlining)] public static float Cot(this float x) => x.Cos() / x.Sin();
+
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)] public static double Atan2(this double x, double y) => System.Math.Atan2(x, y);
         [MethodImpl(MethodImplOptions.AggressiveInlining)] public static double Log(this double x, double y) => System.Math.Log(x, y);

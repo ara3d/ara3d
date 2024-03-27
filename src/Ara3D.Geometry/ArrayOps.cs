@@ -225,13 +225,19 @@ namespace Ara3D.Geometry
         public static Vector3 Sum(this IArray<Vector3> self) => self.Aggregate(Vector3.Zero, (x, y) => x + y); 
         public static Vector4 Sum(this IArray<Vector4> self) => self.Aggregate(Vector4.Zero, (x, y) => x + y); 
         
-        public static double Average(this IArray<int> self) => self.Sum() / self.Count; 
-        public static double Average(this IArray<long> self) => self.Sum() / self.Count; 
+        public static double Average(this IArray<int> self) => (double)self.Sum() / self.Count; 
+        public static double Average(this IArray<long> self) => (double)self.Sum() / self.Count; 
         public static double Average(this IArray<float> self) => self.Sum() / self.Count; 
         public static double Average(this IArray<double> self) => self.Sum() / self.Count; 
         public static Vector2 Average(this IArray<Vector2> self) => self.Sum() / self.Count; 
         public static Vector3 Average(this IArray<Vector3> self) => self.Sum() / self.Count; 
-        public static Vector4 Average(this IArray<Vector4> self) => self.Sum() / self.Count;     
+        public static Vector4 Average(this IArray<Vector4> self) => self.Sum() / self.Count;
+
+        public static double Average(this IArray<float> self, IArray<float> weights) => self.Zip(weights, (a,b) => a * b).Average();
+        public static double Average(this IArray<double> self, IArray<double> weights) => self.Zip(weights, (a, b) => a * b).Average();
+        public static Vector2 Average(this IArray<Vector2> self, IArray<float> weights) => self.Zip(weights, (a, b) => a * b).Average();
+        public static Vector3 Average(this IArray<Vector3> self, IArray<float> weights) => self.Zip(weights, (a, b) => a * b).Average();
+        public static Vector4 Average(this IArray<Vector4> self, IArray<float> weights) => self.Zip(weights, (a, b) => a * b).Average();
 
         public static double Variance(this IArray<int> self) { var mean = self.Average(); return self.Select(x => MathOps.Sqr(x - mean)).Average(); }
         public static double Variance(this IArray<long> self) { var mean = self.Average(); return self.Select(x => MathOps.Sqr(x - mean)).Average(); }

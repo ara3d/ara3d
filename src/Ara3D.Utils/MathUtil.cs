@@ -67,5 +67,16 @@ namespace Ara3D.Utils
 
         public static bool AlmostEquals(this double x, double y, double tolerance = 1E-15) => (x - y).Abs() <= Math.Max(x.Abs(), y.Abs()) * tolerance;
         public static bool AlmostZero(this double x, double tolerance = 1E-15) => x.AlmostEquals(0.0, tolerance);
+
+        // https://stackoverflow.com/questions/1082917/mod-of-negative-number-is-melting-my-brain
+        // https://learn.microsoft.com/en-gb/archive/blogs/ericlippert/whats-the-difference-remainder-vs-modulus
+        public static int Mod(this int x, int m) => m < 0 ? Mod(x, -m) : (x % m + m) % m;
+        public static int Rem(this int x, int m) => x % m;
+        public static long Mod(this long x, long m) => m < 0 ? Mod(x, -m) : (x % m + m) % m;
+        public static long Rem(this long x, long m) => x % m;
+        public static float Mod(this float x, float m) => m < 0 ? Mod(x, -m) : (x % m + m) % m;
+        public static float Rem(this float x, float m) => x % m;
+        public static double Mod(this double x, double m) => m < 0 ? Mod(x, -m) : (x % m + m) % m;
+        public static double Rem(this double x, double m) => x % m;
     }
 }

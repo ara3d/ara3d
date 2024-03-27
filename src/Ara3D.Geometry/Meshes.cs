@@ -38,7 +38,7 @@ namespace Ara3D.Geometry
     public class TesselatedMesh : PointsGeometry, IQuadMesh
     {
         public TesselatedMesh(IArray<SurfacePoint> points, IArray<Int4> faceIndices)
-            : base(points.Select(p => p.Position))
+            : base(points.Select(p => p.Center))
         {
             Points = points;
             Indices = faceIndices;

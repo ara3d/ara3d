@@ -237,7 +237,7 @@ namespace Ara3D.UnityBridge
             Vector3 scale
         )
         {
-            // Transform space is mirrored on X, and then rotated 90 degrees around X
+            // Pose space is mirrored on X, and then rotated 90 degrees around X
             var p = PositionToUnity(pos);
 
             // Quaternion is mirrored the same way, but then negated via W = -W because that's just easier to read

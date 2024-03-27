@@ -1,5 +1,27 @@
 # Release Notes 
 
+### 2024-03-27
+
+* Added catmull-clark subdivision surface
+* Added weighted average
+* More extension functions for IVertexNeighbourhood
+* Cleaning up the SurfacePoint
+
+### 2024-03-26
+
+* Adding vertex neighbourhoods with helper methods
+* Separating curvature computation into its own class. 
+* Adding proper modulo / remainder.  
+
+### 2024-03-25
+
+* Working on improved organization and definitions of primitives
+* Renamed "transform" to "pose"
+* Adding some implicit operators for converting to Matrix4x4 from pose, quaternion, and vectors. 
+* Adding functions for rotations. I really want to replace "Qyaternion" with rotation.
+* Added some functions for working with references. 
+* Working on more useful surface interpolation functions, including curvature and laplace 
+ 
 ### 2024-03-24
 
 * Created a parametric surface primitive for testing in Unity
@@ -9,6 +31,8 @@
 * Found bug: normals of parametric surface are wrong in the torus  
 * Reorganized the primitive functions.  
 * Started work on Quadray type
+* Found bug: the normals are slightly wrong, should be average in both directions. 
+* Added an angle class. 
 
 ### 2024-03-21
 

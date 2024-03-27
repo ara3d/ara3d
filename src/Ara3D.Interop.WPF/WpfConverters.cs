@@ -60,7 +60,7 @@ public static class WpfConverters
         => new GeometryModel3D(mesh, material) { Transform = transform };
 
     public static Model3D ToWpfModel3D(this MeshGeometry3D mesh, Material material, Matrix4x4 matrix)
-        => new GeometryModel3D(mesh, material);// { Transform = matrix.ToWpfTransform() };
+        => new GeometryModel3D(mesh, material);// { Pose = matrix.ToWpfTransform() };
 
     public static Model3D ToWpfModel3D(this MeshGeometry3D mesh, Material material)
         => new GeometryModel3D(mesh, material);

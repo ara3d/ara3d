@@ -151,6 +151,12 @@ namespace Ara3D.Mathematics
         public Vector3 ToVector3()
             => new Vector3(X, Y, 0);
 
+        public DVector3 ToDVector3()
+            => new DVector3(X, Y, 0);
+
+        public DVector2 ToDVector2()
+            => new DVector2(X, Y);
+
         public static implicit operator Vector3(Vector2 self)
             => self.ToVector3();
 
@@ -198,6 +204,9 @@ namespace Ara3D.Mathematics
     {
         public Vector2 Vector2
             => new Vector2((float)X, (float)Y);
+
+        public DVector3 DVector3
+            => (X, Y, 0);
     }
 
     public partial struct DVector3
@@ -236,48 +245,81 @@ namespace Ara3D.Mathematics
             => new DVector4(X, Y, Z, W);
     }
 
-    public partial struct Transform
+    public partial struct Pose
     {
-        public static Transform Identity => new Transform(Vector3.Zero, Quaternion.Identity);
+        public static Pose Identity => new Pose(Vector3.Zero, Quaternion.Identity);
+
+        public static implicit operator Pose(Vector3 position)
+            => (position, Quaternion.Identity);
+
+        public static implicit operator Pose(Quaternion rotation)
+            => (Vector3.Zero, rotation);
+
+        public static implicit operator Matrix4x4(Pose pose)
+            => Matrix4x4.CreateTranslationRotation(pose.Position, pose.Orientation);
+
+        public static Pose Create(Vector3 position, Vector3 forward, Vector3 normal)
+            => (position, Quaternion.CreateRotationFromAToB(forward, normal));
+
+        public static Pose operator -(Pose a, Pose b)
+            => (a.Position - b.Position, a.Orientation.RotationalDifference(b.Orientation));
+    }
+
+    /// <summary>
+    /// Defined as a location, a forward vector and an up vector.
+    /// Facilitates converting between different coordinate systems, particularly when scale is not concerned. 
+    /// By default the 2D plane is assumed to have the Y-axis "(0,1)" as up
+    /// and the X-axis "(1,0)" as the right vector. 
+    /// This implies that the negative Z axis is forward "(0,0,-1)".
+    /// We imagine shapes on the 2D plane as if they are on a sheet of paper.  
+    /// The forward and up vector are assumed to be orthogonal,
+    /// or at least non-parallel. If they are parallel then the reference frame will choose one arbitrary arbitrary 
+    /// </summary>
+    public partial struct ReferenceFrame
+    {
+        public ReferenceFrame Normalize()
+            => (Position, Forward.Normalize(), Up.Normalize());
+
+        public static ReferenceFrame Default2D 
+            = new ReferenceFrame(Vector3.Zero, -Vector3.UnitZ, Vector3.UnitY);
+
+        public Vector3 Right
+            => Forward.Cross(Up).Normalize();
+
+        public Quaternion GetRotation(Vector3 newForwardVector)
+            => Quaternion.CreateRotationFromAToB(Forward, newForwardVector);
+
+        public Vector3 Align(Vector2 v)
+            => v.ToVector3().Transform(GetAlignmentMatrix2DPlane());
+
+        public ReferenceFrame CreateNormalized(Vector3 position, Vector3 forward, Vector3 up)
+            => (position, forward.Normalize(), up.Normalize());
+
+        public Pose GetAlignmentPoseFrom2DPlane()
+            => (Position, Default2D.GetRotation(Up));
+
+        public Matrix4x4 GetAlignmentMatrix2DPlane()
+            => GetAlignmentPoseFrom2DPlane();
     }
 
     public partial struct HorizontalCoordinate
     {
         public static implicit operator DVector2(HorizontalCoordinate angle)
-            => new DVector2(angle.Azimuth, angle.Inclination);
+            => (angle.Azimuth, angle.Inclination);
 
         public static explicit operator Vector2(HorizontalCoordinate angle)
-            => new Vector2((float)angle.Azimuth, (float)angle.Inclination);
+            => ((float)angle.Azimuth, (float)angle.Inclination);
 
         public static implicit operator HorizontalCoordinate(DVector2 vector)
-            => new HorizontalCoordinate(vector.X, vector.Y);
+            => (vector.X, vector.Y);
 
         public static implicit operator HorizontalCoordinate(Vector2 vector)
-            => new HorizontalCoordinate(vector.X, vector.Y);
+            => (vector.X, vector.Y);
     }
 
     public partial struct Interval
     {
         public float Lerp(float amount)
             => Min.Lerp(Max, amount);
-    }
-
-    public static class MovementExtensions
-    {
-        /*
-        public static Vector3 ComputeFrictionVector(this LinearMotion motion)
-        {
-            var f = motion.Velocity.Normalize() * motion.Friction;
-            if (f.LengthSquared() > f.)
-
-        public static LinearMotion Update(this LinearMotion self, float amount)
-            => self.SetVelocity(self.Velocity + self.Acceleration * amount - self.Velocity * self.Friction * amount);
-
-        public static AngularMotion Update(this AngularMotion self, float amount)
-            => self.SetVelocity(self.Velocity + self.Acceleration * amount - self.Velocity.Normalize() * self.Friction * amount);
-
-        public static Motion Update(this Motion self, float amount)
-            => self.SetLinear(self.Linear.Update(amount)).SetAngular(self.Angular.Update(amount));
-        */
     }
 }

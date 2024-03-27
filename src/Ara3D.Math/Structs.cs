@@ -1161,34 +1161,65 @@ namespace Ara3D.Mathematics
     }
     [StructLayout(LayoutKind.Sequential, Pack=4)]
     [DataContract]
-    public readonly partial struct Transform 
-        : IEquatable< Transform >
+    public readonly partial struct Pose 
+        : IEquatable< Pose >
     {
         [DataMember]
         public readonly Vector3 Position;
         [DataMember]
         public readonly Quaternion Orientation;
-        [MethodImpl(MethodImplOptions.AggressiveInlining)] public Transform((Vector3 position, Quaternion orientation) tuple) : this(tuple.position, tuple.orientation) { }
-        [MethodImpl(MethodImplOptions.AggressiveInlining)] public Transform(Vector3 position, Quaternion orientation) { Position = position; Orientation = orientation; }
-        [MethodImpl(MethodImplOptions.AggressiveInlining)] public static Transform Create(Vector3 position, Quaternion orientation) => new Transform(position, orientation);
-        [MethodImpl(MethodImplOptions.AggressiveInlining)] public static Transform Create((Vector3 position, Quaternion orientation) tuple) => new Transform(tuple);
-        [MethodImpl(MethodImplOptions.AggressiveInlining)] public override bool Equals(object obj) => obj is Transform x && Equals(x);
+        [MethodImpl(MethodImplOptions.AggressiveInlining)] public Pose((Vector3 position, Quaternion orientation) tuple) : this(tuple.position, tuple.orientation) { }
+        [MethodImpl(MethodImplOptions.AggressiveInlining)] public Pose(Vector3 position, Quaternion orientation) { Position = position; Orientation = orientation; }
+        [MethodImpl(MethodImplOptions.AggressiveInlining)] public static Pose Create(Vector3 position, Quaternion orientation) => new Pose(position, orientation);
+        [MethodImpl(MethodImplOptions.AggressiveInlining)] public static Pose Create((Vector3 position, Quaternion orientation) tuple) => new Pose(tuple);
+        [MethodImpl(MethodImplOptions.AggressiveInlining)] public override bool Equals(object obj) => obj is Pose x && Equals(x);
         [MethodImpl(MethodImplOptions.AggressiveInlining)] public override int GetHashCode() => Hash.Combine(Position.GetHashCode(), Orientation.GetHashCode());
-        [MethodImpl(MethodImplOptions.AggressiveInlining)] public override string ToString() => $"Transform(Position = {Position}, Orientation = {Orientation})";
+        [MethodImpl(MethodImplOptions.AggressiveInlining)] public override string ToString() => $"Pose(Position = {Position}, Orientation = {Orientation})";
         [MethodImpl(MethodImplOptions.AggressiveInlining)] public void Deconstruct(out Vector3 position, out Quaternion orientation) {position = Position; orientation = Orientation; }
-        [MethodImpl(MethodImplOptions.AggressiveInlining)] public bool Equals(Transform x) => Position == x.Position && Orientation == x.Orientation;
-        [MethodImpl(MethodImplOptions.AggressiveInlining)] public static bool operator ==(Transform x0, Transform x1) => x0.Equals(x1);
-        [MethodImpl(MethodImplOptions.AggressiveInlining)] public static bool operator !=(Transform x0, Transform x1) => !x0.Equals(x1);
-        [MethodImpl(MethodImplOptions.AggressiveInlining)] public static implicit operator Transform((Vector3 position, Quaternion orientation) tuple) => new Transform(tuple);
-        [MethodImpl(MethodImplOptions.AggressiveInlining)] public static implicit operator (Vector3 position, Quaternion orientation)(Transform self) => (self.Position, self.Orientation);
+        [MethodImpl(MethodImplOptions.AggressiveInlining)] public bool Equals(Pose x) => Position == x.Position && Orientation == x.Orientation;
+        [MethodImpl(MethodImplOptions.AggressiveInlining)] public static bool operator ==(Pose x0, Pose x1) => x0.Equals(x1);
+        [MethodImpl(MethodImplOptions.AggressiveInlining)] public static bool operator !=(Pose x0, Pose x1) => !x0.Equals(x1);
+        [MethodImpl(MethodImplOptions.AggressiveInlining)] public static implicit operator Pose((Vector3 position, Quaternion orientation) tuple) => new Pose(tuple);
+        [MethodImpl(MethodImplOptions.AggressiveInlining)] public static implicit operator (Vector3 position, Quaternion orientation)(Pose self) => (self.Position, self.Orientation);
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)] public bool AlmostEquals(Transform x, float tolerance = Constants.Tolerance) => Position.AlmostEquals(x.Position, tolerance) && Orientation.AlmostEquals(x.Orientation, tolerance);
-        public static Transform Zero = new Transform(default, default);
-        public static Transform MinValue = new Transform(Vector3.MinValue, Quaternion.MinValue);
-        public static Transform MaxValue = new Transform(Vector3.MaxValue, Quaternion.MaxValue);
-        [MethodImpl(MethodImplOptions.AggressiveInlining)] public Transform SetPosition(Vector3 x) => new Transform(x, Orientation);
-        [MethodImpl(MethodImplOptions.AggressiveInlining)] public Transform SetOrientation(Quaternion x) => new Transform(Position, x);
+        [MethodImpl(MethodImplOptions.AggressiveInlining)] public bool AlmostEquals(Pose x, float tolerance = Constants.Tolerance) => Position.AlmostEquals(x.Position, tolerance) && Orientation.AlmostEquals(x.Orientation, tolerance);
+        public static Pose Zero = new Pose(default, default);
+        public static Pose MinValue = new Pose(Vector3.MinValue, Quaternion.MinValue);
+        public static Pose MaxValue = new Pose(Vector3.MaxValue, Quaternion.MaxValue);
+        [MethodImpl(MethodImplOptions.AggressiveInlining)] public Pose SetPosition(Vector3 x) => new Pose(x, Orientation);
+        [MethodImpl(MethodImplOptions.AggressiveInlining)] public Pose SetOrientation(Quaternion x) => new Pose(Position, x);
     }
+    [StructLayout(LayoutKind.Sequential, Pack = 4)]
+    [DataContract]
+    public readonly partial struct ReferenceFrame
+        : IEquatable<ReferenceFrame>
+    {
+        [DataMember]
+        public readonly Vector3 Position;
+        [DataMember]
+        public readonly Vector3 Forward;
+        [DataMember]
+        public readonly Vector3 Up;
+        [MethodImpl(MethodImplOptions.AggressiveInlining)] public ReferenceFrame((Vector3 position, Vector3 forward, Vector3 up) tuple) : this(tuple.position, tuple.forward, tuple.up) { }
+        [MethodImpl(MethodImplOptions.AggressiveInlining)] public ReferenceFrame(Vector3 position, Vector3 forward, Vector3 up) { Position = position; Forward = forward; Up = up; }
+        [MethodImpl(MethodImplOptions.AggressiveInlining)] public static ReferenceFrame Create(Vector3 position, Vector3 forward, Vector3 up) => new ReferenceFrame (position, forward, up);
+        [MethodImpl(MethodImplOptions.AggressiveInlining)] public static ReferenceFrame Create((Vector3 position, Vector3 forward, Vector3 up) tuple) => new ReferenceFrame (tuple);
+        [MethodImpl(MethodImplOptions.AggressiveInlining)] public override bool Equals(object obj) => obj is ReferenceFrame  x && Equals(x);
+        [MethodImpl(MethodImplOptions.AggressiveInlining)] public override int GetHashCode() => Hash.Combine(Position.GetHashCode(), Forward.GetHashCode(), Up.GetHashCode());
+        [MethodImpl(MethodImplOptions.AggressiveInlining)] public override string ToString() => $"ReferenceFrame (Position = {Position}, Forward = {Forward}, Up = {Up})";
+        [MethodImpl(MethodImplOptions.AggressiveInlining)] public void Deconstruct(out Vector3 position, out Vector3 forward, out Vector3 up) { position = Position; forward = Forward; up = Up; }
+        [MethodImpl(MethodImplOptions.AggressiveInlining)] public bool Equals(ReferenceFrame  x) => Position == x.Position && Forward == x.Forward && Up == x.Up;
+        [MethodImpl(MethodImplOptions.AggressiveInlining)] public static bool operator ==(ReferenceFrame  x0, ReferenceFrame  x1) => x0.Equals(x1);
+        [MethodImpl(MethodImplOptions.AggressiveInlining)] public static bool operator !=(ReferenceFrame  x0, ReferenceFrame  x1) => !x0.Equals(x1);
+        [MethodImpl(MethodImplOptions.AggressiveInlining)] public static implicit operator ReferenceFrame ((Vector3 position, Vector3 forward, Vector3 up) tuple) => new ReferenceFrame (tuple);
+        [MethodImpl(MethodImplOptions.AggressiveInlining)] public static implicit operator (Vector3 position, Vector3 forward, Vector3 up)(ReferenceFrame  self) => (self.Position, self.Forward, self.Up);
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)] public bool AlmostEquals(ReferenceFrame  x, float tolerance = Constants.Tolerance) => Position.AlmostEquals(x.Position, tolerance) && Forward.AlmostEquals(x.Forward, tolerance) && Up.AlmostEquals(x.Up, tolerance);
+        [MethodImpl(MethodImplOptions.AggressiveInlining)] public ReferenceFrame SetPosition(Vector3 x) => new ReferenceFrame (x, Forward, Up);
+        [MethodImpl(MethodImplOptions.AggressiveInlining)] public ReferenceFrame SetForward(Vector3 x) => new ReferenceFrame (Position, x, Up);
+        [MethodImpl(MethodImplOptions.AggressiveInlining)] public ReferenceFrame SetUp(Vector3 x) => new ReferenceFrame(Position, Forward, x);
+    }
+
     [StructLayout(LayoutKind.Sequential, Pack=4)]
     [DataContract]
     public readonly partial struct Line 

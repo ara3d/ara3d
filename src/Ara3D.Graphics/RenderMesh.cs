@@ -156,7 +156,7 @@ namespace Ara3D.Graphics
                         Verifier.AssertEquals(buffer.PrimitiveType, PrimitiveType.Float32);
                         Verifier.AssertEquals(buffer.Arity, 3);
                         Verifier.AssertEquals(buffer.Association, ElementAssociation.Vertex);
-                        Verifier.Assert(PositionBuffer == null, "Position buffer is already assigned");
+                        Verifier.Assert(PositionBuffer == null, "Center buffer is already assigned");
                         PositionBuffer = buffer.CastTo<Vector3>();
                         break;
                     }

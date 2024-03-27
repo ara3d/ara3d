@@ -1,6 +1,9 @@
 ﻿using Ara3D.Geometry;
+using Ara3D.Mathematics;
 using Ara3D.UnityBridge;
 using UnityEngine;
+using Vector2 = Ara3D.Mathematics.Vector2;
+using Vector3 = Ara3D.Mathematics.Vector3;
 
 [ExecuteAlways]
 public class ParametricSurfaceObject : ProceduralGeometryObject
@@ -33,7 +36,7 @@ public class ParametricSurfaceObject : ProceduralGeometryObject
     [Range(-1, 1)]
     public float VOffset = 0;
 
-    public Ara3D.Mathematics.Vector3 Eval(Ara3D.Mathematics.Vector2 uv)
+    public Vector3 Eval(Vector2 uv)
     {
         uv *= (URange, VRange);
         uv += (UOffset, VOffset);
@@ -41,30 +44,30 @@ public class ParametricSurfaceObject : ProceduralGeometryObject
         switch (Type)
         {
             case GeometryType.Sphere:
-                return PrimitiveFunctions.Sphere(uv);
+                return PrimitiveSurfaceFunctions.Sphere(uv);
 
             case GeometryType.Cylinder:
-                return PrimitiveFunctions.Cylinder(uv);
+                return PrimitiveSurfaceFunctions.Cylinder(uv);
             
             case GeometryType.Cone:
-                return PrimitiveFunctions.Conical(uv, 1, 0);
+                return PrimitiveSurfaceFunctions.ConicalSection(uv, 1, 0);
             
             case GeometryType.Plane:
-                return uv.ToVector3();
+                return uv.Plane();
 
             case GeometryType.Torus:
-                return PrimitiveFunctions.Torus(uv, 5, 1);
+                return PrimitiveSurfaceFunctions.Torus(uv, 5, 1);
             
             case GeometryType.Disc:
-                return PrimitiveFunctions.Disc(uv);
+                return PrimitiveSurfaceFunctions.Disc(uv);
 
             default:
-                return uv.ToVector3();
+                return uv;
         }
     }
     public override ITriMesh ComputeMesh()
     {
-        return new ParametricSurface(Eval, ClosedU, ClosedV)
+        return new ParametricSurface(uv => Eval(uv), ClosedU, ClosedV)
             .Tesselate(USegments, VSegments)
             .Triangulate();
     }
