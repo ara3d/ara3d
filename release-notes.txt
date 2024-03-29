@@ -1,11 +1,20 @@
 # Release Notes 
 
+### 2024-03-28
+
+* Improved tessellation algorithm 
+* Writing a proper Json deserialization library 
+* Working on the Git tool
+
 ### 2024-03-27
 
 * Added catmull-clark subdivision surface
 * Added weighted average
 * More extension functions for IVertexNeighbourhood
 * Cleaning up the SurfacePoint
+* Github API querying code 
+* Improving the tessellation code and Primtive shapes. 
+* Fixed bug in torus. 
 
 ### 2024-03-26
 

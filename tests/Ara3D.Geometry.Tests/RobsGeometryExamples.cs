@@ -179,8 +179,8 @@ public static class RobsGeometryExamples
     public static IArray<T> Sample<T>(this ICurve<T> curve, int n, bool includeEndPoint = true)
     {
         var xs = includeEndPoint 
-            ? n.SampleZeroToOneInclusive() 
-            : n.SampleZeroToOneExclusive();
+            ? n.InterpolateInclusive() 
+            : n.InterpolateExclusive();
         return xs.Select(curve.Eval);
     }
 

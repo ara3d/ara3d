@@ -74,4 +74,5 @@ namespace Ara3D.Parsing.Markdown
         public MdHeader(int level, MdText content)
             : base(content) => (Level, Content) = (level, content);
     }
+
 }

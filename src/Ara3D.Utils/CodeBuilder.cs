@@ -103,11 +103,11 @@ namespace Ara3D.Utils
         public T WriteSpace()
             => Write(" ");
 
-        public T WriteStartBlock()
-            => WriteLine("{").Indent();
+        public T WriteStartBlock(string delim = "{")
+            => WriteLine(delim).Indent();
 
-        public T WriteEndBlock()
-            => Dedent().WriteLine("}");
+        public T WriteEndBlock(string delim = "}")
+            => Dedent().WriteLine(delim);
     }
 
     public class CodeBuilder : CodeBuilder<CodeBuilder>

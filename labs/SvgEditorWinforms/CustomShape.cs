@@ -15,7 +15,7 @@ namespace SvgEditorWinForms
 
         public override SvgElement ToSvg()
         {
-            var ts = TeethCount.SampleZeroToOneExclusive();
+            var ts = TeethCount.InterpolateExclusive();
             var innerPoints = ts.Select(t => t.Circle() * InnerRadius + Position).ToList();
             var outerPoints = ts.Select(t => t.Circle() * OuterRadius + Position).ToList();
             var pts = new SvgPointCollection();

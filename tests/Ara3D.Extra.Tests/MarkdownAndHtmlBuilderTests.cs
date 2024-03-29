@@ -50,5 +50,16 @@ namespace Ara3D.Extra.Tests
             var p = new MarkdownBlockParser(markdown);
             return p.Document.ToHtml();
         }
+
+        public static IEnumerable<string> GetAllLinkedUrls(FilePath filePath)
+        {
+            var markdown = filePath.ReadAllText();
+            var p = new MarkdownBlockParser(markdown);
+            if (!p.Parser.Succeeded) throw new Exception("Failed to parse markdown");
+            foreach (var tb in p.Document.GetAllTextBlocks())
+            {
+                var 
+            }
+        }
     }
 }

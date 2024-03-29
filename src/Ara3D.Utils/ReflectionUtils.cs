@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
@@ -6,7 +7,6 @@ using System.Runtime.InteropServices;
 
 namespace Ara3D.Utils
 {
-
     public static class ReflectionUtils
     {
         /// <summary>
@@ -52,7 +52,37 @@ namespace Ara3D.Utils
                && typeSrc != typeof(decimal)
                && typeSrc != typeof(bool);
 
+        /// <summary>
+        /// Returns true if the object is not null and can be safely cast to a double. 
+        /// </summary>
+        public static bool CanCastToDouble(this object o)
+            => o != null && o.GetType().CanCastToDouble();
 
+        /// <summary>
+        /// Returns the associated double value, or throws an exception if not possible. 
+        /// </summary>
+        public static double CastToDouble(this object o)
+        {
+            switch (o)
+            {
+                case int n: return n;
+                case uint un: return un;
+                case long l: return l;
+                case ulong ul: return ul;
+                case byte b: return b;
+                case sbyte sb: return sb;
+                case short s: return s;
+                case ushort un: return un;
+                case float f: return f;
+                case double d: return d;
+            }
+            throw new Exception($"Cannot cast object {o} to double");
+        }
+
+        /// <summary>
+        /// Returns all loaded types of in the current domain. 
+        /// </summary>
+        /// <returns></returns>
         public static IEnumerable<Type> GetAllTypes()
             => AppDomain.CurrentDomain.GetAssemblies().SelectMany(asm => asm.GetTypes()).Distinct();
 
@@ -62,17 +92,12 @@ namespace Ara3D.Utils
 
         public static IEnumerable<Type> GetAllSubclassesOf(Assembly asm, Type t)
             => asm.GetTypes().Where(x => x.IsSubclassOf(t));
-
-
+        
         public static IEnumerable<Assembly> GetReferencedAssemblies(this Type type)
-        {
-            yield return type.Assembly;
-
-            foreach (var assemblyName in type.Assembly.GetReferencedAssemblies())
-            {
-                yield return Assembly.ReflectionOnlyLoad(assemblyName.FullName);
-            }
-        }
+            => type.Assembly
+                .GetReferencedAssemblies()
+                .Select(asmName => Assembly.ReflectionOnlyLoad(asmName.FullName))
+                .Append(type.Assembly);
 
         // https://stackoverflow.com/questions/1582510/get-paths-of-assemblies-used-in-type
         public static IEnumerable<string> GetReferencedAssemblyPaths(this Type type)
@@ -80,7 +105,6 @@ namespace Ara3D.Utils
 
         public static IEnumerable<MethodInfo> GetMethodsWithAttribute(this Type type, Type attrType)
             => type.GetMethods().Where(m => m.GetCustomAttributes(attrType, false).Length > 0);
-
 
         /// <summary>
         /// Converts properties to an enumerable of strings.
@@ -117,16 +141,50 @@ namespace Ara3D.Utils
             => self.GetFields(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
 
         /// <summary>
-        /// Converts fields to a dictionary of Vstring/object pair.
+        /// Converts fields to a dictionary of string/object pair.
         /// </summary>
-        public static IDictionary<string, object> FieldsToDictionary(this object self)
+        public static IReadOnlyDictionary<string, object> PublicFieldsToDictionary(this object self)
             => self.GetType().GetFields(BindingFlags.Public | BindingFlags.Instance)
                 .ToDictionary(fi => fi.Name, fi => fi.GetValue(self));
 
         /// <summary>
+        /// The convention used by the C# compiler to name the backing field.
+        /// Warning this is a hack, and could change between implementations 
+        /// </summary>
+        public static string BackingFieldName(string name)
+            => $"<{name}>k__BackingField";
+
+        /// <summary>
+        /// A hacky method based on C# compiler implementation details
+        /// to retrieve the backing field for a property, if one exists. 
+        /// https://stackoverflow.com/questions/8817070/is-it-possible-to-access-backing-fields-behind-auto-implemented-properties
+        /// </summary>
+        public static FieldInfo GetBackingField(this PropertyInfo pi)
+            => pi.DeclaringType.GetField(BackingFieldName(pi.Name));
+
+        /// <summary>
+        /// Returns true if a backing field is found. Not reliable. 
+        /// </summary>
+        public static bool HasBackingField(this PropertyInfo pi)
+            => pi.GetBackingField() != null;
+
+        /// <summary>
         /// Converts properties to a dictionary of string/object pair.
         /// </summary>
-        public static IDictionary<string, object> PropertiesToDictionary(this object self)
+        public static IReadOnlyDictionary<string, object> PublicFieldBackedPropertiesToDictionary(this object self)
+            => self.GetType().GetProperties(BindingFlags.Public | BindingFlags.Instance)
+                .ToDictionary(fi => fi.Name, fi => fi.GetValue(self));
+
+        /// <summary>
+        /// Converts fields to a dictionary of string/object pair.
+        /// </summary>
+        public static IDictionary<string, object> PublicFieldsAndFieldBackedPropertiesToDictionary(this object self)
+            => self.PublicFieldsToDictionary().ConcatDictionaries(self.PublicFieldBackedPropertiesToDictionary());
+
+        /// <summary>
+        /// Converts properties to a dictionary of string/object pair.
+        /// </summary>
+        public static IReadOnlyDictionary<string, object> PropertiesToDictionary(this object self)
             => self.GetType().GetProperties(BindingFlags.Public | BindingFlags.Instance)
                 .ToDictionary(fi => fi.Name, fi => fi.GetValue(self));
 
@@ -148,6 +206,10 @@ namespace Ara3D.Utils
         public static Action InvokableMethod(this MethodInfo mi, object self, params object[] args)
             => () => mi.Invoke(self, args);
 
+        /// <summary>
+        /// The integer index of an enum type. The "value" is assumed to be an enum value.
+        /// Note that enums values are different from their index. 
+        /// </summary>
         public static int GetEnumIndex(this Type type, object value)
         {
             if (!type.IsEnum)
@@ -161,12 +223,35 @@ namespace Ara3D.Utils
             return -1;
         }
 
+        /// <summary>
+        /// Given the type of an enum, returns the nth associated value. 
+        /// </summary>
         public static object GetEnumValue(this Type type, int index)
         {
             if (!type.IsEnum)
                 throw new Exception("Required an enum type");
             var vals = Enum.GetValues(type);
             return vals.GetValue(index);
+        }
+
+        /// <summary>
+        /// Convenience method, which is the inverse of Type.IsAssignableFrom 
+        /// </summary>
+        public static bool IsAssignableTo(this Type type, Type other)
+            => other.IsAssignableFrom(type);
+
+        /// <summary>
+        /// Returns an enumerator by calling "GetEnumerator" if present on the object.
+        /// This is more or less how LINQ does it. 
+        /// </summary>
+        public static IEnumerator GetEnumerator(this object o)
+        {
+            if (o == null) return null;
+            var t = o.GetType();
+            var m = t.GetMethod(nameof(GetEnumerator));
+            if (m != null && m.ReturnType.IsAssignableTo(typeof(IEnumerator)))
+                return (IEnumerator)m.Invoke(o, Array.Empty<object>());
+            return null;
         }
     }
 }

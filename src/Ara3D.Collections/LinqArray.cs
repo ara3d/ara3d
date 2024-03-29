@@ -1010,5 +1010,8 @@ namespace Ara3D.Collections
                 return self;
             return self.SetElementAt(index, value);
         }
+
+        public static IArray<V> CartesianProduct<T, U, V>(this IArray<T> self, IArray<U> other, Func<T, U, V> func)
+            => self.SelectMany(x => other.Select(y => func(x, y)));
     }
 }

@@ -35,6 +35,12 @@ namespace Ara3D.Geometry
         { }
     }
 
+    public class Procedural2D<T> : Procedural<T, Vector2>
+    {
+        public Procedural2D(Func<T, Vector2> func) : base(func)
+        { }
+    }
+
     public static class Procedurals
     {
 

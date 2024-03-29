@@ -2,7 +2,6 @@
 using Ara3D.Parakeet;
 using Ara3D.Parakeet.Cst;
 using Ara3D.Parakeet.Grammars;
-using Ara3D.Utils;
 
 namespace Ara3D.Parsing
 {
@@ -19,6 +18,8 @@ namespace Ara3D.Parsing
 
         public static Parser MarkdownInlineParser(ParserInput input, ILogger logger = null)
             => new Parser(input, MarkdownInlineGrammar.Instance.StartRule, AllCstFactories.MarkdownInline, logger);
-
+            
+        public static Parser JsonParser(ParserInput input, ILogger logger = null)
+            => new Parser(input, JsonGrammar.Instance.StartRule, null, logger);
     }
 }

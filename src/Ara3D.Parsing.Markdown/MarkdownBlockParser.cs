@@ -31,6 +31,5 @@ namespace Ara3D.Parsing.Markdown
 
         public ParserInput Input { get; }
         public Parser Parser { get; }
-        public CstNode Cst => Parser.Cst;
     }
 }

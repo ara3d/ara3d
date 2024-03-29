@@ -11,11 +11,8 @@ namespace Ara3D.Geometry
         public static ParametricSurface Torus(float r1, float r2)
             => new ParametricSurface(uv => uv.Torus(r1, r2), true, true);
 
-        public static ParametricSurface CreateExplicitSurface(Func<Vector2, float> f)
-            => new ParametricSurface(uv => uv.ToVector3().SetZ(f(uv)), false, false);
-
         public static ParametricSurface MonkeySaddle
-            => CreateExplicitSurface(PrimitiveSurfaceFunctions.MonkeySaddle);
+            => new ParametricSurface(PrimitiveSurfaceFunctions.MonkeySaddle, false, false);
 
         public static ParametricSurface Plane
             => new ParametricSurface(PrimitiveSurfaceFunctions.Plane, false, false);

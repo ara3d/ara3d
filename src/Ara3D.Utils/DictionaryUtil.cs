@@ -4,7 +4,10 @@ using System.Linq;
 namespace Ara3D.Utils
 {
     /// <summary>
-    /// Helper functions for working dictionaries. 
+    /// Helper functions for working with dictionary classes,
+    /// in particular immutable dictionaries, and enumerable key-value pairs.
+    /// Note that both IDictionary and IReadOnlyDictionary support IEnumerable&lt;KeyValuePair>.
+    /// NOTE: KeyValuePair is so unfortunate, I wish it was a value tuple. 
     /// </summary>
     public static class DictionaryUtil
     {
@@ -28,5 +31,21 @@ namespace Ara3D.Utils
         public static IReadOnlyDictionary<TKey, TValue> Clear<TKey, TValue>(
             this IReadOnlyDictionary<TKey, TValue> self)
             => new Dictionary<TKey, TValue>();
+
+        public static IDictionary<TKey, TValue> ConcatDictionaries<TKey, TValue>(
+            this IEnumerable<KeyValuePair<TKey, TValue>> self, IEnumerable<KeyValuePair<TKey, TValue>> other)
+            => self.ToDictionary().AddOrUpdate(other);
+
+        public static IDictionary<TKey, TValue> AddOrUpdate<TKey, TValue>(
+            this IDictionary<TKey, TValue> self, IEnumerable<KeyValuePair<TKey, TValue>> other)
+        {
+            foreach (var kv in other)
+                self[kv.Key] = kv.Value;
+            return self;
+        }
+
+        public static IDictionary<TKey, TValue> ToDictionary<TKey, TValue>(
+            this IEnumerable<KeyValuePair<TKey, TValue>> keyValues)
+            => keyValues.ToDictionary(kv => kv.Key, kv => kv.Value);
     }
 }

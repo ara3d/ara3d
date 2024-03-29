@@ -105,11 +105,12 @@ namespace Ara3D.Geometry
         public static Vector3 LerpAlongVector(this Vector3 v, Vector3 direction, float t)
             => v.Lerp(v + direction, t);
 
-        public static IParametricSurface Extrude(this ICurve profile, Vector3 vector)
+        public static IParametricSurface Extrude(this ICurve3D profile, Vector3 vector)
             => Create((uv) => profile.Eval(uv.X).LerpAlongVector(vector, uv.Y), profile.Closed, false);
 
         // TODO: this needs to be finished. 
-        public static IParametricSurface Loft(this ICurve profile, IOrientedCurve path)
+        // TODO: we n eed an orientation 
+        public static IParametricSurface Loft(this ICurve3D profile, ICurve3D path)
             => throw new NotImplementedException();
 
         public static float Epsilon => 1 / 1000000f;
@@ -145,7 +146,7 @@ namespace Ara3D.Geometry
 
     public static class CurveOperations
     {
-        public static ICurve ToCurve3D(this ICurve2D curve, StandardPlane plane = StandardPlane.Xy)
+        public static ICurve3D ToCurve3D(this ICurve2D curve, StandardPlane plane = StandardPlane.Xy)
         {
             switch (plane)
             {

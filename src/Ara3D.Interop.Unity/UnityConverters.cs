@@ -141,11 +141,11 @@ namespace Ara3D.UnityBridge
         public static Mesh UpdateMesh(this Mesh mesh, IArray<Vector3> vertices, IArray<int> indices, int pointsPerFace)
         {
             mesh.Clear(false);
-            mesh.indexFormat = vertices.Count > ushort.MaxValue
-                ? IndexFormat.UInt32
-                : IndexFormat.UInt16;
+            mesh.indexFormat = IndexFormat.UInt32;
             mesh.UpdateMeshVertices(vertices);
             mesh.UpdateMeshIndices(indices, pointsPerFace);
+
+            // TODO: pass in the normals. 
             mesh.RecalculateNormals();
             return mesh;
         }

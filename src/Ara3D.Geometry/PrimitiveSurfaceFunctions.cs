@@ -10,18 +10,21 @@ namespace Ara3D.Geometry
         public static Vector3 Sphere(Angle u, Angle v) 
             => (-u.Cos * v.Sin, v.Cos, u.Sin * v.Sin);
 
+        // https://en.wikipedia.org/wiki/Torus#Geometry
         public static Vector3 Torus(this Vector2 uv, float r1, float r2)
             => Torus(uv.X.Turns(), uv.Y.Turns(), r1, r2);
 
-        // https://en.wikipedia.org/wiki/Torus#Geometry
         public static Vector3 Torus(Angle u, Angle v, float r1, float r2)
             => ((r1 + r2 * u.Cos) * v.Cos,
                 (r1 + r2 * u.Cos) * v.Sin,
-                r2 * v.Sin);
+                r2 * u.Sin);
 
         // https://en.wikipedia.org/wiki/Monkey_saddle
-        public static float MonkeySaddle(this Vector2 uv)           
+        public static float ExplicitMonkeySaddle(this Vector2 uv)           
             => uv.X.Cube() - 3 * uv.X * uv.Y.Sqr();
+
+        public static Vector3 MonkeySaddle(this Vector2 uv)
+            => uv.ToVector3().SetZ(ExplicitMonkeySaddle(uv));
 
         public static Vector3 Plane(this Vector2 uv)
             => (uv.X, uv.Y, 0);

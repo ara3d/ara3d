@@ -27,20 +27,23 @@ namespace Ara3D.Geometry
         public static AABox BoundingBox(this IArray<Vector3> vertices)
             => AABox.Create(vertices.ToEnumerable());
 
-        public static IArray<float> SampleZeroToOneInclusive(this int count)
+        public static IArray<float> Interpolate(this int count)
+            => InterpolateExclusive(count);
+
+        public static IArray<float> InterpolateInclusive(this int count)
             => count <= 0
                 ? LinqArray.Empty<float>()
                 : count == 1
                     ? LinqArray.Create(0f)
                     : count.Select(i => i / (float)(count - 1));
 
-        public static IArray<float> SampleZeroToOneExclusive(this int count)
+        public static IArray<float> InterpolateExclusive(this int count)
             => count <= 0
                 ? LinqArray.Empty<float>()
                 : count.Select(i => i / (float)count);
 
         public static IArray<Vector3> InterpolateInclusive(this int count, Func<float, Vector3> function)
-            => count.SampleZeroToOneInclusive().Select(function);
+            => count.InterpolateInclusive().Select(function);
 
         public static IArray<Vector3> Interpolate(this Line self, int count)
             => count.InterpolateInclusive(self.Lerp);

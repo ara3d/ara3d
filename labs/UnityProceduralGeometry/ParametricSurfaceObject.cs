@@ -1,5 +1,4 @@
 ﻿using Ara3D.Geometry;
-using Ara3D.Mathematics;
 using Ara3D.UnityBridge;
 using UnityEngine;
 using Vector2 = Ara3D.Mathematics.Vector2;
@@ -16,24 +15,26 @@ public class ParametricSurfaceObject : ProceduralGeometryObject
         Sphere,
         Cylinder,
         Cone,
+        HalfCone,
         Plane,
         Torus,
         Disc,
+        MonkeySaddle,
+        Trefoil,
+
     }
 
     public GeometryType Type = GeometryType.Sphere;
 
     public bool ClosedU = false;
     public bool ClosedV = false;
-
-    [Range(0,1)]
+    [Range(-2,2)]
     public float URange = 1;
-    [Range(0, 1)]
+    [Range(-2, 2)]
     public float VRange = 1f;
-
-    [Range(-1, 1)]
+    [Range(-2, 2)]
     public float UOffset = 0;
-    [Range(-1, 1)]
+    [Range(-2, 2)]
     public float VOffset = 0;
 
     public Vector3 Eval(Vector2 uv)
@@ -51,15 +52,24 @@ public class ParametricSurfaceObject : ProceduralGeometryObject
             
             case GeometryType.Cone:
                 return PrimitiveSurfaceFunctions.ConicalSection(uv, 1, 0);
-            
+
+            case GeometryType.HalfCone:
+                return PrimitiveSurfaceFunctions.ConicalSection(uv, 1, 0.5f);
+
             case GeometryType.Plane:
                 return uv.Plane();
 
             case GeometryType.Torus:
-                return PrimitiveSurfaceFunctions.Torus(uv, 5, 1);
+                return PrimitiveSurfaceFunctions.Torus(uv, 1, 0.2f);
             
             case GeometryType.Disc:
                 return PrimitiveSurfaceFunctions.Disc(uv);
+
+            case GeometryType.MonkeySaddle:
+                return PrimitiveSurfaceFunctions.MonkeySaddle(uv);
+
+            case GeometryType.Trefoil:
+                return PrimitiveSurfaceFunctions.Trefoil(uv, 0.2f);
 
             default:
                 return uv;

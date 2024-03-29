@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -182,5 +183,18 @@ namespace Ara3D.Utils
         /// </summary>
         public static (IEnumerable<T>, IEnumerable<T>) Split<T>(this IEnumerable<T> self, Func<T, bool> f)
             => (self.Where(f), self.WhereNot(f));
+
+
+        /// <summary>
+        /// Converts a generic IEnumerator into a list by applying a function transforming objects.
+        /// Note that this modifies the enumerator. It can only be used once! 
+        /// </summary>
+        public static IList<T> ToList<T>(this IEnumerator self, Func<object, T> func)
+        {
+            var tmp = new List<T>();
+            while (self.MoveNext())
+                tmp.Add(func(self.Current));
+            return tmp;
+        }
     }
 }

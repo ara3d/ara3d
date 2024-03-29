@@ -15,35 +15,32 @@ namespace Ara3D.Geometry
         public static IArray<float> VerticesAsFloats(this ITriMesh triMesh)
             => triMesh.Points.SelectMany(v => Tuple.Create(v.X, v.Y, v.Z));
 
-        // TODO: this should be in IArray
-        public static IArray<float> SampleFloats(this int n, float max = 1f)
-            => n == 1 ? 0f.Unit() : n.Select(i => i * max / (n - 1));
-
-        // TODO: this should be in IArray
-        public static IArray<V> CartesianProduct<T, U, V>(this IArray<T> self, IArray<U> other, Func<T, U, V> func)
-            => self.SelectMany(x => other.Select(y => func(x, y)));
-
         public static TesselatedMesh Tesselate(this IParametricSurface parametricSurface, int cols, int rows = 0)
         {
             if (cols <= 0) throw new ArgumentOutOfRangeException(nameof(cols));
             if (rows <= 0) rows = cols;
-            var nx = parametricSurface.ClosedX ? cols - 1 : cols;
-            var ny = parametricSurface.ClosedY ? rows - 1 : rows;
-            var us = nx.SampleFloats();
-            var vs = ny.SampleFloats();
+            var nx = parametricSurface.ClosedX ? cols : cols + 1;
+            var ny = parametricSurface.ClosedY ? rows : rows + 1;
+            var us = parametricSurface.ClosedX 
+                ? nx.InterpolateExclusive() 
+                : nx.InterpolateInclusive();
+            var vs = parametricSurface.ClosedY 
+                ? ny.InterpolateExclusive() 
+                : ny.InterpolateInclusive();
             var uvs = vs.CartesianProduct(us, (v, u) => new Vector2(u, v));
             var vertices = uvs.Select(parametricSurface.GetPoint);
 
+            // Note: row = y = v and col = x = u
             Int4 QuadMeshFaceVertices(int row, int col)
             {
-                var a = row * cols + col;
-                var b = row * cols + (col + 1) % us.Count;
-                var c = (row + 1) % rows * cols + (col + 1) % vs.Count;
-                var d = (row + 1) % rows * cols + col;
+                var a = row * nx + col;
+                var b = row * nx + (col + 1) % nx;
+                var c = (row + 1) % ny * nx + (col + 1) % nx;
+                var d = (row + 1) % ny * nx + col;
                 return (a, b, c, d);
             }
 
-            var faceVertices = (rows - 1).Range().CartesianProduct((cols - 1).Range(), QuadMeshFaceVertices);
+            var faceVertices = rows.Range().CartesianProduct(cols.Range(), QuadMeshFaceVertices);
             return new TesselatedMesh(vertices, faceVertices);
         }
 

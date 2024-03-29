@@ -5,6 +5,7 @@ namespace Ara3D.Geometry
     /// <summary>
     /// Based on
     /// https://rodolphe-vaillant.fr/entry/33/curvature-of-a-triangle-mesh-definition-and-computation 
+    /// https://computergraphics.stackexchange.com/questions/1718/what-is-the-simplest-way-to-compute-principal-curvature-for-a-mesh-triangle/1719
     /// </summary>
     public class VertexCurvatureAnalysis
     {
