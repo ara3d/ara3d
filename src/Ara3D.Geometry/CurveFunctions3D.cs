@@ -2,7 +2,7 @@
 
 namespace Ara3D.Geometry
 {
-    public static class PrimitiveCurveFunctions3D
+    public static class CurveFunctions3D
     {
         public static Vector3 Circle3D(this float t)
             => t.Turns().Circle3D();
@@ -28,8 +28,14 @@ namespace Ara3D.Geometry
 
         // https://en.wikipedia.org/wiki/Figure-eight_knot_(mathematics)
         public static Vector3 FigureEightKnot(this Angle t)
-            => ((2 + (2 * t).Cos) * ((3 * t).Cos),
-                (2 + (2 * t).Cos) * ((3 * t).Sin),
+            => ((2 + (2 * t).Cos) * (3 * t).Cos,
+                (2 + (2 * t).Cos) * (3 * t).Sin,
                 (4 * t).Sin);
+
+        // https://en.wikipedia.org/wiki/Parametric_equation#Helix
+        public static Vector3 Helix(this float t, float revolutions)
+            => (t.Turns().Sin * revolutions, 
+                t.Turns().Cos * revolutions,
+                t);
     }
 }

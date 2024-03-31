@@ -14,7 +14,7 @@ namespace Ara3D.Mathematics
         public static double Ln(this double x)
             => System.Math.Log(x);
 
-        public static double Lerp(this double v1, double v2, double t) 
+        public static double Lerp(this double v1, double v2, double t)
             => v1 + (v2 - v1) * t;
 
         /// <summary>
@@ -40,9 +40,9 @@ namespace Ara3D.Mathematics
             double amountSquared = amount * amount;
             var amountCubed = amountSquared * amount;
             return (float)(0.5 * (2.0 * value2 +
-                (value3 - value1) * amount +
-                (2.0 * value1 - 5.0 * value2 + 4.0 * value3 - value4) * amountSquared +
-                (3.0 * value2 - value1 - 3.0 * value3 + value4) * amountCubed));
+                                  (value3 - value1) * amount +
+                                  (2.0 * value1 - 5.0 * value2 + 4.0 * value3 - value4) * amountSquared +
+                                  (3.0 * value2 - value1 - 3.0 * value3 + value4) * amountCubed));
         }
 
         /// <summary>
@@ -68,9 +68,9 @@ namespace Ara3D.Mathematics
             else
             {
                 result = (2 * v1 - 2 * v2 + t2 + t1) * sCubed +
-                    (3 * v2 - 3 * v1 - 2 * t1 - t2) * sSquared +
-                    t1 * s +
-                    v1;
+                         (3 * v2 - 3 * v1 - 2 * t1 - t2) * sSquared +
+                         t1 * s +
+                         v1;
             }
 
             return (float)result;
@@ -138,7 +138,9 @@ namespace Ara3D.Mathematics
                 ret[j + 13] = matrixArray[i].M42;
                 ret[j + 14] = matrixArray[i].M43;
                 ret[j + 15] = matrixArray[i].M44;
-            };
+            }
+
+            ;
 
             return ret;
         }
@@ -158,11 +160,11 @@ namespace Ara3D.Mathematics
             {
                 var i16 = i * 16;
                 ret[i] = new Matrix4x4(
-                    m[i16 + 0], m[i16 + 1], m[i16 + 2], m[i16 + 3], 
-                    m[i16 + 4], m[i16 + 5], m[i16 + 6], m[i16 + 7], 
-                    m[i16 + 8], m[i16 + 9], m[i16 + 10], m[i16 + 11], 
+                    m[i16 + 0], m[i16 + 1], m[i16 + 2], m[i16 + 3],
+                    m[i16 + 4], m[i16 + 5], m[i16 + 6], m[i16 + 7],
+                    m[i16 + 8], m[i16 + 9], m[i16 + 10], m[i16 + 11],
                     m[i16 + 12], m[i16 + 13], m[i16 + 14], m[i16 + 15]
-                    );
+                );
             }
 
             return ret;
@@ -181,7 +183,7 @@ namespace Ara3D.Mathematics
                 ret[i] = new AABox(
                     new Vector3(m[i6 + 0], m[i6 + 1], m[i6 + 2]),
                     new Vector3(m[i6 + 3], m[i6 + 4], m[i6 + 5])
-                    );
+                );
             }
 
             return ret;
@@ -245,15 +247,33 @@ namespace Ara3D.Mathematics
                 value.X * (xz2 - wy2) + value.Y * (yz2 + wx2) + value.Z * (1.0f - xx2 - yy2),
                 value.W);
         }
-        [MethodImpl(MethodImplOptions.AggressiveInlining)] public static Vector2 ToVector2(this float v) => new Vector2(v);
-        [MethodImpl(MethodImplOptions.AggressiveInlining)] public static Vector2 ToVector2(this Vector3 v) => new Vector2(v.X, v.Y);
-        [MethodImpl(MethodImplOptions.AggressiveInlining)] public static Vector2 ToVector2(this Vector4 v) => new Vector2(v.X, v.Y);
-        [MethodImpl(MethodImplOptions.AggressiveInlining)] public static Vector3 ToVector3(this float v) => new Vector3(v);
-        [MethodImpl(MethodImplOptions.AggressiveInlining)] public static Vector3 ToVector3(this Vector2 v) => new Vector3(v.X, v.Y, 0);
-        [MethodImpl(MethodImplOptions.AggressiveInlining)] public static Vector3 ToVector3(this Vector4 v) => new Vector3(v.X, v.Y, v.Z);
-        [MethodImpl(MethodImplOptions.AggressiveInlining)] public static Vector4 ToVector4(this float v) => new Vector4(v);
-        [MethodImpl(MethodImplOptions.AggressiveInlining)] public static Vector4 ToVector4(this Vector2 v) => new Vector4(v.X, v.Y, 0, 0);
-        [MethodImpl(MethodImplOptions.AggressiveInlining)] public static Vector4 ToVector4(this Vector3 v) => new Vector4(v.X, v.Y, v.Z, 0);
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Vector2 ToVector2(this float v) => new Vector2(v);
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Vector2 ToVector2(this Vector3 v) => new Vector2(v.X, v.Y);
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Vector2 ToVector2(this Vector4 v) => new Vector2(v.X, v.Y);
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Vector3 ToVector3(this float v) => new Vector3(v);
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Vector3 ToVector3(this Vector2 v) => new Vector3(v.X, v.Y, 0);
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Vector3 ToVector3(this Vector4 v) => new Vector3(v.X, v.Y, v.Z);
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Vector4 ToVector4(this float v) => new Vector4(v);
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Vector4 ToVector4(this Vector2 v) => new Vector4(v.X, v.Y, 0, 0);
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Vector4 ToVector4(this Vector3 v) => new Vector4(v.X, v.Y, v.Z, 0);
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Vector3 Rotate(this Vector3 self, Vector3 axis, float angle)
@@ -315,28 +335,44 @@ namespace Ara3D.Mathematics
         /// Creates a new <see cref="Vector3"/> that contains CatmullRom interpolation of the specified vectors.
         /// </summary>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Vector3 CatmullRom(this Vector3 value1, Vector3 value2, Vector3 value3, Vector3 value4, float amount) =>
-            new Vector3(value1.X.CatmullRom(value2.X, value3.X, value4.X, amount), value1.Y.CatmullRom(value2.Y, value3.Y, value4.Y, amount), value1.Z.CatmullRom(value2.Z, value3.Z, value4.Z, amount));
+        public static Vector3 CatmullRom(this Vector3 value1, Vector3 value2, Vector3 value3, Vector3 value4,
+            float amount) =>
+            new Vector3(value1.X.CatmullRom(value2.X, value3.X, value4.X, amount),
+                value1.Y.CatmullRom(value2.Y, value3.Y, value4.Y, amount),
+                value1.Z.CatmullRom(value2.Z, value3.Z, value4.Z, amount));
 
         /// <summary>
         /// Creates a new <see cref="Vector3"/> that contains hermite spline interpolation.
         /// </summary>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Vector3 Hermite(this Vector3 value1, Vector3 tangent1, Vector3 value2, Vector3 tangent2, float amount) =>
-            new Vector3(value1.X.Hermite(tangent1.X, value2.X, tangent2.X, amount), value1.Y.Hermite(tangent1.Y, value2.Y, tangent2.Y, amount), value1.Z.Hermite(tangent1.Z, value2.Z, tangent2.Z, amount));
+        public static Vector3 Hermite(this Vector3 value1, Vector3 tangent1, Vector3 value2, Vector3 tangent2,
+            float amount) =>
+            new Vector3(value1.X.Hermite(tangent1.X, value2.X, tangent2.X, amount),
+                value1.Y.Hermite(tangent1.Y, value2.Y, tangent2.Y, amount),
+                value1.Z.Hermite(tangent1.Z, value2.Z, tangent2.Z, amount));
 
         /// <summary>
         /// Creates a new <see cref="Vector3"/> that contains cubic interpolation of the specified vectors.
         /// </summary>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Vector3 SmoothStep(this Vector3 value1, Vector3 value2, float amount) =>
-            new Vector3(value1.X.SmoothStep(value2.X, amount), value1.Y.SmoothStep(value2.Y, amount), value1.Z.SmoothStep(value2.Z, amount));
+            new Vector3(value1.X.SmoothStep(value2.X, amount), value1.Y.SmoothStep(value2.Y, amount),
+                value1.Z.SmoothStep(value2.Z, amount));
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)] public static Line ToLine(this Vector3 v) => new Line(Vector3.Zero, v);
-        [MethodImpl(MethodImplOptions.AggressiveInlining)] public static Vector3 Along(this Vector3 v, float d) => v.Normalize() * d;
-        [MethodImpl(MethodImplOptions.AggressiveInlining)] public static Vector3 AlongX(this float self) => Vector3.UnitX * self;
-        [MethodImpl(MethodImplOptions.AggressiveInlining)] public static Vector3 AlongY(this float self) => Vector3.UnitY * self;
-        [MethodImpl(MethodImplOptions.AggressiveInlining)] public static Vector3 AlongZ(this float self) => Vector3.UnitX * self;
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Line ToLine(this Vector3 v) => new Line(Vector3.Zero, v);
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Vector3 Along(this Vector3 v, float d) => v.Normalize() * d;
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Vector3 AlongX(this float self) => Vector3.UnitX * self;
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Vector3 AlongY(this float self) => Vector3.UnitY * self;
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Vector3 AlongZ(this float self) => Vector3.UnitX * self;
 
         /// <summary>
         /// Transforms a vector by the given Quaternion rotation value.
@@ -363,7 +399,7 @@ namespace Ara3D.Mathematics
                 value.X * (xy2 + wz2) + value.Y * (1.0f - xx2 - zz2) + value.Z * (yz2 - wx2),
                 value.X * (xz2 - wy2) + value.Y * (yz2 + wx2) + value.Z * (1.0f - xx2 - yy2));
         }
-        
+
         /// <summary>
         /// Returns the reflection of a vector off a surface that has the specified normal.
         /// </summary>
@@ -405,7 +441,7 @@ namespace Ara3D.Mathematics
                 normal.X * matrix.M11 + normal.Y * matrix.M21 + normal.Z * matrix.M31,
                 normal.X * matrix.M12 + normal.Y * matrix.M22 + normal.Z * matrix.M32,
                 normal.X * matrix.M13 + normal.Y * matrix.M23 + normal.Z * matrix.M33
-                );
+            );
 
         /// <summary>
         /// Transforms a vector normal by the given matrix.
@@ -417,7 +453,7 @@ namespace Ara3D.Mathematics
                 normal.X * matrix.M12 + normal.Y * matrix.M22 + normal.Z * matrix.M32 + normal.W * matrix.M42,
                 normal.X * matrix.M13 + normal.Y * matrix.M23 + normal.Z * matrix.M33 + normal.W * matrix.M43,
                 normal.X * matrix.M14 + normal.Y * matrix.M24 + normal.Z * matrix.M34 + normal.W * matrix.M44
-                );
+            );
 
         /// <summary>
         /// Transforms a vector by the given Quaternion rotation value.
@@ -439,6 +475,7 @@ namespace Ara3D.Mathematics
                 value.X * (1.0f - yy2 - zz2) + value.Y * (xy2 - wz2),
                 value.X * (xy2 + wz2) + value.Y * (1.0f - xx2 - zz2));
         }
+
         /// <summary>
         /// Transforms a vector by the given Quaternion rotation value.
         /// </summary>

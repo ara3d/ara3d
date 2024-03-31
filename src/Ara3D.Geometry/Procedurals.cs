@@ -9,7 +9,7 @@ namespace Ara3D.Geometry
     }
 
     public interface IColorGradient : IProcedural<float, Vector4> { }
-    public interface IHeightMap : IExplicitSurface { }
+    public interface IHeightMap : IProcedural<Vector2, float> { }
     public interface IDistanceField2D : IProcedural<Vector2, float> { }
     public interface IVectorField2D : IProcedural<Vector2, Vector2> { }
 

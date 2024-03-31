@@ -18,10 +18,10 @@ public class SamplePrimitiveGeometry : ProceduralGeometryObject
     {
         switch (Type)
         {
-            case GeometryType.Square: return Primitives.Square.Triangulate();
-            case GeometryType.Cube: return Primitives.Cube.Triangulate();
-            case GeometryType.Tetrahedron: return Primitives.Tetrahedron;
-            case GeometryType.Octahedron: return Primitives.Octahedron;
+            case GeometryType.Square: return Meshes.Square.Triangulate();
+            case GeometryType.Cube: return Meshes.Cube.Triangulate();
+            case GeometryType.Tetrahedron: return Meshes.Tetrahedron;
+            case GeometryType.Octahedron: return Meshes.Octahedron;
         }
         return null;
     }

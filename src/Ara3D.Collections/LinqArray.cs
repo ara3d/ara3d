@@ -241,7 +241,7 @@ namespace Ara3D.Collections
             => self.Count.Select(f);
 
         /// <summary>
-        /// Converts an array of array into a flattened array. Each array is assumed to be of size n.
+        /// Converts an array of array into a flattened array. Each array is assumed to be of size stride.
         /// </summary>
         public static IArray<T> Flatten<T>(this IArray<IArray<T>> self, int n)
             => Select(self.Count * n, i => self[i / n][i % n]);
@@ -473,7 +473,7 @@ namespace Ara3D.Collections
             => Aggregate(self, default, func);
 
         /// <summary>
-        /// Returns a new array containing the elements in the range of from to to.
+        /// Returns a new array containing the elements in the range of from to to
         /// </summary>
         public static IArray<T> Slice<T>(this IArray<T> self, int from, int to)
             => Select(to - from, i => self[i + from]);
@@ -500,7 +500,7 @@ namespace Ara3D.Collections
                 : self.SubArraysFixed(size).Append(self.TakeLast(self.Count % size));
 
         /// <summary>
-        /// Returns n elements of the list starting from a given index.
+        /// Returns stride elements of the list starting from a given index.
         /// </summary>
         public static IArray<T> SubArray<T>(this IArray<T> self, int from, int count)
             => self.Slice(from, count + from);
@@ -509,40 +509,46 @@ namespace Ara3D.Collections
         /// Returns elements of the array between from and skipping every stride element.
         /// </summary>
         public static IArray<T> Slice<T>(this IArray<T> self, int from, int to, int stride)
-            => Select(to - from / stride, i => self[i * stride + from]);
+            => Select((to - from) / stride, i => self[i * stride + from]);
 
         /// <summary>
         /// Returns a new array containing the elements by taking every nth item.
         /// </summary>
-        public static IArray<T> Stride<T>(this IArray<T> self, int n)
-            => Select(self.Count / n, i => self[i * n % self.Count]);
+        public static IArray<T> Stride<T>(this IArray<T> self, int stride)
+            => self.Stride(0, stride);
 
         /// <summary>
-        /// Returns a new array containing just the first n items.
+        /// Returns a new array containing the elements by taking every nth item.
+        /// </summary>
+        public static IArray<T> Stride<T>(this IArray<T> self, int from, int stride)
+            => Select((self.Count - from) / stride, i => self[from + i * stride]);
+
+        /// <summary>
+        /// Returns a new array containing just the first stride items.
         /// </summary>
         public static IArray<T> Take<T>(this IArray<T> self, int n)
             => self.Slice(0, n);
 
         /// <summary>
-        /// Returns a new array containing just at most n items.
+        /// Returns a new array containing just at most stride items.
         /// </summary>
         public static IArray<T> TakeAtMost<T>(this IArray<T> self, int n)
             => self.Count > n ? self.Slice(0, n) : self;
 
         /// <summary>
-        /// Returns a new array containing the elements after the first n elements.
+        /// Returns a new array containing the elements after the first stride elements.
         /// </summary>
         public static IArray<T> Skip<T>(this IArray<T> self, int n = 1)
             => self.Slice(n, self.Count);
 
         /// <summary>
-        /// Returns a new array containing the last n elements.
+        /// Returns a new array containing the last stride elements.
         /// </summary>
         public static IArray<T> TakeLast<T>(this IArray<T> self, int n = 1)
             => self.Skip(self.Count - n);
 
         /// <summary>
-        /// Returns a new array containing all elements excluding the last n elements.
+        /// Returns a new array containing all elements excluding the last stride elements.
         /// </summary>
         public static IArray<T> DropLast<T>(this IArray<T> self, int n = 1)
             => self.Count > n ? self.Take(self.Count - n) : self.Empty();
@@ -691,13 +697,13 @@ namespace Ara3D.Collections
             => (self.Count + 1).Select(i => i == 0 ? x : self[i - 1]);
 
         /// <summary>
-        /// Returns the element at the nth position, where n is modulo the number of items in the arrays.
+        /// Returns the element at the nth position, where stride is modulo the number of items in the arrays.
         /// </summary>
         public static T ElementAt<T>(this IArray<T> self, int n)
             => self[n];
 
         /// <summary>
-        /// Returns the element at the nth position, where n is modulo the number of items in the arrays.
+        /// Returns the element at the nth position, where stride is modulo the number of items in the arrays.
         /// </summary>
         public static T ElementAtModulo<T>(this IArray<T> self, int n)
             => self.ElementAt((n % self.Count + self.Count) % self.Count);
@@ -1011,7 +1017,35 @@ namespace Ara3D.Collections
             return self.SetElementAt(index, value);
         }
 
-        public static IArray<V> CartesianProduct<T, U, V>(this IArray<T> self, IArray<U> other, Func<T, U, V> func)
-            => self.SelectMany(x => other.Select(y => func(x, y)));
+        public static IArray2D<V> CartesianProduct<T, U, V>(this IArray<T> self, IArray<U> other, Func<T, U, V> func)
+            => self.SelectMany(x => other.Select(y => func(x, y))).ToArray2D(self.Count, other.Count);
+
+        public static int BinarySearch<T>(this IArray<T> self, Func<T, int> compare)
+            => self.Count == 0 ? -1 : BinarySearchIndex(self, i => compare(self[i]), 0, self.Count - 1);
+
+        /// <summary>
+        /// Returns the highest index for which the comparison of f(self[index]) <= 0
+        /// If f(xs[0]) < 0 returns -1
+        /// </summary>
+        public static int BinarySearchIndex<T>(this IArray<T> self, Func<int, int> compare)
+            => self.Count == 0 ? -1 : BinarySearchIndex(self, compare, 0, self.Count - 1);
+
+        /// <summary>
+        /// Returns the highest index for which the comparison of f(self[index]) <= 0
+        /// If f(xs[0]) < 0 returns -1
+        /// </summary>
+        public static int BinarySearchIndex<T>(this IArray<T> self, Func<int, int> compare, int min, int max)
+        {
+            var cnt = max - min;
+            if (cnt <= 0)
+                return min - 1;
+            var mid = min + cnt / 2;
+            var tmp = compare(mid);
+            if (tmp == 0)
+                return mid;
+            if (tmp < 0)
+                return self.BinarySearchIndex(compare, min, mid - 1);
+            return self.BinarySearchIndex(compare, mid + 1, max);
+        }
     }
 }

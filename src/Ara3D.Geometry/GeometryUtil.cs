@@ -194,5 +194,38 @@ namespace Ara3D.Geometry
             return (p - closestPoint).Length();
         }
 
+
+        /// <summary>
+        /// Given an array size, and a value from 0 to 1.0 indicate a relative position on the array will return
+        /// The lower bounding index (upper bound is index + 1) and a new value from 0 to 1.0 for the purpose of interpolation.
+        /// If the value is out of bounds the array is either treated as circular, or the first or last pair of
+        /// values.  
+        /// </summary>
+        public static (int, double) InterpolateArraySize(int count, double amount, bool circular)
+        {
+            if (count < 2) throw new Exception("Can only interpolate arrays of size 2 or more");
+            var n = circular ? count + 1 : count;
+            var index = n * amount;
+            var lower = Math.Floor(index);
+            var upper = Math.Ceiling(index);
+            if (!circular)
+            {
+                // We need to clamp the lower index and the upper index
+                if (lower < 0)
+                {
+                    var delta = -lower;
+                    lower += delta;
+                    upper += delta;
+                }
+                else if (upper >= count)
+                {
+                    var delta = upper - (count - 1);
+                    lower -= delta;
+                    upper -= delta;
+                }
+            }
+            var rel = (index - lower);
+            return ((int)lower, (int)upper, rel);
+        }
     }
 }

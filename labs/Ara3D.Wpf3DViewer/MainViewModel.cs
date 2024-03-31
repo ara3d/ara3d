@@ -145,7 +145,7 @@ namespace Wpf3DViewer
 
         public void CreateTorus()
         {
-            var torus = Primitives.TorusMesh(20, 5, 100, 20);
+            var torus = Meshes.TorusMesh(20, 5, 100, 20);
             var material = new DiffuseMaterial(Brushes.ForestGreen);
             CurrentModel = torus.ToMeshGeometry3D().ToWpfModel3D(material);
         }

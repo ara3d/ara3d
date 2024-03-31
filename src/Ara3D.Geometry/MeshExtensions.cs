@@ -7,30 +7,33 @@ using Ara3D.Utils;
 
 namespace Ara3D.Geometry
 {
-    public static class MeshExtensions
+    /// <summary>
+    /// This class is used for sampling parameterized surfaces and computing quad-mesh strip indices.
+    /// Note that the members are computed on demand, so be careful about over-computation. 
+    /// x == column == u, y == row == v
+    /// </summary>
+    public class SurfaceDiscretization
     {
-        public static IArray<int> Indices(this ITriMesh triMesh)
-            => triMesh.Indices.SelectMany(f => LinqArray.Create(f.X, f.Y, f.Z));
+        public IArray<float> Xs { get; }
+        public IArray<float> Ys { get; }
+        public IArray2D<Vector2> Uvs { get; }
+        public bool ClosedX { get; }
+        public bool ClosedY { get; }
+        public IArray2D<Int4> Indices { get; }
 
-        public static IArray<float> VerticesAsFloats(this ITriMesh triMesh)
-            => triMesh.Points.SelectMany(v => Tuple.Create(v.X, v.Y, v.Z));
-
-        public static TesselatedMesh Tesselate(this IParametricSurface parametricSurface, int cols, int rows = 0)
+        public SurfaceDiscretization(int nColumns, int nRows, bool closedX, bool closedY)
         {
-            if (cols <= 0) throw new ArgumentOutOfRangeException(nameof(cols));
-            if (rows <= 0) rows = cols;
-            var nx = parametricSurface.ClosedX ? cols : cols + 1;
-            var ny = parametricSurface.ClosedY ? rows : rows + 1;
-            var us = parametricSurface.ClosedX 
-                ? nx.InterpolateExclusive() 
-                : nx.InterpolateInclusive();
-            var vs = parametricSurface.ClosedY 
-                ? ny.InterpolateExclusive() 
-                : ny.InterpolateInclusive();
-            var uvs = vs.CartesianProduct(us, (v, u) => new Vector2(u, v));
-            var vertices = uvs.Select(parametricSurface.GetPoint);
+            ClosedX = closedX;
+            ClosedY = closedY;
+            
+            var nx = nColumns + (closedX ? 0 : 1);
+            var ny = nRows + (closedY ? 0 : 1);
 
-            // Note: row = y = v and col = x = u
+            Xs = closedX ? nx.InterpolateExclusive() : nx.InterpolateInclusive();
+            Ys = closedY ? ny.InterpolateExclusive() : ny.InterpolateInclusive();
+            
+            Uvs = Ys.CartesianProduct(Xs, (v, u) => new Vector2(u, v));
+
             Int4 QuadMeshFaceVertices(int row, int col)
             {
                 var a = row * nx + col;
@@ -40,7 +43,29 @@ namespace Ara3D.Geometry
                 return (a, b, c, d);
             }
 
-            var faceVertices = rows.Range().CartesianProduct(cols.Range(), QuadMeshFaceVertices);
+            Indices = nRows.Range().CartesianProduct(nColumns.Range(), QuadMeshFaceVertices);
+        }
+    }
+
+
+    public static class MeshExtensions
+    {
+        public static QuadMesh QuadMesh(this IArray2D<Vector3> points, bool closedX, bool closedY)
+        {
+
+        }
+
+        public static IArray<int> Indices(this ITriMesh triMesh)
+            => triMesh.Indices.SelectMany(f => LinqArray.Create(f.X, f.Y, f.Z));
+
+        public static IArray<float> VerticesAsFloats(this ITriMesh triMesh)
+            => triMesh.Points.SelectMany(v => Tuple.Create(v.X, v.Y, v.Z));
+
+        public static TesselatedMesh Tesselate(this IParametricSurface parametricSurface, int cols, int rows = 0)
+        {
+            var discreteSurface = new SurfaceDiscretization(cols, rows, parametricSurface.ClosedX, parametricSurface.ClosedY);
+            var vertices = discreteSurface.Uvs.Select(parametricSurface.GetPoint).Evaluate();
+            var faceVertices = discreteSurface.Indices.Evaluate();
             return new TesselatedMesh(vertices, faceVertices);
         }
 

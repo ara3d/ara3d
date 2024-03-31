@@ -1,11 +1,27 @@
 # Release Notes 
 
+### 2024-03-31
+
+* Prisms
+* Ruled geometry
+* Cleaning up of geometry library
+* Greatest common divisor algorithm 
+* Relative prime function 
+* Wrote algorithsm for regular star polygons, and regular star figures 
+* Improved code for discretization of geometry 
+* Created grid mesh class and functions for creating quad strips 
+* Interpolation of array 
+* 2D Array code 
+
 ### 2024-03-28
 
-* Improved tessellation algorithm 
-* Writing a proper Json deserialization library 
+* Fixed tessellation algorithm 
+* Writing a Json deserialization library 
 * Working on the Git tool
-
+* Added a JsonBuilder class
+* Improved some of the reflection code
+* Added more functions for working with dictionaries 
+ 
 ### 2024-03-27
 
 * Added catmull-clark subdivision surface

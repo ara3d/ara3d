@@ -45,31 +45,31 @@ public class ParametricSurfaceObject : ProceduralGeometryObject
         switch (Type)
         {
             case GeometryType.Sphere:
-                return PrimitiveSurfaceFunctions.Sphere(uv);
+                return SurfaceFunctions.Sphere(uv);
 
             case GeometryType.Cylinder:
-                return PrimitiveSurfaceFunctions.Cylinder(uv);
+                return SurfaceFunctions.Cylinder(uv);
             
             case GeometryType.Cone:
-                return PrimitiveSurfaceFunctions.ConicalSection(uv, 1, 0);
+                return SurfaceFunctions.ConicalSection(uv, 1, 0);
 
             case GeometryType.HalfCone:
-                return PrimitiveSurfaceFunctions.ConicalSection(uv, 1, 0.5f);
+                return SurfaceFunctions.ConicalSection(uv, 1, 0.5f);
 
             case GeometryType.Plane:
                 return uv.Plane();
 
             case GeometryType.Torus:
-                return PrimitiveSurfaceFunctions.Torus(uv, 1, 0.2f);
+                return SurfaceFunctions.Torus(uv, 1, 0.2f);
             
             case GeometryType.Disc:
-                return PrimitiveSurfaceFunctions.Disc(uv);
+                return SurfaceFunctions.Disc(uv);
 
             case GeometryType.MonkeySaddle:
-                return PrimitiveSurfaceFunctions.MonkeySaddle(uv);
+                return SurfaceFunctions.MonkeySaddle(uv);
 
             case GeometryType.Trefoil:
-                return PrimitiveSurfaceFunctions.Trefoil(uv, 0.2f);
+                return SurfaceFunctions.Trefoil(uv, 0.2f);
 
             default:
                 return uv;

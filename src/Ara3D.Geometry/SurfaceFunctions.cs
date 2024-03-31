@@ -1,8 +1,9 @@
-﻿using Ara3D.Mathematics;
+﻿using System;
+using Ara3D.Mathematics;
 
 namespace Ara3D.Geometry
 {
-    public static class PrimitiveSurfaceFunctions
+    public static class SurfaceFunctions
     {
         public static Vector3 Sphere(this Vector2 uv)
             => Sphere(uv.X.Turns(), uv.Y.Turns());
@@ -18,13 +19,6 @@ namespace Ara3D.Geometry
             => ((r1 + r2 * u.Cos) * v.Cos,
                 (r1 + r2 * u.Cos) * v.Sin,
                 r2 * u.Sin);
-
-        // https://en.wikipedia.org/wiki/Monkey_saddle
-        public static float ExplicitMonkeySaddle(this Vector2 uv)           
-            => uv.X.Cube() - 3 * uv.X * uv.Y.Sqr();
-
-        public static Vector3 MonkeySaddle(this Vector2 uv)
-            => uv.ToVector3().SetZ(ExplicitMonkeySaddle(uv));
 
         public static Vector3 Plane(this Vector2 uv)
             => (uv.X, uv.Y, 0);
@@ -46,6 +40,29 @@ namespace Ara3D.Geometry
             => (r * (3 * u).Sin / (2 + v.Cos),
                 r * (u.Sin + 2 * (2 * u).Sin) / (2 + (v + 1.Turns() / 3).Cos),
                 r / 2 * (u.Cos - 2 * (2 * u).Cos) * (2 + v.Cos) * (2 + (v + 1.Turns() / 3).Cos) / 4);
+
+        //===
+        // Height fields converted into surface functions 
+        //===
+
+        public static Func<Vector2, Vector3> ToSurfaceFunction(this Func<Vector2, float> f)
+            => uv => (uv.X, uv.Y, f(uv));
+
+        public static Vector3 MonkeySaddle(this Vector2 uv)
+            => ToSurfaceFunction(HeightFieldFunctions.MonkeySaddle)(uv);
+
+        public static Vector3 Handkerchief(this Vector2 uv)
+            => ToSurfaceFunction(HeightFieldFunctions.Handkerchief)(uv);
+
+        public static Vector3 CrossedTrough(this Vector2 uv)
+            => ToSurfaceFunction(HeightFieldFunctions.CrossedTrough)(uv);
+
+        public static Vector3 SinPlusCos(this Vector2 uv)
+            => ToSurfaceFunction(HeightFieldFunctions.SinPlusCos)(uv);
+
+
+        // Todo: extruded curves 
+        // Todo: revolved curves 
     }
-    
+
 }
