@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using Ara3D.Logging;
 
 namespace Ara3D.Parsing.Markdown
 {
@@ -16,9 +17,7 @@ namespace Ara3D.Parsing.Markdown
         public static IEnumerable<MdText> GetAllTextBlocks(this MdBlock block)
             => block.GetAllDescendants().OfType<MdText>();
 
-        public static MarkdownInlineParser ParseInlineMarkdown(this MdText text)
-        {
-
-        }
+        public static MarkdownInlineParser ParseInlineMarkdown(this MdText text, ILogger logger = null)
+            => new MarkdownInlineParser(text.Text, logger);
     }
 }

@@ -131,19 +131,37 @@ namespace Ara3D.Mathematics
     public partial struct Int2
     {
         public Vector2 ToVector2()
-            => new Vector2(X, Y);
+            => (X, Y);
 
         public static implicit operator Vector2(Int2 self)
             => self.ToVector2();
+
+        public Tuple<int, int> ToTuple()
+            => Tuple.Create(X, Y);
     }
 
     public partial struct Int3
     {
         public Vector3 ToVector3()
-            => new Vector3(X, Y, Z);
+            => (X, Y, Z);
 
         public static implicit operator Vector3(Int3 self)
             => self.ToVector3();
+
+        public Tuple<int, int, int> ToTuple()
+            => Tuple.Create(X, Y, Z);
+    }
+
+    public partial struct Int4
+    {
+        public Vector4 ToVector4()
+            => (X, Y, Z, W);
+
+        public static implicit operator Vector4(Int4 self)
+            => self.ToVector4();
+
+        public Tuple<int, int, int, int> ToTuple()
+            => Tuple.Create(X, Y, Z, W);
     }
 
     public partial struct Vector2
@@ -266,22 +284,23 @@ namespace Ara3D.Mathematics
     }
 
     /// <summary>
-    /// Defined as a location, a forward vector and an up vector.
+    /// A frame of reference. Defined as a location, a forward vector and an up vector.
     /// Facilitates converting between different coordinate systems, particularly when scale is not concerned. 
     /// By default the 2D plane is assumed to have the Y-axis "(0,1)" as up
     /// and the X-axis "(1,0)" as the right vector. 
     /// This implies that the negative Z axis is forward "(0,0,-1)".
     /// We imagine shapes on the 2D plane as if they are on a sheet of paper.  
     /// The forward and up vector are assumed to be orthogonal,
-    /// or at least non-parallel. If they are parallel then the reference frame will choose one arbitrary arbitrary 
+    /// or at least non-parallel. If they are parallel then the reference frame will choose one arbitrary arbitrary
+    /// https://en.wikipedia.org/wiki/Frame_of_reference
     /// </summary>
-    public partial struct ReferenceFrame
+    public partial struct Frame
     {
-        public ReferenceFrame Normalize()
+        public Frame Normalize()
             => (Position, Forward.Normalize(), Up.Normalize());
 
-        public static ReferenceFrame Default2D 
-            = new ReferenceFrame(Vector3.Zero, -Vector3.UnitZ, Vector3.UnitY);
+        public static Frame Default2D 
+            = new Frame(Vector3.Zero, -Vector3.UnitZ, Vector3.UnitY);
 
         public Vector3 Right
             => Forward.Cross(Up).Normalize();
@@ -292,7 +311,7 @@ namespace Ara3D.Mathematics
         public Vector3 Align(Vector2 v)
             => v.ToVector3().Transform(GetAlignmentMatrix2DPlane());
 
-        public ReferenceFrame CreateNormalized(Vector3 position, Vector3 forward, Vector3 up)
+        public Frame CreateNormalized(Vector3 position, Vector3 forward, Vector3 up)
             => (position, forward.Normalize(), up.Normalize());
 
         public Pose GetAlignmentPoseFrom2DPlane()
@@ -302,8 +321,17 @@ namespace Ara3D.Mathematics
             => GetAlignmentPoseFrom2DPlane();
     }
 
+    /// <summary>
+    /// A method of representing an orientation, that includes only that does not allow "roll". 
+    /// Can be useful for first person cameras.
+    /// https://en.wikipedia.org/wiki/Horizontal_coordinate_system
+    /// </summary>
     public partial struct HorizontalCoordinate
     {
+        public double Yaw => Azimuth;
+        public double Pitch => Inclination;
+        public double Roll => 0;
+
         public static implicit operator DVector2(HorizontalCoordinate angle)
             => (angle.Azimuth, angle.Inclination);
 

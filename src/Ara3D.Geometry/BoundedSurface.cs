@@ -3,17 +3,6 @@ using Ara3D.Mathematics;
 
 namespace Ara3D.Geometry
 {
-    /// <summary>
-    /// A bounded surface is a 2D sampling of a surface with
-    /// an approximate bounded-box.
-    /// The bounding box is intended for use with proportional deformations. 
-    /// </summary>
-    public interface IBoundedSurface : ISurface
-    {
-        AABox Bounds { get; }
-        ISurface Surface { get; }
-    }
-
     public class BoundedSurface : IBoundedSurface
     {
         public bool ClosedX => false;

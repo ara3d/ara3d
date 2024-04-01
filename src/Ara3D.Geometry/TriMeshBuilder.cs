@@ -32,7 +32,7 @@ namespace Ara3D.Geometry
         {
             var offset = _vertices.Count;
             _vertices.AddRange(m.Points);
-            _indices.AddRange(m.Indices.Select(i => i + offset));
+            _indices.AddRange(m.FaceIndices.Select(i => i + offset));
             return this;
         }
     }

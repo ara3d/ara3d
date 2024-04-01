@@ -20,5 +20,13 @@ namespace Ara3D.Geometry
         // https://www.wolframalpha.com/input?i=z%3Dsin%28x%29*cos%28y%29
         public static float SinPlusCos(this Vector2 uv)
             => uv.X.Turns().Sin + uv.Y.Turns().Cos;
+
+        // https://en.wikipedia.org/wiki/Paraboloid#Hyperbolic_paraboloid
+        public static float Saddle(this Vector2 uv)
+            => uv.X.Sqr() - uv.Y.Sqr();
+
+        // https://math.stackexchange.com/questions/4413193/what-is-a-dog-saddle
+        public static float DogSaddle(this Vector2 uv)
+            => uv.X.Pow(4) - 6 * uv.X.Sqr() * uv.Y.Sqr() + uv.Y.Pow(4);
     }
 }

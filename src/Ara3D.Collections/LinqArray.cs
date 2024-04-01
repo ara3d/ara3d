@@ -560,6 +560,13 @@ namespace Ara3D.Collections
             => self.Count.Select(i => self[f(i)]);
 
         /// <summary>
+        /// Returns an array by selecting every "nth" element.
+        /// Unlike stride has the same number of elements as original array. 
+        /// </summary>
+        public static IArray<T> SelectEveryNth<T>(this IArray<T> self, int n)
+            => self.MapIndices(i => i * n % self.Count);
+
+        /// <summary>
         /// Returns a new array that reverses the order of elements
         /// </summary>
         public static IArray<T> Reverse<T>(this IArray<T> self)
@@ -1018,7 +1025,7 @@ namespace Ara3D.Collections
         }
 
         public static IArray2D<V> CartesianProduct<T, U, V>(this IArray<T> self, IArray<U> other, Func<T, U, V> func)
-            => self.SelectMany(x => other.Select(y => func(x, y))).ToArray2D(self.Count, other.Count);
+            => self.SelectMany(x => other.Select(y => func(x, y))).ToArray2D(other.Count, self.Count);
 
         public static int BinarySearch<T>(this IArray<T> self, Func<T, int> compare)
             => self.Count == 0 ? -1 : BinarySearchIndex(self, i => compare(self[i]), 0, self.Count - 1);

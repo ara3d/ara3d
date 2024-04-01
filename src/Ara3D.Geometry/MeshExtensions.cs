@@ -7,67 +7,13 @@ using Ara3D.Utils;
 
 namespace Ara3D.Geometry
 {
-    /// <summary>
-    /// This class is used for sampling parameterized surfaces and computing quad-mesh strip indices.
-    /// Note that the members are computed on demand, so be careful about over-computation. 
-    /// x == column == u, y == row == v
-    /// </summary>
-    public class SurfaceDiscretization
-    {
-        public IArray<float> Xs { get; }
-        public IArray<float> Ys { get; }
-        public IArray2D<Vector2> Uvs { get; }
-        public bool ClosedX { get; }
-        public bool ClosedY { get; }
-        public IArray2D<Int4> Indices { get; }
-
-        public SurfaceDiscretization(int nColumns, int nRows, bool closedX, bool closedY)
-        {
-            ClosedX = closedX;
-            ClosedY = closedY;
-            
-            var nx = nColumns + (closedX ? 0 : 1);
-            var ny = nRows + (closedY ? 0 : 1);
-
-            Xs = closedX ? nx.InterpolateExclusive() : nx.InterpolateInclusive();
-            Ys = closedY ? ny.InterpolateExclusive() : ny.InterpolateInclusive();
-            
-            Uvs = Ys.CartesianProduct(Xs, (v, u) => new Vector2(u, v));
-
-            Int4 QuadMeshFaceVertices(int row, int col)
-            {
-                var a = row * nx + col;
-                var b = row * nx + (col + 1) % nx;
-                var c = (row + 1) % ny * nx + (col + 1) % nx;
-                var d = (row + 1) % ny * nx + col;
-                return (a, b, c, d);
-            }
-
-            Indices = nRows.Range().CartesianProduct(nColumns.Range(), QuadMeshFaceVertices);
-        }
-    }
-
-
     public static class MeshExtensions
     {
-        public static QuadMesh QuadMesh(this IArray2D<Vector3> points, bool closedX, bool closedY)
-        {
-
-        }
-
         public static IArray<int> Indices(this ITriMesh triMesh)
-            => triMesh.Indices.SelectMany(f => LinqArray.Create(f.X, f.Y, f.Z));
+            => triMesh.FaceIndices.SelectMany(f => LinqArray.Create(f.X, f.Y, f.Z));
 
         public static IArray<float> VerticesAsFloats(this ITriMesh triMesh)
             => triMesh.Points.SelectMany(v => Tuple.Create(v.X, v.Y, v.Z));
-
-        public static TesselatedMesh Tesselate(this IParametricSurface parametricSurface, int cols, int rows = 0)
-        {
-            var discreteSurface = new SurfaceDiscretization(cols, rows, parametricSurface.ClosedX, parametricSurface.ClosedY);
-            var vertices = discreteSurface.Uvs.Select(parametricSurface.GetPoint).Evaluate();
-            var faceVertices = discreteSurface.Indices.Evaluate();
-            return new TesselatedMesh(vertices, faceVertices);
-        }
 
         // Computes the topology: this is a slow O(N) operation
         public static Topology ComputeTopology(this ITriMesh triMesh)
@@ -81,7 +27,7 @@ namespace Ara3D.Geometry
                vertexIndices.Y == vertexIndices.Z;
 
         public static bool HasDegenerateFaceVertexIndices(this ITriMesh self)
-            => self.Indices.Any(IsDegenerateVertexIndices);
+            => self.FaceIndices.Any(IsDegenerateVertexIndices);
 
         public static bool GeometryEquals(this ITriMesh triMesh, ITriMesh other, float tolerance = Constants.Tolerance)
         {
@@ -146,11 +92,6 @@ namespace Ara3D.Geometry
         public static Vector3 FurthestPoint(this IEnumerable<Vector3> points, Vector3 x)
             => points.Maximize(float.MinValue, v => v.Distance(x));
 
-        public static T SnapPoints<T>(this T mesh, float snapSize) where T: IDeformable
-            => MathUtil.Abs(snapSize) >= Constants.Tolerance
-                ? mesh.Deform(v => (v * MathUtil.Inverse(snapSize)).Truncate() * snapSize)
-                : mesh.Deform(v => Vector3.Zero);
-
         /// <summary>
         /// Returns the vertices organized by face corner. 
         /// </summary>
@@ -166,7 +107,7 @@ namespace Ara3D.Geometry
         {
             if (m.GetNumCorners() == 0)
                 return Vector3.Zero.Repeat(0);
-            var firstVertex = m.Points[m.Indices[0].X];
+            var firstVertex = m.Points[m.FaceIndices[0].X];
             return m.VerticesByIndex().Select(v => v - firstVertex);
         }
 
@@ -209,9 +150,6 @@ namespace Ara3D.Geometry
             return used.All(b => b);
         }
 
-        public static ITriMesh ResetPivot(this ITriMesh triMesh) 
-            => triMesh.Translate(-triMesh.BoundingBox().CenterBottom);
-
         public static Triangle VertexIndicesToTriangle(this ITriMesh triMesh, Int3 indices)
             => new Triangle(
                 triMesh.Points[indices.X], 
@@ -219,10 +157,10 @@ namespace Ara3D.Geometry
                 triMesh.Points[indices.Z]);
 
         public static Triangle Triangle(this ITriMesh triMesh, int face)
-            => triMesh.VertexIndicesToTriangle(triMesh.Indices[face]);
+            => triMesh.VertexIndicesToTriangle(triMesh.FaceIndices[face]);
 
         public static int GetNumFaces(this ITriMesh triMesh)
-            => triMesh.Indices.Count;
+            => triMesh.FaceIndices.Count;
 
         public static int GetNumCorners(this ITriMesh triMesh)
             => triMesh.GetNumFaces() * 3;
@@ -258,18 +196,37 @@ namespace Ara3D.Geometry
         public static IArray<int> FacesToCorners(this ITriMesh triMesh)
             => triMesh.GetNumFaces().Select(i => i * 3);
 
-        public static ITriMesh Merge(this IArray<ITriMesh> meshes)
-        {
-            var bldr = new TriMeshBuilder();
-            foreach (var mesh in meshes.Enumerate())
-                bldr.Add(mesh);
-            return bldr.ToMesh();
-        }
+        public static IArray<Int2> ToInt2s(this IArray<int> self)
+            => self.SelectPairs((a, b) => new Int2(a, b));
 
-        public static ITriMesh Triangulate(this IQuadMesh self)
-            => new TriMesh(self.Points, self.Indices.SelectMany(f => 
-                LinqArray.Create(
-                    new Int3(f.X, f.Y, f.Z), 
-                    new Int3(f.Z, f.W, f.X))));
+        public static IArray<Int3> ToInt3s(this IArray<int> self)
+            => self.SelectTriplets((a, b, c) => new Int3(a, b, c));
+
+        public static IArray<Int4> ToInt4s(this IArray<int> self)
+            => self.SelectQuartets((a, b, c, d) => new Int4(a, b, c, d));
+
+        public static TriMesh ToTriMesh(this IArray<Vector3> points)
+            => points.ToTriMesh(points.Indices());
+
+        public static TriMesh ToTriMesh(this IArray<Vector3> points, IArray<int> indices)
+            => points.ToTriMesh(indices.ToInt3s());
+
+        public static TriMesh ToTriMesh(this IArray<Vector3> points, IArray<Int3> faceIndices)
+            => new TriMesh(points, faceIndices);
+
+        public static TriMesh ToTriMesh(this IArray<Vector3> points, params Int3[] faceIndices)
+            => new TriMesh(points, faceIndices.ToIArray());
+
+        public static QuadMesh ToQuadMesh(this IArray<Vector3> points)
+            => points.ToQuadMesh(points.Indices());
+
+        public static QuadMesh ToQuadMesh(this IArray<Vector3> points, IArray<int> indices)
+            => points.ToQuadMesh(indices.ToInt4s());
+
+        public static QuadMesh ToQuadMesh(this IArray<Vector3> points, IArray<Int4> faceIndices)
+            => new QuadMesh(points, faceIndices);
+
+        public static QuadMesh ToQuadMesh(this IArray<Vector3> points, params Int4[] faceIndices)
+            => new QuadMesh(points, faceIndices.ToIArray());
     }
 }

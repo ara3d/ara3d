@@ -24,11 +24,10 @@ namespace Ara3D.UnityBridge
         public UnityEngine.Vector2[] UnityUVs;
         public UnityEngine.Vector3[] UnityVertices;
         public UnityEngine.Vector3[] UnityNormals;
-
+        public IArray<int> Indices => UnityIndices.ToIArray();
         public int[] UnityIndices;
         public Color32[] UnityColors;
-
-        public IArray<Int3> Indices => UnityIndices.ToIArray().SelectTriplets((a, b, c) => new Int3(a, b, c));
+        public IArray<Int3> FaceIndices => Indices.SelectTriplets((a, b, c) => new Int3(a, b, c));
         public IArray<Vector3> Points => UnityVertices.ToIArray().Select(v => v.ToAra3D());
 
         public UnityTriMesh()

@@ -4,8 +4,6 @@ using Ara3D.Mathematics;
 
 namespace Ara3D.Geometry
 {
-    public interface ICurve3D : ICurve<Vector3> { }
-
     public class Curve<T> : Procedural<float, T>, ICurve<T>
     {
         public Curve(Func<float, T> func, bool closed)
@@ -14,13 +12,6 @@ namespace Ara3D.Geometry
 
         public bool Closed { get; }
     }
-
-    public interface ICurve<T> : IProcedural<float, T>
-    {
-        bool Closed { get; }
-    }
-
-    public interface ICurve2D : ICurve<Vector2> { }
 
     public class Curve2D : Procedural2D<float>, ICurve2D
     {

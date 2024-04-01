@@ -1191,8 +1191,8 @@ namespace Ara3D.Mathematics
     }
     [StructLayout(LayoutKind.Sequential, Pack = 4)]
     [DataContract]
-    public readonly partial struct ReferenceFrame
-        : IEquatable<ReferenceFrame>
+    public readonly partial struct Frame
+        : IEquatable<Frame>
     {
         [DataMember]
         public readonly Vector3 Position;
@@ -1200,24 +1200,24 @@ namespace Ara3D.Mathematics
         public readonly Vector3 Forward;
         [DataMember]
         public readonly Vector3 Up;
-        [MethodImpl(MethodImplOptions.AggressiveInlining)] public ReferenceFrame((Vector3 position, Vector3 forward, Vector3 up) tuple) : this(tuple.position, tuple.forward, tuple.up) { }
-        [MethodImpl(MethodImplOptions.AggressiveInlining)] public ReferenceFrame(Vector3 position, Vector3 forward, Vector3 up) { Position = position; Forward = forward; Up = up; }
-        [MethodImpl(MethodImplOptions.AggressiveInlining)] public static ReferenceFrame Create(Vector3 position, Vector3 forward, Vector3 up) => new ReferenceFrame (position, forward, up);
-        [MethodImpl(MethodImplOptions.AggressiveInlining)] public static ReferenceFrame Create((Vector3 position, Vector3 forward, Vector3 up) tuple) => new ReferenceFrame (tuple);
-        [MethodImpl(MethodImplOptions.AggressiveInlining)] public override bool Equals(object obj) => obj is ReferenceFrame  x && Equals(x);
+        [MethodImpl(MethodImplOptions.AggressiveInlining)] public Frame((Vector3 position, Vector3 forward, Vector3 up) tuple) : this(tuple.position, tuple.forward, tuple.up) { }
+        [MethodImpl(MethodImplOptions.AggressiveInlining)] public Frame(Vector3 position, Vector3 forward, Vector3 up) { Position = position; Forward = forward; Up = up; }
+        [MethodImpl(MethodImplOptions.AggressiveInlining)] public static Frame Create(Vector3 position, Vector3 forward, Vector3 up) => new Frame (position, forward, up);
+        [MethodImpl(MethodImplOptions.AggressiveInlining)] public static Frame Create((Vector3 position, Vector3 forward, Vector3 up) tuple) => new Frame (tuple);
+        [MethodImpl(MethodImplOptions.AggressiveInlining)] public override bool Equals(object obj) => obj is Frame  x && Equals(x);
         [MethodImpl(MethodImplOptions.AggressiveInlining)] public override int GetHashCode() => Hash.Combine(Position.GetHashCode(), Forward.GetHashCode(), Up.GetHashCode());
-        [MethodImpl(MethodImplOptions.AggressiveInlining)] public override string ToString() => $"ReferenceFrame (Position = {Position}, Forward = {Forward}, Up = {Up})";
+        [MethodImpl(MethodImplOptions.AggressiveInlining)] public override string ToString() => $"Frame (Position = {Position}, Forward = {Forward}, Up = {Up})";
         [MethodImpl(MethodImplOptions.AggressiveInlining)] public void Deconstruct(out Vector3 position, out Vector3 forward, out Vector3 up) { position = Position; forward = Forward; up = Up; }
-        [MethodImpl(MethodImplOptions.AggressiveInlining)] public bool Equals(ReferenceFrame  x) => Position == x.Position && Forward == x.Forward && Up == x.Up;
-        [MethodImpl(MethodImplOptions.AggressiveInlining)] public static bool operator ==(ReferenceFrame  x0, ReferenceFrame  x1) => x0.Equals(x1);
-        [MethodImpl(MethodImplOptions.AggressiveInlining)] public static bool operator !=(ReferenceFrame  x0, ReferenceFrame  x1) => !x0.Equals(x1);
-        [MethodImpl(MethodImplOptions.AggressiveInlining)] public static implicit operator ReferenceFrame ((Vector3 position, Vector3 forward, Vector3 up) tuple) => new ReferenceFrame (tuple);
-        [MethodImpl(MethodImplOptions.AggressiveInlining)] public static implicit operator (Vector3 position, Vector3 forward, Vector3 up)(ReferenceFrame  self) => (self.Position, self.Forward, self.Up);
+        [MethodImpl(MethodImplOptions.AggressiveInlining)] public bool Equals(Frame  x) => Position == x.Position && Forward == x.Forward && Up == x.Up;
+        [MethodImpl(MethodImplOptions.AggressiveInlining)] public static bool operator ==(Frame  x0, Frame  x1) => x0.Equals(x1);
+        [MethodImpl(MethodImplOptions.AggressiveInlining)] public static bool operator !=(Frame  x0, Frame  x1) => !x0.Equals(x1);
+        [MethodImpl(MethodImplOptions.AggressiveInlining)] public static implicit operator Frame ((Vector3 position, Vector3 forward, Vector3 up) tuple) => new Frame (tuple);
+        [MethodImpl(MethodImplOptions.AggressiveInlining)] public static implicit operator (Vector3 position, Vector3 forward, Vector3 up)(Frame  self) => (self.Position, self.Forward, self.Up);
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)] public bool AlmostEquals(ReferenceFrame  x, float tolerance = Constants.Tolerance) => Position.AlmostEquals(x.Position, tolerance) && Forward.AlmostEquals(x.Forward, tolerance) && Up.AlmostEquals(x.Up, tolerance);
-        [MethodImpl(MethodImplOptions.AggressiveInlining)] public ReferenceFrame SetPosition(Vector3 x) => new ReferenceFrame (x, Forward, Up);
-        [MethodImpl(MethodImplOptions.AggressiveInlining)] public ReferenceFrame SetForward(Vector3 x) => new ReferenceFrame (Position, x, Up);
-        [MethodImpl(MethodImplOptions.AggressiveInlining)] public ReferenceFrame SetUp(Vector3 x) => new ReferenceFrame(Position, Forward, x);
+        [MethodImpl(MethodImplOptions.AggressiveInlining)] public bool AlmostEquals(Frame  x, float tolerance = Constants.Tolerance) => Position.AlmostEquals(x.Position, tolerance) && Forward.AlmostEquals(x.Forward, tolerance) && Up.AlmostEquals(x.Up, tolerance);
+        [MethodImpl(MethodImplOptions.AggressiveInlining)] public Frame SetPosition(Vector3 x) => new Frame (x, Forward, Up);
+        [MethodImpl(MethodImplOptions.AggressiveInlining)] public Frame SetForward(Vector3 x) => new Frame (Position, x, Up);
+        [MethodImpl(MethodImplOptions.AggressiveInlining)] public Frame SetUp(Vector3 x) => new Frame(Position, Forward, x);
     }
 
     [StructLayout(LayoutKind.Sequential, Pack=4)]

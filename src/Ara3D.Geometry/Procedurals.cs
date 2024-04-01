@@ -3,24 +3,7 @@ using Ara3D.Mathematics;
 
 namespace Ara3D.Geometry
 {
-    public interface IProcedural<TIn, TOut>
-    {
-        TOut Eval(TIn x);
-    }
 
-    public interface IColorGradient : IProcedural<float, Vector4> { }
-    public interface IHeightMap : IProcedural<Vector2, float> { }
-    public interface IDistanceField2D : IProcedural<Vector2, float> { }
-    public interface IVectorField2D : IProcedural<Vector2, Vector2> { }
-
-    public interface IVolume : IProcedural<Vector3, bool> { }
-    public interface IDistanceField3D : IProcedural<Vector3, float> { }
-    public interface IProceduralVectorField3D : IProcedural<Vector3, Vector3> { }
-
-    public interface IMask : IProcedural<Vector2, bool> { }
-    public interface IField : IProcedural<Vector2, float> { }
-    public interface IBump : IProcedural<Vector2, Vector3> { }
-    public interface IProceduralTexture : IProcedural<Vector2, Vector4> { }
 
     public class Procedural<T1, T2> : IProcedural<T1, T2>
     {

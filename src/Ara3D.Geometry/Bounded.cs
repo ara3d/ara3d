@@ -3,16 +3,6 @@ using Ara3D.Mathematics;
 
 namespace Ara3D.Geometry
 {
-    public interface IBounded
-    {
-        AABox Bounds { get; }
-    }
-
-    public interface IBounded2D
-    {
-        AABox2D Bounds { get; }
-    }
-
     public static class Bounded
     {
         public static AABox UpdateBounds(this IBounded self, AABox box)

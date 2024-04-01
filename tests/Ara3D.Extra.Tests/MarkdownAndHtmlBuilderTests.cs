@@ -1,3 +1,5 @@
+using Ara3D.Parakeet;
+using Ara3D.Parakeet.Cst.MarkdownInlineGrammarNameSpace;
 using Ara3D.Parsing.Markdown;
 using Ara3D.Utils;
 
@@ -28,7 +30,6 @@ namespace Ara3D.Extra.Tests
             outputFile.WriteAllText(html);
         }
 
-
         [TestCaseSource(nameof(TestMarkdownFiles))]
         public static void TestMarkdownParserOutput(FilePath filePath)
         {
@@ -44,6 +45,13 @@ namespace Ara3D.Extra.Tests
             Console.WriteLine(p.Parser.ParseXml);
         }
 
+        [TestCaseSource(nameof(TestMarkdownFiles))]
+        public static void TestLinkedUrls(FilePath filePath)
+        {
+            foreach (var url in GetAllLinkedUrls(filePath))
+                Console.WriteLine(url);
+        }
+
         public static string ConvertMarkdownToHtml(FilePath filePath)
         {
             var markdown = filePath.ReadAllText();
@@ -54,11 +62,16 @@ namespace Ara3D.Extra.Tests
         public static IEnumerable<string> GetAllLinkedUrls(FilePath filePath)
         {
             var markdown = filePath.ReadAllText();
-            var p = new MarkdownBlockParser(markdown);
-            if (!p.Parser.Succeeded) throw new Exception("Failed to parse markdown");
-            foreach (var tb in p.Document.GetAllTextBlocks())
+            var pBlock = new MarkdownBlockParser(markdown);
+            if (!pBlock.Parser.Succeeded) throw new Exception("Failed to parse markdown");
+            foreach (var tb in pBlock.Document.GetAllTextBlocks())
             {
-                var 
+                var pInline = tb.ParseInlineMarkdown();
+                foreach (var url in pInline.Parser.Cst.Descendants().OfType<CstUrl>())
+                    yield return url.Text;
+
+                foreach (var url in pInline.Parser.Cst.Descendants().OfType<CstPlainTextUrl>())
+                    yield return url.Text;
             }
         }
     }

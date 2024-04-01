@@ -4,11 +4,6 @@ using Ara3D.Mathematics;
 
 namespace Ara3D.Geometry
 {
-    public interface IPoints
-        : IGeometry
-    {
-        IArray<Vector3> Points { get; }
-    }
 
     public class PointsGeometry : IPoints
     {

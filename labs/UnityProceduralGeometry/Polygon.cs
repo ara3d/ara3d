@@ -1,0 +1,20 @@
+using Ara3D.Geometry;
+using Ara3D.Mathematics;
+using Ara3D.UnityBridge;
+using UnityEngine;
+
+[ExecuteAlways]
+public class Polygon : ProceduralGeometryObject
+{
+    public CommonPolygonsEnum PolygonType = CommonPolygonsEnum.Triangle;
+    public PlatonicSolidsEnum MarkerType = PlatonicSolidsEnum.Icosahedron;
+    public float Size = 10;
+
+    public override ITriMesh ComputeMesh()
+    {
+        var polygon = PolygonType.ToPolygon().Scale(Size);
+        var marker = MarkerType.ToMesh();
+        var all = marker.Clone
+        throw new System.NotImplementedException();
+    }
+}

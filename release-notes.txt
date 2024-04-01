@@ -1,5 +1,11 @@
 # Release Notes 
 
+### 2024-04-01
+
+* More cleaning up of geometry library
+* Added Faceted and FlipFaces modifiers. 
+* Added Unity demo/tests for platonic solids
+
 ### 2024-03-31
 
 * Prisms

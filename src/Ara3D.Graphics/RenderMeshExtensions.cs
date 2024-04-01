@@ -54,7 +54,7 @@ namespace Ara3D.Graphics
             => new RenderMesh(
                 LinqArray.Create(
                     triMesh.Points?.ToVertexBuffer(), 
-                    triMesh.Indices?.ToIndexBuffer()));
+                    triMesh.FaceIndices?.ToIndexBuffer()));
 
         public static ITriMesh ToIMesh(this IRenderMesh renderMesh)
             => renderMesh.PositionBuffer.Array.ToTriMesh(renderMesh.IndexBuffer.Array);

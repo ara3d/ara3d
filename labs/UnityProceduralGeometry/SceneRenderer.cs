@@ -32,7 +32,7 @@ namespace Ara3D.ProceduralGeometry.Unity
                     continue;
 
                 // If there are no faces, skip it
-                if (set.TriMesh.Indices.Count == 0)
+                if (set.TriMesh.FaceIndices.Count == 0)
                     continue;
 
                 var mesh = new Mesh();

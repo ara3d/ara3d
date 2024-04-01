@@ -68,5 +68,5 @@ namespace Ara3D.Mathematics
 
         public static T TranslateRotateScale<T>(this T self, Vector3 pos, Quaternion rot, Vector3 scale) where T : ITransformable
             => self.Translate(pos).Rotate(rot).Scale(scale);
+
     }
-}

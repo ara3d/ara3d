@@ -35,6 +35,14 @@ namespace Ara3D.Geometry
         public static Vector3 Trefoil(Vector2 uv, float r)
             => Trefoil(uv.X.Turns(), uv.Y.Turns(), r);
 
+        public static Vector3 Capsule(Vector2 uv)
+        {
+            uv *= (1, 2);
+            if (uv.Y < 0.5) return Sphere((uv.Y, uv.X));
+            if (uv.Y > 1.5) return Sphere((uv.Y - 1, uv.X)) + (0, 0, 1);
+            return Cylinder(uv + (0, -0.5f));
+        }
+
         // https://commons.wikimedia.org/wiki/File:Parametric_surface_illustration_(trefoil_knot).png
         public static Vector3 Trefoil(Angle u, Angle v, float r)
             => (r * (3 * u).Sin / (2 + v.Cos),

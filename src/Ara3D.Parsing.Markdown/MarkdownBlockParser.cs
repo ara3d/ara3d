@@ -20,16 +20,4 @@ namespace Ara3D.Parsing.Markdown
         public Parser Parser { get; }
         public MdDocument Document { get; }
     }
-
-    public class MarkdownInlineParser
-    {
-        public MarkdownInlineParser(string input, ILogger logger = null)
-        {
-            Input = input;
-            Parser = CommonParsers.MarkdownInlineParser(Input, logger);
-        }
-
-        public ParserInput Input { get; }
-        public Parser Parser { get; }
-    }
 }

@@ -229,7 +229,7 @@ namespace Ara3D.Serialization.G3D.Tests
             Assert.AreEqual(0, g.NumInstances);
 
             Assert.AreEqual(vertices, g.Vertices.ToArray());
-            Assert.AreEqual(indices, g.Indices.ToArray());
+            Assert.AreEqual(indices, g.FaceIndices.ToArray());
             Assert.AreEqual(materialIndices, g.FaceMaterials.ToArray());
             */
         }
@@ -269,7 +269,7 @@ namespace Ara3D.Serialization.G3D.Tests
             Assert.AreEqual(0, g.NumInstances);
 
             Assert.AreEqual(vertices, g.Vertices.ToArray());
-            Assert.AreEqual(indices, g.Indices.ToArray());
+            Assert.AreEqual(indices, g.FaceIndices.ToArray());
             Assert.AreEqual(materialIndices, g.FaceMaterials.ToArray());
 
             var g2 = g.TriangulateQuadMesh();

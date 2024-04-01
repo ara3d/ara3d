@@ -1,4 +1,5 @@
 ﻿using System;
+using Ara3D.Collections;
 using Ara3D.Mathematics;
 
 namespace Ara3D.Geometry
@@ -53,5 +54,13 @@ namespace Ara3D.Geometry
 
         public static IParametricSurface ToParametricSurface(this IProcedural<Vector2, float> self)
             => new ParametricSurface(uv => uv.ToVector3().SetZ(self.Eval(uv)), false, false);
+
+        public static TesselatedMesh Tesselate(this IParametricSurface parametricSurface, int cols, int rows = 0)
+        {
+            var discreteSurface = new SurfaceDiscretization(cols, rows, parametricSurface.ClosedX, parametricSurface.ClosedY);
+            var vertices = discreteSurface.Uvs.Select(parametricSurface.GetPoint).Evaluate();
+            var faceVertices = discreteSurface.Indices.Evaluate();
+            return new TesselatedMesh(vertices, faceVertices);
+        }
     }
 }

@@ -6,6 +6,13 @@ using Ara3D.Mathematics;
 
 namespace Ara3D.Geometry
 {
+    public enum StandardPlane
+    {
+        Xy,
+        Xz,
+        Yz,
+    }
+
     // TODO: many of these functions should live in other places, particular in the math 3D
     public static class GeometryUtil
     {
@@ -215,17 +222,17 @@ namespace Ara3D.Geometry
                 {
                     var delta = -lower;
                     lower += delta;
-                    upper += delta;
+                    //upper += delta;
                 }
                 else if (upper >= count)
                 {
                     var delta = upper - (count - 1);
                     lower -= delta;
-                    upper -= delta;
+                    //upper -= delta;
                 }
             }
             var rel = (index - lower);
-            return ((int)lower, (int)upper, rel);
+            return ((int)lower, rel);
         }
     }
 }

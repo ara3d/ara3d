@@ -21,21 +21,21 @@ public class ParametricSurfaceObject : ProceduralGeometryObject
         Disc,
         MonkeySaddle,
         Trefoil,
-
+        Capsule,
+        Handkerchief,
+        CrossedTrough, 
+        SinPlusCos,
     }
 
     public GeometryType Type = GeometryType.Sphere;
 
     public bool ClosedU = false;
     public bool ClosedV = false;
-    [Range(-2,2)]
-    public float URange = 1;
-    [Range(-2, 2)]
-    public float VRange = 1f;
-    [Range(-2, 2)]
-    public float UOffset = 0;
-    [Range(-2, 2)]
-    public float VOffset = 0;
+
+    [Range(-2,2)] public float URange = 1;
+    [Range(-2, 2)] public float VRange = 1f;
+    [Range(-2, 2)] public float UOffset = 0;
+    [Range(-2, 2)] public float VOffset = 0;
 
     public Vector3 Eval(Vector2 uv)
     {
@@ -70,6 +70,18 @@ public class ParametricSurfaceObject : ProceduralGeometryObject
 
             case GeometryType.Trefoil:
                 return SurfaceFunctions.Trefoil(uv, 0.2f);
+
+            case GeometryType.Capsule:
+                return SurfaceFunctions.Capsule(uv);
+
+            case GeometryType.CrossedTrough:
+                return SurfaceFunctions.CrossedTrough(uv);
+
+            case GeometryType.Handkerchief:
+                return SurfaceFunctions.Handkerchief(uv);
+
+            case GeometryType.SinPlusCos:
+                return SurfaceFunctions.SinPlusCos(uv);
 
             default:
                 return uv;

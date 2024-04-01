@@ -4,19 +4,6 @@ using Ara3D.Mathematics;
 
 namespace Ara3D.Geometry
 {
-    public interface IPolyLine<T>
-    {
-        bool Closed { get; }
-        IArray<T> Points { get; }
-        ILineSegment<T> Segment(int i);
-    }
-
-    public interface IPolyLine2D : IPolyLine<Vector2>
-    { }
-
-    public interface IPolyLine3D : IPolyLine<Vector3>, ITransformable, IDeformable
-    { }
-    
     public abstract class PolyLine<T> : IPolyLine<T>
     {
         public PolyLine(IArray<T> points, bool closed)
@@ -33,6 +20,9 @@ namespace Ara3D.Geometry
             
         public override ILineSegment<Vector2> Segment(int i)
             => new LineSegment2D(this.Point(i), this.Point(i + 1));
+
+        public IDeformable2D DeformImpl(Func<Vector2, Vector2> f)
+            => new PolyLine2D(Points.Select(f), Closed);
     }
 
     public class PolyLine3D : PolyLine<Vector3>, IPolyLine3D
