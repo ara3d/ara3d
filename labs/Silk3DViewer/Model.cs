@@ -39,7 +39,7 @@ namespace Tutorial
             Console.WriteLine($"number of materials {g.Materials.Count}");
 
             var mesh = g;
-            //var mesh = Ara3D.Geometry.Meshes.TorusMesh(20, 5, 100, 20);
+            var mesh = Ara3D.Geometry.Meshes.TorusMesh(20, 5, 100, 20);
             //var mesh = Meshes.TorusMesh(20, 5, 100, 20).Scale(2);
             //var mesh = Meshes.TorusMesh(20, 5, 10, 5);
             //var mesh = Meshes.TorusMesh(20, 5, 4, 4);
