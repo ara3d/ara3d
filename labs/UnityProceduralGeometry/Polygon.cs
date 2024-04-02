@@ -15,6 +15,6 @@ public class Polygon : ProceduralGeometryObject
         var polygon = PolygonType.ToPolygon().To3D().Scale(Size);
         var marker = MarkerType.ToMesh();
         var all = marker.Clone(polygon.Points);
-        throw new System.NotImplementedException();
+        return all.Merge();
     }
 }

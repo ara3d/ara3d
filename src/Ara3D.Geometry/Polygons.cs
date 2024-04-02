@@ -124,6 +124,6 @@ namespace Ara3D.Geometry
             = RegularStarPolygon(10, 3);
 
         public static IPolygon ToPolygon(this CommonPolygonsEnum polygonEnum)
-            => typeof(Polygon).GetField(polygonEnum.ToString()).GetValue(null) as IPolygon;
+            => typeof(Polygons).GetField(polygonEnum.ToString()).GetValue(null) as IPolygon;
     }
 }

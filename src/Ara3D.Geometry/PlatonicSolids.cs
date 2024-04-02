@@ -41,9 +41,17 @@ namespace Ara3D.Geometry
                 .FlipFaces();
 
         // https://mathworld.wolfram.com/Cube.html
-        public static readonly QuadMesh Cube
-            = Meshes.Square.Translate(-Vector3.UnitZ / 2).Points.Concat(
-                    Meshes.Square.Translate(Vector3.UnitZ / 2).Points)
+        public static readonly ITriMesh Cube
+            = LinqArray.Create<Vector3>(
+                (-0.5f, -0.5f, -0.5f),
+                (-0.5f, 0.5f, -0.5f),
+                (0.5f, 0.5f, -0.5f),
+                (0.5f, -0.5f, -0.5f),
+                (-0.5f, -0.5f, 0.5f),
+                (-0.5f, 0.5f, 0.5f),
+                (0.5f, 0.5f, 0.5f),
+                (0.5f, -0.5f, 0.5f)
+                )
                 .Normalize()
                 .ToQuadMesh(
                     (0, 1, 2, 3),
@@ -51,7 +59,8 @@ namespace Ara3D.Geometry
                     (7, 6, 5, 4),
                     (4, 0, 3, 7),
                     (4, 5, 1, 0),
-                    (3, 2, 6, 7));
+                    (3, 2, 6, 7))
+                .Triangulate();
 
         // https://mathworld.wolfram.com/RegularOctahedron.html
         // https://github.com/mrdoob/three.js/blob/master/src/geometries/OctahedronGeometry.js
@@ -131,7 +140,7 @@ namespace Ara3D.Geometry
         public static readonly ITriMesh[] Mesh =
         {
             Tetrahedron,
-            Cube.Triangulate(),
+            Cube,
             Octahedron,
             Dodecahedron,
             Icosahedron

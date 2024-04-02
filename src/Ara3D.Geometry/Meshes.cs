@@ -60,8 +60,8 @@ namespace Ara3D.Geometry
         public IArray<Int4> FaceIndices { get; }
         public bool ClosedX { get; }
         public bool ClosedY { get; }
-        public int Columns => Points.Columns;
-        public int Rows => Points.Rows;
+        public int Columns => Points.Columns - 1;
+        public int Rows => Points.Rows - 1;
         public IArray<int> Indices => FaceIndices.SelectMany(f => f.ToTuple());
         public Int4 GetFaceIndices(int column, int row) => FaceIndices[column + row * Columns];
         public Quad GetFace(int column, int row) => this.Face(GetFaceIndices(column, row));
@@ -125,7 +125,7 @@ namespace Ara3D.Geometry
         public static QuadMesh Quad(Vector3 a, Vector3 b, Vector3 c, Vector3 d)
             => new[] { a, b, c, d }.ToIArray().ToQuadMesh();
 
-        public static QuadMesh ToIMesh(this AABox box)
+        public static ITriMesh ToIMesh(this AABox box)
             => PlatonicSolids.Cube.Scale(box.Extent).Translate(box.Center);
 
         public static readonly float Sqrt3
@@ -155,7 +155,6 @@ namespace Ara3D.Geometry
 
         public static readonly QuadMesh Square
             = SquarePoints.To3D().ToQuadMesh();
-
 
         public static TesselatedMesh TorusMesh(float r1, float r2, int uSegs, int vSegs)
             => ParametricSurfaces.Torus(r1, r2).Tesselate(uSegs, vSegs);

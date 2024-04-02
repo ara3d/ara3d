@@ -46,9 +46,12 @@ namespace Ara3D.Collections
             => self.SubArray(row * self.Columns, self.Columns);
 
         public static IArray<T> GetColumn<T>(this IArray2D<T> self, int column)
-            => self.Stride(column, self.Columns); 
+            => self.Stride(column, self.Columns);
+
+        public static IArray<T> OneDimArray<T>(this IArray2D<T> self)
+            => self;
 
         public static IArray2D<TR> Select<T, TR>(this IArray2D<T> self, Func<T, TR> f)
-            => new Array2D<TR>(self.Select(f), self.Columns, self.Rows);
+            => new Array2D<TR>(self.OneDimArray().Select(f), self.Columns, self.Rows);
     }
 }
