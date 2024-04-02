@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Ara3D.Mathematics
+﻿namespace Ara3D.Mathematics
 {
     public class Angle
     {

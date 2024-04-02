@@ -3,7 +3,7 @@ namespace Ara3D.Mathematics
     /// <summary>
     /// A structure encapsulating a 3D Plane
     /// </summary>
-    public partial struct Plane : ITransformable
+    public partial struct Plane : ITransformable<Plane>
     {
         public Plane(float x, float y, float z, float d)
             : this(new Vector3(x, y, z), d)
@@ -58,7 +58,7 @@ namespace Ara3D.Mathematics
         /// <summary>
         /// Transforms a normalized Plane by a Matrix.
         /// </summary>
-        public ITransformable TransformImpl(Matrix4x4 matrix)
+        public Plane Transform(Matrix4x4 matrix)
         {
             Matrix4x4.Invert(matrix, out var m);
             float x = Normal.X, y = Normal.Y, z = Normal.Z, w = D;

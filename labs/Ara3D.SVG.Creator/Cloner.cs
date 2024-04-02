@@ -25,10 +25,10 @@ public class ArrangeRadially : Operator
     public Vector Center { get; set; } = new(150, 150);
     public Size Radius { get; set; } = new(50, 75);
 
-    public Vector UnitCirclePosition(double t)
-        => new DVector2(System.Math.Sin(t * System.Math.PI * 2), System.Math.Cos(t * System.Math.PI * 2));
+    public Vector UnitCirclePosition(float t)
+        => new Vector2(t.Sin(), t.Cos());
 
-    public Vector Position(double t)
+    public Vector Position(float t)
         => UnitCirclePosition(t) * Radius.ToVector() + Center;
 
     public override IEntity Evaluate(IEntity e, float strength)

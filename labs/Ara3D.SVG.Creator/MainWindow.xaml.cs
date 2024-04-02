@@ -140,7 +140,7 @@ namespace Ara3D.SVG.Creator
             if (stack == null) return;
 
             stack.Generator.A = stack.Generator.B;
-            stack.Generator.B = new DVector2(x, y);
+            stack.Generator.B = new Vector2(x, y);
 
             var (ax, ay) = stack.Generator.A.ToVector();
             var (bx, by) = stack.Generator.B.ToVector();
@@ -149,8 +149,8 @@ namespace Ara3D.SVG.Creator
             var maxX = System.Math.Max(ax, bx);
             var maxY = System.Math.Max(ay, by);
 
-            stack.Generator.A = new DVector2(minX, minY);
-            stack.Generator.B = new DVector2(maxX, maxY);
+            stack.Generator.A = new Vector2(minX, minY);
+            stack.Generator.B = new Vector2(maxX, maxY);
 
             RedrawSvg();
             /*
@@ -224,8 +224,8 @@ document.addEventListener('dblclick', onEvent);
             LoadSvg();
 
             var rg = new RectGenerator();
-            rg.A = new DVector2(50, 50);
-            rg.B = new DVector2(250, 250);
+            rg.A = new Vector2(50, 50);
+            rg.B = new Vector2(250, 250);
             CreateObject(rg);
             AddModifier(new SetStroke());
             AddModifier(new SetFillColor());

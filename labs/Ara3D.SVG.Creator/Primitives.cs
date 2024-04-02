@@ -99,8 +99,8 @@ public class FunctionRendererParameters
     [Range(0, 10000)] public int NumSamples { get; set; } = 100;
     public bool AsPointsOrLines { get; set; }
     public Color StrokeColor { get; set;  } = Color.Blue;
-    [Range(0.001, 1000.0)] public double InnerThickness { get; set; } = 3;
-    [Range(0.001, 1000.0)] public double OuterThickness { get; set; } = 5;
+    [Range(0.001, 1000.0)] public float InnerThickness { get; set; } = 3;
+    [Range(0.001, 1000.0)] public float OuterThickness { get; set; } = 5;
     public Color FillColor { get; set; } = Color.Beige;
 }
 
@@ -264,9 +264,9 @@ Uncategorized elements
 
 public class Function
 {
-    public double Offset { get; set; } = 0;
-    public double Length { get; set; } = 1;
-    public Func<double, DVector2> Func { get; set; }
+    public float Offset { get; set; } = 0;
+    public float Length { get; set; } = 1;
+    public Func<float, Vector2> Func { get; set; }
 }
 
 public class Function1D : Function
@@ -279,27 +279,15 @@ public class Function2D : Function
 
 public class FunctionPolar : Function
 {
-    public void SetPolarFunc(Func<double, double> polar)
-        => Func = x => (polar(x) * System.Math.Cos(x), polar(x) * System.Math.Sin(x));
+    public void SetPolarFunc(Func<float, float> polar)
+        => Func = x => (polar(x) * x.Cos(), polar(x) * x.Sin());
 }
 
 public class SineWave : Function
 {
     public SineWave()
     {
-        Func = x => (x, System.Math.Sin(x * System.Math.PI * 2));
-    }
-}
-
-public class Gaussian : Function
-{
-    public float A { get; set; } = 1.0f;
-    public float B { get; set; } = 0.0f;
-    public float C { get; set; } = 1.0f;
-
-    public Gaussian()
-    {
-        Func = x => (x, A * System.Math.Exp(-System.Math.Pow(x - B, 2) / 2 * C * C));
+        Func = x => (x, x.Sin());
     }
 }
 
@@ -318,7 +306,7 @@ public class Rose : FunctionPolar
     
     public Rose()
     {
-        SetPolarFunc(x => System.Math.Cos(N * x / D));
+        SetPolarFunc(x => (N * x / D).Cos());
     }
 }
 

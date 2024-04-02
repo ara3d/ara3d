@@ -12,7 +12,7 @@ namespace Identification
     {
         public DMesh3 Mesh { get; }
         public DMeshAABBTree3 Tree { get; }
-        public DAABox Box { get; }
+        public AABox Box { get; }
         public List<Vector3d> Vertices { get; }
 
         public ObjMesh(DMesh3 mesh)

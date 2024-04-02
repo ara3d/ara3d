@@ -43,18 +43,18 @@ public class SetFillColor : Operator
 
 public class TransformOperator : Operator
 {
-    public Vector Translation { get; set; } = DVector2.Zero;
-    public Vector Skew { get; set; } = DVector2.Zero;
+    public Vector Translation { get; set; } = Vector2.Zero;
+    public Vector Skew { get; set; } = Vector2.Zero;
     public Angle Rotation { get; set; } = 0;
-    public Scale Scale { get; set; } = DVector2.One;
+    public Scale Scale { get; set; } = Vector2.One;
 
     public override IEntity Evaluate(IEntity e, float strength)
         => e.ModifySvg(x =>
         {
-            var tr = DVector2.Zero.Lerp(Translation.ToVector(), strength).Vector2;
-            var sk = DVector2.Zero.Lerp(Skew.ToVector(), strength).Vector2;
+            var tr = Vector2.Zero.Lerp(Translation.ToVector(), strength);
+            var sk = Vector2.Zero.Lerp(Skew.ToVector(), strength);
             var ro = 0f.Lerp((float)Rotation.Degrees, strength);
-            var sc = DVector2.One.Lerp(Scale.ToVector(), strength).Vector2;
+            var sc = Vector2.One.Lerp(Scale.ToVector(), strength);
 
             if (x.Transforms == null)
                 x.Transforms = new SvgTransformCollection();

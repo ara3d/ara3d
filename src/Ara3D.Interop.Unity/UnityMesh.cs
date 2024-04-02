@@ -19,7 +19,7 @@ namespace Ara3D.UnityBridge
     /// TODO: consider uvs1 through 8, tangents, and boneWeights
     /// https://docs.unity3d.com/ScriptReference/BoneWeight.html
     /// </summary>
-    public class UnityTriMesh : ITriMesh
+    public class UnityTriMesh : ITriMesh, IDeformable<UnityTriMesh>
     {
         public UnityEngine.Vector2[] UnityUVs;
         public UnityEngine.Vector3[] UnityVertices;
@@ -83,10 +83,10 @@ namespace Ara3D.UnityBridge
             }
         }
 
-        public ITransformable TransformImpl(Matrix4x4 mat)
-            => DeformImpl(v => v.Transform(mat));
+        public UnityTriMesh Transform(Matrix4x4 mat)
+            => Deform(v => v.Transform(mat));
 
-        public IDeformable DeformImpl(Func<Vector3, Vector3> f)
+        public UnityTriMesh Deform(Func<Vector3, Vector3> f)
             => new UnityTriMesh(this)
             {
                 UnityVertices = UnityVertices
@@ -94,5 +94,16 @@ namespace Ara3D.UnityBridge
                     .ToArray()
             };
 
+        IGeometry ITransformable<IGeometry>.Transform(Matrix4x4 mat)
+            => Transform(mat);
+        
+        IGeometry IDeformable<IGeometry>.Deform(Func<Vector3, Vector3> f)
+            => Deform(f);
+
+        ITriMesh ITransformable<ITriMesh>.Transform(Matrix4x4 mat)
+            => Transform(mat);
+
+        ITriMesh IDeformable<ITriMesh>.Deform(Func<Vector3, Vector3> f)
+            => Deform(f);
     }
 }

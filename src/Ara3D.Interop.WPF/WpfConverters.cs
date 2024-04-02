@@ -11,14 +11,11 @@ namespace Ara3D.Interop.WPF;
 
 public static class WpfConverters
 {
-    public static DVector3 ToAra3D(this Point3D p)
-        => (p.X, p.Y, p.Z);
+    public static Vector3 ToAra3D(this Point3D p)
+        => ((float)p.X, (float)p.Y, (float)p.Z);
 
-    public static DVector3 ToAra3D(this Vector3D v)
-        => (v.X, v.Y, v.Z);
-
-    public static Vector3D ToWpf(this DVector3 v)
-        => new Vector3D(v.X, v.Y, v.Z);
+    public static Vector3 ToAra3D(this Vector3D v)
+        => ((float)v.X, (float)v.Y, (float)v.Z);
 
     public static Vector3D ToWpf(this Vector3 v)
         => new Vector3D(v.X, v.Y, v.Z);
@@ -27,9 +24,6 @@ public static class WpfConverters
         => new Point(v.X, v.Y);
 
     public static Point3D ToWpfPoint(this Vector3 v)
-        => new Point3D(v.X, v.Y, v.Z);
-
-    public static Point3D ToWpfPoint(this DVector3 v)
         => new Point3D(v.X, v.Y, v.Z);
 
     public static Matrix4x4 ToAra3D(this Matrix3D t)

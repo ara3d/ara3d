@@ -141,12 +141,6 @@ namespace Ara3D.Serialization.G3D
                 (arity, dataType) = (16, DataType.dt_float32);
             else if (typeof(T) == typeof(double))
                 (arity, dataType) = (1, DataType.dt_float64);
-            else if (typeof(T) == typeof(DVector2))
-                (arity, dataType) = (2, DataType.dt_float64);
-            else if (typeof(T) == typeof(DVector3))
-                (arity, dataType) = (3, DataType.dt_float64);
-            else if (typeof(T) == typeof(DVector4))
-                (arity, dataType) = (4, DataType.dt_float64);
             else
                 throw new Exception($"Unsupported data type {typeof(T)}");
 

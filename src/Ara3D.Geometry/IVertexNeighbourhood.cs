@@ -9,6 +9,7 @@ namespace Ara3D.Geometry
     /// curvature, cotangent weights, subdivision surfaces. 
     /// </summary>
     public interface IVertexNeighbourhood
+        : ITransformable<IVertexNeighbourhood>, IDeformable<IVertexNeighbourhood>
     {
         Vector3 Center { get; }
         IArray<Vector3> Neighbours { get; }

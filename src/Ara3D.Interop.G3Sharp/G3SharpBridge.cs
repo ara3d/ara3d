@@ -137,9 +137,9 @@ namespace Ara3D
             return new Vector3((float)self.x, (float)self.y, (float)self.z);
         }
 
-        public static DAABox ToAra3D(this AxisAlignedBox3d box)
+        public static AABox ToAra3D(this AxisAlignedBox3d box)
         {
-            return ((box.Min.x, box.Min.y, box.Min.z), (box.Max.x, box.Max.y, box.Max.z));
+            return (box.Min.ToAra3D(), box.Max.ToAra3D());
         }
 
         public static ITriMesh ToAra3D(this DMesh3 self)

@@ -32,7 +32,7 @@ namespace Ara3D.Geometry
         public static ITriMesh ResetPivot(this ITriMesh triMesh)
             => triMesh.Translate(-triMesh.BoundingBox().CenterBottom);
 
-        public static T SnapPoints<T>(this T mesh, float snapSize) where T : IDeformable
+        public static T SnapPoints<T>(this T mesh, float snapSize) where T : IDeformable<T>
             => MathUtil.Abs(snapSize) >= Constants.Tolerance
                 ? mesh.Deform(v => (v * MathUtil.Inverse(snapSize)).Truncate() * snapSize)
                 : mesh.Deform(v => Vector3.Zero);

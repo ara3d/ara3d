@@ -35,15 +35,15 @@ public static class UIGenerator
     public static Thickness RowMargin = new Thickness(0, 1, 0, 1);
 
     public static bool IsNumericType(this Type type)
-        => type == typeof(double) 
+        => type == typeof(float) 
            || type == typeof(int) 
            || type == typeof(Angle);
 
     public static PropertyRowControl CreateRowControl(
         string name,
         string fieldName, 
-        Func<double> getValue,
-        Action<double> setValue,
+        Func<float> getValue,
+        Action<float> setValue,
         PropertyChangeNotifier notifier)
     {
         var r = new PropertyRowControl { Name = name };
@@ -71,7 +71,7 @@ public static class UIGenerator
         PropertyChangeNotifier notifier)
     {
         var r = new PropertyRowControl() { Name = name };
-        var ctrl = r.AddProperty("W", Colors.Aquamarine, 0.2, 0, getValue(), x => setValue(new StrokeWidth(x)));
+        var ctrl = r.AddProperty("W", Colors.Aquamarine, 0.2f, 0, getValue(), x => setValue(new StrokeWidth(x)));
         notifier.PropertyChanged += (_, _) => ctrl.Value = getValue();
         return r;
     }
@@ -119,16 +119,16 @@ public static class UIGenerator
     public static PropertyRowControl AddPropertyToRowControl(PropertyRowControl r, PropertyInfo p,
         Func<object> getValue,
         Action<object> setValue,
-        double changeAmount,
-        double defaultValue,
+        float changeAmount,
+        float defaultValue,
         System.Windows.Media.Color color,
         PropertyChangeNotifier notifier)
     {
         if (p == null)
             return r;
-        if (p.PropertyType == typeof(double))
+        if (p.PropertyType == typeof(float))
         {
-            var pVal = (double)p.GetValue(getValue());
+            var pVal = (float)p.GetValue(getValue());
             var ctrl = r.AddProperty(p.Name, color, changeAmount, defaultValue, pVal, (x) =>
             {
                 if (p.CanWrite)
@@ -140,7 +140,7 @@ public static class UIGenerator
                 }
             });
             notifier.PropertyChanged += (sender, args) =>
-                ctrl.Value = (double)p.GetValue(getValue());
+                ctrl.Value = (float)p.GetValue(getValue());
             return r;
         }
         else if (p.PropertyType == typeof(int))
@@ -161,7 +161,7 @@ public static class UIGenerator
             return r;
         }
 
-        throw new Exception("Only integers and doubles support for row controls");
+        throw new Exception("Only integers and floats support for row controls");
     }
 
      public static PropertyRowControl CreateRowControlFromProperties(
@@ -176,12 +176,12 @@ public static class UIGenerator
         var r = new PropertyRowControl();
         r.Name = name;
 
-        var defaultValue = 0.0;
-        var changeAmount = 5.0;
+        var defaultValue = 0.0f;
+        var changeAmount = 5.0f;
         if (parentType == typeof(Scale))
         {
-            defaultValue = 1.0;
-            changeAmount = 0.05;
+            defaultValue = 1.0f;
+            changeAmount = 0.05f;
         }
 
         var color = Colors.LightPink;
@@ -243,9 +243,9 @@ public static class UIGenerator
         {
             return CreateRowControl(name, () => (StrokeWidth)getValue(), x => setValue(x), notifier);
         }
-        else if (type == typeof(double))
+        else if (type == typeof(float))
         {
-            return CreateRowControl(name, "X", () => (double)getValue(), x => setValue(x), notifier);
+            return CreateRowControl(name, "X", () => (float)getValue(), x => setValue(x), notifier);
         }
         else if (type == typeof(float))
         {

@@ -4,7 +4,6 @@ using Ara3D.Mathematics;
 
 namespace Ara3D.Geometry
 {
-
     public class PointsGeometry : IPoints
     {
         public PointsGeometry(IArray<Vector3> points)
@@ -12,10 +11,10 @@ namespace Ara3D.Geometry
 
         public IArray<Vector3> Points { get; }
 
-        public ITransformable TransformImpl(Matrix4x4 mat)
-            => DeformImpl(p => p.Transform(mat));
+        public IGeometry Transform(Matrix4x4 mat)
+            => Deform(p => p.Transform(mat)); 
 
-        public IDeformable DeformImpl(Func<Vector3, Vector3> f)
+        public IGeometry Deform(Func<Vector3, Vector3> f)
             => new PointsGeometry(Points.Select(f));
     }
 }

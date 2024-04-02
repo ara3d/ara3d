@@ -8,8 +8,8 @@ namespace Ara3D.Interop.Revit
 {
     public static class RevitInterop
     {
-        public static DVector3 ToAra(this XYZ v)
-            => (v.X, v.Y, v.Z);
+        public static Vector3 ToAra(this XYZ v)
+            => ((float)v.X, (float)v.Y, (float)v.Z);
 
         public static Int3 ToAra(this MeshTriangle tri)
             => ((int)tri.get_Index(0), 
@@ -18,35 +18,30 @@ namespace Ara3D.Interop.Revit
 
         public static ITriMesh ToAra(this Autodesk.Revit.DB.Mesh mesh)
             => new TriMesh(
-                mesh.Vertices.Select(v => v.ToAra().Vector3).ToIArray(),
+                mesh.Vertices.Select(v => v.ToAra()).ToIArray(),
                 mesh.NumTriangles.Select(i => mesh.get_Triangle(i).ToAra()));
 
-        public static Vector2 ToVector2(this UV p)
-            => p.ToDVector2().Vector2;
+        
+        public static Vector2 ToVector2(this UV uv)
+            => ((float)uv.U, (float)uv.V);
 
         public static Vector3 ToVector3(this XYZ xyz)
-            => xyz.ToDVector3().Vector3;
+            => ((float)xyz.X, (float)xyz.Y, (float)xyz.Z);
 
-        public static DVector2 ToDVector2(this UV uv)
-            => new DVector2(uv.U, uv.V);
-
-        public static DVector3 ToDVector3(this XYZ xyz)
-            => new DVector3(xyz.X, xyz.Y, xyz.Z);
-
-        public static DAABox ToDAABox(this Outline outline)
+        public static AABox ToAABox(this Outline outline)
             => outline == null
-                ? new DAABox()
-                : new DAABox(outline.MinimumPoint.ToDVector3(), outline.MaximumPoint.ToDVector3());
+                ? new AABox()
+                : new AABox(outline.MinimumPoint.ToVector3(), outline.MaximumPoint.ToVector3());
 
-        public static DAABox ToDAABox(this BoundingBoxXYZ box)
+        public static AABox ToAABox(this BoundingBoxXYZ box)
             => box == null
-                ? new DAABox()
-                : new DAABox(box.Min.ToDVector3(), box.Max.ToDVector3());
+                ? new AABox()
+                : new AABox(box.Min.ToVector3(), box.Max.ToVector3());
 
-        public static DAABox2D ToDAABox2D(this BoundingBoxUV box)
+        public static AABox2D ToAABox2D(this BoundingBoxUV box)
             => box == null
-                ? new DAABox2D()
-                : new DAABox2D(box.Min.ToDVector2(), box.Max.ToDVector2());
+                ? new AABox2D()
+                : new AABox2D(box.Min.ToVector2(), box.Max.ToVector2());
 
         // TODO: convert to DMatrix4x4
         public static Matrix4x4 ToMatrix4x4(this Autodesk.Revit.DB.Transform t)

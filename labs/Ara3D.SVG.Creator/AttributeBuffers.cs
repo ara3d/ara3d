@@ -6,17 +6,17 @@ namespace Ara3D.SVG.Creator;
 
 public class AttributeBuffers  
 {
-    public IArray<DVector2> Position;
-    public IArray<DVector2> Skew;
-    public IArray<DVector2> Scale;
-    public IArray<DVector2> Uv;
-    public IArray<double> Index;
-    public IArray<double> Amount;
-    public IArray<double> Rotation;
-    public IArray<double> Size;
-    public IArray<double> Selection;
-    public IArray<double> Depth;
-    public IArray<double> Thickness;
+    public IArray<Vector2> Position;
+    public IArray<Vector2> Skew;
+    public IArray<Vector2> Scale;
+    public IArray<Vector2> Uv;
+    public IArray<float> Index;
+    public IArray<float> Amount;
+    public IArray<float> Rotation;
+    public IArray<float> Size;
+    public IArray<float> Selection;
+    public IArray<float> Depth;
+    public IArray<float> Thickness;
     public IArray<ColorHDR> Stroke;
     public IArray<ColorHDR> Fill;
 
@@ -26,17 +26,17 @@ public class AttributeBuffers
     {
         Count = n;
 
-        Position = DVector2.Zero.Repeat(n);
-        Skew = DVector2.Zero.Repeat(n);
-        Scale = DVector2.One.Repeat(n);
-        Uv = DVector2.Zero.Repeat(n);
-        Index = n.Select(i => (double)i);
-        Amount = n.Select(i => (double)i / n);
-        Rotation = 0.0.Repeat(n);
-        Size = 1.0.Repeat(n);
-        Selection = 0.0.Repeat(n);
-        Depth = 0.0.Repeat(n);
-        Thickness = 1.0.Repeat(n);
+        Position = Vector2.Zero.Repeat(n);
+        Skew = Vector2.Zero.Repeat(n);
+        Scale = Vector2.One.Repeat(n);
+        Uv = Vector2.Zero.Repeat(n);
+        Index = n.Select(i => (float)i);
+        Amount = n.Select(i => (float)i / n);
+        Rotation = 0f.Repeat(n);
+        Size = 1f.Repeat(n);
+        Selection = 0f.Repeat(n);
+        Depth = 0f.Repeat(n);
+        Thickness = 1f.Repeat(n);
         Stroke = new ColorHDR(1f, 1f, 1f, 1f).Repeat(n);
         Fill = new ColorHDR(1f, 1f, 1f, 1f).Repeat(n);
     }
@@ -48,10 +48,10 @@ public class AttributeBuffers
             x.StrokeWidth = (float)Thickness[i];
             //x.Stroke = new SvgColourServer(Stroke[i].ToSvg());
             //x.Fill = new SvgColourServer(Fill[i].ToSvg());
-            var tr = Position[i].Vector2;
-            var sk = Skew[i].Vector2;
+            var tr = Position[i];
+            var sk = Skew[i];
             var ro = (float)Rotation[i];
-            var sc = Scale[i].Vector2;
+            var sc = Scale[i];
                 
             x.Transforms ??= new SvgTransformCollection();
 
@@ -62,7 +62,7 @@ public class AttributeBuffers
         });
     }
 
-    public AttributeBuffers Transform(NumericAttributesEnum id, Func<AttributeBuffers, double, int, double> f)
+    public AttributeBuffers Transform(NumericAttributesEnum id, Func<AttributeBuffers, float, int, float> f)
     {
         var r = Clone();
         switch (id)
@@ -119,7 +119,7 @@ public class AttributeBuffers
         return r;
     }
 
-    public AttributeBuffers Transform(VectorAttributesEnum id, Func<AttributeBuffers, DVector2, int, DVector2> f)
+    public AttributeBuffers Transform(VectorAttributesEnum id, Func<AttributeBuffers, Vector2, int, Vector2> f)
     {
         var r = Clone();
         switch (id)

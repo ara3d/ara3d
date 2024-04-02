@@ -5,38 +5,38 @@ namespace Ara3D.SVG.Creator;
 
 public class Size
 {
-    public Size(double w, double h) => (W, H) = (w, h);
-    public double W { get; set; }
-    public double H { get; set; }
-    public DVector2 ToVector() => (W, H);
-    public static implicit operator DVector2(Size s) => new(s.W, s.H);
-    public static implicit operator Size(DVector2 v) => new(v.X, v.Y);
+    public Size(float w, float h) => (W, H) = (w, h);
+    public float W { get; set; }
+    public float H { get; set; }
+    public Vector2 ToVector() => (W, H);
+    public static implicit operator Vector2(Size s) => new(s.W, s.H);
+    public static implicit operator Size(Vector2 v) => new(v.X, v.Y);
 }
 
 public class Position
 {
-    public Position(double x, double y) => (X, Y) = (x, y);
-    public double X { get; set; }
-    public double Y { get; set; }
-    public DVector2 ToVector() => (X, Y);
-    public static implicit operator DVector2(Position p) => new(p.X, p.Y);
-    public static implicit operator Position(DVector2 v) => new(v.X, v.Y);
+    public Position(float x, float y) => (X, Y) = (x, y);
+    public float X { get; set; }
+    public float Y { get; set; }
+    public Vector2 ToVector() => (X, Y);
+    public static implicit operator Vector2(Position p) => new(p.X, p.Y);
+    public static implicit operator Position(Vector2 v) => new(v.X, v.Y);
 }
 
 public class StrokeWidth
 {
-    public double Amount { get; set; }
-    public StrokeWidth(double x) => Amount = x;
-    public static implicit operator StrokeWidth(double x) => new(x);
-    public static implicit operator double(StrokeWidth x) => x.Amount;
+    public float Amount { get; set; }
+    public StrokeWidth(float x) => Amount = x;
+    public static implicit operator StrokeWidth(float x) => new(x);
+    public static implicit operator float(StrokeWidth x) => x.Amount;
 }
 
 public class Circle
 {
-    public Circle(Position center, double r)
+    public Circle(Position center, float r)
         => (Center, R) = (center, r);
     public Position Center;
-    public double R;
+    public float R;
 };
 
 public class Rect
@@ -64,7 +64,7 @@ public class Line
     public Position A { get; set; }
     public Position B { get; set; }
 
-    public double L
+    public float L
     {
         get => A.ToVector().Distance(B);
         set
@@ -97,32 +97,32 @@ public class Ellipse
 
 public class Square
 {
-    public Square(Position center, double l)
+    public Square(Position center, float l)
         => (Center, L) = (center, l);
     public Position Center { get; set; }
-    public double L { get; set; }
+    public float L { get; set; }
 };
 
 public class Scale
 {
-    public Scale(double x, double y)
+    public Scale(float x, float y)
         => (X, Y) = (x, y);
-    public DVector2 ToVector() => (X, Y);
-    public double X { get; set; }
-    public double Y { get; set; }
-    public static implicit operator DVector2(Scale s) => new(s.X, s.Y);
-    public static implicit operator Scale(DVector2 v) => new(v.X, v.Y);
+    public Vector2 ToVector() => (X, Y);
+    public float X { get; set; }
+    public float Y { get; set; }
+    public static implicit operator Vector2(Scale s) => new(s.X, s.Y);
+    public static implicit operator Scale(Vector2 v) => new(v.X, v.Y);
 };
 
 public class Vector
 {
-    public Vector(double x, double y)
+    public Vector(float x, float y)
         => (X, Y) = (x, y);
-    public double X { get; set; }
-    public double Y { get; set; }
-    public DVector2 ToVector() => (X, Y);
-    public static implicit operator DVector2(Vector v) => new(v.X, v.Y);
-    public static implicit operator Vector(DVector2 v) => new(v.X, v.Y);
+    public float X { get; set; }
+    public float Y { get; set; }
+    public Vector2 ToVector() => (X, Y);
+    public static implicit operator Vector2(Vector v) => new(v.X, v.Y);
+    public static implicit operator Vector(Vector2 v) => new(v.X, v.Y);
 }
 
 public class Quadratic
@@ -140,7 +140,7 @@ public class Quadratic
 
 public static class MathExtensions
 {
-    public static DVector2 MoveToDistanceFrom(this DVector2 self, DVector2 origin, double distance)
+    public static Vector2 MoveToDistanceFrom(this Vector2 self, Vector2 origin, float distance)
     {
         var v = self - origin;
         var n = v.Normalize();

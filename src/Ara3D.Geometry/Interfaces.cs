@@ -18,22 +18,24 @@ namespace Ara3D.Geometry
     /// A deformable shape, can accept an arbitrary function from R3 -> R3 and
     /// produce a new shape.
     /// </summary>
-    public interface IDeformable : ITransformable
+    public interface IDeformable<out T> : ITransformable<T>
+        where T : IDeformable<T>
     {
-        IDeformable DeformImpl(Func<Vector3, Vector3> f);
+        T Deform(Func<Vector3, Vector3> f);
     }
 
     /// <summary>
-    /// A deformable shape, can accept an arbitrary function from R3 -> R3 and
+    /// A deformable shape, can accept an arbitrary function from R2 -> R2 and
     /// produce a new shape.
     /// </summary>
-    public interface IDeformable2D 
+    public interface IDeformable2D<out T>
+        where  T: IDeformable2D<T>
     {
-        IDeformable2D DeformImpl(Func<Vector2, Vector2> f);
+        T Deform(Func<Vector2, Vector2> f);
     }
 
     public interface IGeometry : 
-        IDeformable
+        IDeformable<IGeometry>
     { }
 
     /// <summary>
@@ -120,17 +122,17 @@ namespace Ara3D.Geometry
         IArray<Vector3> Points { get; }
     }
 
-    public interface IPolyLine<T>
+    public interface IPolyLine<T> 
     {
         bool Closed { get; }
         IArray<T> Points { get; }
         ILineSegment<T> Segment(int i);
     }
 
-    public interface IPolyLine2D : IPolyLine<Vector2>, IDeformable2D
+    public interface IPolyLine2D : IPolyLine<Vector2>, IDeformable2D<IPolyLine2D>
     { }
 
-    public interface IPolyLine3D : IPolyLine<Vector3>, ITransformable, IDeformable
+    public interface IPolyLine3D : IPolyLine<Vector3>, IDeformable<IPolyLine3D>
     { }
 
     public interface IPolygon : IPolyLine2D
@@ -144,10 +146,10 @@ namespace Ara3D.Geometry
     }
 
     public interface ITriMesh
-        : IMesh<Int3>
+        : IMesh<Int3>, IDeformable<ITriMesh>
     { }
 
     public interface IQuadMesh
-        : IMesh<Int4>
+        : IMesh<Int4>, IDeformable<IQuadMesh>
     { }
 }

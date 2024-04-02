@@ -1,4 +1,6 @@
-﻿namespace Ara3D.Mathematics
+﻿using System;
+
+namespace Ara3D.Mathematics
 {
     public static class Easings
     {
@@ -133,31 +135,31 @@
         ///     Modeled after quarter-cycle of sine wave
         /// </summary>
         public static float SineEaseIn(float p)
-        => (float)System.Math.Sin((p - 1) * HALFPI) + 1;
+        => (float)Math.Sin((p - 1) * HALFPI) + 1;
 
         /// <summary>
         ///     Modeled after quarter-cycle of sine wave (different phase)
         /// </summary>
         public static float SineEaseOut(float p)
-        => (float)System.Math.Sin(p * HALFPI);
+        => (float)Math.Sin(p * HALFPI);
 
         /// <summary>
         ///     Modeled after half sine wave
         /// </summary>
         public static float SineEaseInOut(float p)
-        => 0.5f * (1 - (float)System.Math.Cos(p * PI));
+        => 0.5f * (1 - (float)Math.Cos(p * PI));
 
         /// <summary>
         ///     Modeled after shifted quadrant IV of unit circle
         /// </summary>
         public static float CircularEaseIn(float p)
-        => 1 - (float)System.Math.Sqrt(1 - p * p);
+        => 1 - (float)Math.Sqrt(1 - p * p);
 
         /// <summary>
         ///     Modeled after shifted quadrant II of unit circle
         /// </summary>
         public static float CircularEaseOut(float p)
-        => (float)System.Math.Sqrt((2 - p) * p);
+        => (float)Math.Sqrt((2 - p) * p);
 
         /// <summary>
         ///     Modeled after the piecewise circular function
@@ -168,23 +170,23 @@
         {
             if (p < 0.5f)
             {
-                return 0.5f * (1 - (float)System.Math.Sqrt(1 - 4 * (p * p)));
+                return 0.5f * (1 - (float)Math.Sqrt(1 - 4 * (p * p)));
             }
 
-            return 0.5f * ((float)System.Math.Sqrt(-(2 * p - 3) * (2 * p - 1)) + 1);
+            return 0.5f * ((float)Math.Sqrt(-(2 * p - 3) * (2 * p - 1)) + 1);
         }
 
         /// <summary>
         ///     Modeled after the exponential function y = 2^(10(x - 1))
         /// </summary>
         public static float ExponentialEaseIn(float p)
-        => p == 0.0f ? p : (float)System.Math.Pow(2, 10 * (p - 1));
+        => p == 0.0f ? p : (float)Math.Pow(2, 10 * (p - 1));
 
         /// <summary>
         ///     Modeled after the exponential function y = -2^(-10x) + 1
         /// </summary>
         public static float ExponentialEaseOut(float p)
-            => p == 1.0f ? p : 1 - (float)System.Math.Pow(2, -10 * p);
+            => p == 1.0f ? p : 1 - (float)Math.Pow(2, -10 * p);
 
         /// <summary>
         ///     Modeled after the piecewise exponential
@@ -199,21 +201,21 @@
             }
 
             return p < 0.5f 
-                ? 0.5f * (float)System.Math.Pow(2, 20 * p - 10) 
-                : -0.5f * (float)System.Math.Pow(2, -20 * p + 10) + 1;
+                ? 0.5f * (float)Math.Pow(2, 20 * p - 10) 
+                : -0.5f * (float)Math.Pow(2, -20 * p + 10) + 1;
         }
 
         /// <summary>
         ///     Modeled after the damped sine wave y = sin(13pi/2*x)*(float)System.Math.Pow(2, 10 * (x - 1))
         /// </summary>
         public static float ElasticEaseIn(float p)
-        => (float)System.Math.Sin(13 * HALFPI * p) * (float)System.Math.Pow(2, 10 * (p - 1));
+        => (float)Math.Sin(13 * HALFPI * p) * (float)Math.Pow(2, 10 * (p - 1));
 
         /// <summary>
         ///     Modeled after the damped sine wave y = sin(-13pi/2*(x + 1))*(float)System.Math.Pow(2, -10x) + 1
         /// </summary>
         public static float ElasticEaseOut(float p)
-        => (float)System.Math.Sin(-13 * HALFPI * (p + 1)) * (float)System.Math.Pow(2, -10 * p) + 1;
+        => (float)Math.Sin(-13 * HALFPI * (p + 1)) * (float)Math.Pow(2, -10 * p) + 1;
 
         /// <summary>
         ///     Modeled after the piecewise exponentially-damped sine wave:
@@ -222,14 +224,14 @@
         /// </summary>
         public static float ElasticEaseInOut(float p) =>
             p < 0.5f
-                ? 0.5f * (float)System.Math.Sin(13 * HALFPI * (2 * p)) * (float)System.Math.Pow(2, 10 * (2 * p - 1))
-                : 0.5f * ((float)System.Math.Sin(-13 * HALFPI * (2 * p - 1 + 1)) * (float)System.Math.Pow(2, -10 * (2 * p - 1)) + 2);
+                ? 0.5f * (float)Math.Sin(13 * HALFPI * (2 * p)) * (float)Math.Pow(2, 10 * (2 * p - 1))
+                : 0.5f * ((float)Math.Sin(-13 * HALFPI * (2 * p - 1 + 1)) * (float)Math.Pow(2, -10 * (2 * p - 1)) + 2);
 
         /// <summary>
         ///     Modeled after the overshooting cubic y = x^3-x*sin(x*pi)
         /// </summary>
         public static float BackEaseIn(float p)
-            => p * p * p - p * (float)System.Math.Sin(p * PI);
+            => p * p * p - p * (float)Math.Sin(p * PI);
 
         /// <summary>
         ///     Modeled after overshooting cubic y = 1-((1-x)^3-(1-x)*sin((1-x)*pi))
@@ -237,7 +239,7 @@
         public static float BackEaseOut(float p)
         {
             var f = 1 - p;
-            return 1 - (f * f * f - f * (float)System.Math.Sin(f * PI));
+            return 1 - (f * f * f - f * (float)Math.Sin(f * PI));
         }
 
         /// <summary>
@@ -250,12 +252,12 @@
             if (p < 0.5f)
             {
                 var f = 2 * p;
-                return 0.5f * (f * f * f - f * (float)System.Math.Sin(f * PI));
+                return 0.5f * (f * f * f - f * (float)Math.Sin(f * PI));
             }
             else
             {
                 var f = 1 - (2 * p - 1);
-                return 0.5f * (1 - (f * f * f - f * (float)System.Math.Sin(f * PI))) + 0.5f;
+                return 0.5f * (1 - (f * f * f - f * (float)Math.Sin(f * PI))) + 0.5f;
             }
         }
 

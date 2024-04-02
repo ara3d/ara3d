@@ -91,7 +91,7 @@ public readonly struct TransformedBox
 /// Represents a single point (node/vertex) in a Moldflow geometry 
 /// </summary>
 public class MoldflowPoint
-    : IBounded, ITransformable
+    : IBounded, ITransformable<MoldflowPoint>
 {
     public readonly Vector3 Position;
     public readonly int Label;
@@ -101,7 +101,7 @@ public class MoldflowPoint
     public MoldflowPoint(Vector3 position, int label, int index)
         => (Position, Label, Index) = (position, label, index);
 
-    public ITransformable TransformImpl(Matrix4x4 mat)
+    public MoldflowPoint Transform(Matrix4x4 mat)
         => new MoldflowPoint(Position.Transform(mat), Label, Index);
 }
 
@@ -109,7 +109,7 @@ public class MoldflowPoint
 /// Represents data input from Moldflow
 /// </summary>
 public class MoldflowGeometry
-    : IBounded, ITransformable
+    : IBounded, ITransformable<MoldflowGeometry>
 {
     /// <summary>
     /// This is the point data with the integer labels, and indices for convenient look-up
@@ -130,7 +130,7 @@ public class MoldflowGeometry
 
     public AABox Bounds { get; }
 
-    public ITransformable TransformImpl(Matrix4x4 mat)
+    public MoldflowGeometry Transform(Matrix4x4 mat)
         => new MoldflowGeometry(Points.Select(p => p.Transform(mat)));
 }
 

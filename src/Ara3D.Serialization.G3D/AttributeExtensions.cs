@@ -127,11 +127,11 @@ namespace Ara3D.Serialization.G3D
                     if (desc.DataArity == 1)
                         return default(double).Repeat(count).ToAttribute(desc);
                     if (desc.DataArity == 2)
-                        return default(DVector2).Repeat(count).ToAttribute(desc);
+                        return default(Vector2).Repeat(count).ToAttribute(desc);
                     if (desc.DataArity == 3)
-                        return default(DVector3).Repeat(count).ToAttribute(desc);
+                        return default(Vector3).Repeat(count).ToAttribute(desc);
                     if (desc.DataArity == 4)
-                        return default(DVector4).Repeat(count).ToAttribute(desc);
+                        return default(Vector4).Repeat(count).ToAttribute(desc);
                     break;
             }
 

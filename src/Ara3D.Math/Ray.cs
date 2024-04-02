@@ -1,6 +1,6 @@
 ﻿namespace Ara3D.Mathematics
 {
-    public partial struct Ray : ITransformable
+    public partial struct Ray : ITransformable<Ray>
     {
         // adapted from http://www.scratchapixel.com/lessons/3d-basic-lessons/lesson-7-intersecting-simple-shapes/ray-box-intersection/
         public float? Intersects(AABox box)
@@ -131,8 +131,8 @@
             return (dist < 0) ? null : (float?)(distanceAlongRay - dist.Sqrt());
         }
 
-        public ITransformable TransformImpl(Matrix4x4 mat)
-            => new Ray(Position.Transform(mat), Direction.TransformNormal(mat));
+        public Ray Transform(Matrix4x4 mat)
+            => (Position.Transform(mat), Direction.TransformNormal(mat));
 
         // Adapted from https://en.wikipedia.org/wiki/M%C3%B6ller%E2%80%93Trumbore_intersection_algorithm
         // Does not require or benefit from precomputed normals.

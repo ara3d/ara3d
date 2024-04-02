@@ -12,11 +12,9 @@ namespace Ara3D.Math.Tests
         public const float PiOver2 = Pi / 2f;
         public const float PiOver4 = Pi / 4f;
 
-
         // Angle conversion helper.
         public static float ToRadians(float degrees)
             => degrees * Pi / 180f;
-
 
         // Comparison helpers with small tolerance to allow for floating point rounding during computations.
         public static bool Equal(float a, float b)
@@ -30,10 +28,7 @@ namespace Ara3D.Math.Tests
 
         public static bool Equal(Vector3 a, Vector3 b)
             => Equal(a.X, b.X) && Equal(a.Y, b.Y) && Equal(a.Z, b.Z);
-
-        public static bool Equal(DVector3 a, DVector3 b)
-            => Equal(a.X, b.X) && Equal(a.Y, b.Y) && Equal(a.Z, b.Z);
-
+        
         public static bool Equal(Vector4 a, Vector4 b)
             => Equal(a.X, b.X) && Equal(a.Y, b.Y) && Equal(a.Z, b.Z) && Equal(a.W, b.W);
 

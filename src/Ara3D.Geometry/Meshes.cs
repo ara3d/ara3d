@@ -5,9 +5,7 @@ using System;
 
 namespace Ara3D.Geometry
 {
-    
-
-    public class TriMesh : PointsGeometry, ITriMesh
+    public class TriMesh : PointsGeometry, ITriMesh, IDeformable<TriMesh>
     {
         public TriMesh(IArray<Vector3> points, IArray<Int3> faceIndices)
             : base(points)
@@ -18,11 +16,20 @@ namespace Ara3D.Geometry
         public IArray<int> Indices => FaceIndices.SelectMany(f => f.ToTuple());
         public IArray<Int3> FaceIndices { get; }
 
-        public IDeformable DeformImpl(Func<Vector3, Vector3> f)
+        public TriMesh Deform(Func<Vector3, Vector3> f)
             => new TriMesh(Points.Select(f), FaceIndices);
+
+        public TriMesh Transform(Matrix4x4 mat)
+            => Deform(p => p.Transform(mat));
+
+        ITriMesh ITransformable<ITriMesh>.Transform(Matrix4x4 mat)
+            => Transform(mat);
+
+        ITriMesh IDeformable<ITriMesh>.Deform(Func<Vector3, Vector3> f)
+            => Deform(f);
     }
 
-    public class QuadMesh : PointsGeometry, IQuadMesh
+    public class QuadMesh : PointsGeometry, IQuadMesh, IDeformable<QuadMesh>
     {
         public QuadMesh(IArray<Vector3> points, IArray<Int4> faceIndices)
             : base(points)
@@ -31,9 +38,18 @@ namespace Ara3D.Geometry
         }
         public IArray<int> Indices => FaceIndices.SelectMany(f => f.ToTuple());
         public IArray<Int4> FaceIndices { get; }
-        
-        public IDeformable DeformImpl(Func<Vector3, Vector3> f)
+
+        public QuadMesh Deform(Func<Vector3, Vector3> f)
             => new QuadMesh(Points.Select(f), FaceIndices);
+
+        public QuadMesh Transform(Matrix4x4 mat)
+            => Deform(p => p.Transform(mat));
+
+        IQuadMesh ITransformable<IQuadMesh>.Transform(Matrix4x4 mat)
+            => Transform(mat);
+
+        IQuadMesh IDeformable<IQuadMesh>.Deform(Func<Vector3, Vector3> f)
+            => Deform(f);
     }
 
     /// <summary>
@@ -45,7 +61,8 @@ namespace Ara3D.Geometry
     /// A grid mesh, may be created from a parametric surface, but can also
     /// be treated as a parametric surface.
     /// </summary>
-    public class GridMesh: PointsGeometry, IQuadMesh, IParametricSurface
+    public class GridMesh: PointsGeometry, IQuadMesh, IParametricSurface, 
+        IDeformable<GridMesh>
     {
         public GridMesh(IArray2D<Vector3> points, bool closedX, bool closedY)
             : base(points)
@@ -81,11 +98,20 @@ namespace Ara3D.Geometry
             return quad.Eval(((float)amountX, (float)amountY));
         }
 
-        public IDeformable DeformImpl(Func<Vector3, Vector3> f)
+        public GridMesh Deform(Func<Vector3, Vector3> f)
             => new GridMesh(Points.Select(f), ClosedX, ClosedY);
+
+        public GridMesh Transform(Matrix4x4 mat)
+            => Deform(p => p.Transform(mat));
+
+        IQuadMesh ITransformable<IQuadMesh>.Transform(Matrix4x4 mat)
+            => Transform(mat);
+
+        IQuadMesh IDeformable<IQuadMesh>.Deform(Func<Vector3, Vector3> f)
+            => Deform(f);
     }
 
-    public class TesselatedMesh : PointsGeometry, IQuadMesh
+    public class TesselatedMesh : PointsGeometry, IQuadMesh, IDeformable<TesselatedMesh>
     {
         public TesselatedMesh(IArray<SurfacePoint> points, IArray<Int4> faceIndices)
             : base(points.Select(p => p.Center))
@@ -97,8 +123,17 @@ namespace Ara3D.Geometry
         public IArray<int> Indices => FaceIndices.SelectMany(f => f.ToTuple());
         public IArray<Int4> FaceIndices { get; }
 
-        public IDeformable DeformImpl(Func<Vector3, Vector3> f)
-            => new QuadMesh(Points.Select(p => f(p.Center)), FaceIndices);
+        public TesselatedMesh Deform(Func<Vector3, Vector3> f)
+            => new TesselatedMesh(Points.Select(p => p.Deform(f)), FaceIndices);
+
+        public TesselatedMesh Transform(Matrix4x4 mat)
+            => Deform(p => p.Transform(mat));
+
+        IQuadMesh ITransformable<IQuadMesh>.Transform(Matrix4x4 mat) 
+            => Transform(mat);
+
+        IQuadMesh IDeformable<IQuadMesh>.Deform(Func<Vector3, Vector3> f) 
+            => Deform(f);
     }
 
     public static class Meshes

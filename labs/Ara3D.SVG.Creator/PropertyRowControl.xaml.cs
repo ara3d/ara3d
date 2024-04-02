@@ -19,7 +19,7 @@ namespace Ara3D.SVG.Creator
         }
 
         public NumericControl AddProperty(string name, Color backColor, 
-            double changeAmount, double defaultValue,  double currentValue, Action<double> onChanged)
+            float changeAmount, float defaultValue,  float currentValue, Action<float> onChanged)
         {
             var control = new NumericControl
             {
@@ -45,19 +45,19 @@ namespace Ara3D.SVG.Creator
             set => Button.Content = value;
         }
 
-        public DVector2 Value
+        public Vector2 Value
         {
             get => (Value1, Value2);
             set => (Value1, Value2) = (value.X, value.Y);
         }
 
-        public double Value1
+        public float Value1
         {
             get => Controls[0].Value;
             set => Controls[0].Value = value;
         }
 
-        public double Value2
+        public float Value2
         {
             get => Controls.Count > 1 ? Controls[1].Value : 0;
             set
@@ -77,8 +77,8 @@ namespace Ara3D.SVG.Creator
         }
 
         public bool TrackMouse = false;
-        private DVector2 _startMouse;
-        private DVector2 _startValue;
+        private Vector2 _startMouse;
+        private Vector2 _startValue;
 
         public void StartMouseTracking()
         {

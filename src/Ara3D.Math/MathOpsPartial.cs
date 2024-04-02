@@ -9,10 +9,10 @@ namespace Ara3D.Mathematics
     public static partial class MathOps
     {
         public static float Ln(this float x)
-            => (float)System.Math.Log(x);
+            => (float)Math.Log(x);
 
         public static double Ln(this double x)
-            => System.Math.Log(x);
+            => Math.Log(x);
 
         public static double Lerp(this double v1, double v2, double t)
             => v1 + (v2 - v1) * t;
@@ -27,7 +27,7 @@ namespace Ara3D.Mathematics
         /// Calculate the nearest power of 2 from the input number
         /// </summary>
         public static int ToNearestPowOf2(int x)
-            => (int)System.Math.Pow(2, System.Math.Round(System.Math.Log(x) / System.Math.Log(2)));
+            => (int)Math.Pow(2, Math.Round(Math.Log(x) / Math.Log(2)));
 
         /// <summary>
         /// Performs a Catmull-Rom interpolation using the specified positions.
@@ -305,7 +305,7 @@ namespace Ara3D.Mathematics
         // The measured angle between the two vectors would be positive in a clockwise direction and negative in an anti-clockwise direction.
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static float SignedAngle(Vector3 from, Vector3 to, Vector3 axis)
-            => Angle(from, to) * System.Math.Sign(axis.Dot(from.Cross(to)));
+            => Angle(from, to) * Math.Sign(axis.Dot(from.Cross(to)));
 
         // The smaller of the two possible angles between the two vectors is returned, therefore the result will never be greater than 180 degrees or smaller than -180 degrees.
         // If you imagine the from and to vectors as lines on a piece of paper, both originating from the same point, then the /axis/ vector would point up out of the paper.
@@ -556,24 +556,13 @@ namespace Ara3D.Mathematics
         public static Vector3 Cross(Vector3 a, Vector3 b)
             => a.Cross(b);
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static DVector3 Cross(DVector3 a, DVector3 b)
-            => a.Cross(b);
-
         /// <summary>
         /// Returns the bounding box, given stats on a Vector3
         /// </summary>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static AABox ToBox(this Stats<Vector3> stats)
             => new AABox(stats.Min, stats.Max);
-
-        /// <summary>
-        /// Returns the bounding box, given stats on a DVector3
-        /// </summary>
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static DAABox ToBox(this Stats<DVector3> stats)
-            => new DAABox(stats.Min, stats.Max);
-
+        
         /// <summary>
         /// Returns the bounding box for a series of points
         /// </summary>
@@ -586,7 +575,7 @@ namespace Ara3D.Mathematics
         /// </summary>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static bool Coplanar(Vector3 v1, Vector3 v2, Vector3 v3, Vector3 v4, float epsilon = Constants.Tolerance)
-            => System.Math.Abs(Vector3.Dot(v3 - v1, (v2 - v1).Cross(v4 - v1))) < epsilon;
+            => Math.Abs(Vector3.Dot(v3 - v1, (v2 - v1).Cross(v4 - v1))) < epsilon;
 
         /// <summary>
         /// Returns a translation matrix. 

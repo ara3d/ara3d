@@ -5,7 +5,7 @@ using System.Runtime.CompilerServices;
 
 namespace Ara3D.Mathematics
 {
-    public partial struct AABox : ITransformable
+    public partial struct AABox : ITransformable<AABox>
     {
         public int Count
             => 2;
@@ -268,7 +268,6 @@ namespace Ara3D.Mathematics
             }
 
             result = false;
-            return;
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -429,7 +428,7 @@ namespace Ara3D.Mathematics
         public static AABox FromCenterAndExtent(Vector3 center, Vector3 extent)
             => new AABox(center - extent / 2f, center + extent / 2f);
 
-        public ITransformable TransformImpl(Matrix4x4 mat)
+        public AABox Transform(Matrix4x4 mat)
             => Create(Corners.Select(v => v.Transform(mat)));
     }
 }

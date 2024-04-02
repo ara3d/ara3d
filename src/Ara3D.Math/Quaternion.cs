@@ -1,3 +1,4 @@
+using System;
 using System.Runtime.CompilerServices;
 
 namespace Ara3D.Mathematics
@@ -77,12 +78,12 @@ namespace Ara3D.Mathematics
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Quaternion CreateFromEulerAngles(Vector3 v)
         {
-            var c1 = System.Math.Cos(v.X / 2);
-            var s1 = System.Math.Sin(v.X / 2);
-            var c2 = System.Math.Cos(v.Y / 2);
-            var s2 = System.Math.Sin(v.Y / 2);
-            var c3 = System.Math.Cos(v.Z / 2);
-            var s3 = System.Math.Sin(v.Z / 2);
+            var c1 = Math.Cos(v.X / 2);
+            var s1 = Math.Sin(v.X / 2);
+            var c2 = Math.Cos(v.Y / 2);
+            var s2 = Math.Sin(v.Y / 2);
+            var c3 = Math.Cos(v.Z / 2);
+            var s3 = Math.Sin(v.Z / 2);
 
             var qw = c1 * c2 * c3 - s1 * s2 * s3;
             var qx = s1 * c2 * c3 + c1 * s2 * s3;
@@ -96,21 +97,21 @@ namespace Ara3D.Mathematics
         /// </summary>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Quaternion CreateXRotation(float theta)
-            => new Quaternion((float)System.Math.Sin(theta * 0.5f), 0.0f, 0.0f, (float)System.Math.Cos(theta * 0.5f));
+            => new Quaternion((float)Math.Sin(theta * 0.5f), 0.0f, 0.0f, (float)Math.Cos(theta * 0.5f));
 
         /// <summary>
         /// Creates a new Quaternion from the given rotation around the Y axis
         /// </summary>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Quaternion CreateYRotation(float theta)
-            => new Quaternion(0.0f, (float)System.Math.Sin(theta * 0.5f), 0.0f, (float)System.Math.Cos(theta * 0.5f));
+            => new Quaternion(0.0f, (float)Math.Sin(theta * 0.5f), 0.0f, (float)Math.Cos(theta * 0.5f));
 
         /// <summary>
         /// Creates a new Quaternion from the given rotation around the Z axis
         /// </summary>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Quaternion CreateZRotation(float theta)
-            => new Quaternion(0.0f, 0.0f, (float)System.Math.Sin(theta * 0.5f), (float)System.Math.Cos(theta * 0.5f));
+            => new Quaternion(0.0f, 0.0f, (float)Math.Sin(theta * 0.5f), (float)Math.Cos(theta * 0.5f));
 
         /// <summary>
         /// Creates a new look-at Quaternion
@@ -142,20 +143,16 @@ namespace Ara3D.Mathematics
             {
                 return CreateFromAxisAngle(axis / lengthSquared.Sqrt(), fromA.Dot(toB).Clamp(-1, 1).Acos());
             }
-            else
+
+            // The vectors are parallel to each other
+            if ((fromA + toB).AlmostZero())
             {
-                // The vectors are parallel to each other
-                if ((fromA + toB).AlmostZero())
-                {
-                    // The vectors are in opposite directions so rotate by half a circle.
-                    return CreateFromAxisAngle(up ?? Vector3.UnitZ, (float) System.Math.PI);
-                }
-                else
-                {
-                    // The vectors are in the same direction so no rotation is required.
-                    return Identity;
-                }
+                // The vectors are in opposite directions so rotate by half a circle.
+                return CreateFromAxisAngle(up ?? Vector3.UnitZ, (float) Math.PI);
             }
+
+            // The vectors are in the same direction so no rotation is required.
+            return Identity;
         }
 
         // TODO: the definition of yaw, pitch, roll varies depending on which axis is considered up.
@@ -436,9 +433,9 @@ namespace Ara3D.Mathematics
             //return new Vector3(pitch, yaw, roll);
 
             //https://www.gamedev.net/forums/topic/597324-quaternion-to-euler-angles-and-back-why-is-the-rotation-changing/
-            var x = (float)System.Math.Atan2(-2 * (Y * Z - W * X), W * W - X * X - Y * Y + Z * Z);
-            var y = (float)System.Math.Asin(2 * (X * Z + W * Y));
-            var z = (float)System.Math.Atan2(-2 * (X * Y - W * Z), W * W + X * X - Y * Y - Z * Z);
+            var x = (float)Math.Atan2(-2 * (Y * Z - W * X), W * W - X * X - Y * Y + Z * Z);
+            var y = (float)Math.Asin(2 * (X * Z + W * Y));
+            var z = (float)Math.Atan2(-2 * (X * Y - W * Z), W * W + X * X - Y * Y - Z * Z);
             return new Vector3(x, y, z);
         }
 
@@ -459,7 +456,7 @@ namespace Ara3D.Mathematics
         }
 
         public static Quaternion Create(HorizontalCoordinate angle)
-            => CreateZRotation((float)angle.Azimuth) * CreateXRotation((float)angle.Inclination);
+            => CreateZRotation(angle.Azimuth) * CreateXRotation(angle.Inclination);
 
         public static implicit operator Quaternion(HorizontalCoordinate angle)
             => Create(angle);

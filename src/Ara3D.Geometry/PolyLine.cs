@@ -6,14 +6,15 @@ namespace Ara3D.Geometry
 {
     public abstract class PolyLine<T> : IPolyLine<T>
     {
-        public PolyLine(IArray<T> points, bool closed)
+        protected PolyLine(IArray<T> points, bool closed)
             => (Points, Closed) = (points, closed);
         public bool Closed { get; }
         public IArray<T> Points { get; }
         public abstract ILineSegment<T> Segment(int i);
-     }
+    }
 
-    public class PolyLine2D : PolyLine<Vector2>, IPolyLine2D
+    public class PolyLine2D : PolyLine<Vector2>, 
+        IPolyLine2D, IDeformable2D<PolyLine2D>
     {
         public PolyLine2D(IArray<Vector2> points, bool closed)
             : base(points, closed) { }
@@ -21,11 +22,15 @@ namespace Ara3D.Geometry
         public override ILineSegment<Vector2> Segment(int i)
             => new LineSegment2D(this.Point(i), this.Point(i + 1));
 
-        public IDeformable2D DeformImpl(Func<Vector2, Vector2> f)
+        IPolyLine2D IDeformable2D<IPolyLine2D>.Deform(Func<Vector2, Vector2> f)
+            => new PolyLine2D(Points.Select(f), Closed);
+
+        PolyLine2D IDeformable2D<PolyLine2D>.Deform(Func<Vector2, Vector2> f)
             => new PolyLine2D(Points.Select(f), Closed);
     }
 
-    public class PolyLine3D : PolyLine<Vector3>, IPolyLine3D
+    public class PolyLine3D : PolyLine<Vector3>, 
+        IPolyLine3D, IDeformable<PolyLine3D>
     {
         public PolyLine3D(IArray<Vector3> points, bool closed)
             : base(points, closed) { }
@@ -33,11 +38,17 @@ namespace Ara3D.Geometry
         public override ILineSegment<Vector3> Segment(int i)
             => new LineSegment3D(this.Point(i), this.Point(i + 1));
 
-        public ITransformable TransformImpl(Matrix4x4 mat)
-            => new PolyLine3D(Points.Transform(mat), Closed);
-
-        public IDeformable DeformImpl(Func<Vector3, Vector3> f)
+        public PolyLine3D Deform(Func<Vector3, Vector3> f)
             => new PolyLine3D(Points.Select(f), Closed);
+
+        IPolyLine3D IDeformable<IPolyLine3D>.Deform(Func<Vector3, Vector3> f)
+            => Deform(f);
+
+        PolyLine3D ITransformable<PolyLine3D>.Transform(Matrix4x4 mat)
+            => Deform(p => p.Transform(mat));
+
+        public IPolyLine3D Transform(Matrix4x4 mat)
+            => Deform(p => p.Transform(mat));
     }
 
     public static class PolyLineExtensions

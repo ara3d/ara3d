@@ -6,13 +6,13 @@ using Ara3D.Utils;
 
 namespace Ara3D.Geometry
 {
-    public class Polygon : PolyLine2D, IPolygon
+    public class Polygon : PolyLine2D, IPolygon, IDeformable2D<Polygon>
     {
         public Polygon(IArray<Vector2> points)
             : base(points, true)
         { }
 
-        public new IDeformable2D DeformImpl(Func<Vector2, Vector2> f)
+        public Polygon Deform(Func<Vector2, Vector2> f)
             => new Polygon(Points.Select(f));
     }
 

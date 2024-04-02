@@ -28,8 +28,8 @@ public abstract class Generator
         }
     }
 
-    public Position A { get; set; } = DVector2.Zero;
-    public Position B { get; set; } = DVector2.Zero;
+    public Position A { get; set; } = Vector2.Zero;
+    public Position B { get; set; } = Vector2.Zero;
 
     public abstract IEntity Evaluate();
 }
@@ -46,18 +46,18 @@ public class StarShape : Generator
 {
     public int Points { get; set; } = 5;
 
-    public double InnerRadius { get; set; } = 20;
-    public double OuterRadius { get; set; } = 50;
+    public float InnerRadius { get; set; } = 20;
+    public float OuterRadius { get; set; } = 50;
 
     public override IEntity Evaluate()
     {
-        var points = new List<DVector2>();
+        var points = new List<Vector2>();
         var n = Points * 2;
         for (var i = 0; i < n; i++)
         {
-            var theta = System.Math.PI * 2 * i / (double)n;
+            var theta = i / n.Turns();
             var r = i.IsEven() ? OuterRadius : InnerRadius;
-            var pt = new DVector2(theta.Sin(), theta.Cos()) * r;
+            var pt = new Vector2(theta.Sin, theta.Cos) * r;
             pt += Center;
             points.Add(pt);
         }
@@ -164,7 +164,7 @@ public class FunctionGenerator : Generator
 {
     public FunctionRendererParameters RendererParameters { get; set; } = new();
     public Function Function { get; set; } = new CircleFunc();
-    public DVector2 GetPoint(float x) => A + Function.Func(x * Function.Length + Function.Offset) * Size;
+    public Vector2 GetPoint(float x) => A + Function.Func(x * Function.Length + Function.Offset) * Size;
 
     public override IEntity Evaluate()
     {
@@ -234,7 +234,7 @@ public class FunctionGenerator : Generator
 
 public static class SvgExtensions
 {
-    public static SvgPath ToSvgPath(this IReadOnlyList<DVector2> points, bool closed)
+    public static SvgPath ToSvgPath(this IReadOnlyList<Vector2> points, bool closed)
     {
         var r = new SvgPath();
         if (points.Count > 0)

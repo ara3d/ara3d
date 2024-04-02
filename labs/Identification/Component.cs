@@ -55,17 +55,17 @@ namespace Identification
 
     public class LocationComponent : Component
     {
-        public DVector3 Position;
+        public Vector3 Position;
     }
 
     public class DimensionsComponent : Component
     {
-        public DVector3 Dimensions;
+        public Vector3 Dimensions;
     }
 
     public class GeometryComponent : Component
     {
         public string FileName;
-        public DAABox LocalBoundingBox;
+        public AABox LocalBoundingBox;
     }
 }

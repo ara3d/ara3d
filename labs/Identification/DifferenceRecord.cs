@@ -8,14 +8,14 @@ namespace Identification
         public string Name;
 
         public bool DidCenterPointChange;
-        public DVector3 OldCenterPoint;
-        public DVector3 NewCenterPoint;
-        public DVector3 CenterPointChange;
+        public Vector3 OldCenterPoint;
+        public Vector3 NewCenterPoint;
+        public Vector3 CenterPointChange;
 
         public bool DidDimensionsChange;// => DimensionsChange.AlmostZero();
-        public DVector3 OldDimensions;
-        public DVector3 NewDimensions;
-        public DVector3 DimensionsChange;// => NewDimensions - OldDimensions;
+        public Vector3 OldDimensions;
+        public Vector3 NewDimensions;
+        public Vector3 DimensionsChange;// => NewDimensions - OldDimensions;
 
         public Dictionary<string, string> OldParameters = new Dictionary<string, string>();
         public Dictionary<string, string> NewParameters = new Dictionary<string, string>();

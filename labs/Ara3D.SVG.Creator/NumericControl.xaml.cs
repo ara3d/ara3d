@@ -17,25 +17,25 @@ namespace Ara3D.SVG.Creator
         }
         
         public static readonly DependencyProperty ValueProperty = DependencyProperty.Register(
-            nameof(Value), typeof(double), typeof(NumericControl), new PropertyMetadata(OnValueChanged));
+            nameof(Value), typeof(float), typeof(NumericControl), new PropertyMetadata(OnValueChanged));
 
         private Point _capturePoint;
-        private double _captureValue;
+        private float _captureValue;
         public const float Tolerance = 0.0001f;
         public bool DontUpdate = false;
 
         private static void OnValueChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            var oldVal = (float)(double)e.OldValue;
-            var newVal = (float)(double)e.NewValue;
+            var oldVal = (float)(float)e.OldValue;
+            var newVal = (float)(float)e.NewValue;
             var diff = System.Math.Abs(oldVal - newVal);
             if (diff < Tolerance)
                 return;
             ( d as NumericControl)?.UpdateTextDisplay();
         }
 
-        public double ChangeSize { get; set; } = 5;
-        public double PixelToAmount => ChangeSize / 2;
+        public float ChangeSize { get; set; } = 5;
+        public float PixelToAmount => ChangeSize / 2;
 
         public void UpdateTextDisplay()
         {
@@ -55,9 +55,9 @@ namespace Ara3D.SVG.Creator
             }
         }
 
-        public double Value
+        public float Value
         {
-            get => (double)GetValue(ValueProperty); 
+            get => (float)GetValue(ValueProperty); 
             set => SetValue(ValueProperty, value); 
         }
 
@@ -97,7 +97,7 @@ namespace Ara3D.SVG.Creator
         }
         
         private static bool IsTextAllowed(string text)
-            => double.TryParse(text, out _);
+            => float.TryParse(text, out _);
 
         private void OnPaste(object sender, DataObjectPastingEventArgs e)
         {
@@ -117,7 +117,7 @@ namespace Ara3D.SVG.Creator
 
         private void InnerTextBox_OnTextChanged(object sender, TextChangedEventArgs e)
         {
-            if (double.TryParse(InnerTextBox.Text, out var value))
+            if (float.TryParse(InnerTextBox.Text, out var value))
                 Value = value;
         }
 

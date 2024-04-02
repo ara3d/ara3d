@@ -175,10 +175,10 @@ namespace Ara3D.Utils.Wpf
             return self;
         }
 
-        public static DVector2 ToVector(this Point pt)
-            => (pt.X, pt.Y);
+        public static Vector2 ToVector(this Point pt)
+            => ((float)pt.X, (float)pt.Y);
 
-        public static DVector2 GetMouseVector(this Control control)
+        public static Vector2 GetMouseVector(this Control control)
             => Mouse.GetPosition(control).ToVector();
     }
 }

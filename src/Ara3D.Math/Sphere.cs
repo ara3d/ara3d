@@ -7,7 +7,7 @@ namespace Ara3D.Mathematics
     /// <summary>
     /// Describes a sphere in 3D-space for bounding operations.
     /// </summary>
-    public partial struct Sphere : ITransformable
+    public partial struct Sphere : ITransformable<Sphere>
     {
         /// <summary>
         /// Test if a bounding box is fully inside, outside, or just intersecting the sphere.
@@ -259,8 +259,8 @@ namespace Ara3D.Mathematics
         public float? Intersects(Ray ray)
             => ray.Intersects(this);
 
-        public ITransformable TransformImpl(Matrix4x4 m)
-            => new Sphere(Center.Transform(m),
+        public Sphere Transform(Matrix4x4 m)
+            => (Center.Transform(m),
                 Radius * Math.Max(m.M11 * m.M11 + m.M12 * m.M12 + m.M13 * m.M13,
                         Math.Max(m.M21 * m.M21 + m.M22 * m.M22 + m.M23 * m.M23,
                             m.M31 * m.M31 + m.M32 * m.M32 + m.M33 * m.M33))

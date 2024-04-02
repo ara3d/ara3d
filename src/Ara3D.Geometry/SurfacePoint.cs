@@ -28,7 +28,7 @@ namespace Ara3D.Geometry
     }
 
     public class SurfacePoint 
-        : ISurfacePoint
+        : ISurfacePoint, IDeformable<SurfacePoint>
     {
         public SurfacePoint(Vector3 center, Vector2 uv, Vector3 a, Vector3 b, Vector3 c, Vector3 d)
         {
@@ -52,5 +52,17 @@ namespace Ara3D.Geometry
         public Vector3 OutBinormal => V0 - Center;
         public Vector3 InTangent => Center - V3;
         public Vector3 OutTangent => V1 - Center;
+
+        public SurfacePoint Transform(Matrix4x4 mat)
+            => Deform(v => v.Transform(mat));
+
+        public SurfacePoint Deform(Func<Vector3, Vector3> f)
+            => new SurfacePoint(f(Center), UV, f(V0), f(V1), f(V2), f(V3));
+
+        IVertexNeighbourhood ITransformable<IVertexNeighbourhood>.Transform(Matrix4x4 mat)
+            => Transform(mat);
+
+        IVertexNeighbourhood IDeformable<IVertexNeighbourhood>.Deform(Func<Vector3, Vector3> f)
+            => Deform(f);
     }
 }

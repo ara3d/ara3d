@@ -15,7 +15,7 @@ namespace Ara3D.Mathematics
            => ((byte)(v.X * 255), (byte)(v.Y * 255), (byte)(v.Z * 255), 0xFF);
     }
 
-    public partial struct Vector4 : ITransformable
+    public partial struct Vector4 : ITransformable<Vector4>
     {
         public Vector4(Vector3 v, float w)
             : this(v.X, v.Y, v.Z, w)
@@ -28,8 +28,8 @@ namespace Ara3D.Mathematics
         /// <summary>
         /// Transforms a vector by the given matrix.
         /// </summary>
-        public ITransformable TransformImpl(Matrix4x4 matrix)
-            => new Vector4(
+        public Vector4 Transform(Matrix4x4 matrix)
+            => (
                 X * matrix.M11 + Y * matrix.M21 + Z * matrix.M31 + W * matrix.M41,
                 X * matrix.M12 + Y * matrix.M22 + Z * matrix.M32 + W * matrix.M42,
                 X * matrix.M13 + Y * matrix.M23 + Z * matrix.M33 + W * matrix.M43,
@@ -39,7 +39,7 @@ namespace Ara3D.Mathematics
         public Vector2 XY => new Vector2(X, Y);
     }
 
-    public partial struct Vector3 : ITransformable
+    public partial struct Vector3 : ITransformable<Vector3>
     {
         public Vector3(float x, float y)
             : this(x, y, 0)
@@ -52,8 +52,8 @@ namespace Ara3D.Mathematics
         /// <summary>
         /// Transforms a vector by the given matrix.
         /// </summary>
-        public ITransformable TransformImpl(Matrix4x4 matrix)
-            => new Vector3(
+        public Vector3 Transform(Matrix4x4 matrix)
+            => (
                 X * matrix.M11 + Y * matrix.M21 + Z * matrix.M31 + matrix.M41,
                 X * matrix.M12 + Y * matrix.M22 + Z * matrix.M32 + matrix.M42,
                 X * matrix.M13 + Y * matrix.M23 + Z * matrix.M33 + matrix.M43);
@@ -101,7 +101,7 @@ namespace Ara3D.Mathematics
         public Vector3 YZX => new Vector3(Y, Z, X);
     }
 
-    public partial struct Line : ITransformable, IPoints, IMappable<Line, Vector3>
+    public partial struct Line : ITransformable<Line>, IPoints, IMappable<Line, Vector3>
     {
         public Vector3 Vector => B - A;
         public Ray Ray => new Ray(A, Vector);
@@ -117,8 +117,8 @@ namespace Ara3D.Mathematics
         public Line SetLength(float length)
             => new Line(A, A + Vector.Along(length));
 
-        public ITransformable TransformImpl(Matrix4x4 mat)
-            => new Line(A.Transform(mat), B.Transform(mat));
+        public Line Transform(Matrix4x4 mat)
+            => (A.Transform(mat), B.Transform(mat));
 
         public int NumPoints => 2;
 
@@ -169,13 +169,7 @@ namespace Ara3D.Mathematics
         public Vector3 ToVector3()
             => new Vector3(X, Y, 0);
 
-        public DVector3 ToDVector3()
-            => new DVector3(X, Y, 0);
-
-        public DVector2 ToDVector2()
-            => new DVector2(X, Y);
-
-        public static implicit operator Vector3(Vector2 self)
+       public static implicit operator Vector3(Vector2 self)
             => self.ToVector3();
 
         public double PointCrossProduct(Vector2 other) => X * other.Y - other.X * Y;
@@ -198,7 +192,7 @@ namespace Ara3D.Mathematics
         }
 
         public bool IsPointOnLine(Vector2 point)
-            => System.Math.Abs(LinePointCrossProduct(point)) < Constants.Tolerance;
+            => Math.Abs(LinePointCrossProduct(point)) < Constants.Tolerance;
 
         public bool IsPointRightOfLine(Vector2 point)
             => LinePointCrossProduct(point) < 0;
@@ -217,52 +211,7 @@ namespace Ara3D.Mathematics
             // Inspired by: https://martin-thoma.com/how-to-check-if-two-line-segments-intersect/
             Intersects(BoundingBox(), other, other.BoundingBox());
     }
-
-    public partial struct DVector2
-    {
-        public Vector2 Vector2
-            => new Vector2((float)X, (float)Y);
-
-        public DVector3 DVector3
-            => (X, Y, 0);
-    }
-
-    public partial struct DVector3
-    {
-        public Vector3 Vector3
-            => new Vector3((float)X, (float)Y, (float)Z);
-
-        /// <summary>
-        /// Computes the cross product of two vectors.
-        /// </summary>
-        public DVector3 Cross(DVector3 vector2)
-            => new DVector3(
-                Y * vector2.Z - Z * vector2.Y,
-                Z * vector2.X - X * vector2.Z,
-                X * vector2.Y - Y * vector2.X);
-    }
-
-    public partial struct DVector4
-    {
-        public Vector4 Vector4
-            => new Vector4((float)X, (float)Y, (float)Z, (float)W);
-    }
-
-    public partial struct DAABox
-    {
-        public AABox AABox
-            => new AABox(Min.Vector3, Max.Vector3);
-    }
-
-    public partial struct DQuaternion
-    {
-        public Quaternion Quaternion
-            => new Quaternion((float)X, (float)Y, (float)Z, (float)W);
-
-        public DVector4 DVector4
-            => new DVector4(X, Y, Z, W);
-    }
-
+   
     public partial struct Pose
     {
         public static Pose Identity => new Pose(Vector3.Zero, Quaternion.Identity);
@@ -328,19 +277,13 @@ namespace Ara3D.Mathematics
     /// </summary>
     public partial struct HorizontalCoordinate
     {
-        public double Yaw => Azimuth;
-        public double Pitch => Inclination;
-        public double Roll => 0;
-
-        public static implicit operator DVector2(HorizontalCoordinate angle)
-            => (angle.Azimuth, angle.Inclination);
-
+        public float Yaw => Azimuth;
+        public float Pitch => Inclination;
+        public float Roll => 0;
+        
         public static explicit operator Vector2(HorizontalCoordinate angle)
-            => ((float)angle.Azimuth, (float)angle.Inclination);
-
-        public static implicit operator HorizontalCoordinate(DVector2 vector)
-            => (vector.X, vector.Y);
-
+            => (angle.Azimuth, angle.Inclination);
+        
         public static implicit operator HorizontalCoordinate(Vector2 vector)
             => (vector.X, vector.Y);
     }
