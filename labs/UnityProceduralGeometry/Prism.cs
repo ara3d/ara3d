@@ -9,5 +9,5 @@ public class Prism : ProceduralGeometryObject
     public float Height = 1.0f;
 
     public override ITriMesh ComputeMesh()
-        => Polygons.GetPolygon(PolygonEnum).Extrude(Height).Triangulate();
+        => PolygonEnum.ToPolygon().Extrude(Height).Triangulate();
 }

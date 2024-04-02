@@ -14,11 +14,6 @@ namespace Ara3D.Geometry
         AABox2D Bounds { get; }
     }
 
-    public interface ITransformable
-    {
-        ITransformable TransformImpl(Matrix4x4 mat);
-    }
-
     /// <summary>
     /// A deformable shape, can accept an arbitrary function from R3 -> R3 and
     /// produce a new shape.

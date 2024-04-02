@@ -12,9 +12,9 @@ public class Polygon : ProceduralGeometryObject
 
     public override ITriMesh ComputeMesh()
     {
-        var polygon = PolygonType.ToPolygon().Scale(Size);
+        var polygon = PolygonType.ToPolygon().To3D().Scale(Size);
         var marker = MarkerType.ToMesh();
-        var all = marker.Clone
+        var all = marker.Clone(polygon.Points);
         throw new System.NotImplementedException();
     }
 }

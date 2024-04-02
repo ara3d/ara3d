@@ -49,6 +49,6 @@ namespace Ara3D.Collections
             => self.Stride(column, self.Columns); 
 
         public static IArray2D<TR> Select<T, TR>(this IArray2D<T> self, Func<T, TR> f)
-            => new Array2D(self.Select(f), self.Columns, self.Rows);
+            => new Array2D<TR>(self.Select(f), self.Columns, self.Rows);
     }
 }

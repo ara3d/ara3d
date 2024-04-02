@@ -21,7 +21,7 @@ namespace Ara3D.Geometry
         }
 
         public static IArray<ITriMesh> Clone(this ITriMesh self, IArray<Vector3> points)
-            => points.Select(self.Translate);
+            => points.Select(p => self.Translate(p));
 
         public static IArray<ITriMesh> Clone(this ITriMesh self, IEnumerable<Vector3> points)
             => self.Clone(points.ToIArray());

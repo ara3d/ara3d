@@ -15,22 +15,22 @@ namespace Ara3D.Mathematics
         public static Matrix4x4 Multiply(params Matrix4x4[] matrices)
             => matrices.Aggregate(Matrix4x4.Identity, (m1, m2) => m1 * m2);
 
-        public static T Transform<T>(this T self, params Matrix4x4[] matrices) where T: ITransformable
+        public static T Transform<T>(this T self, params Matrix4x4[] matrices) where T : ITransformable
             => self.Transform(Multiply(matrices));
 
-        public static T Translate<T>(this T self, Vector3 offset) where T: ITransformable
+        public static T Translate<T>(this T self, Vector3 offset) where T : ITransformable
             => self.Transform(Matrix4x4.CreateTranslation(offset));
 
-        public static T Translate<T>(this T self, float x, float y, float z) where T: ITransformable
+        public static T Translate<T>(this T self, float x, float y, float z) where T : ITransformable
             => self.Translate((x, y, z));
 
-        public static T Rotate<T>(this T self, Quaternion q) where T: ITransformable
+        public static T Rotate<T>(this T self, Quaternion q) where T : ITransformable
             => self.Transform(Matrix4x4.CreateRotation(q));
 
-        public static T Scale<T>(this T self, Vector3 scales) where T: ITransformable
+        public static T Scale<T>(this T self, Vector3 scales) where T : ITransformable
             => self.Transform(Matrix4x4.CreateScale(scales));
 
-        public static T Scale<T>(this T self, float x, float y, float z) where T: ITransformable
+        public static T Scale<T>(this T self, float x, float y, float z) where T : ITransformable
             => self.Scale((x, y, z));
 
         public static T Scale<T>(this T self, float x) where T : ITransformable
@@ -45,7 +45,8 @@ namespace Ara3D.Mathematics
         public static T ScaleZ<T>(this T self, float z) where T : ITransformable
             => self.Scale(1, 1, z);
 
-        public static T LookAt<T>(this T self, Vector3 cameraPosition, Vector3 cameraTarget, Vector3 cameraUpVector) where T: ITransformable
+        public static T LookAt<T>(this T self, Vector3 cameraPosition, Vector3 cameraTarget, Vector3 cameraUpVector)
+            where T : ITransformable
             => self.Transform(Matrix4x4.CreateLookAt(cameraPosition, cameraTarget, cameraUpVector));
 
         public static T RotateAround<T>(this T self, Vector3 axis, float angle) where T : ITransformable
@@ -66,7 +67,8 @@ namespace Ara3D.Mathematics
         public static T RotateZ<T>(this T self, float angle) where T : ITransformable
             => self.RotateAround(Vector3.UnitZ, angle);
 
-        public static T TranslateRotateScale<T>(this T self, Vector3 pos, Quaternion rot, Vector3 scale) where T : ITransformable
+        public static T TranslateRotateScale<T>(this T self, Vector3 pos, Quaternion rot, Vector3 scale)
+            where T : ITransformable
             => self.Translate(pos).Rotate(rot).Scale(scale);
-
     }
+}
