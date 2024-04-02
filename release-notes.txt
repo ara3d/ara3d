@@ -2,6 +2,12 @@
 
 ### 2024-04-01
 
+* Removing double precision mathematical structures in prep for changing to Plato mathematics
+* Improved the deformable/transformable interfaces
+* Removed all of the [AggressiveInline]
+
+### 2024-04-01
+
 * More cleaning up of geometry library
 * Added Faceted and FlipFaces modifiers. 
 * Added Unity demo/tests for platonic solids
@@ -25,10 +31,8 @@
 * Writing a Json deserialization library 
 * Working on the Git tool
 * Added a JsonBuilder class
-* Improved some of the reflection code
-* Added more functions for working with dictionaries 
- 
-### 2024-03-27
+* Improved some of the reflection co
+* Added more functions for working with d]]'### 2024-03-27
 
 * Added catmull-clark subdivision surface
 * Added weighted average
