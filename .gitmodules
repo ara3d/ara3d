@@ -10,3 +10,15 @@
 [submodule "bowerbird"]
 	path = bowerbird
 	url = https://github.com/ara3d/bowerbird
+[submodule "geometry"]
+	path = geometry
+	url = https://github.com/ara3d/geometry
+[submodule "mathematics"]
+	path = mathematics
+	url = https://github.com/ara3d/mathematics
+[submodule "utils"]
+	path = utils
+	url = https://github.com/ara3d/utils
+[submodule "collections"]
+	path = collections
+	url = https://github.com/ara3d/collections
