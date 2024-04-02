@@ -27,17 +27,17 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ara3D.Serialization.VIM", "
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ara3D.Serialization.G3D", "src\Ara3D.Serialization.G3D\Ara3D.Serialization.G3D.csproj", "{C2A1F310-166F-49B4-B9B9-ECB937D53FE2}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ara3D.Mathematics", "src\Ara3D.Math\Ara3D.Mathematics.csproj", "{9DDEB13C-A6D4-49E6-8E50-21A3C5931414}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ara3D.Mathematics", "Mathematics\Ara3D.Mathematics\Ara3D.Mathematics.csproj", "{9DDEB13C-A6D4-49E6-8E50-21A3C5931414}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ara3D.Interop.Assimp", "src\Ara3D.Interop.Assimp\Ara3D.Interop.Assimp.csproj", "{2BB0F7C3-4EFC-4F9E-985D-CFF963AE5353}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ara3D.Geometry", "src\Ara3D.Geometry\Ara3D.Geometry.csproj", "{D5AA20AA-79D7-4D58-9CAF-45A07340C354}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ara3D.Geometry", "Geometry\Ara3D.Geometry\Ara3D.Geometry.csproj", "{D5AA20AA-79D7-4D58-9CAF-45A07340C354}"
 	ProjectSection(ProjectDependencies) = postProject
 		{6B8EA878-A82D-43AF-BFEF-0E5106117F55} = {6B8EA878-A82D-43AF-BFEF-0E5106117F55}
 		{9DDEB13C-A6D4-49E6-8E50-21A3C5931414} = {9DDEB13C-A6D4-49E6-8E50-21A3C5931414}
 	EndProjectSection
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ara3D.Collections", "src\Ara3D.Collections\Ara3D.Collections.csproj", "{31E7BD94-C662-4A29-8048-9801742E0A9A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ara3D.Collections", "Collections\Ara3D.Collections\Ara3D.Collections.csproj", "{31E7BD94-C662-4A29-8048-9801742E0A9A}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ara3D.Serialization.BFAST", "src\Ara3D.Serialization.BFAST\Ara3D.Serialization.BFAST.csproj", "{A763689E-D5C2-4A25-8A3F-9CEAF8BB3132}"
 EndProject
@@ -65,13 +65,13 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SvgEditorWinForms", "labs\S
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ara3D.Services", "src\Ara3D.Services\Ara3D.Services.csproj", "{54EDAD8E-0960-462B-A4F1-4E82C9F8275F}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ara3D.Utils.Win32", "src\Ara3D.Utils.Win32\Ara3D.Utils.Win32.csproj", "{5CAD8885-04D4-46F4-B3FE-AC3409435CA3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ara3D.Utils.Win32", "Utils\Ara3D.Utils.Win32\Ara3D.Utils.Win32.csproj", "{5CAD8885-04D4-46F4-B3FE-AC3409435CA3}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ara3D.Utils.Wpf", "src\Ara3D.Utils.Wpf\Ara3D.Utils.Wpf.csproj", "{7A455DFD-0EC8-45A6-BFFE-35AB6CD78BAF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ara3D.Utils.Wpf", "Utils\Ara3D.Utils.Wpf\Ara3D.Utils.Wpf.csproj", "{7A455DFD-0EC8-45A6-BFFE-35AB6CD78BAF}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ara3D.Utils", "src\Ara3D.Utils\Ara3D.Utils.csproj", "{6B8EA878-A82D-43AF-BFEF-0E5106117F55}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ara3D.Utils", "Utils\Ara3D.Utils\Ara3D.Utils.csproj", "{6B8EA878-A82D-43AF-BFEF-0E5106117F55}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ara3D.Utils.Dev", "src\Ara3D.Utils.Dev\Ara3D.Utils.Dev.csproj", "{E608226B-62C7-45E4-B615-684B5DDDCA54}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ara3D.Utils.Dev", "Utils\Ara3D.Utils.Dev\Ara3D.Utils.Dev.csproj", "{E608226B-62C7-45E4-B615-684B5DDDCA54}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ara3D.Serialization.G3D.Tests", "tests\Ara3D.G3d.Tests\Ara3D.Serialization.G3D.Tests.csproj", "{029BF37E-8B50-4270-8FB7-22E090BAB8A9}"
 EndProject

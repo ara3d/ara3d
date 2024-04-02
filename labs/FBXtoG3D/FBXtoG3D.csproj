@@ -9,8 +9,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\src\Ara3D.Geometry\Ara3D.Geometry.csproj" />
-    <ProjectReference Include="..\..\src\Ara3D.Math\Ara3D.Mathematics.csproj" />
+    <ProjectReference Include="..\..\Geometry\Ara3D.Geometry\Ara3D.Geometry.csproj" />
+    <ProjectReference Include="..\..\Mathematics\Ara3D.Mathematics\Ara3D.Mathematics.csproj" />
     <ProjectReference Include="..\..\src\Ara3D.Serialization.FBX\Ara3D.Serialization.FBX.vcxproj" />
     <ProjectReference Include="..\..\src\Ara3D.Serialization.G3D\Ara3D.Serialization.G3D.csproj" />
   </ItemGroup>
