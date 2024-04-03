@@ -8,7 +8,7 @@
     <ProjectReference Include="..\..\parakeet\Parakeet\Ara3D.Parakeet.csproj" />
     <ProjectReference Include="..\Ara3D.Logging\Ara3D.Logging.csproj" />
     <ProjectReference Include="..\Ara3D.Parsing\Ara3D.Parsing.csproj" />
-    <ProjectReference Include="..\Ara3D.Utils\Ara3D.Utils.csproj" />
+    <ProjectReference Include="..\..\Utils\Ara3D.Utils\Ara3D.Utils.csproj" />
   </ItemGroup>
 
 </Project>

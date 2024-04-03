@@ -43,6 +43,6 @@
   <ItemGroup>
     <ProjectReference Include="..\..\src\Ara3D.Buffers\Ara3D.Buffers.csproj" />
     <ProjectReference Include="..\..\src\Ara3D.Serialization.VIM\Ara3D.Serialization.VIM.csproj" />
-    <ProjectReference Include="..\..\src\Ara3D.Utils\Ara3D.Utils.csproj" />
+    <ProjectReference Include="..\..\Utils\Ara3D.Utils\Ara3D.Utils.csproj" />
   </ItemGroup>
 </Project>

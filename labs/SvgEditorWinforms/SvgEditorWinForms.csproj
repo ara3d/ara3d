@@ -14,7 +14,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\src\Ara3D.Geometry\Ara3D.Geometry.csproj" />
+    <ProjectReference Include="..\..\Geometry\Ara3D.Geometry\Ara3D.Geometry.csproj" />
   </ItemGroup>
 
 </Project>

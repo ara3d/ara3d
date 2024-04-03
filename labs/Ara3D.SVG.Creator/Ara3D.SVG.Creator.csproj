@@ -16,8 +16,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\src\Ara3D.Collections\Ara3D.Collections.csproj" />
-    <ProjectReference Include="..\..\src\Ara3D.Utils.Wpf\Ara3D.Utils.Wpf.csproj" />
+    <ProjectReference Include="..\..\Collections\Ara3D.Collections\Ara3D.Collections.csproj" />
+    <ProjectReference Include="..\..\Utils\Ara3D.Utils.Wpf\Ara3D.Utils.Wpf.csproj" />
   </ItemGroup>
 
 </Project>

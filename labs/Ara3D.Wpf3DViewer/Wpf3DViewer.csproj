@@ -13,10 +13,10 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\src\Ara3D.Geometry\Ara3D.Geometry.csproj" />
+    <ProjectReference Include="..\..\Geometry\Ara3D.Geometry\Ara3D.Geometry.csproj" />
     <ProjectReference Include="..\..\src\Ara3D.Interop.WPF\Ara3D.Interop.WPF.csproj" />
     <ProjectReference Include="..\..\src\Ara3D.Serialization.G3D\Ara3D.Serialization.G3D.csproj" />
-    <ProjectReference Include="..\..\src\Ara3D.Utils\Ara3D.Utils.csproj" />
+    <ProjectReference Include="..\..\Utils\Ara3D.Utils\Ara3D.Utils.csproj" />
   </ItemGroup>
 
 </Project>

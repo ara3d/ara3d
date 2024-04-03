@@ -15,8 +15,8 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Ara3D.Serialization.BFAST\Ara3D.Serialization.BFAST.csproj" />
-    <ProjectReference Include="..\Ara3D.Collections\Ara3D.Collections.csproj" />
-    <ProjectReference Include="..\Ara3D.Math\Ara3D.Mathematics.csproj" />
+    <ProjectReference Include="..\..\Collections\Ara3D.Collections\Ara3D.Collections.csproj" />
+    <ProjectReference Include="..\..\Mathematics\Ara3D.Mathematics\Ara3D.Mathematics.csproj" />
   </ItemGroup>
 
   <ItemGroup>

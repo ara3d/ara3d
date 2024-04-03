@@ -13,8 +13,8 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\src\Ara3D.Graphics\Ara3D.Graphics.csproj" />
-    <ProjectReference Include="..\..\src\Ara3D.Math\Ara3D.Mathematics.csproj" />
-    <ProjectReference Include="..\..\src\Ara3D.Utils\Ara3D.Utils.csproj" />
+    <ProjectReference Include="..\..\Mathematics\Ara3D.Mathematics\Ara3D.Mathematics.csproj" />
+    <ProjectReference Include="..\..\Utils\Ara3D.Utils\Ara3D.Utils.csproj" />
   </ItemGroup>
 
 </Project>

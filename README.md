@@ -8,9 +8,6 @@ This is the main development repository for work done by [Ara3D.com](https://ara
 The code is written in a simple and straightforward manner, and should serve mostly as its own documentation.
 Most functions are implemented as extension methods to improve discoverability. 
 
-We encourage you to take a [quick read through it](https://github.com/ara3d/ara3d/tree/main/src/Ara3D.Utils)
-and see if it could be useful for you!
-
 ## Using 
 
 Some of the code in this repository is available as [NuGet packages](https://www.nuget.org/profiles/Ara3D).
@@ -31,6 +28,10 @@ There are several submodules included with this repository.
 * [Parakeet](https://github.com/ara3d/parakeet) - A text parsing library.
 * [Bowerbird](https://github.com/ara3d/bowerbird) - A C# scripting library.
 * [Plato](https://github.com/ara3d/plato) - A simple and efficient cross-platform programming language.  
+* [Ara3D.Mathematics](https://github.com/ara3d/mathematics) - A mathematical library.
+* [Ara3D.Geometry](https://github.com/ara3d/geometry) - A library of geometric algorithms and data structures.
+* [Ara3D.Collections](https://github.com/ara3d/collections) - A library of LINQ inspired immutable containers.  
+* [Ara3D.Utils](https://github.com/ara3d/utils) - A library of miscellaneous utility algorithms and data structures.
 
 ## Organization
 
@@ -90,13 +91,13 @@ Some rules of thumb:
 
 We welcome contributions. We expect the following:
 
-1. You are familiar with the structure and contents of existing libraries.
+1. You have familiarized yourself with the structure and contents of existing libraries.
 2. You have validated that a contribution does not exist already.
 3. You follow the coding, naming, and documentation styles and conventions established in existing code.     
 4. Code works well and is robust.
 5. You follow the design goals and programming principles. 
 
-Everything will be code-reviewed kindly and rigorously. 
+Everything will be code-reviewed with rigour and kindness.  
 
 # License 
 
@@ -107,13 +108,13 @@ All code is licensed under the commercially friendly
 
 Q: Some projects can't be found. 
 
-> A : It is normal that projects in "private" can't be found. You might not have recursively all submodules. 
+> A : It is normal that projects in "private" can't be found. You also might not have recursively all submodules. 
 See the top of the README.md. 
 
 Q: Why so many projects? 
 
 > A : Small projects that do one thing and do it well (and are reliable, tested, and simple), 
-are easier to reuse, making us more productive in the long run.
+are easier to understand, test, and reuse, making us more productive.
 
 Q: Why use submodules?
 
@@ -122,7 +123,7 @@ get the code, and consume it independently.
 
 Q: Where are the build tasks and properties?  
 
-Many of the build tasks and properties are controlled within the `Directory.Build.props` file
+> Many of the build tasks and properties are controlled within the `Directory.Build.props` file
 whic is automatically included by all projects. 
 
 
