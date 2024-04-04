@@ -117,7 +117,7 @@ namespace Ara3D.Parsing.Json
 
     public class JsonString : JsonElement
     {
-        public JsonString(string value) => Value = value;
+        public JsonString(string value) => Value = value.EscapeQuotes();
         public string Value { get; }
         public override object DotNetValue => Value;
         public static readonly JsonString Empty = new JsonString(string.Empty);
@@ -131,7 +131,7 @@ namespace Ara3D.Parsing.Json
         public static implicit operator JsonString(string value) => new JsonString(value);
         public override IEnumerable<JsonElement> GetChildren() => Array.Empty<JsonElement>();
         public override double AsDouble => double.TryParse(Value, out var r) ? r : 0;
-        public override string AsString => Value.Replace("\\\"", "\"");
+        public override string AsString => Value.UnescapeQuotes();
         public override bool AsBool => !Value.IsNullOrEmpty();
     }
 

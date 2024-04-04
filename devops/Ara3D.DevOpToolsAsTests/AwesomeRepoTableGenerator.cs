@@ -9,8 +9,20 @@ using Ara3D.Utils;
 
 namespace Ara3D.DevOpToolsAsTests;
 
+public static class GithubEmojis
+{
+
+}
+
 public static class AwesomeRepoTableGenerator
 {
+    public static DirectoryPath Folder => PathUtil.GetCallerSourceFolder();
+    public static FilePath AwesomeDotNetMdFilePath => Folder.RelativeFile("awesome-dotnet.md");
+    public static FilePath AwesomeUrls => Folder.RelativeFile("awesome-urls.txt");
+    public static FilePath ExtraAwesomeMd => Folder.RelativeFile("extra-awesome-dotnet.md");
+    public static FilePath RepoJson => Folder.RelativeFile("repos.json");
+    public static FilePath EmojiJson => Folder.RelativeFile("github-emojis.json");
+
     // TODO: change this for your API key.
     public static FilePath GithubApiKeyFile
         => @"C:\Users\cdigg\api-keys\github-public-api-token.txt";
@@ -55,19 +67,8 @@ public static class AwesomeRepoTableGenerator
     }
     
     public static JsonElement GithubApiQueryJson(string repoName)
-    {
-        var response = GithubApiQuery($"repos/{repoName}", GithubApiKey).Result;
-        var parser = new JsonParser(response);
-        if (!parser.Parser.Succeeded)
-            throw new Exception("JSON parser failed");
-        return parser.Root;
-    }
+        => GithubApiQuery($"repos/{repoName}", GithubApiKey).Result.ParseJson();
 
-    public static FilePath AwesomeDotNetMdFilePath => PathUtil.GetCallerSourceFolder().RelativeFile("awesome-dotnet.md");
-    public static FilePath AwesomeUrls => AwesomeDotNetMdFilePath.GetDirectory().RelativeFile("awesome-urls.txt");
-    public static FilePath ExtraAwesomeMd => AwesomeDotNetMdFilePath.GetDirectory().RelativeFile("extra-awesome-dotnet.md");
-    public static FilePath RepoJson => AwesomeDotNetMdFilePath.GetDirectory().RelativeFile("repos.json");
-    
     [Test, Explicit]
     public static void OutputUrlsToFile()
     {
@@ -95,6 +96,38 @@ public static class AwesomeRepoTableGenerator
         var elementData = array.Elements.JoinStrings(",\n");
         Console.WriteLine(elementData);
         RepoJson.WriteAllText($"[\n{elementData}\n]\n");
+    }
+
+    [Test, Explicit]
+    public static void GenerateGithubEmojiCode()
+    {
+        var input = EmojiJson.ReadAllJson();
+        var j = input as JsonObject;
+        var lines = EmojiJson
+            .RelativeFile("emojis.txt")
+            .ReadAllLines()
+            .Where(line => !line.IsNullOrWhiteSpace())
+            .ToList();
+        Debug.Assert(lines.Count == j.Count);
+
+        for (var i = 0; i < lines.Count; ++i)
+        {
+            var f = j.Fields[i];
+            var l = lines[i];
+            Console.WriteLine($"{{ \"{f.Key.AsString}\", \"{l}\" }},");
+        }
+    }
+
+    [Test, Explicit]
+    public static void GenerateEmojiList()
+    {
+        var input = EmojiJson.ReadAllJson();
+        var j = input as JsonObject;
+        foreach (var field in j.Fields)
+        {
+            Console.WriteLine($":{field.Key.AsString}:");
+            Console.WriteLine();
+        }
     }
 
     [Test, Explicit]
@@ -169,7 +202,8 @@ public static class AwesomeRepoTableGenerator
             Forks = j["forks_count"],
             Issues = j["open_issues_count"],
             License = j["license"]["name"],
-            Description = j["description"]
+            Description = j["description"],
+            Category = category,
         };
         return r;
     }
@@ -207,7 +241,8 @@ public static class AwesomeRepoTableGenerator
         hb.WriteStartTag("tr");
         hb.WriteStartTag("td", ("colspan", "8"));
         hb.WriteLine($"&nbsp;&nbsp;&nbsp;&nbsp;");
-        hb.WriteEscaped(repo.Description);
+        if (repo.Description != "null" && repo.Description != "undefined")
+            hb.WriteEscaped(repo.Description.ReplaceEmojis());
         hb.WriteEndTag("tr").WriteLine();
         return hb;
     }
@@ -219,7 +254,7 @@ public static class AwesomeRepoTableGenerator
         var orderedKeys = d.Keys.OrderBy(key => key).ToList();
 
         hb.WriteLine("# Table of Contents");
-
+        hb.WriteLine();
         foreach (var key in orderedKeys)
         {
             var a = key.ToHtmlAnchor();

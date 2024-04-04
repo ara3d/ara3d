@@ -1,5 +1,12 @@
 # Release Notes 
 
+### 2024-04-04
+
+* Performance seems better than I expected of the inline markdown parser
+* Several improvements and additions to the JSON library 
+* Working on the "extra-awesome-dotnet" project 
+* NUnit runner seems to be having some problems 
+
 ### 2024-04-03
 
 * Fixing all of the reference to the new locations of key projects
