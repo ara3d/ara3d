@@ -45,13 +45,6 @@ namespace Ara3D.Extra.Tests
             Console.WriteLine(p.Parser.ParseXml);
         }
 
-        [TestCaseSource(nameof(TestMarkdownFiles))]
-        public static void TestLinkedUrls(FilePath filePath)
-        {
-            foreach (var url in GetAllLinkedUrls(filePath))
-                Console.WriteLine(url);
-        }
-
         public static string ConvertMarkdownToHtml(FilePath filePath)
         {
             var markdown = filePath.ReadAllText();
@@ -59,20 +52,7 @@ namespace Ara3D.Extra.Tests
             return p.Document.ToHtml();
         }
 
-        public static IEnumerable<string> GetAllLinkedUrls(FilePath filePath)
-        {
-            var markdown = filePath.ReadAllText();
-            var pBlock = new MarkdownBlockParser(markdown);
-            if (!pBlock.Parser.Succeeded) throw new Exception("Failed to parse markdown");
-            foreach (var tb in pBlock.Document.GetAllTextBlocks())
-            {
-                var pInline = tb.ParseInlineMarkdown();
-                foreach (var url in pInline.Parser.Cst.Descendants().OfType<CstUrl>())
-                    yield return url.Text;
 
-                foreach (var url in pInline.Parser.Cst.Descendants().OfType<CstPlainTextUrl>())
-                    yield return url.Text;
-            }
-        }
+
     }
 }

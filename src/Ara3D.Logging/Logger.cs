@@ -17,7 +17,10 @@
             return this;
         }
 
-        public static ILogger Default
-            = new Logger(LogWriter.DefaultWriter, "");
+        public static ILogger Console
+            = new Logger(LogWriter.ConsoleWriter, "");
+
+        public static ILogger Debug
+            = new Logger(LogWriter.DebugWriter, "");
     }
 }

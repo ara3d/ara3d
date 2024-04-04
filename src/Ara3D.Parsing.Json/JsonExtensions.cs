@@ -29,5 +29,52 @@ namespace Ara3D.Parsing.Json
             }
             return bldr.Write(self.ToString());
         }
+
+        public static object Convert(this JsonElement self, Type type)
+        {
+            if (type == typeof(int))
+                return self.AsInteger;
+            if (type == typeof(float))
+                return self.AsFloat;
+            if (type == typeof(string))
+                return self.AsString;
+            if (type == typeof(bool))
+                return self.AsBool;
+            if (type == typeof(double))
+                return self.AsDouble;
+
+            if (type.IsClass)
+            {
+                if (self is JsonObject o)
+                {
+                    var r = Activator.CreateInstance(type);
+                    foreach (var field in o.Fields)
+                    {
+                        var fi = type.GetField(field.Key);
+                        if (fi != null)
+                        {
+                            var val = Convert(field.Value, fi.FieldType);
+                            fi.SetValue(r, val);
+                        }
+                        else
+                        {
+                            var pi = type.GetProperty(field.Key);
+                            if (pi != null && pi.CanWrite)
+                            {
+                                var val = Convert(field.Value, pi.PropertyType);
+                                pi.SetValue(r, val);
+                            }
+                        }
+                    }
+
+                    return r;
+                }
+            }
+
+            throw new NotSupportedException("Not a supported cast");
+        }
+
+        public static T Convert<T>(this JsonElement e)
+            => (T)e.Convert(typeof(T));
     }
 }

@@ -1,10 +1,21 @@
 # Release Notes 
 
-### 2024-04-01
+### 2024-04-03
+
+* Fixing all of the reference to the new locations of key projects
+* Working on the awesome dot-net repository
+* Fixed flipped face problem with platonic solids 
+
+Known Issues:
+* Found huge performance problem with markdown parser 
+* Ruled surfaces (e.g., prisms) aren't working well 
+
+### 2024-04-02
 
 * Removing double precision mathematical structures in prep for changing to Plato mathematics
 * Improved the deformable/transformable interfaces
-* Removed all of the [AggressiveInline]
+* Removed all of the [AggressiveInline] 
+* Separated work into four new repositories: Geometry / Mathematics / Collections / Utils
 
 ### 2024-04-01
 
@@ -31,8 +42,9 @@
 * Writing a Json deserialization library 
 * Working on the Git tool
 * Added a JsonBuilder class
-* Improved some of the reflection co
-* Added more functions for working with d]]'### 2024-03-27
+* Improved some of the reflection code
+
+### 2024-03-27
 
 * Added catmull-clark subdivision surface
 * Added weighted average

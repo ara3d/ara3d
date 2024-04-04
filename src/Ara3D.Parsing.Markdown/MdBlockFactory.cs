@@ -11,8 +11,8 @@ namespace Ara3D.Parsing.Markdown
         public static MdBlock[] ToMdBlocks(this IEnumerable<CstNode> nodes)
             => nodes.Select(ToMdBlock).ToArray();
 
-        public static MdText ToMdText(this CstTextLine textLine)
-            => new MdText(textLine.Text);
+        public static MdText ToMdText(this CstTextLine textLine, bool trim)
+            => new MdText(trim ? textLine.Text.Trim() : textLine.Text);
 
         public static int HeadingOperatorToLevel(CstHeadingOperator op)
             => op.Text.Trim().Length;
@@ -64,12 +64,12 @@ namespace Ara3D.Parsing.Markdown
                     return new MdHeader(
                         HeadingOperatorToLevel(
                             h.HeadingOperator.Node),
-                            h.TextLine.Node.ToMdText());
+                            h.TextLine.Node.ToMdText(true));
 
                 case CstHeadingUnderlined h:
                     return 
-                        h.H1Underline.Present ? new MdHeader(1, h.TextLine.Node.ToMdText()) : 
-                        h.H2Underline.Present ? new MdHeader(2, h.TextLine.Node.ToMdText()) : 
+                        h.H1Underline.Present ? new MdHeader(1, h.TextLine.Node.ToMdText(true)) : 
+                        h.H2Underline.Present ? new MdHeader(2, h.TextLine.Node.ToMdText(true)) : 
                         throw new Exception($"Expected heading");
                 
                 case CstLine line:

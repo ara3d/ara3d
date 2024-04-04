@@ -2,6 +2,9 @@ using Ara3D.Utils;
 using System.Net.Http.Headers;
 using System.Text;
 using Ara3D.Parsing.Json;
+using Ara3D.Parsing.Markdown;
+using Ara3D.Parakeet;
+using Ara3D.Parakeet.Cst.MarkdownInlineGrammarNameSpace;
 
 namespace Ara3D.DevOpToolsAsTests
 {
@@ -10,27 +13,6 @@ namespace Ara3D.DevOpToolsAsTests
         public static IEnumerable<FilePath> GetAllProjects()
             => SourceCodeLocation.GetFolder().RelativeFolder("..", "..").GetFiles("*.csproj", true);
         
-        // NOTE: Does not work as hoped. Causes bugs in system
-        [Test, Explicit]
-        public static void UpgradeVersion()
-        {
-            throw new Exception("Does not work");
-            var oldVer = "1.3.1";
-            var newVer = "1.4.0";
-
-            foreach (var project in GetAllProjects())
-            {
-                Console.WriteLine($"Loading {project}");
-                project.LoadXml()
-                    .SetAttributesWhere(x => x.Name == "PackageReference"
-                                             && x.Attribute("Include")?.Value?.StartsWith("Ara3D.") == true
-                                             && x.Attribute("Version")?.Value?.Equals(oldVer) == true,
-                        "Version",
-                        newVer)
-                    .SaveXml(project);
-            }
-        }
-
         public static HttpContent EncodeFormContent(params (string key, string value)[] formData) 
             => new FormUrlEncodedContent(formData.Select(tuple => new KeyValuePair<string, string>(tuple.key, tuple.value)));
 
@@ -67,7 +49,6 @@ namespace Ara3D.DevOpToolsAsTests
         // curl -d "text=This is a block of text" 
         // http://api.repustate.com/v2/demokey/score.json
         // curl -u YOUR_CLIENT_ID:YOUR_CLIENT_SECRET -I https://api.github.com/meta
-        // curl -u YOUR_CLIENT_ID:YOUR_CLIENT_SECRET -I https://api.github.com/meta
 
         public static string[] Repos =
         {
@@ -75,31 +56,5 @@ namespace Ara3D.DevOpToolsAsTests
             "cdiggins/plato",
             "ara3d/parakeet",
         };
-
-        // https://gist.github.com/MaximRouiller/74ae40aa994579393f52747e78f26441
-        public static async Task<string> GithubApiQuery(string path, string token)
-        {
-            var client = new HttpClient();
-            client.BaseAddress = new Uri("https://api.github.com");
-            client.DefaultRequestHeaders.UserAgent.Add(new ProductInfoHeaderValue("AppName", "1.0"));
-            client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Token", token);
-            var response = await client.GetAsync($"/{path}");
-            response.EnsureSuccessStatusCode();
-            return response.Content.ReadAsStringAsync().Result;
-        }
-
-        [TestCaseSource(nameof(Repos))]
-        public static void QueryGithub(string repoName)
-        {
-            var response = GithubApiQuery($"repos/{repoName}", GithubApiKey).Result;
-            Console.WriteLine(response);
-            var parser = new JsonParser(response);
-            var xml = parser.Parser.ParseXml;
-            Console.WriteLine(xml);
-            var prettifiedJson = parser.Root.BuildString().ToString();
-            Console.WriteLine(prettifiedJson);
-        }
-
     }
 }

@@ -23,7 +23,7 @@ namespace Ara3D.Logging
     public static class LoggerExtensions
     {
         public static ILogger SelfOrDefault(this ILogger logger)
-            => logger ?? Logger.Default;
+            => logger ?? Logger.Debug;
 
         public static ILogger Log(this ILogger logger, string message)
             => logger.Log(message, LogLevel.Info);
@@ -55,7 +55,7 @@ namespace Ara3D.Logging
         
         // TODO: should the writer not be inherited from the previous logger? 
         public static Logger Create(this ILogger logger, string category, ILogWriter writer = null)
-            => new Logger(writer ?? LogWriter.DefaultWriter, category);
+            => new Logger(writer ?? LogWriter.DebugWriter, category);
 
         public static Logger Create(this ILogger logger, string category, Action<string> onLogMsg)
             => new Logger(LogWriter.Create(onLogMsg), category);

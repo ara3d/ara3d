@@ -29,7 +29,7 @@ namespace Ara3D.Logging
             => new LogWriter((elapsed, logEntry) 
                 => onLogMessage(FormatLogEntry(elapsed, logEntry)));
 
-        public static ILogWriter DefaultWriter 
+        public static ILogWriter DebugWriter 
             => Create(DebugWriteLine);
 
         public static ILogWriter ConsoleWriter
