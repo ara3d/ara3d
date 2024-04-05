@@ -22,3 +22,6 @@
 [submodule "collections"]
 	path = collections
 	url = https://github.com/ara3d/collections
+[submodule "AICodingCoach"]
+	path = AICodingCoach
+	url = https://github.com/ara3d/AICodingCoach

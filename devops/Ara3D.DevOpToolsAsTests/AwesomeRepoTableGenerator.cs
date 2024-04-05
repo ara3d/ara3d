@@ -9,11 +9,6 @@ using Ara3D.Utils;
 
 namespace Ara3D.DevOpToolsAsTests;
 
-public static class GithubEmojis
-{
-
-}
-
 public static class AwesomeRepoTableGenerator
 {
     public static DirectoryPath Folder => PathUtil.GetCallerSourceFolder();

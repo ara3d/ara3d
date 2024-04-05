@@ -211,7 +211,9 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ara3D.Bowerbird.WinForms.Ne
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ara3D.MarkdownEditor", "labs\Ara3D.MarkdownEditor\Ara3D.MarkdownEditor.csproj", "{B61B5F16-2079-4A0B-A759-F784F8E9DB78}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ara3D.Parsing.Json", "src\Ara3D.Parsing.Json\Ara3D.Parsing.Json.csproj", "{2441AF61-B189-4DBB-A931-0998F1A86F25}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ara3D.Parsing.Json", "src\Ara3D.Parsing.Json\Ara3D.Parsing.Json.csproj", "{2441AF61-B189-4DBB-A931-0998F1A86F25}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "NewFolder1", "NewFolder1", "{471EF19F-42DE-444B-8E6E-B51E5175F2E8}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
