@@ -25,3 +25,6 @@
 [submodule "AICodingCoach"]
 	path = AICodingCoach
 	url = https://github.com/ara3d/AICodingCoach
+[submodule "geometry-toolkit"]
+	path = geometry-toolkit
+	url = https://github.com/ara3d/geometry-toolkit

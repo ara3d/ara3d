@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+[ExecuteAlways]
 public class CloneScript : MonoBehaviour
 {
     public int NumRows = 5;

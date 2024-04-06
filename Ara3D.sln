@@ -213,7 +213,9 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ara3D.MarkdownEditor", "lab
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ara3D.Parsing.Json", "src\Ara3D.Parsing.Json\Ara3D.Parsing.Json.csproj", "{2441AF61-B189-4DBB-A931-0998F1A86F25}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "NewFolder1", "NewFolder1", "{471EF19F-42DE-444B-8E6E-B51E5175F2E8}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "aicodingcoach", "aicodingcoach", "{471EF19F-42DE-444B-8E6E-B51E5175F2E8}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "geometry-toolkit", "geometry-toolkit", "{34BC8B7B-A4CD-4431-9D70-DC6BD0495E8C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
