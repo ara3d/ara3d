@@ -5,8 +5,9 @@ using Ara3D.Geometry;
 
 public class PolygonTester : MonoBehaviour
 {
-    public int Count = 4;
-    public float Spacing = 3; 
+    public int NumRows = 4;
+    public int NumCols = 4;
+
     public float Size = 2;
 
     // Start is called before the first frame update
@@ -18,6 +19,7 @@ public class PolygonTester : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        var mesh = Polygons.Triangle.To3D;
+        var mesh = Polygons.Triangle;
+
     }
 }
