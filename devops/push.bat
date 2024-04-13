@@ -8,6 +8,7 @@ call :subroutine "%~dp0\..\utils" %1 %2
 call :subroutine "%~dp0\..\collections" %1 %2
 call :subroutine "%~dp0\..\mathematics" %1 %2
 call :subroutine "%~dp0\..\geometry" %1 %2
+call :subroutine "%~dp0\..\geometry-toolkit" %1 %2
 call :subroutine "%~dp0\.." %1 %2
 exit /b
 
