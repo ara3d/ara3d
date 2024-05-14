@@ -211,6 +211,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Assembly-CSharp", "geometry
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Assembly-CSharp-Editor", "geometry-toolkit\unity-projects\geometry-toolkit\Assembly-CSharp-Editor.csproj", "{7C82D19E-BCDE-F2EB-500D-09374176A518}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ara3D.GeometryToolkit.Dependencies", "Ara3D.GeometryToolkit.Dependencies\Ara3D.GeometryToolkit.Dependencies.csproj", "{952D68D4-619E-4ED5-8EE3-5A4A92E4304B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -1193,6 +1195,18 @@ Global
 		{7C82D19E-BCDE-F2EB-500D-09374176A518}.Release|x64.Build.0 = Release|Any CPU
 		{7C82D19E-BCDE-F2EB-500D-09374176A518}.Release|x86.ActiveCfg = Release|Any CPU
 		{7C82D19E-BCDE-F2EB-500D-09374176A518}.Release|x86.Build.0 = Release|Any CPU
+		{952D68D4-619E-4ED5-8EE3-5A4A92E4304B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{952D68D4-619E-4ED5-8EE3-5A4A92E4304B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{952D68D4-619E-4ED5-8EE3-5A4A92E4304B}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{952D68D4-619E-4ED5-8EE3-5A4A92E4304B}.Debug|x64.Build.0 = Debug|Any CPU
+		{952D68D4-619E-4ED5-8EE3-5A4A92E4304B}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{952D68D4-619E-4ED5-8EE3-5A4A92E4304B}.Debug|x86.Build.0 = Debug|Any CPU
+		{952D68D4-619E-4ED5-8EE3-5A4A92E4304B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{952D68D4-619E-4ED5-8EE3-5A4A92E4304B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{952D68D4-619E-4ED5-8EE3-5A4A92E4304B}.Release|x64.ActiveCfg = Release|Any CPU
+		{952D68D4-619E-4ED5-8EE3-5A4A92E4304B}.Release|x64.Build.0 = Release|Any CPU
+		{952D68D4-619E-4ED5-8EE3-5A4A92E4304B}.Release|x86.ActiveCfg = Release|Any CPU
+		{952D68D4-619E-4ED5-8EE3-5A4A92E4304B}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -1279,6 +1293,7 @@ Global
 		{2441AF61-B189-4DBB-A931-0998F1A86F25} = {E2A52810-CFFE-4ADA-8654-E0282492AB3F}
 		{CDD63EE6-2EE1-6B79-174F-5F16C222790A} = {34BC8B7B-A4CD-4431-9D70-DC6BD0495E8C}
 		{7C82D19E-BCDE-F2EB-500D-09374176A518} = {34BC8B7B-A4CD-4431-9D70-DC6BD0495E8C}
+		{952D68D4-619E-4ED5-8EE3-5A4A92E4304B} = {34BC8B7B-A4CD-4431-9D70-DC6BD0495E8C}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {890503B7-C3A0-410B-A932-A031A4552050}
