@@ -109,10 +109,5 @@ namespace Ara3D.Geometry.Tests
             TestPointsGeometry(mesh2);
             TestPointsGeometry(mesh3);
         }
-
-        public static void TestTriangleMesh()
-        {
-            yut
-        }
     }
 }
