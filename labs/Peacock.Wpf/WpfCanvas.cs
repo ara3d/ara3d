@@ -7,7 +7,7 @@ using System.Windows.Media;
 namespace Peacock.Wpf;
 
 [Mutable]
-public record WpfCanvas : ICanvas         
+public class WpfCanvas : ICanvas         
 {
     public DrawingContext? Context { get; set; }
 

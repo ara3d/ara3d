@@ -1,0 +1,21 @@
+* I want a snapping behavior for operators ... when they are being dragged and they get close, they snap.
+* Behaviors should have settings. 
+* In "ICanvas.cs" there are a lot of records, that need to be replaced with things from the 
+geometry library. It is stupid to have two versions of that stuff. 
+
+
+//==
+
+Behavior example:
+
+* On hover animation  
+* On click animation 
+* On dragging 
+* On snapping 
+* On cancel
+* On undo ... move stuff back to where they were.
+* Let things 
+* Expand animation
+* Shrink animation
+
+//==
