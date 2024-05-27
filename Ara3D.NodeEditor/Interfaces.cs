@@ -20,8 +20,7 @@ namespace Ara3D.NodeEditor
     }
 
     public record Control(
-        IControlTemplate ControlTemplate,
-        IModel Model,
+        IControlTemplate Template,
         View View,
         IArray<Control> Children,
         IArray<IBehavior> Behaviors)
@@ -29,10 +28,17 @@ namespace Ara3D.NodeEditor
         public Control UpdateBounds(Rect rect)
             => this with { View = View.UpdateBounds(rect) };
 
-        public Rect Bounds => View.Geometry.BoundingRect;
+        public Rect Bounds 
+            => View.Geometry.BoundingRect;
+
+        public IModel Model
+            => View.Model;
+
+        public static Control Create(IControlTemplate template, View view)
+            => new(template, view, LinqArray.Empty<Control>(), LinqArray.Empty<IBehavior>());
     }
 
-    public record View(IModel model, string Text, Style Style, Geometry Geometry, object State)
+    public record View(IModel Model, string Text, Style Style, Geometry Geometry, object State)
     {
         public View UpdateBounds(Rect rect)
             => this with { Geometry = Geometry.UpdateBounds(rect) };
@@ -45,6 +51,7 @@ namespace Ara3D.NodeEditor
     {
         public Dictionary<string, Style> Styles = new();
         public Style this[string name] => Styles.TryGetValue(name, out var result) ? result : Style.Empty;
+        public Style Default => this["default"];
     }
 
     /// <summary>
@@ -88,7 +95,8 @@ namespace Ara3D.NodeEditor
     }
 
     /// <summary>
-    /// Manages the functionality, behavior, and presentation of a control. 
+    /// Manages the construction, functionality, behavior, and presentation of a control.
+    /// Controls themselves are just collections of state. 
     /// </summary>
     public interface IControlTemplate
     {

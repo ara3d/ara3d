@@ -1,53 +1,52 @@
 ﻿using Ara3D.Collections;
-using Ara3D.Mathematics;
 using System.Windows;
 
 namespace Ara3D.NodeEditor
 {
-    
-    public abstract class ControlTemplate : IControlTemplate 
-    {
-        public abstract Control Create(IModel model, Control parent);
-
-        public virtual StyleOptions StyleOptions => null;
-
-        public virtual Rect ComputeBounds(Control control)
-        {
-            var rect = control.View.Geometry.Position.ToRect(new Size(0,0));
-
-            if (control.Children.Count == 0)
-                return Rect.Empty;
-            
-            for (var i = 1; i < control.Children.Count; i++)
-            {
-                var child = control.Children[i];
-                rect.Union(child.Bounds);
-            }
-
-            return rect;
-        }
-
-        public virtual IArray<Control> CreateChildren(Control parent)
-            => LinqArray.Empty<Control>();
-
-        public virtual ICanvas PreDraw(ICanvas canvas, Control control)
-            => canvas;
-
-        public virtual ICanvas PostDraw(ICanvas canvas, Control control)
-            => canvas;
-    }
-
     public class GraphControl : ControlTemplate
     {
+        public NodeControl Node { get; }
+        public ConnectorControl Connector { get; }
+        public GraphControl(StyleOptions styleOptions) : base(styleOptions)
+        {
+            Node = new NodeControl(styleOptions);
+            Connector = new ConnectorControl(styleOptions);
+        }
+        
         public override Control Create(IModel model, Control parent)
         {
+            return new Control(this, 
+                new View(model, "Node Graph", StyleOptions.Default, null, null), 
+                CreateChildren(parent), 
+                LinqArray.Empty<IBehavior>());
+        }
+
+        public override Geometry ComputeGeometry(Control control)
+        {
             throw new NotImplementedException();
+        }
+
+        public override IArray<Control> CreateChildren(Control parent)
+        {
+            var model = (GraphModel)parent.View.Model;
+            var nodes = model.Nodes.Select(n => Node.Create(n, parent));
+            var connectors = model.Connectors.Select(c => Connector.Create(c, parent));
+            return nodes.Concat(connectors);
         }
     }
 
     public class PropertyControl : ControlTemplate
     {
+        public PropertyControl(StyleOptions options)
+            : base(options)
+        { }
+
         public override Control Create(IModel model, Control parent)
+        {
+            throw new NotImplementedException();
+        }
+
+        public override Geometry ComputeGeometry(Control control)
         {
             throw new NotImplementedException();
         }
@@ -55,7 +54,16 @@ namespace Ara3D.NodeEditor
 
     public class HeaderControl : ControlTemplate
     {
+        public HeaderControl(StyleOptions options)
+            : base(options)
+        { }
+
         public override Control Create(IModel model, Control parent)
+        {
+            throw new NotImplementedException();
+        }
+
+        public override Geometry ComputeGeometry(Control control)
         {
             throw new NotImplementedException();
         }
@@ -63,7 +71,17 @@ namespace Ara3D.NodeEditor
 
     public class FooterControl : ControlTemplate
     {
+        public FooterControl(StyleOptions options)
+            : base(options)
+        {
+        }
+
         public override Control Create(IModel model, Control parent)
+        {
+            throw new NotImplementedException();
+        }
+
+        public override Geometry ComputeGeometry(Control control)
         {
             throw new NotImplementedException();
         }
@@ -71,27 +89,33 @@ namespace Ara3D.NodeEditor
 
     public class NodeControl : ControlTemplate
     {
-        public HeaderControl HeaderControl { get; }
-        public HeaderControl FootControl { get; }
-        public OperatorControl OperatorControl { get; }
-        public StyleOptions StyleOptions { get; }
-        public IArray<IBehavior> DefaultBehaviors { get; }
+        public readonly HeaderControl Header;
+        public readonly FooterControl Footer;
+        public readonly OperatorControl Operator;
+        public IArray<IBehavior> DefaultBehaviors = LinqArray.Empty<IBehavior>();
 
-        public NodeControl(OperatorControl opControl, StyleOptions options)
+        public NodeControl(StyleOptions options)
+            : base(options)
         {
-            OperatorControl = opControl;
-            StyleOptions = options;
+            Header = new HeaderControl(options);
+            Footer = new FooterControl(options);
+            Operator = new OperatorControl(options);
         }
 
         public override Control Create(IModel model, Control parent)
         {
             var geometry = new Geometry(parent.Bounds);
             var view = new View(model, "Node", StyleOptions["Default"], geometry, null);
-            var r = new Control(this, model, view, null, null);
+            var r = Control.Create(this, view);
             var children = CreateChildren(r);
             r = r with { Children = children };
             r = r.UpdateBounds(ComputeBounds(r));
             return r;
+        }
+
+        public override Geometry ComputeGeometry(Control control)
+        {
+            throw new NotImplementedException();
         }
 
         public IArray<Control> CreateChildren(Control parent)
@@ -103,7 +127,7 @@ namespace Ara3D.NodeEditor
             {
                 opRect = opRect.MoveBy(new Point(0, opRect.Height));
                 var opModel = nodeModel.Operators[i];
-                var control = OperatorControl.Create(opModel, opRect);
+                var control = Operator.Create(opModel, opRect);
                 controls.Add(control);
             }
             return controls.ToIArray();
@@ -122,8 +146,35 @@ namespace Ara3D.NodeEditor
             throw new NotImplementedException();
         }
 
+        public override Geometry ComputeGeometry(Control control)
+        {
+            throw new NotImplementedException();
+        }
+
         public StyleOptions StyleOptions { get; }
         public IArray<Control> CreateChildren(Control parent)
+        {
+            throw new NotImplementedException();
+        }
+
+        public OperatorControl(StyleOptions styleOptions) : base(styleOptions)
+        {
+        }
+    }
+
+    public class ConnectorControl : ControlTemplate
+    {
+        public ConnectorControl(StyleOptions options)
+            : base(options)
+        { }
+
+        public override Control Create(IModel model, Control parent)
+        {
+            //return new Control(this, model, new View(model))
+            throw new NotImplementedException();
+        }
+
+        public override Geometry ComputeGeometry(Control control)
         {
             throw new NotImplementedException();
         }
