@@ -73,19 +73,3 @@ public record Radius(double X, double Y)
     public Radius(double r) : this(r, r) { }
     public static implicit operator Radius(double x) => new(x);
 }
-
-/// <summary>
-/// A drawing abstraction.
-/// This can be used to support different drawing platforms. 
-/// </summary>
-public interface ICanvas
-{
-    ICanvas Draw(StyledText text);
-    ICanvas Draw(StyledLine line);
-    ICanvas Draw(StyledEllipse ellipse);
-    ICanvas Draw(StyledRect rect);
-    ICanvas Draw(BrushStyle brushStyle, PenStyle penStyle, Geometry geometry);
-    Size MeasureText(StyledText text);
-    ICanvas SetRect(Rect rect);
-    ICanvas PopRect();
-}

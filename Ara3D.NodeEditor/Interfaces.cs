@@ -5,65 +5,6 @@ using Ara3D.Collections;
 
 namespace Ara3D.NodeEditor
 {
-    public record Geometry(
-        Rect BoundingRect,
-        Point Position,
-        Size DesiredSize,
-        IArray<Point> Points = null)
-    {
-        public Geometry(Rect rect)
-            : this(rect, rect.TopLeft, rect.Size)
-        { }
-
-        public Geometry UpdateBounds(Rect rect)
-            => this with  { BoundingRect = rect };
-    }
-
-    public record Control(
-        IControlTemplate Template,
-        View View,
-        IArray<Control> Children,
-        IArray<IBehavior> Behaviors)
-    {
-        public Control UpdateBounds(Rect rect)
-            => this with { View = View.UpdateBounds(rect) };
-
-        public Rect Bounds 
-            => View.Geometry.BoundingRect;
-
-        public IModel Model
-            => View.Model;
-
-        public static Control Create(IControlTemplate template, View view)
-            => new(template, view, LinqArray.Empty<Control>(), LinqArray.Empty<IBehavior>());
-    }
-
-    public record View(IModel Model, string Text, Style Style, Geometry Geometry, object State)
-    {
-        public View UpdateBounds(Rect rect)
-            => this with { Geometry = Geometry.UpdateBounds(rect) };
-    }
-
-    /// <summary>
-    /// A set of style options associated with a kind of control. 
-    /// </summary>
-    public class StyleOptions
-    {
-        public Dictionary<string, Style> Styles = new();
-        public Style this[string name] => Styles.TryGetValue(name, out var result) ? result : Style.Empty;
-        public Style Default => this["default"];
-    }
-
-    /// <summary>
-    /// A dictionary of values. 
-    /// </summary>
-    public class Style
-    {
-        public static readonly Style Empty = new Style();
-        public Dictionary<string, object> Properties = new();
-    }
-
-   
     /// <summary>
     /// A behavior might be modified over time, or might 
     /// Some behaviors might be triggered by a change in state. 
@@ -83,7 +24,7 @@ namespace Ara3D.NodeEditor
     /// </summary>
     public interface IBehaviorTrigger
     {
-        IArray<IBehavior> GetNewBehaviors(UserInput input, Control current, Control root);
+        IReadOnlyList<IBehavior> GetNewBehaviors(UserInput input, Control current, Control root);
     }
 
     /// <summary>
@@ -95,68 +36,39 @@ namespace Ara3D.NodeEditor
     }
 
     /// <summary>
-    /// Manages the construction, functionality, behavior, and presentation of a control.
-    /// Controls themselves are just collections of state. 
+    /// Manages updating controls from models and vice versa. 
     /// </summary>
-    public interface IControlTemplate
+    public interface ICoordinator
     {
-        Control Create(IModel model, Control parent);
-        StyleOptions StyleOptions { get; }
-        Rect ComputeBounds(Control child);
-        IArray<Control> CreateChildren(Control parent);
-        ICanvas PreDraw(ICanvas canvas, Control control);
-        ICanvas PostDraw(ICanvas canvas, Control control);
+        Control UpdateControlFromModel(Control control, IModel model);
+        IModel UpdateModelFromControl(Control control);
     }
-    
 
-/*
-= Update logic:
+    /// <summary>
+    /// A drawing abstraction.
+    /// This can be used to support different drawing platforms. 
+    /// </summary>
+    public interface ICanvas
+    {
+        ICanvas Draw(StyledText text);
+        ICanvas Draw(StyledLine line);
+        ICanvas Draw(StyledEllipse ellipse);
+        ICanvas Draw(StyledRect rect);
+        Size MeasureText(StyledText text);
+        ICanvas SetRect(Rect rect);
+        ICanvas PopRect();
+    }
 
-== On User Input 
-
-- ProcessInput
-    - For each behavior
-    - Update if needed behaviors (some might get deleted)
-
-- Look at triggers 
-    - Add new behaviors if necessary 
-
-- Iterate over all behaviors 
-    - Get an updated view based on the behavior (need to keep the old one)
-        - Where is it stored?
-    - The behavior is applied to the original 
-
-== On Redraw 
-
-- Draw control 
-    - PreDraw behaviors
-    - Get new view by applying behaviors 
-    - PreDraw control
-        - Draw children
-    - PostDraw control 
-    - PostDraw behaviors 
-
-== On Model Changed  
-
-- Model added
-    - Create new control 
-    - Walk tree: put it where it should go 
-    - Leave everything else as-is 
-        - except, this suggests that the geometry might need to be recomputed of the containing control 
-            - this is recursive
-   
-- Model deleted
-    - Walk tree: remove the associated control 
-
-- Model changed
-    - Update control 
-        - Create children control
-        - Restore the old View state (text, geometry)
-        - Note: the old 
-   - Compute geometry
-        (may compute)
-
-    //==
-
-    */
+    /// <summary>
+    /// The view contains the state of a control. 
+    /// Models can update themselves based on a view.
+    /// They don't know anything about the model.  
+    /// </summary>
+    public interface IView
+    {
+        IModel Model { get; }
+        bool HitTest(Point point);
+        ICanvas Draw(ICanvas canvas);
+        IView Update(IView view);
+    }
 }

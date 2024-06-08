@@ -72,3 +72,6 @@ public class DeleteBehavior : BaseBehavior
 
 public class CreateBehavior : BaseBehavior
 { }
+
+public class KeyDownBehavior : BaseBehavior
+{ }

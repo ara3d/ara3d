@@ -98,6 +98,9 @@ public static class Extensions
     public static Rect MoveTo(this Rect rect, Point point)
         => new(point, rect.Size);
 
+    public static Point Add(this Point self, Vector v)
+        => new(self.X + v.X, self.Y + v.Y);
+
     public static Point Add(this Point self, Point point)
         => new(self.X + point.X, self.Y + point.Y);
 
@@ -220,6 +223,7 @@ public static class Extensions
 
     public static Rect ToSquareWithCenter(this Point point, double side)
         => new(point.X - side / 2, point.Y - side / 2, side, side);
+
     public static Rect ToRect(this Point point, Size size)
         => new(point, size);
 }
