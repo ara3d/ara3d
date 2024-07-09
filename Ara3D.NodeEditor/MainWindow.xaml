@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:Ara3D.NodeEditor"
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
-    <Grid>
-
-    </Grid>
+	<DockPanel>
+		<local:NodeEditorControl/>
+	</DockPanel>
 </Window>

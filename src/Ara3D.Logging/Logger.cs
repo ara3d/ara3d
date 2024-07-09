@@ -22,5 +22,8 @@
 
         public static ILogger Debug
             = new Logger(LogWriter.DebugWriter, "");
+
+        public static ILogger Null
+            = new Logger(LogWriter.NullWriter, "");
     }
 }

@@ -1,4 +1,6 @@
-﻿namespace Ara3D.NodeEditor;
+﻿using System.Windows;
+
+namespace Ara3D.NodeEditor;
 
 // Many behaviors are also animations. 
 // They contain their own state, independent of the base control. 
@@ -9,7 +11,7 @@
 
 public class BaseBehavior : IBehavior
 {
-    public virtual IBehavior Update(UserInput input, Control controlRoot)
+    public virtual IBehavior Update(UserInput input, Control control)
         => this;
 
     public virtual Control Apply(Control control)
@@ -18,10 +20,10 @@ public class BaseBehavior : IBehavior
     public virtual IModel ToModel(Control control)
         => control.View.Model;
 
-    public virtual ICanvas PreDraw(ICanvas canvas)
+    public virtual ICanvas PreDraw(ICanvas canvas, Control control)
         => canvas;
 
-    public ICanvas PostDraw(ICanvas canvas)
+    public ICanvas PostDraw(ICanvas canvas, Control control)
         => canvas;
 }
 
@@ -75,3 +77,86 @@ public class CreateBehavior : BaseBehavior
 
 public class KeyDownBehavior : BaseBehavior
 { }
+
+public class MouseOverBehavior : BaseBehavior
+{ }
+
+public class BehaviorTrigger<TBehavior> : IBehaviorTrigger where TBehavior : IBehavior, new()
+{
+    public readonly TriggerCondition Condition;
+
+    public BehaviorTrigger(TriggerCondition condition)
+        => Condition = condition;
+
+    public IBehavior? Triggered(UserInput input, Control control)
+        => Condition.Met(input, control) ? new TBehavior() : null;
+}
+
+public class TriggerCondition
+{
+    public readonly Func<UserInput, Control, bool> Predicate;
+
+    public TriggerCondition(Func<UserInput, Control, bool> predicate)
+        => Predicate = predicate;
+
+    public bool Met(UserInput input, Control control)
+        => Predicate(input, control);
+}
+
+public static class BehaviorTriggers
+{
+    public static IBehaviorTrigger Trigger<TBehavior>(this TriggerCondition condition)
+        where TBehavior : IBehavior, new()
+        => new BehaviorTrigger<TBehavior>(condition);
+
+    public static TriggerCondition Trigger()
+        => new((_, _) => true);
+
+    public static TriggerCondition IsModelType<TModel>(this Type modelType)
+        => new((_, control) => control.Model.GetType() == typeof(TModel));
+
+    public static TriggerCondition And(this TriggerCondition triggerA, Func<UserInput, Control, bool> predicate)
+        => triggerA.And(new TriggerCondition(predicate));
+
+    public static TriggerCondition And(this TriggerCondition triggerA, params TriggerCondition[] triggers)
+        => new((input, control) => triggerA.Met(input, control) && triggers.All(t => t.Met(input, control)));
+
+    public static TriggerCondition IsMouseOver(this TriggerCondition trigger)
+        => trigger.And((input, control) => control.View.Rect.Contains(input.Mouse));
+
+    public static TriggerCondition HasBehavior<TBehavior>(this TriggerCondition condition)
+        => condition.And((input, control) => control.Behaviors.Any(b => b is TBehavior));
+
+    public static TriggerCondition Not(this TriggerCondition condition)
+        => new((input, control) => !condition.Met(input, control));
+
+    /*
+    public static Trigger<MouseEnterBehavior>(this TriggerCondition condition)
+        => condition.Hovering().And(condition.HasBehavior<MouseOverBehavior>().Not());
+    */
+}
+
+public class MouseBehavior : BaseBehavior
+{
+    public readonly Point MousePoint;
+    public readonly float Time;
+}
+
+public class MouseOver : MouseBehavior { }
+public class MouseEnter: MouseBehavior { }
+public class MouseLeave : MouseBehavior { }
+public class MouseLButtonDown : MouseBehavior { }
+public class MouseLButtonUp : MouseBehavior { }
+public class MouseRButtonDown : MouseBehavior { }
+public class MouseRButtonUp : MouseBehavior { }
+public class MouseButtonDoubleClick : MouseBehavior { }
+public class MouseDraggable : MouseBehavior { }
+public class MouseDragStart : MouseBehavior { }
+public class MouseDragEnd : MouseBehavior { }
+public class MouseDragCancel : MouseBehavior { }
+public class MouseDragMove : MouseBehavior { }
+
+public static class CommonBehaviors
+{
+
+}

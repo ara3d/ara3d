@@ -25,21 +25,22 @@ public record Alignment(AlignmentX X, AlignmentY Y)
 
 public record WindowProps(Rect Rect, string Title, Cursor Cursor);
 
-public record BrushStyle(Color Color)
+public record BrushStyle(Color Color) : IStyle
 {
     public static implicit operator BrushStyle(Color color) => new(color);
     public static BrushStyle Empty = Colors.Transparent;
 }
 
-public record PenStyle(BrushStyle BrushStyle, double Width)
+public record PenStyle(BrushStyle BrushStyle, double Width) : IStyle
 {
     public static implicit operator PenStyle(Color color) => new(color, 1);
     public static implicit operator PenStyle(BrushStyle brush) => new(brush, 1);
     public static PenStyle Empty = Colors.Transparent;
 }
 
-public record TextStyle(BrushStyle BrushStyle, string FontFamily, FontWeight Weight, double FontSize, Alignment Alignment);
-public record ShapeStyle(BrushStyle BrushStyle, PenStyle PenStyle);
+public record TextStyle(BrushStyle BrushStyle, string FontFamily, FontWeight Weight, double FontSize, Alignment Alignment) : IStyle;
+
+public record ShapeStyle(BrushStyle BrushStyle, PenStyle PenStyle) : IStyle;
 
 public record Line(Point A, Point B)
 {

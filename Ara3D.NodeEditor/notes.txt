@@ -19,3 +19,54 @@ Behavior example:
 * Shrink animation
 
 //==
+
+/*
+  = Update logic:
+
+  == On User Input 
+
+  - ProcessInput
+      - For each behavior
+      - Update if needed behaviors (some might get deleted)
+
+  - Look at triggers 
+      - Add new behaviors if necessary 
+
+  - Iterate over all behaviors 
+      - Get an updated view based on the behavior (need to keep the old one)
+          - Where is it stored?
+      - The behavior is applied to the original 
+
+  == On Redraw 
+
+  - Draw control 
+      - PreDraw behaviors
+      - Get new view by applying behaviors 
+      - PreDraw control
+          - Draw children
+      - PostDraw control 
+      - PostDraw behaviors 
+
+  == On Model Changed  
+
+  - Model added
+      - Create new control 
+      - Walk tree: put it where it should go 
+      - Leave everything else as-is 
+          - except, this suggests that the geometry might need to be recomputed of the containing control 
+              - this is recursive
+
+  - Model deleted
+      - Walk tree: remove the associated control 
+
+  - Model changed
+      - Update control 
+          - Create children control
+          - Restore the old View state (text, geometry)
+          - Note: the old 
+     - Compute geometry
+          (may compute)
+
+      //==
+
+      */

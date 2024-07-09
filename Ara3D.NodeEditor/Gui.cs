@@ -2,145 +2,75 @@
 
 public class Gui
 {
-    /// <summary>
-    /// A stateful class representing the GUI 
-    /// </summary>
-    public class GuiState
+    public Gui(IController controller)
     {
-        public IReadOnlyList<IBehaviorTrigger> Triggers { get; set; }
-        public ICoordinator Coordinator { get; set; }
-        public Control RootControl { get; set; }
-        public UserInput UserInput { get; set; }
-        public ICanvas Canvas { get; set; }
-        public bool IsDirty { get; set; }
+        Controller = controller;
     }
 
-    // Current 
-    public GuiState State = new GuiState();
-
+    IController Controller { get; }
+    Control RootControl { get; set; }
+    List<IBehaviorTrigger> Triggers { get; } 
+      
     // Functions for the app to customize the UI 
-    public void SetBehaviorTriggers(IReadOnlyList<IBehaviorTrigger> triggers) 
-        => State.Triggers = triggers;
+    public void AddBehaviorTriggers(params IBehaviorTrigger[] triggers) 
+        => Triggers.AddRange(triggers); 
 
-    // Initialize the system. 
-    public void Initialize(Coordinator coordinator)
+    public IModel GetUpdatedModel()
+        => Controller.CreateModel(RootControl);
+    
+    public void SetNewModel(IModel model)
     {
-        State.Coordinator = coordinator;
-        State.IsDirty = true;
-    }
-
-    public void UpdateRootModel(IModel model)
-    {
-        throw new NotFiniteNumberException();
-        //State.RootControl = State.RootControl.UpdateFromModel(model);
-        State.IsDirty = true;
+        RootControl = Controller.CreateControl(RootControl, model);
     }
 
     // This is called by the host platform has to provide.
     public ICanvas OnFrameUpdate(ICanvas canvas, UserInput input)
     {
-        State.IsDirty = false;
-        
-        var newRoot = State.RootControl;
-        newRoot = UpdateBehaviors(newRoot, newRoot, input);
-        State.RootControl = newRoot;
+        var newRoot = RootControl;
+        newRoot = UpdateBehaviors(newRoot, input);
+        RootControl = newRoot;
 
-        var root2 = ApplyBehavior(newRoot);
-        return Draw(root2, canvas);
+        var root2 = ApplyBehaviors(newRoot);
+        return DrawControl(root2, canvas);
     }
 
-    // Implementation functions
-     
-    public static Control UpdateBehaviors(Control control, Control root, UserInput input)
+    /// <summary>
+    /// Creates a new version of the control with new versions of the behaviors 
+    /// </summary>
+    public static Control UpdateBehaviors(Control control, UserInput input)
     {
-        var r = control with { Behaviors = control.Behaviors.Select(b => b.Update(input, root)).Where(b => b != null).ToList() };
-        return r with { Children = r.Children.Select(c => UpdateBehaviors(c, root, input)).ToList() };
+        var r = control with { Behaviors = control.Behaviors.Select(b => b.Update(input, control)).Where(b => b != null).ToList() };
+        // TODO: iterate through all behavior triggers. See which one created a new behavior, concatenate it to the list of bh
+        return r with { Children = r.Children.Select(c => UpdateBehaviors(c, input)).ToList() };
     }
 
-    public static Control ApplyBehavior(Control control)
-    {
-        var r = control;
-        foreach (var b in r.Behaviors)
-            r = b.Apply(r);
-        return r with { Children = r.Children.Select(ApplyBehavior).ToList() };
-    }
-
+    /// <summary>
+    /// Creates a temporary version of the control tree with changes applied to the view as a result of the behaviors
+    /// </summary>
     public static Control ApplyBehaviors(Control control)
     {
-        foreach (var b in control.Behaviors)
-            control = b.Apply(control);
-        return control;
+        var children = control.Children.Select(ApplyBehaviors).ToList();
+        var r = control with { Children = children };
+        return r.Behaviors.Aggregate(r, (current, b) => b.Apply(current));
     }
 
-    public Control ProcessBehaviorTriggers(Control control, Control root, UserInput input, IReadOnlyList<IBehaviorTrigger> triggers)
-    {
-        // TEMP:
-        return control;
-    }
-
-    public static ICanvas Draw(Control control, ICanvas canvas)
+    /// <summary>
+    /// Predraws the behaviors, then the view, then postdraws the behaviors.  
+    /// </summary>
+    public static ICanvas DrawControl(Control control, ICanvas canvas)
     {
         foreach (var b in control.Behaviors)
-            canvas = b.PreDraw(canvas);
+            canvas = b.PreDraw(canvas, control);
 
         canvas = control.View.Draw(canvas);
         foreach (var c in control.Children)
-            canvas = Draw(c, canvas);
+            canvas = DrawControl(c, canvas);
 
         foreach (var b in control.Behaviors)
-            canvas = b.PostDraw(canvas);
+            canvas = b.PostDraw(canvas, control);
 
         return canvas;
     }
 
-    /*
-  = Update logic:
-
-  == On User Input 
-
-  - ProcessInput
-      - For each behavior
-      - Update if needed behaviors (some might get deleted)
-
-  - Look at triggers 
-      - Add new behaviors if necessary 
-
-  - Iterate over all behaviors 
-      - Get an updated view based on the behavior (need to keep the old one)
-          - Where is it stored?
-      - The behavior is applied to the original 
-
-  == On Redraw 
-
-  - Draw control 
-      - PreDraw behaviors
-      - Get new view by applying behaviors 
-      - PreDraw control
-          - Draw children
-      - PostDraw control 
-      - PostDraw behaviors 
-
-  == On Model Changed  
-
-  - Model added
-      - Create new control 
-      - Walk tree: put it where it should go 
-      - Leave everything else as-is 
-          - except, this suggests that the geometry might need to be recomputed of the containing control 
-              - this is recursive
-
-  - Model deleted
-      - Walk tree: remove the associated control 
-
-  - Model changed
-      - Update control 
-          - Create children control
-          - Restore the old View state (text, geometry)
-          - Note: the old 
-     - Compute geometry
-          (may compute)
-
-      //==
-
-      */
+        
 }

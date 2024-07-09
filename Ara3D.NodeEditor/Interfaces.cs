@@ -1,30 +1,34 @@
-﻿using System.Data;
-using System.Windows;
-using System.Windows.Input;
-using Ara3D.Collections;
+﻿using System.Windows;
 
 namespace Ara3D.NodeEditor
 {
     /// <summary>
-    /// A behavior might be modified over time, or might 
-    /// Some behaviors might be triggered by a change in state. 
-    /// It can modify a view state.
+    /// A class that contains parameters used to control how a view is drawn.
+    /// Different views have different style. 
+    /// </summary>
+    public interface IStyle
+    { }
+
+    /// <summary>
+    /// A behavior changes over time, in response to user input, the passing of time, or other behaviors. 
+    /// A behavior can draw on the canvas before and after the view is drawn.
+    /// A behavior can temporarily modify a view before it displays itself (e.g., change style, or dimensions)
     /// </summary>
     public interface IBehavior
     {
-        IBehavior Update(UserInput input, Control controlRoot);
+        IBehavior Update(UserInput input, Control control);
         Control Apply(Control control);
-        ICanvas PreDraw(ICanvas canvas);
-        ICanvas PostDraw(ICanvas canvas);
+        ICanvas PreDraw(ICanvas canvas, Control control);
+        ICanvas PostDraw(ICanvas canvas, Control control);
     }
 
     /// <summary>
-    /// Based on user input, or the state of the control tree, a new behavior
+    /// Based on user input, or the state of the control tree, a new behavior 
     /// can be triggered.  
     /// </summary>
-    public interface IBehaviorTrigger
+    public interface IBehaviorTriggers
     {
-        IReadOnlyList<IBehavior> GetNewBehaviors(UserInput input, Control current, Control root);
+        IReadOnlyList<IBehavior> GetNewBehaviors(UserInput input, Control current);
     }
 
     /// <summary>
@@ -33,15 +37,19 @@ namespace Ara3D.NodeEditor
     public interface IModel
     {
         Guid Id { get; }
+        IEnumerable<IModel> Children { get; }
     }
 
     /// <summary>
-    /// Manages updating controls from models and vice versa. 
+    /// Manages updating controls from models and vice versa.
+    /// Also responsible for creating behaviors. 
     /// </summary>
-    public interface ICoordinator
+    public interface IController
     {
-        Control UpdateControlFromModel(Control control, IModel model);
-        IModel UpdateModelFromControl(Control control);
+        IView CreateView(IModel model, IView? previousView = null);
+        Control CreateControl(Control previousControl, IModel model);
+        IModel CreateModel(Control control);
+        IReadOnlyList<IBehavior> NewBehaviors(UserInput input, Control control);
     }
 
     /// <summary>
@@ -60,15 +68,24 @@ namespace Ara3D.NodeEditor
     }
 
     /// <summary>
-    /// The view contains the state of a control. 
-    /// Models can update themselves based on a view.
-    /// They don't know anything about the model.  
+    /// The view represents the state of a control.
+    /// A view hold a generic point to a model, but doesn't know anything about the specifics. 
+    /// A coordinator 
     /// </summary>
     public interface IView
     {
         IModel Model { get; }
         bool HitTest(Point point);
         ICanvas Draw(ICanvas canvas);
-        IView Update(IView view);
+        Rect Rect { get; }
+        IStyle Style { get; }
+    }
+
+    /// <summary>
+    /// Returns a new behavior if a new one is created, or null otherwise. 
+    /// </summary>
+    public interface IBehaviorTrigger 
+    {
+         IBehavior? Triggered(UserInput input, Control control);
     }
 }

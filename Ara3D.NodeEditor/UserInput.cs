@@ -1,20 +1,20 @@
-﻿using Ara3D.Collections;
+﻿using System.Windows;
+using Ara3D.Collections;
 using Ara3D.Mathematics;
 
 namespace Ara3D.NodeEditor
 {
     public class MouseButtonState
     {
-        public readonly bool Down;
-        public readonly bool Clicked;
-        public readonly bool DoubleClicked;
+        public bool Down;
+        public bool Clicked;
+        public bool DoubleClicked;
+    }
 
-        public MouseButtonState(bool down, bool clicked, bool doubleClicked)
-        {
-            Down = down;
-            Clicked = clicked;
-            DoubleClicked = doubleClicked;
-        }
+    public class WindowState
+    {
+        public Rect Rect;
+        public bool Minimized;
     }
 
     /// <summary>
@@ -23,21 +23,14 @@ namespace Ara3D.NodeEditor
     /// </summary>
     public class UserInput
     {
-        public readonly float Time;
-        public readonly IArray<int> KeysPressed;
-        public readonly Vector2 Mouse;
-        public readonly MouseButtonState Left;
-        public readonly MouseButtonState Middle;
-        public readonly MouseButtonState Right;
+        public double CurrentTime;
+        public double DeltaTime;
+        public List<int> KeysPressed;
+        public Point Mouse;
+        public MouseButtonState Left = new();
+        public MouseButtonState Middle = new();
+        public MouseButtonState Right = new();
+        public WindowState Window = new();
+    }   
 
-        public UserInput(float time, IArray<int> keysPressed, Vector2 mouse, MouseButtonState left, MouseButtonState middle, MouseButtonState right)
-        {
-            Time = time;
-            KeysPressed = keysPressed;
-            Mouse = mouse;
-            Left = left;
-            Middle = middle;
-            Right = right;
-        }
-    }
 }

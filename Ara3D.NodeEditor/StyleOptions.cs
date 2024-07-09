@@ -5,7 +5,7 @@
 /// </summary>
 public class StyleOptions
 {
-    public Dictionary<string, Style> Styles = new();
-    public Style this[string name] => Styles.TryGetValue(name, out var result) ? result : Style.Empty;
-    public Style Default => this["default"];
+    public Dictionary<string, IStyle> Styles = new();
+    public IStyle? this[string name] => Styles.TryGetValue(name, out var result) ? result : null;
+    public IStyle? Default => this["default"];
 }

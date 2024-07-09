@@ -20,7 +20,10 @@ namespace Ara3D.Logging
             => OnLogEntry?.Invoke(CurrentTimeElapsed, logEntry);
 
         public static void DebugWriteLine(string msg)
-            => Debug.WriteLine(msg);
+        {
+            Debug.WriteLine(msg);
+            Console.WriteLine(msg);
+        }
 
         public static void ConsoleWriteLine(string msg)
             => Console.WriteLine(msg);
@@ -34,5 +37,8 @@ namespace Ara3D.Logging
 
         public static ILogWriter ConsoleWriter
             => Create(ConsoleWriteLine);
+
+        public static ILogWriter NullWriter
+            => Create(_ => { });
     }
 }
