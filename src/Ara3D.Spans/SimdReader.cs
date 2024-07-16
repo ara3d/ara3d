@@ -1,3 +1,4 @@
+using System.Diagnostics;
 using System.Runtime.Intrinsics;
 
 namespace Ara3D.Spans;
@@ -19,20 +20,18 @@ public static class SimdReader
 
         var count = (int)fileLength;
         var r = new SimdMemory(count);
-        fixed (Vector256<byte>* pArray = &r.Data[0])
+        var pBytes = r.BytePtr;
+        while (count > 0)
         {
-            var pBytes = (byte*)pArray;
-            while (count > 0)
-            {
-                var span = new Span<byte>(pBytes, count);
-                var n = fs.Read(span);
-                if (n == 0)
-                    break;
-                pBytes += n;
-                count -= n;
-            }
+            var span = new Span<byte>(pBytes, count);
+            var n = fs.Read(span);
+            if (n == 0)
+                break;
+            pBytes += n;
+            count -= n;
         }
 
+        Debug.Assert(count == 0);
         return r;
     }
 }

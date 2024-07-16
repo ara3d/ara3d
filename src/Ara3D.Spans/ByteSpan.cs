@@ -4,6 +4,7 @@ using System.Text;
 
 namespace Ara3D.Spans
 {
+
     public readonly unsafe struct ByteSpan : IEquatable<ByteSpan>, IComparable<ByteSpan>
     {
         public readonly byte* Ptr;
@@ -92,16 +93,6 @@ namespace Ara3D.Spans
             => new ByteSpan(Ptr + before, Length - before - after);
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public bool Equals(string str)
-        {
-            if (str.Length != Length) return false;
-            for (var i = 0; i < Length; i++)
-                if (str[i] != Ptr[i])
-                    return false;
-            return true;
-        }
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public override bool Equals(object? obj)
             => obj is ByteSpan span && Equals(span);
 
@@ -140,11 +131,7 @@ namespace Ara3D.Spans
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static ByteSpan CreatePermanent(byte[] array)
-        {
-            var h = GCHandle.Alloc(array, GCHandleType.Pinned);
-            var p = (byte*)h.AddrOfPinnedObject();
-            return new ByteSpan(p, array.Length);
-        }
+        public bool IsNull()
+            => Ptr == null;
     }
 }
