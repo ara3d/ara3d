@@ -12,47 +12,26 @@ namespace Ara3D.SimpleDB
     /// </summary>
     public class TableSchema
     {
-        public string Name => Type.Name;
-        public readonly int Size;
-        public readonly Type Type;
-        public readonly List<SchemaEntry> Entries = new List<SchemaEntry>();
+        public readonly string Name;
+        public int Size => Archetype.Size();
+        public readonly ISimpleDatabaseSerializable Archetype;
 
         public TableSchema(Type type)
         {
-            Type = type;
-            foreach (var fi in type.GetFields())
-                Entries.Add(new SchemaEntry(fi));
-            Size = Entries.Sum(e => e.Size());
+            Name = type.Name;
+            Archetype = (ISimpleDatabaseSerializable)Activator.CreateInstance(type);
+        }
+
+        public TableSchema(string name, ISimpleDatabaseSerializable archetype)
+        {
+            Name = name;
+            Archetype = archetype;
         }
 
         public override string ToString()
-            => $"{Name}=({Entries.JoinStringsWithComma()})";
-
-        public int WriteObject(byte[] bytes, ref int offset, object obj, IndexedSet<string> strings)
-        {
-            var cnt = 0;
-            foreach (var e in Entries)
-            {
-                cnt += e.WriteObject(bytes, ref offset, obj, strings);
-            }
-
-            if (cnt != Size)
-                throw new Exception($"Expected {Size} but was {cnt}");
-            return Size;
-        }
+            => $"{Name}";
 
         public object ReadObject(byte[] bytes, ref int offset, IReadOnlyList<string> strings)
-        {
-            var cnt = 0;
-            var r = Activator.CreateInstance(Type);
-            foreach (var e in Entries)
-            {
-                cnt += e.ReadObject(bytes, ref offset, r, strings);
-            }
-
-            if (cnt != Size)
-                throw new Exception($"Expected {Size} but was {cnt}");
-            return r;
-        }
+            => Archetype.Read(bytes, ref offset, strings);
     }
 }

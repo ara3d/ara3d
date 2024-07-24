@@ -8,12 +8,6 @@ using Ara3D.Utils;
 
 namespace Ara3D.SimpleDB
 {
-    public interface ISimpleDatabaseSerializable
-    {
-        object Read(byte[] bytes, ref int offset, IReadOnlyList<string> strings);
-        void Write(byte[] bytes, ref int offset, object obj, IndexedSet<string> strings);
-    }
-
     public class SimpleDatabase
     {
         public readonly Dictionary<string, Table> TableLookup
@@ -34,11 +28,8 @@ namespace Ara3D.SimpleDB
             return table;
         }
 
-        public Table AddTable<T>()
-            => AddTable(typeof(T));
-
-        public Table AddTable(Type type)
-            => AddTable(new TableSchema(type));
+        public Table AddTable<T>() where T: ISimpleDatabaseSerializable, new()
+            => AddTable(new TableSchema(typeof(T).Name, new T()));
 
         public Table GetTable(string name)
             => TableLookup[name];
@@ -103,6 +94,9 @@ namespace Ara3D.SimpleDB
             return db;
         }
 
+        public static int WriteString(byte[] bytes, ref int offset, string value, IndexedSet<string> strings)
+            => WriteInt(bytes, ref offset, strings.Add(value));
+
         public static int WriteInt(byte[] bytes, ref int offset, int value)
         {
             // Convert the integer value to a byte array
@@ -116,6 +110,9 @@ namespace Ara3D.SimpleDB
             offset += r;
             return r;
         }
+
+        public static string ReadString(byte[] bytes, ref int offset, IReadOnlyList<string> strings)
+            => strings[ReadInt(bytes, ref offset)];
 
         public static int ReadInt(byte[] bytes, ref int offset)
         {

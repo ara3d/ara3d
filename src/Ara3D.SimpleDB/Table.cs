@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
 using Ara3D.Buffers;
 using Ara3D.Utils;
 
@@ -27,11 +28,9 @@ namespace Ara3D.SimpleDB
         {
             var data = new byte[Objects.Count * TableSchema.Size];
             var offset = 0;
-            foreach (var obj in Objects)
+            foreach (ISimpleDatabaseSerializable obj in Objects)
             {
-                var tmp = offset;
-                var cnt = TableSchema.WriteObject(data, ref offset, obj, stringTable);
-                Debug.Assert(offset == tmp + cnt);
+                obj.Write(data, ref offset, stringTable);
             }
 
             Debug.Assert(offset == data.Length);
