@@ -2,7 +2,7 @@ using System;
 using System.Runtime.CompilerServices;
 using System.Text;
 
-namespace Ara3D.Spans
+namespace Ara3D.Buffers
 {
     public static unsafe class ByteSpanExtensions
     {

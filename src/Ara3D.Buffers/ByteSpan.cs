@@ -1,10 +1,9 @@
+using System;
 using System.Runtime.CompilerServices;
-using System.Runtime.InteropServices;
 using System.Text;
 
-namespace Ara3D.Spans
+namespace Ara3D.Buffers
 {
-
     public readonly unsafe struct ByteSpan : IEquatable<ByteSpan>, IComparable<ByteSpan>
     {
         public readonly byte* Ptr;
@@ -52,14 +51,6 @@ namespace Ara3D.Spans
             => Encoding.ASCII.GetString(Ptr, Length);
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public double ToDouble()
-            => double.Parse(ToSpan());
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public int ToInt()
-            => int.Parse(ToSpan());
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public byte[] ToArray()
         {
             var r = new byte[Length];
@@ -93,7 +84,7 @@ namespace Ara3D.Spans
             => new ByteSpan(Ptr + before, Length - before - after);
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public override bool Equals(object? obj)
+        public override bool Equals(object obj)
             => obj is ByteSpan span && Equals(span);
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Ara3D.Buffers;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
@@ -7,6 +8,11 @@ using System.Text;
 
 namespace Ara3D.Serialization.BFAST
 {
+    /// <summary>
+    /// Callback function allows clients to control writing the data to the output stream
+    /// </summary>
+    public delegate long BFastWriterFn(Stream writingStream, int bufferIdx, string bufferName, long bytesToWrite);
+
     /// <summary>
     /// Wraps an array of byte buffers encoding a BFast structure and provides validation and safe access to the memory. 
     /// The BFAST file/data format is structured as follows:
@@ -300,5 +306,206 @@ namespace Ara3D.Serialization.BFAST
             reader.Read((name, subView, i) => r[i] = f(name, subView));
             return r;
         }
+        
+        /// <summary>
+        /// Reads a BFAST from a file as a collection of named buffers.
+        /// </summary>
+        public static INamedBuffer[] Read(string filePath)
+        {
+            using (var stream = File.OpenRead(filePath))
+                return Read(stream);
+        }
+
+        /// <summary>
+        /// Reads a BFAST from a stream as a collection of named buffers.
+        /// </summary>
+        public static INamedBuffer[] Read(Stream stream)
+            => stream.ReadBFast().ToArray();
+
+        /// <summary>
+        /// Reads a BFAST from a stream as a collection of named buffers.
+        /// </summary>
+        public static IEnumerable<INamedBuffer> ReadBFast(this Stream stream)
+        {
+            var current = stream.Position;
+            var header = stream.ReadBFastHeader();
+            var start = header.Preamble.DataStart;
+            stream.Seek(start, SeekOrigin.Begin);
+            for (var i=0; i < header.Ranges.Length; i++)
+            {
+                var range = header.Ranges[i];
+                var name = header.Names[i];
+                var cnt = range.Count;
+                stream.Seek(start + range.Begin, SeekOrigin.Begin);
+                var buffer = stream.ReadBuffer((int)cnt);
+                yield return buffer.ToNamedBuffer(name);
+            }
+        }
+
+        /// <summary>
+        /// Reads the preamble, the ranges, and the names of the rest of the buffers. 
+        /// </summary>
+        public static BFastHeader ReadBFastHeader(this Stream stream)
+        {
+            var r = new BFastHeader();
+            var br = new BinaryReader(stream);
+
+            if (stream.Length - stream.Position < sizeof(long) * 4)
+                throw new Exception("Stream too short");
+
+            r.Preamble = new BFastPreamble
+            {
+                Magic = br.ReadInt64(),
+                DataStart = br.ReadInt64(),
+                DataEnd = br.ReadInt64(),
+                NumArrays = br.ReadInt64(),
+            }.Validate();
+
+            r.Ranges = stream.ReadArray<BFastRange>((int)r.Preamble.NumArrays);
+
+            var padding = ComputePadding(r.Ranges);
+            br.ReadBytes((int)padding);
+            CheckAlignment(br.BaseStream);
+
+            var nameBytes = br.ReadBytes((int)r.Ranges[0].Count);
+            r.Names = nameBytes.UnpackStrings();
+
+            padding = ComputePadding(r.Ranges[0].End);
+            br.ReadBytes((int)padding);
+            CheckAlignment(br.BaseStream);
+
+            return r.Validate();
+        }
+
+        /// <summary>
+        /// Reads a BFAST from a byte array as a collection of named buffers.
+        /// This call limits the buffers to 2GB.
+        /// </summary>
+        public static INamedBuffer[] ReadBFast(this byte[] bytes)
+        {
+            using (var stream = new MemoryStream(bytes))
+                return ReadBFast(stream).ToArray();
+        }
+
+        /// <summary>
+        /// The total size required to put a BFAST in the header.
+        /// </summary>
+        public static long ComputeSize(long[] bufferSizes, string[] bufferNames)
+            => CreateBFastHeader(bufferSizes, bufferNames).Preamble.DataEnd;
+
+        /// <summary>
+        /// Enables a user to write a BFAST from an array of names, sizes, and a custom writing function.
+        /// The function will receive a BinaryWriter, the index of the buffer, and is expected to return the number of bytes written.
+        /// Simplifies the process of creating custom BinaryWriters, or writing extremely large arrays if necessary.
+        /// </summary>
+        public static void WriteBFast(this Stream stream, string[] bufferNames, long[] bufferSizes, BFastWriterFn onBuffer)
+        {
+            if (bufferSizes.Any(sz => sz < 0))
+                throw new Exception("All buffer sizes must be zero or greater than zero");
+
+            if (bufferNames.Length != bufferSizes.Length)
+                throw new Exception($"The number of buffer names {bufferNames.Length} is not equal to the number of buffer sizes {bufferSizes}");
+
+            var header = CreateBFastHeader(bufferSizes, bufferNames);
+            stream.WriteBFast(header, bufferNames, bufferSizes, onBuffer);
+        }
+
+        /// <summary>
+        /// Enables a user to write a BFAST from an array of names, sizes, and a custom writing function.
+        /// This is useful when the header is already computed.
+        /// </summary>
+        public static void WriteBFast(this Stream stream, BFastHeader header, string[] bufferNames, long[] bufferSizes, BFastWriterFn onBuffer)
+        {
+            stream.WriteBFastHeader(header);
+            CheckAlignment(stream);
+            stream.WriteBFastBody(header, bufferNames, bufferSizes, onBuffer);
+        }
+
+        /// <summary>
+        /// Must be called after "WriteBFastHeader"
+        /// Enables a user to write the contents of a BFAST from an array of names, sizes, and a custom writing function.
+        /// The function will receive a BinaryWriter, the index of the buffer, and is expected to return the number of bytes written.
+        /// Simplifies the process of creating custom BinaryWriters, or writing extremely large arrays if necessary.
+        /// </summary>
+        public static void WriteBFastBody(this Stream stream, BFastHeader header, string[] bufferNames, long[] bufferSizes, BFastWriterFn onBuffer)
+        {
+            CheckAlignment(stream);
+
+            if (bufferSizes.Any(sz => sz < 0))
+                throw new Exception("All buffer sizes must be zero or greater than zero");
+
+            if (bufferNames.Length != bufferSizes.Length)
+                throw new Exception($"The number of buffer names {bufferNames.Length} is not equal to the number of buffer sizes {bufferSizes}");
+
+            // Then passes the binary writer for each buffer: checking that the correct amount of data was written.
+            for (var i = 0; i < bufferNames.Length; ++i)
+            {
+                CheckAlignment(stream);
+                var nBytes = bufferSizes[i];
+                var pos = stream.CanSeek ? stream.Position : 0;
+                var nWrittenBytes = onBuffer(stream, i, bufferNames[i], nBytes);
+                if (stream.CanSeek)
+                {
+                    if (stream.Position - pos != nWrittenBytes)
+                        throw new NotImplementedException($"Buffer:{bufferNames[i]}. Stream movement {stream.Position - pos} does not reflect number of bytes claimed to be written {nWrittenBytes}");
+                }
+
+                if (nBytes != nWrittenBytes)
+                    throw new Exception($"Number of bytes written {nWrittenBytes} not equal to expected bytes{nBytes}");
+                var padding = ComputePadding(nBytes);
+                for (var j = 0; j < padding; ++j)
+                    stream.WriteByte(0);
+                CheckAlignment(stream);
+            }
+        }
+
+        public static unsafe long ByteSize<T>(this T[] self) where T : unmanaged
+            => self.LongLength * sizeof(T);
+
+        public static unsafe void WriteBFast<T>(this Stream stream, IEnumerable<(string, T[])> buffers) where T : unmanaged
+        {
+            var xs = buffers.ToArray();
+            BFastWriterFn writerFn = (writer, index, name, size) =>
+            {
+                var initPosition = writer.Position;
+                writer.Write(xs[index].Item2);
+                return writer.Position - initPosition;
+            };
+
+            stream.WriteBFast(
+                xs.Select(b => b.Item1),
+                xs.Select(b => b.Item2.ByteSize()),
+                writerFn);
+        }
+
+        public static void WriteBFast(this Stream stream, IEnumerable<string> bufferNames, IEnumerable<long> bufferSizes, BFastWriterFn onBuffer)
+            => WriteBFast(stream, bufferNames.ToArray(), bufferSizes.ToArray(), onBuffer);
+
+        public static byte[] WriteBFastToBytes(IEnumerable<string> bufferNames, IEnumerable<long> bufferSizes, BFastWriterFn onBuffer)
+        {
+            // NOTE: we can't call "WriteBFast(Stream ...)" directly because it disposes the stream before we can convert it to an array
+            using (var stream = new MemoryStream())
+            {
+                WriteBFast(stream, bufferNames.ToArray(), bufferSizes.ToArray(), onBuffer);
+                return stream.ToArray();
+            }
+        }
+
+        public static void WriteBFastToFile(string filePath, IEnumerable<string> bufferNames, IEnumerable<long> bufferSizes, BFastWriterFn onBuffer)
+            => File.OpenWrite(filePath).WriteBFast(bufferNames, bufferSizes, onBuffer);
+
+        public static unsafe byte[] WriteBFastToBytes<T>(this (string Name, T[] Data)[] buffers) where T : unmanaged
+            => WriteBFastToBytes(
+                buffers.Select(b => b.Name),
+                buffers.Select(b => b.Data.LongLength * sizeof(T)),
+                (writer, index, name, size) =>
+                {
+                    var initPosition = writer.Position;
+                    writer.Write(buffers[index].Data);
+                    return writer.Position - initPosition;
+                });
+
+        public static BFastBuilder ToBFastBuilder(this IEnumerable<INamedBuffer> buffers)
+            => new BFastBuilder().Add(buffers);
     }
 }

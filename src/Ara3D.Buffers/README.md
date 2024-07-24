@@ -88,4 +88,27 @@ that use it:
 Due to limitations in C# the array can have at most 2^31 
 elements (approximately 2 billion). 
 
+## About ByteSpan 
+
+`ByteSpan` is designed specifically for working with pointers to unmanaged (e.g. pinned) memory. 
+
+A `ByteSpan` consists of a literal pointer to a byte, and the number of bytes. 
+It doesn’t have the `ref struct` limitations of `Span<byte>` data type and is faster 
+for memory accessing (just grab the pointer and address it). 
+
+The only caveat is you have to pin memory before using it, and be careful about avoiding accessing 
+memory access overrun. 
+
+Pinning memory prevents the garbage collector from moving it or freeing it, putting the responsibility of lifetime 
+management of the memory on the developer. 
+
+Pinning memory involves a call to `GCHandle.Alloc(<your array>, GCHandlerType.Pinned)` which returns a handle, 
+and provides raw accesss to memory via `AddrOfPinnedObject()`.
+
+While this is unusual for a C# developer, this is common practice for C/C++ developers.
+
+It just means that as software developers, we need to consider how and when we deallocate memory in a reasonable way. 
+It is no different than the requirements of any disposable resource (e.g., file handles, or window contexts). 
+
+
 

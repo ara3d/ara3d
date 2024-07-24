@@ -1,0 +1,137 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using Ara3D.Buffers;
+using Ara3D.Logging;
+using Ara3D.Serialization.BFAST;
+using Ara3D.Utils;
+
+namespace Ara3D.SimpleDB
+{
+    public interface ISimpleDatabaseSerializable
+    {
+        object Read(byte[] bytes, ref int offset, IReadOnlyList<string> strings);
+        void Write(byte[] bytes, ref int offset, object obj, IndexedSet<string> strings);
+    }
+
+    public class SimpleDatabase
+    {
+        public readonly Dictionary<string, Table> TableLookup
+            = new Dictionary<string, Table>();
+
+        public int NumTables
+            => TableLookup.Count;
+
+        public IEnumerable<Table> GetTables()
+            => TableLookup.Values;
+
+        public Table AddTable(TableSchema tableSchema)
+            => AddTable(new Table(tableSchema));
+
+        public Table AddTable(Table table)
+        {
+            TableLookup.Add(table.Name, table);
+            return table;
+        }
+
+        public Table AddTable<T>()
+            => AddTable(typeof(T));
+
+        public Table AddTable(Type type)
+            => AddTable(new TableSchema(type));
+
+        public Table GetTable(string name)
+            => TableLookup[name];
+
+        public const string _STRINGS_ = nameof(_STRINGS_);
+
+        public FilePath WriteToFile(FilePath fp, ILogger logger)
+        {
+            logger.Log($"Saving file to {fp}");
+            var stringTable = new IndexedSet<string>();
+            logger.Log($"Creating buffers");
+            var buffers = GetTables().Select(t => t.ToBuffer(stringTable)).ToList();
+            logger.Log($"Creating string table buffers");
+            var st = stringTable.OrderedMembers().PackStrings().ToNamedBuffer(_STRINGS_);
+            buffers.Add(st);
+            var bldr = new BFastBuilder();
+            bldr.Add(buffers);
+            bldr.Write(fp);
+            logger.Log("Completed writing file");
+            return fp;
+        }
+
+        public static SimpleDatabase ReadFile(FilePath fp, IReadOnlyList<Type> types, ILogger logger)
+        {
+            logger.Log($"Loading file from {fp}");
+
+            var buffers = new List<INamedBuffer>();
+
+            void ReadBuffer(string name, MemoryMappedView view, int index)
+            {
+                Console.WriteLine($@"Reading: {index}:{name} [{view.Offset}, {view.Offset + view.Size}]");
+                var buffer = view.ReadBytes().ToNamedBuffer(name);
+                buffers.Add(buffer);
+            }
+
+            BFastReader.Read(fp, ReadBuffer);
+            Console.WriteLine($"Read {buffers.Count} buffers");
+
+            return Create(buffers, types, logger);
+        }
+
+        public static SimpleDatabase Create(IReadOnlyList<INamedBuffer> buffers, IReadOnlyList<Type> types, ILogger logger)
+        {
+            logger.Log($"Creating database from {buffers.Count} buffers, and {types.Count} types");
+            if (buffers.Count != types.Count + 1)
+                throw new Exception($"Expected {types.Count + 1} buffers not {buffers.Count}");
+            var db = new SimpleDatabase();
+            var stringsBuffer = buffers.Single(b => b.Name == _STRINGS_);
+            var strings = stringsBuffer.ToBytes().UnpackStrings();
+            logger.Log($"Found {strings.Length} strings");
+            foreach (var t in types)
+            {
+                logger.Log($"Searching for buffer {t.Name}");
+                var buffer = buffers.Single(b => b.Name == t.Name);
+                logger.Log($"Creating table from buffer {buffer.Name}");
+                var table = Table.Create(buffer, t, strings);
+                db.AddTable(table);
+                logger.Log($"Created table {table.Name} with {table.Objects.Count} objects");
+            }
+
+            logger.Log("Completed creating database");
+            return db;
+        }
+
+        public static int WriteInt(byte[] bytes, ref int offset, int value)
+        {
+            // Convert the integer value to a byte array
+            var intBytes = BitConverter.GetBytes(value);
+
+            // Copy the integer bytes to the specified byte array at the given offset
+            Array.Copy(intBytes, 0, bytes, offset, intBytes.Length);
+
+            // Update the offset
+            var r = intBytes.Length;
+            offset += r;
+            return r;
+        }
+
+        public static int ReadInt(byte[] bytes, ref int offset)
+        {
+            if (bytes == null)
+                throw new ArgumentNullException(nameof(bytes));
+
+            if (offset < 0 || offset + 4 > bytes.Length)
+                throw new ArgumentOutOfRangeException(nameof(offset), "Offset is out of range.");
+
+            // Read 4 bytes from the byte array starting at the given offset
+            var result = BitConverter.ToInt32(bytes, offset);
+
+            // Update the offset to point to the next unread byte
+            offset += 4;
+
+            return result;
+        }
+    }
+}

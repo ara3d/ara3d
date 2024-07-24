@@ -1,6 +1,6 @@
 using System.Runtime.CompilerServices;
 
-namespace Ara3D.Spans
+namespace Ara3D.Buffers
 {
     public static class HashHelpers
     {
