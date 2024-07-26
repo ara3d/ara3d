@@ -1,14 +1,15 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using Ara3D.Buffers;
 using Ara3D.Logging;
 using Ara3D.Serialization.BFAST;
 using Ara3D.Utils;
 
-namespace Ara3D.SimpleDB
+namespace Ara3D.NarwhalDB
 {
-    public class SimpleDatabase
+    public class DB
     {
         public readonly Dictionary<string, Table> TableLookup
             = new Dictionary<string, Table>();
@@ -28,7 +29,7 @@ namespace Ara3D.SimpleDB
             return table;
         }
 
-        public Table AddTable<T>() where T: ISimpleDatabaseSerializable, new()
+        public Table AddTable<T>() where T: IBinarySerializable, new()
             => AddTable(new TableSchema(typeof(T).Name, new T()));
 
         public Table GetTable(string name)
@@ -52,31 +53,30 @@ namespace Ara3D.SimpleDB
             return fp;
         }
 
-        public static SimpleDatabase ReadFile(FilePath fp, IReadOnlyList<Type> types, ILogger logger)
+        public static DB ReadFile(FilePath fp, IReadOnlyList<Type> types, ILogger logger)
         {
             logger.Log($"Loading file from {fp}");
 
             var buffers = new List<INamedBuffer>();
-
             void ReadBuffer(string name, MemoryMappedView view, int index)
             {
-                Console.WriteLine($@"Reading: {index}:{name} [{view.Offset}, {view.Offset + view.Size}]");
+                logger.Log($@"Reading: {index}:{name} [{view.Offset}, {view.Offset + view.Size}]");
                 var buffer = view.ReadBytes().ToNamedBuffer(name);
                 buffers.Add(buffer);
             }
 
             BFastReader.Read(fp, ReadBuffer);
-            Console.WriteLine($"Read {buffers.Count} buffers");
+            logger.Log($"Read {buffers.Count} buffers");
 
             return Create(buffers, types, logger);
         }
 
-        public static SimpleDatabase Create(IReadOnlyList<INamedBuffer> buffers, IReadOnlyList<Type> types, ILogger logger)
+        public static DB Create(IReadOnlyList<INamedBuffer> buffers, IReadOnlyList<Type> types, ILogger logger)
         {
             logger.Log($"Creating database from {buffers.Count} buffers, and {types.Count} types");
             if (buffers.Count != types.Count + 1)
                 throw new Exception($"Expected {types.Count + 1} buffers not {buffers.Count}");
-            var db = new SimpleDatabase();
+            var db = new DB();
             var stringsBuffer = buffers.Single(b => b.Name == _STRINGS_);
             var strings = stringsBuffer.ToBytes().UnpackStrings();
             logger.Log($"Found {strings.Length} strings");
@@ -111,24 +111,13 @@ namespace Ara3D.SimpleDB
             return r;
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static string ReadString(byte[] bytes, ref int offset, IReadOnlyList<string> strings)
             => strings[ReadInt(bytes, ref offset)];
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static int ReadInt(byte[] bytes, ref int offset)
-        {
-            if (bytes == null)
-                throw new ArgumentNullException(nameof(bytes));
+            => bytes[offset++] | (bytes[offset++] << 8) | (bytes[offset++] << 16) | (bytes[offset++] << 24);
 
-            if (offset < 0 || offset + 4 > bytes.Length)
-                throw new ArgumentOutOfRangeException(nameof(offset), "Offset is out of range.");
-
-            // Read 4 bytes from the byte array starting at the given offset
-            var result = BitConverter.ToInt32(bytes, offset);
-
-            // Update the offset to point to the next unread byte
-            offset += 4;
-
-            return result;
-        }
     }
 }

@@ -4,7 +4,7 @@ using System.Diagnostics;
 using Ara3D.Buffers;
 using Ara3D.Utils;
 
-namespace Ara3D.SimpleDB
+namespace Ara3D.NarwhalDB
 {
     public class Table
     {
@@ -27,7 +27,7 @@ namespace Ara3D.SimpleDB
         {
             var data = new byte[Objects.Count * TableSchema.Size];
             var offset = 0;
-            foreach (ISimpleDatabaseSerializable obj in Objects)
+            foreach (IBinarySerializable obj in Objects)
             {
                 obj.Write(data, ref offset, stringTable);
             }

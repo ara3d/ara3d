@@ -81,20 +81,4 @@ Requirements
     * Header.DataStart is equivalent to Range[0].Begin
     * Header.DataEnd is equivalent to Range[N-1].End
 
-Related Information
-
-    * [Zip]https://en.wikipedia.org/wiki/Zip_(file_format)
-    * [Protcol Buffers](https://developers.google.com/protocol-buffers/)
-    * [FlatBuffers](https://github.com/google/flatbuffers)
-    * [BINN](https://github.com/liteserver/binn/)
-    * [BSON](http://bsonspec.org/)
-    * [UBJSON](http://ubjson.org/)
-    * [MessagePack](https://msgpack.org/)
-    * [CBOR](https://cbor.io/)
-    * [TAR](https://www.gnu.org/software/tar/manual/html_node/Standard.html)
-
-For a more comprehensive list see:
-
-    * [Comparison of Data Serialization Formats](https://en.wikipedia.org/wiki/Comparison_of_data-serialization_formats)
-    * [List of Archive Formats](https://en.wikipedia.org/wiki/List_of_archive_formats)
 

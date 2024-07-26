@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace Ara3D.SimpleDB
+namespace Ara3D.NarwhalDB
 {
     /// <summary>
     /// Stores information about the name of the table, and the types of each
@@ -12,15 +12,15 @@ namespace Ara3D.SimpleDB
     {
         public readonly string Name;
         public int Size => Archetype.Size();
-        public readonly ISimpleDatabaseSerializable Archetype;
+        public readonly IBinarySerializable Archetype;
 
         public TableSchema(Type type)
         {
             Name = type.Name;
-            Archetype = (ISimpleDatabaseSerializable)Activator.CreateInstance(type);
+            Archetype = (IBinarySerializable)Activator.CreateInstance(type);
         }
 
-        public TableSchema(string name, ISimpleDatabaseSerializable archetype)
+        public TableSchema(string name, IBinarySerializable archetype)
         {
             Name = name;
             Archetype = archetype;
