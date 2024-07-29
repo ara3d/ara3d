@@ -56,36 +56,29 @@ namespace Ara3D.NarwhalDB
         public static DB ReadFile(FilePath fp, IReadOnlyList<Type> types, ILogger logger)
         {
             logger.Log($"Loading file from {fp}");
-
-            var buffers = new List<INamedBuffer>();
-            void ReadBuffer(string name, MemoryMappedView view, int index)
-            {
-                logger.Log($@"Reading: {index}:{name} [{view.Offset}, {view.Offset + view.Size}]");
-                var buffer = view.ReadBytes().ToNamedBuffer(name);
-                buffers.Add(buffer);
-            }
-
-            BFastReader.Read(fp, ReadBuffer);
+            var buffers = BFastReader2.Read(fp, logger);
             logger.Log($"Read {buffers.Count} buffers");
-
             return Create(buffers, types, logger);
         }
 
-        public static DB Create(IReadOnlyList<INamedBuffer> buffers, IReadOnlyList<Type> types, ILogger logger)
+        public static DB Create(IReadOnlyList<ByteSpanBuffer> buffers, IReadOnlyList<Type> types, ILogger logger)
         {
             logger.Log($"Creating database from {buffers.Count} buffers, and {types.Count} types");
             if (buffers.Count != types.Count + 1)
                 throw new Exception($"Expected {types.Count + 1} buffers not {buffers.Count}");
             var db = new DB();
             var stringsBuffer = buffers.Single(b => b.Name == _STRINGS_);
-            var strings = stringsBuffer.ToBytes().UnpackStrings();
-            logger.Log($"Found {strings.Length} strings");
+                
+            // TODO: 
+            var strings = stringsBuffer.Span.UnpackStrings().Select(bs => bs.ToString()).ToList();
+            
+            logger.Log($"Found {strings.Count} strings");
             foreach (var t in types)
             {
                 logger.Log($"Searching for buffer {t.Name}");
                 var buffer = buffers.Single(b => b.Name == t.Name);
                 logger.Log($"Creating table from buffer {buffer.Name}");
-                var table = Table.Create(buffer, t, strings);
+                var table = Table.Create(buffer.Span, t, strings);
                 db.AddTable(table);
                 logger.Log($"Created table {table.Name} with {table.Objects.Count} objects");
             }
@@ -117,7 +110,21 @@ namespace Ara3D.NarwhalDB
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static int ReadInt(byte[] bytes, ref int offset)
-            => bytes[offset++] | (bytes[offset++] << 8) | (bytes[offset++] << 16) | (bytes[offset++] << 24);
+            => bytes[offset++] 
+               | (bytes[offset++] << 8) 
+               | (bytes[offset++] << 16) 
+               | (bytes[offset++] << 24);
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static string ReadString(ref IntPtr ptr, IReadOnlyList<string> strings)
+            => strings[ReadInt(ref ptr)];
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static unsafe int ReadInt(ref IntPtr ptr)
+        {
+            var r = *(int*)ptr.ToPointer();
+            ptr += 4;
+            return r;
+        }
     }
 }

@@ -1,4 +1,6 @@
+using System;
 using System.Collections.Generic;
+using Ara3D.Buffers;
 using Ara3D.Utils;
 
 namespace Ara3D.NarwhalDB
@@ -8,10 +10,10 @@ namespace Ara3D.NarwhalDB
     /// If a class cannot be modified, you can use a proxy that implements the interface
     /// that reads and writes objects of the desired type. 
     /// </summary>
-    public interface IBinarySerializable
+    public unsafe interface IBinarySerializable
     {
         int Size();
-        object Read(byte[] bytes, ref int offset, IReadOnlyList<string> strings);
+        object Read(ref IntPtr ptr,IReadOnlyList<string> strings);
         int Write(byte[] bytes, ref int offset, IndexedSet<string> strings);
     }
 }

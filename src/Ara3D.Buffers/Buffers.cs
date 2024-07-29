@@ -80,4 +80,31 @@ namespace Ara3D.Buffers
         public NamedBuffer(T[] data, string name) : base(data) => Name = name;
         public string Name { get; }
     }
+
+    public unsafe class ByteSpanBuffer : INamedBuffer<byte>
+    {
+        public readonly ByteSpan Span;
+
+        public ByteSpanBuffer(ByteSpan span, string name)
+        {
+            Span = span;
+            Name = name;
+        }
+
+        public byte[] GetTypedData()
+            => Span.ToArray();
+
+        public Array Data 
+            => throw new NotImplementedException();
+
+        public void WithPointer(Action<IntPtr> action)
+            => action(new IntPtr(Span.Ptr));
+
+        public int ElementSize => 1;
+
+        public string Name { get; }
+
+        public static ByteSpanBuffer Create(ByteSpan span, string name)
+            => new ByteSpanBuffer(span, name);
+    }
 }

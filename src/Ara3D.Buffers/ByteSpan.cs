@@ -64,7 +64,7 @@ namespace Ara3D.Buffers
             => Ptr[index];
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public ByteSpan Slice(int from, int count)
+        public ByteSpan Slice(long from, int count)
             => new ByteSpan(Ptr + from, count);
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]

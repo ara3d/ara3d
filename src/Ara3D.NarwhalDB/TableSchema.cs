@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using Ara3D.Buffers;
 
 namespace Ara3D.NarwhalDB
 {
@@ -29,7 +30,7 @@ namespace Ara3D.NarwhalDB
         public override string ToString()
             => $"{Name}";
 
-        public object ReadObject(byte[] bytes, ref int offset, IReadOnlyList<string> strings)
-            => Archetype.Read(bytes, ref offset, strings);
+        public object ReadObject(ref IntPtr ptr, IReadOnlyList<string> strings)
+            => Archetype.Read(ref ptr, strings);
     }
 }

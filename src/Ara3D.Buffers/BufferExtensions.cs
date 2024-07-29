@@ -43,12 +43,6 @@ namespace Ara3D.Buffers
         public static byte[] ToBytes(this IBuffer src, byte[] dest = null)
             => src.ToArray(dest);
 
-        public static byte[] ToBytes<T>(this T[] xs, byte[] dest = null) where T : unmanaged
-            => xs.RecastArray(dest);
-
-        public static byte[] ToBytes<T>(this T x) where T : unmanaged
-            => ToBytes(new[] { x });
-
         /// <summary>
         /// Accepts an array of the given type, or creates one if necessary, copy the buffer data into it 
         /// </summary>

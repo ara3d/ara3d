@@ -9,7 +9,9 @@ namespace Ara3D.NarwhalDB
     public class Table
     {
         public readonly TableSchema TableSchema;
-        public string Name => TableSchema.Name;
+
+        public string Name 
+            => TableSchema.Name;
 
         public readonly List<object> Objects
             = new List<object>();
@@ -28,33 +30,24 @@ namespace Ara3D.NarwhalDB
             var data = new byte[Objects.Count * TableSchema.Size];
             var offset = 0;
             foreach (IBinarySerializable obj in Objects)
-            {
                 obj.Write(data, ref offset, stringTable);
-            }
-
             Debug.Assert(offset == data.Length);
             return data.ToNamedBuffer(TableSchema.Name);
         }
 
-        public static Table Create(IBuffer buffer, Type type, IReadOnlyList<string> strings)
-            => Create(buffer, new TableSchema(type), strings);
+        public static Table Create(ByteSpan span, Type type, IReadOnlyList<string> strings)
+            => Create(span, new TableSchema(type), strings);
 
-        public static Table Create(IBuffer buffer, TableSchema schema, IReadOnlyList<string> strings)
-            => Create(buffer.ToBytes(), schema, strings);
-
-        public static Table Create(byte[] bytes, TableSchema schema, IReadOnlyList<string> strings)
+        public static unsafe Table Create(ByteSpan span, TableSchema schema, IReadOnlyList<string> strings)
         {
-            var offset = 0;
             var t = new Table(schema);
-
-            while (offset < bytes.Length)
+            var ptr = new IntPtr(span.Ptr);
+            var end = span.End();
+            while (ptr.ToPointer() < end)
             {
-                // TODO: a more efficient way to do this would be to create objects as requested 
-                var obj = schema.ReadObject(bytes, ref offset, strings);
+                var obj = schema.ReadObject(ref ptr, strings);
                 t.Add(obj);
             }
-
-            Debug.Assert(offset == bytes.Length);
 
             return t;
         }
