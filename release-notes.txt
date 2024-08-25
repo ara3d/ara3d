@@ -1,5 +1,20 @@
 # Release Notes 
 
+### 2024-08-25
+
+* Just incremented to v1.4.5 
+* Pushed Nuget packages for v1.4.4 yesterday. 
+* Creating a new module for new Plato.Geometry repository
+    * Going to start migrating everything over to that project
+    * Updating Plato to use a config file
+    * Added a new dependency to System.Text.Json from Ara3D.Utils 
+* Prior to that worked on: 
+    * Improving the Bowerbird project and doing a lot of Revit exporter work
+    * A private IFC parsing library, which will be open-sourced soon.
+    * Improvements to Plato
+    * Geometry toolkit - efficient voxelization and instancing, using the Unity Job system
+    * Speckle Windows viewer 
+
 ### 2024-04-04
 
 * Performance seems better than I expected of the inline markdown parser
