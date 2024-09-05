@@ -243,7 +243,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "plato-src", "Plato.Geometry
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Plato.Geometry.Tests", "Plato.Geometry\Plato.Geometry.Tests\Plato.Geometry.Tests.csproj", "{C2EDBED1-CEFE-4CD6-A672-CCD64710F58B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ara3D.Bowerbird.Unity2022", "bowerbird\Ara3D.Bowerbird.Unity2022\Ara3D.Bowerbird.Unity2022.csproj", "{6AAB01AF-39F2-4179-9513-9F6F29B726C5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ara3D.Bowerbird.Unity2022", "bowerbird\Ara3D.Bowerbird.Unity2022\Ara3D.Bowerbird.Unity2022.csproj", "{6AAB01AF-39F2-4179-9513-9F6F29B726C5}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Plato.Geometry.Ifc", "Plato.Geometry\Plato.Geometry.Ifc\Plato.Geometry.Ifc.csproj", "{96E3BA6B-6DC7-4956-909A-081A6AB80869}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -1395,6 +1397,18 @@ Global
 		{6AAB01AF-39F2-4179-9513-9F6F29B726C5}.Release|x64.Build.0 = Release|Any CPU
 		{6AAB01AF-39F2-4179-9513-9F6F29B726C5}.Release|x86.ActiveCfg = Release|Any CPU
 		{6AAB01AF-39F2-4179-9513-9F6F29B726C5}.Release|x86.Build.0 = Release|Any CPU
+		{96E3BA6B-6DC7-4956-909A-081A6AB80869}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{96E3BA6B-6DC7-4956-909A-081A6AB80869}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{96E3BA6B-6DC7-4956-909A-081A6AB80869}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{96E3BA6B-6DC7-4956-909A-081A6AB80869}.Debug|x64.Build.0 = Debug|Any CPU
+		{96E3BA6B-6DC7-4956-909A-081A6AB80869}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{96E3BA6B-6DC7-4956-909A-081A6AB80869}.Debug|x86.Build.0 = Debug|Any CPU
+		{96E3BA6B-6DC7-4956-909A-081A6AB80869}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{96E3BA6B-6DC7-4956-909A-081A6AB80869}.Release|Any CPU.Build.0 = Release|Any CPU
+		{96E3BA6B-6DC7-4956-909A-081A6AB80869}.Release|x64.ActiveCfg = Release|Any CPU
+		{96E3BA6B-6DC7-4956-909A-081A6AB80869}.Release|x64.Build.0 = Release|Any CPU
+		{96E3BA6B-6DC7-4956-909A-081A6AB80869}.Release|x86.ActiveCfg = Release|Any CPU
+		{96E3BA6B-6DC7-4956-909A-081A6AB80869}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -1495,6 +1509,7 @@ Global
 		{656EB614-60DC-4898-B01C-46CD5384D1DA} = {4570D959-E806-4EB8-85DF-FC515A452E80}
 		{C2EDBED1-CEFE-4CD6-A672-CCD64710F58B} = {4570D959-E806-4EB8-85DF-FC515A452E80}
 		{6AAB01AF-39F2-4179-9513-9F6F29B726C5} = {78EE113F-A1DD-4295-A09A-D5E557D60FAB}
+		{96E3BA6B-6DC7-4956-909A-081A6AB80869} = {4570D959-E806-4EB8-85DF-FC515A452E80}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {890503B7-C3A0-410B-A932-A031A4552050}
