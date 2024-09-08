@@ -1,6 +1,4 @@
 ﻿using System.Windows;
-using Ara3D.Collections;
-using Ara3D.Mathematics;
 
 namespace Ara3D.NodeEditor
 {
@@ -18,7 +16,7 @@ namespace Ara3D.NodeEditor
     }
 
     /// <summary>
-    /// An abstract representations of input that comes into a control.
+    /// The input that comes into a control.
     /// It can be pre-processed by behaviors 
     /// </summary>
     public class UserInput
@@ -30,6 +28,7 @@ namespace Ara3D.NodeEditor
         public MouseButtonState Left = new();
         public MouseButtonState Middle = new();
         public MouseButtonState Right = new();
+        public double DeltaMouseWheel; 
         public WindowState Window = new();
     }   
 

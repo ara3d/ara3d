@@ -1,14 +1,9 @@
 ﻿using System.Windows;
+using Ara3D.Domo;
 
 namespace Ara3D.NodeEditor
 {
-    public abstract record Model(Guid Id) : IModel
-    {
-        public abstract IEnumerable<IModel> Children { get; }
-    }
-
     public record SocketModel(Guid Id, string Name, string Type, int Position) 
-        : IModel
     {
         public IEnumerable<IModel> Children => Enumerable.Empty<IModel>();
     }

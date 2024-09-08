@@ -104,6 +104,18 @@ namespace Ara3D.Buffers
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public bool Equals(string other)
+        {
+            if (other.Length != Length) return false;
+            var pA = Ptr;
+            var pB = 0;
+            for (var i = 0; i < Length; i++)
+                if (*pA++ != other[pB++])
+                    return false;
+            return true;
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public int CompareTo(ByteSpan other)
         {
             if (other.Length > Length) return -1;
@@ -120,7 +132,7 @@ namespace Ara3D.Buffers
 
             return 0;
         }
-
+        
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public bool IsNull()
             => Ptr == null;

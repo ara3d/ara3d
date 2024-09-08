@@ -130,6 +130,9 @@ namespace SvgDemoWinForms
 
         private void DrawModeControllerOnModeChanged(object? sender, EventArgs e)
         {
+            // Change cursor to a selection cursor if needed 
+            Cursor = DrawModeController.Mode == Mode.Select ? Cursors.Hand : Cursors.Arrow;
+
             circleToolStripMenuItem.Checked = DrawModeController.Mode == Mode.DrawCircle;
             squareToolStripMenuItem.Checked = DrawModeController.Mode == Mode.DrawSquare;
             ellipseToolStripMenuItem.Checked = DrawModeController.Mode == Mode.DrawEllipse;

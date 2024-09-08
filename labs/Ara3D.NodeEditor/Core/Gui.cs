@@ -1,5 +1,11 @@
 ﻿namespace Ara3D.NodeEditor;
 
+/// <summary>
+/// This coordinates an entire GUI canvas.
+/// It coordinates the communication of a controller and the underlying GUI framework. 
+/// There is one controller, a root control, and a set of behaviors.
+/// The controller is responsible for creating the model, view, and control objects.
+/// </summary>
 public class Gui
 {
     public Gui(IController controller)

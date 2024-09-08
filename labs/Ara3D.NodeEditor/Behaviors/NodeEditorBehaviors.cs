@@ -9,24 +9,6 @@ namespace Ara3D.NodeEditor;
 // This is quite unlike everything else that has come before. 
 // The idea is that I want my UI to be able to be animated. 
 
-public class BaseBehavior : IBehavior
-{
-    public virtual IBehavior Update(UserInput input, Control control)
-        => this;
-
-    public virtual Control Apply(Control control)
-        => control;
-
-    public virtual IModel ToModel(Control control)
-        => control.View.Model;
-
-    public virtual ICanvas PreDraw(ICanvas canvas, Control control)
-        => canvas;
-
-    public ICanvas PostDraw(ICanvas canvas, Control control)
-        => canvas;
-}
-
 public class NodeResizeBehavior : BaseBehavior
 { }
 
@@ -122,10 +104,10 @@ public static class BehaviorTriggers
         => new((input, control) => triggerA.Met(input, control) && triggers.All(t => t.Met(input, control)));
 
     public static TriggerCondition IsMouseOver(this TriggerCondition trigger)
-        => trigger.And((input, control) => control.View.Rect.Contains(input.Mouse));
+        => trigger.And((input, control) => control.View.HitTest(input.Mouse));
 
     public static TriggerCondition HasBehavior<TBehavior>(this TriggerCondition condition)
-        => condition.And((input, control) => control.Behaviors.Any(b => b is TBehavior));
+        => condition.And((input, control) => control.Behaviors.Any(b => b is TBehavior));   
 
     public static TriggerCondition Not(this TriggerCondition condition)
         => new((input, control) => !condition.Met(input, control));

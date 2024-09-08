@@ -69,4 +69,9 @@ Behavior example:
 
       //==
 
-      */
+*/
+
+
+TODO:
+* Replace the geometry code with Plato.Geometry
+* Reimplement the Emu Node editor 

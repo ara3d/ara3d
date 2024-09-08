@@ -1,5 +1,6 @@
 ﻿using System.Windows;
 using System.Windows.Media;
+using Ara3D.Domo;
 
 namespace Ara3D.NodeEditor;
 
@@ -18,6 +19,8 @@ public class ControlStyle : IStyle
     public Rect GetContentRect(Rect rect) => rect.Shrink(Margin + Border + Padding);
 }
 
+// TODO: why does TStyle have to derive from ControlStyle.
+// This is all weirdly specific and yet it isn't at the same time. 
 public class BaseView<TStyle> : IView
     where TStyle : ControlStyle, new()
 {
@@ -45,7 +48,7 @@ public class BaseView<TStyle> : IView
 public class GraphStyle : ControlStyle
 {
 }
-
+    
 public class GraphView : BaseView<GraphStyle>
 {
     public GraphView(IModel model, GraphStyle? style, Rect? rect)

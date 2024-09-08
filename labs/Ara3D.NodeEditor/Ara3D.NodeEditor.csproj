@@ -35,8 +35,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Collections\Ara3D.Collections\Ara3D.Collections.csproj" />
-    <ProjectReference Include="..\Mathematics\Ara3D.Mathematics\Ara3D.Mathematics.csproj" />
+    <ProjectReference Include="..\..\domo\Ara3D.Domo\Ara3D.Domo.csproj" />
+    <ProjectReference Include="..\..\Plato.Geometry\Plato.Geometry.CSharp\Plato.Geometry.CSharp.csproj" />
   </ItemGroup>
 
 </Project>

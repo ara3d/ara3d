@@ -1,4 +1,5 @@
 ﻿using System.Windows;
+using Ara3D.Domo;
 
 namespace Ara3D.NodeEditor
 {
@@ -29,15 +30,6 @@ namespace Ara3D.NodeEditor
     public interface IBehaviorTriggers
     {
         IReadOnlyList<IBehavior> GetNewBehaviors(UserInput input, Control current);
-    }
-
-    /// <summary>
-    /// Represents data stored outside the UI framework. 
-    /// </summary>
-    public interface IModel
-    {
-        Guid Id { get; }
-        IEnumerable<IModel> Children { get; }
     }
 
     /// <summary>

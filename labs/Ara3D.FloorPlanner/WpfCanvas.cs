@@ -1,11 +1,12 @@
-﻿using Ara3D.Collections;
-using System.Globalization;
+﻿using System.Globalization;
 using System.Windows;
 using System.Windows.Media;
+using Ara2D.FloorPlanner;
+using Plato.DoublePrecision;
+using Geometry = System.Windows.Media.Geometry;
 
-namespace Ara3D.NodeEditor
+namespace Ara3D.FloorPlanner
 {
-    [Mutable]
     public class WpfCanvas : ICanvas
     {
         public DrawingContext? Context { get; set; }
@@ -17,7 +18,7 @@ namespace Ara3D.NodeEditor
         public Dictionary<TextStyle, Typeface> Typefaces = new();
         public Dictionary<StyledText, FormattedText> FormattedTexts = new();
 
-      public static TValue GetOrCreate<TKey, TValue>(Dictionary<TKey, TValue> dictionary, TKey key,
+        public static TValue GetOrCreate<TKey, TValue>(Dictionary<TKey, TValue> dictionary, TKey key,
             Func<TKey, TValue> func)
             where TKey : notnull
         {
@@ -36,34 +37,32 @@ namespace Ara3D.NodeEditor
         }
 
         public ICanvas Draw(StyledText text)
-            => WithContext(context => context.DrawText(GetFormattedText(text), GetTextLocation(text)));
+            => WithContext(context => context.DrawText(GetFormattedText(text), GetTextLocation(text).ToWindows()));
 
-        public Point GetTextLocation(StyledText text)
+        public Point2D GetTextLocation(StyledText text)
             => text.Rect.GetAlignedLocation(MeasureText(text), text.Style.Alignment);
 
         public ICanvas Draw(StyledLine line)
             => WithContext(context => context.DrawLine(
                 GetPen(line.PenStyle),
-                line.Line.A,
-                line.Line.B));
+                line.Line.A.ToWindows(),
+                line.Line.B.ToWindows()));
 
         public ICanvas Draw(StyledEllipse ellipse)
             => WithContext(context => context.DrawEllipse(
                 GetBrush(ellipse.Style.BrushStyle),
                 GetPen(ellipse.Style.PenStyle),
-                ellipse.Ellipse.Point,
-                ellipse.Ellipse.Radius.X,
-                ellipse.Ellipse.Radius.Y));
+                ellipse.Ellipse.Center.ToWindows(),
+                ellipse.Ellipse.Size.Width.Half,
+                ellipse.Ellipse.Size.Height.Half));
 
         public ICanvas Draw(StyledRect rect)
-            => WithContext(context => context.DrawRoundedRectangle(
+            => WithContext(context => context.DrawRectangle(
                 GetBrush(rect.Style.BrushStyle),
                 GetPen(rect.Style.PenStyle),
-                rect.Rect.Rect,
-                rect.Rect.Radius.X,
-                rect.Rect.Radius.Y));
+                rect.Rect.ToWindows()));
 
-        public Size MeasureText(StyledText text)
+        public Size2D MeasureText(StyledText text)
             => GetFormattedText(text).GetSize();
 
         public ICanvas SetRect(Rect rect)
