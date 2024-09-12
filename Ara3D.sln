@@ -231,7 +231,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Plato.Geometry", "Plato.Geo
 		Plato.Geometry\README.md = Plato.Geometry\README.md
 	EndProjectSection
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Plato.Geometry.CSharp", "Plato.Geometry\Plato.Geometry.CSharp\Plato.Geometry.CSharp.csproj", "{87CC9165-EC77-44A4-9BC3-742429737C3D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Plato.Geometry", "Plato.Geometry\Plato.Geometry.CSharp\Plato.Geometry.csproj", "{87CC9165-EC77-44A4-9BC3-742429737C3D}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "plato-src", "Plato.Geometry\plato-src\plato-src.csproj", "{656EB614-60DC-4898-B01C-46CD5384D1DA}"
 EndProject
@@ -249,7 +249,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ara3D.NodeEditor", "labs\Ar
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Plato.Geometry.Unity", "Plato.Geometry\Plato.Geometry.Unity\Plato.Geometry.Unity.csproj", "{17071687-45EC-4913-945D-4A687EE3379E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Plato.Geometry.Speckle", "Plato.Geometry\Plato.Geometry.Speckle\Plato.Geometry.Speckle.csproj", "{FC5AAE60-760A-45D7-B61A-7B67F418D852}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Plato.Geometry.Speckle", "Plato.Geometry\Plato.Geometry.Speckle\Plato.Geometry.Speckle.csproj", "{FC5AAE60-760A-45D7-B61A-7B67F418D852}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
