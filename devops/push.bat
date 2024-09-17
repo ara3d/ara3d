@@ -10,6 +10,7 @@ call :subroutine "%~dp0\..\mathematics" %1 %2
 call :subroutine "%~dp0\..\geometry" %1 %2
 call :subroutine "%~dp0\..\geometry-toolkit" %1 %2
 call :subroutine "%~dp0\..\Plato.Geometry" %1 %2
+call :subroutine "%~dp0\..\IFC-toolkit" %1 %2
 call :subroutine "%~dp0\.." %1 %2
 exit /b
 
