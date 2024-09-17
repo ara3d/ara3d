@@ -27,12 +27,14 @@ There are several submodules included with this repository.
 * [Domo](https://github.com/ara3d/domo) - A state management library.
 * [Parakeet](https://github.com/ara3d/parakeet) - A text parsing library.
 * [Bowerbird](https://github.com/ara3d/bowerbird) - A C# scripting library.
-* [Plato](https://github.com/ara3d/plato) - A simple and efficient cross-platform programming language.  
-* [Ara3D.Mathematics](https://github.com/ara3d/mathematics) - A mathematical library.
-* [Ara3D.Geometry](https://github.com/ara3d/geometry) - A library of geometric algorithms and data structures.
-* [Ara3D.Collections](https://github.com/ara3d/collections) - A library of LINQ inspired immutable containers.  
+* [Plato](https://github.com/ara3d/plato) - A simple and efficient cross-platform programming language.
+* [Plato.Geometry](https://github.com/ara3d/plato.geometry) - A 3D math and geometry library for C# authored in Plato. 
+* [Ara3D.Mathematics](https://github.com/ara3d/mathematics) - A mathematical library (NOTE: soon to be deprecated, see: Plato.Geometry).
+* [Ara3D.Geometry](https://github.com/ara3d/geometry) - A library of geometric algorithms and data structures (NOTE: soon to be deprecated, see: Plato.Geometry).
+* [Ara3D.Collections](https://github.com/ara3d/collections) - A library of LINQ inspired immutable containers (NOTE: soon to be deprecated, see: Plato.Geometry).  
 * [Ara3D.Utils](https://github.com/ara3d/utils) - A library of miscellaneous utility algorithms and data structures.
-
+* [IFC-toolkit](https://github.com/ara3d/IFC-toolkit) - A set of libraries and tools for working with IFC data.
+  
 ## Organization
 
 Code hosted in this repsitory (excluding code in submodules) 
@@ -124,6 +126,6 @@ get the code, and consume it independently.
 Q: Where are the build tasks and properties?  
 
 > Many of the build tasks and properties are controlled within the `Directory.Build.props` file
-whic is automatically included by all projects. 
+which is automatically included by all projects. There are also some helpful scripts in the `devops` folder. 
 
 
