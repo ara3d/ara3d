@@ -245,6 +245,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Plato.Geometry.Speckle", "P
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ifc-toolkit", "ifc-toolkit", "{BF81DB68-921E-4458-AD04-5C52BC272012}"
 	ProjectSection(SolutionItems) = preProject
+		LICENSE.txt = LICENSE.txt
 		IFC-toolkit\README.md = IFC-toolkit\README.md
 	EndProjectSection
 EndProject
