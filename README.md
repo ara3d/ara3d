@@ -126,6 +126,6 @@ get the code, and consume it independently.
 Q: Where are the build tasks and properties?  
 
 > Many of the build tasks and properties are controlled within the `Directory.Build.props` file
-whic is automatically included by all projects. 
+which is automatically included by all projects. There are also some helpful scripts in the `devops` folder. 
 
 
