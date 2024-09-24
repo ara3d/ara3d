@@ -12,7 +12,6 @@ namespace Ara3D.Logging
     public interface IJob 
         : ICancelable, IProgress, ILogger, IStatus<JobStatus>, IErrorHandler, ICompletionHandler, IPausable
     {
-        string Name { get; }
         IReadOnlyList<IJob> SubJobs { get; }
         Task Start();
         object Result { get; }
