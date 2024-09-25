@@ -25,7 +25,7 @@ namespace Ara3D.StepParser
         /// <summary>
         /// This gives us a fast way to look up a StepInstance by their ID
         /// </summary>
-        public readonly StepInstanceLookup Lookup;
+        public readonly Dictionary<int, int> Lookup = new Dictionary<int, int>();
 
         /// <summary>
         /// This tells us the byte offset of the start of each line in the file
@@ -78,7 +78,13 @@ namespace Ara3D.StepParser
             logger.Log($"Found {cntValid} instances");
 
             logger.Log("Creating instance ID lookup");
-            Lookup = new(Instances);
+            for (var i = 0; i < Instances.Length; i++)
+            {
+                var inst = Instances[i];
+                if (!inst.IsValid())
+                    continue;
+                Lookup.Add(inst.Id, i);
+            }
             logger.Log($"Completed creation of STEP document from {filePath.GetFileName()}");
         }
 
