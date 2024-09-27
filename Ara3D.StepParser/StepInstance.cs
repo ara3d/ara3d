@@ -1,28 +1,36 @@
-﻿using System.Runtime.CompilerServices;
-using System.Runtime.InteropServices;
-using Ara3D.Buffers;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Ara3D.StepParser
 {
-
-    [StructLayout(LayoutKind.Sequential, Pack = 1)]
-    public readonly struct StepInstance
+    public class StepInstance
     {
+        public readonly StepEntity Entity;
         public readonly int Id;
-        public readonly ByteSpan Type;
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public StepInstance(int id, ByteSpan type)
+        public List<StepValue> AttributeValues
+            => Entity.Attributes.Values;
+
+        public string EntityType
+            => Entity?.EntityType.ToString() ?? "";
+
+        public StepInstance(int id, StepEntity entity)
         {
             Id = id;
-            Type = type;
+            Entity = entity;
         }
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public bool IsValid()
-            => Id > 0;
+        public bool IsEntityType(string str)
+            => EntityType == str;
 
         public override string ToString()
-            => $"{Id} = {Type}";
+            => $"#{Id}={Entity};";
+
+        public int Count 
+            => AttributeValues.Count;
+
+        public StepValue this[int i]
+            => i < Count ? AttributeValues[i] : null;
     }
+
 }

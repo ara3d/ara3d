@@ -8,15 +8,15 @@ namespace Ara3D.StepParser
     public class StepNode
     {
         public readonly StepGraph Graph;
-        public readonly StepEntityWithId Entity;
+        public readonly StepInstance Entity;
 
-        public StepNode(StepGraph g, StepEntityWithId e)
+        public StepNode(StepGraph g, StepInstance e)
         {
             Graph = g;
             Entity = e;
         }
 
-        public List<StepNode> Nodes { get; } = new List<StepNode>();
+        public List<StepNode> Nodes { get; } = new();
 
         private void AddNodes(StepValue value)
         {

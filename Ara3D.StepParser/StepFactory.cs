@@ -7,7 +7,7 @@ namespace Ara3D.StepParser
 
     public static unsafe class StepFactory
     {
-        public static StepList GetAttributes(this StepInstance inst, byte* lineEnd)
+        public static StepList GetAttributes(this StepRawInstance inst, byte* lineEnd)
         {
             if (!inst.IsValid())
                 return default;

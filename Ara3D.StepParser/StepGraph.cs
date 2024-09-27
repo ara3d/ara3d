@@ -9,8 +9,7 @@ namespace Ara3D.StepParser
     {
         public StepDocument Document { get; }
 
-        public readonly Dictionary<int, StepNode> Lookup
-            = new Dictionary<int, StepNode>();
+        public readonly Dictionary<int, StepNode> Lookup = new();
 
         public StepNode GetNode(int id)
             => Lookup[id];
@@ -22,7 +21,7 @@ namespace Ara3D.StepParser
         {
             Document = doc;
 
-            foreach (var e in doc.GetEntities())
+            foreach (var e in doc.GetInstances())
             {
                 var node = new StepNode(this, e);
                 Lookup.Add(node.Entity.Id, node);

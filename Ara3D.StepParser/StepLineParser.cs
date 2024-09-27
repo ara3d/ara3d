@@ -69,7 +69,7 @@ namespace Ara3D.StepParser
             lineIndex += 32;
         }
 
-        public static unsafe StepInstance ParseLine(byte* ptr, int i, int end)
+        public static unsafe StepRawInstance ParseLine(byte* ptr, int lineIndex, int index, int i, int end)
         {
             var cnt = end - i;
             const int MIN_LINE_LENGTH = 5;
@@ -78,26 +78,32 @@ namespace Ara3D.StepParser
             // Parse the ID 
             if (ptr[i++] != '#')
                 return default;
-            var idStart = i;
+        
+            var id = 0;
             while (i < end)
             {
                 if (ptr[i] < '0' || ptr[i] > '9')
                     break;
+                id = id * 10 + ptr[i] - '0';
                 i++;
             }
 
-            var idSpan = new ByteSpan(ptr + idStart, ptr + i);
-            var id = int.Parse(idSpan.ToSpan());
-
-            // Skip separator ('=')
+            var foundEquals = false;
             while (i < end)
             {
+                if (ptr[i] == '=')
+                    foundEquals = true;
+
                 if (ptr[i] != (byte)' ' && ptr[i] != (byte)'=')
                     break;
+
                 i++;
             }
 
-            // Parse the entity type
+            if (!foundEquals)
+                return default;
+
+            // Parse the entity type name
             var entityStart = i;
             while (i < end)
             {
@@ -105,27 +111,11 @@ namespace Ara3D.StepParser
                     break;
                 i++;
             }
+            if (i == entityStart)
+                return default;
 
             var entityType = new ByteSpan(ptr + entityStart, ptr + i);
-            return new(id, entityType);
-        }
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static uint DelimiterMask(in Vector256<byte> v, out int bits)
-        {
-            var r = Avx2.CompareEqual(v, NewLine);
-            r = Avx2.Or(r, Avx2.CompareEqual(v, Comma));
-            r = Avx2.Or(r, Avx2.CompareEqual(v, StartGroup));
-            r = Avx2.Or(r, Avx2.CompareEqual(v, EndGroup));
-            r = Avx2.Or(r, Avx2.CompareEqual(v, Definition));
-            r = Avx2.Or(r, Avx2.CompareEqual(v, Quote));
-            r = Avx2.Or(r, Avx2.CompareEqual(v, Id));
-            r = Avx2.Or(r, Avx2.CompareEqual(v, SemiColon));
-            r = Avx2.Or(r, Avx2.CompareEqual(v, Unassigned));
-
-            var mask = (uint)Avx2.MoveMask(r);
-            bits = BitOperations.PopCount(mask);
-            return mask;
+            return new(id, entityType, lineIndex, index);
         }
     }
 }

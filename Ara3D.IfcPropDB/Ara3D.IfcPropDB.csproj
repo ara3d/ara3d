@@ -5,7 +5,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Ara3D.StepParser\Ara3D.StepParser.csproj" />
     <ProjectReference Include="..\IFC-toolkit\Ara3D.IfcParser\Ara3D.IfcParser.csproj" />
     <ProjectReference Include="..\src\Ara3D.NarwhalDB\Ara3D.NarwhalDB.csproj" />
   </ItemGroup>

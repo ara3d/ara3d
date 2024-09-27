@@ -332,7 +332,7 @@ namespace Ara3D.IfcPropDB
             logger.Log($"Adding document to database");
 
             var valEntityToIndex = new Dictionary<int, int>();
-            var propValEntities = doc.GetEntities("IFCPROPERTYSINGLEVALUE");
+            var propValEntities = doc.GetInstances("IFCPROPERTYSINGLEVALUE");
 
             logger.Log("Adding values");
             foreach (var e in propValEntities)
@@ -343,7 +343,7 @@ namespace Ara3D.IfcPropDB
             }
 
             logger.Log("Retrieving property sets");
-            foreach (var e in doc.GetEntities("IFCPROPERTYSET"))
+            foreach (var e in doc.GetInstances("IFCPROPERTYSET"))
             {
                 var ps = new IfcPropertySet(e.Id, e.AttributeValues);
                 var propSet = new PropSet(ps.Name, ps.Description);
