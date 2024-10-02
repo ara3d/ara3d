@@ -7,6 +7,8 @@ namespace Ara3D.Serialization.G3D
 {
     /// <summary>
     /// A very simple .ply file exporter
+    /// https://paulbourke.net/dataformats/ply/
+    /// https://en.wikipedia.org/wiki/PLY_(file_format)
     /// </summary> 
     public static class PlyExporter
     {
