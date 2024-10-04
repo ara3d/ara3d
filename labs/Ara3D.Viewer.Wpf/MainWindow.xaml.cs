@@ -10,14 +10,20 @@
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Windows;
+using System.Windows.Input;
 using System.Windows.Media;
+using System.Windows.Media.Imaging;
 using System.Windows.Media.Media3D;
+using System.Windows.Threading;
 using Ara3D.IfcLoader;
 using Ara3D.Speckle.Data;
 using Ara3D.Utils;
 using HelixToolkit.Wpf;
+using Microsoft.Win32;
 using Objects.Other;
+using Objects.Structural.Loading;
 using Objects.Utils;
+using Plato.DoublePrecision;
 using Plato.Geometry.Ifc;
 using Plato.Geometry.Scenes;
 using Plato.Geometry.Speckle;
@@ -26,9 +32,11 @@ using Speckle.Core.Api;
 using Speckle.Core.Credentials;
 using Speckle.Core.Models;
 using Speckle.Core.Transports;
+using SQLitePCL;
 using Color = System.Windows.Media.Color;
 using Mesh = Objects.Geometry.Mesh;
 using SpeckleObject = Ara3D.Speckle.Data.SpeckleObject;
+using Vector3D = System.Windows.Media.Media3D.Vector3D;
 
 namespace Ara3D.Speckle.Wpf
 {
@@ -38,6 +46,7 @@ namespace Ara3D.Speckle.Wpf
         {
             InitializeComponent();
             DataContext = this;
+            SetupFirstPerson();
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
@@ -146,17 +155,188 @@ namespace Ara3D.Speckle.Wpf
         public void LoadScene(IScene scene)
         {
             var vis = scene.ToWpf();
-            var vis2 = new SortingVisual3D() { Content = vis.Content };
-            Viewport.Children.Add(vis2);
+            Viewport.Children.Add(vis);
         }
+
+        public OpenFileDialog OpenFileDialog = new OpenFileDialog()
+        {
+            DefaultDirectory = PathUtil.GetCallerSourceFolder().RelativeFolder("..", "..", "IFC-toolkit", "test-files").GetFullPath(),
+            DefaultExt = ".ifc",
+            Filter = "IFC Files (*.ifc)|*.ifc|All Files (*.*)|*.*",
+            Title = "Open IFC File"
+        };
 
         private void OpenIfcMenuItem_Click(object sender, RoutedEventArgs e)
         {
-            var testFilesFolder = PathUtil.GetCallerSourceFolder().RelativeFolder("..", "..", "IFC-toolkit", "test-files");
-            var file = testFilesFolder.RelativeFile("AC20-FZK-Haus.ifc");
+            if (OpenFileDialog.ShowDialog() != true)
+                return;
+            var file = OpenFileDialog.FileName;
+            
+            //var testFilesFolder = PathUtil.GetCallerSourceFolder().RelativeFolder("..", "..", "IFC-toolkit", "test-files");
+            //var file = testFilesFolder.RelativeFile("AC20-FZK-Haus.ifc");
             var ifc = IfcFile.Load(file, true);
             var scene = ifc.ToScene();
             LoadScene(scene);
+        }
+
+        private void Clear_Click(object sender, RoutedEventArgs e)
+        {
+            Viewport.Children.Clear();
+        }
+
+        //==
+        
+        private double _firstPersonSpeed = 20.0; // Units per second
+        private double _mouseSensitivity = 0.2;
+        private Point _lastMousePosition;
+        private Vector2D _yawPitch;
+        private bool _isFirstPersonMode = false;
+
+        private DispatcherTimer _timer;
+        private HashSet<Key> _keysPressed = new HashSet<Key>();
+        private PerspectiveCamera _camera;
+
+        private void SetupFirstPerson()
+        {
+            _camera = Viewport.Camera as PerspectiveCamera;
+
+            this.KeyDown += MainWindow_KeyDown;
+            this.KeyUp += MainWindow_KeyUp;
+            this.MouseDown += MainWindow_MouseDown;
+            this.MouseUp += MainWindow_MouseUp;
+            this.MouseMove += MainWindow_MouseMove;
+            this.MouseWheel += MainWindow_MouseWheel;
+        
+            _timer = new DispatcherTimer
+            {
+                Interval = TimeSpan.FromMilliseconds(16) // ~60 FPS
+            };
+            _timer.Tick += Timer_Tick;
+            _timer.Start();
+        }
+
+        private void Timer_Tick(object sender, EventArgs e)
+        {
+            if (_isFirstPersonMode)
+            {
+                double deltaTime = _timer.Interval.TotalSeconds;
+                Vector3D movement = new Vector3D();
+
+                if (_keysPressed.Contains(Key.W))
+                    movement += _camera.LookDirection;
+                if (_keysPressed.Contains(Key.S))
+                    movement -= _camera.LookDirection;
+                if (_keysPressed.Contains(Key.A))
+                    movement -= Vector3D.CrossProduct(_camera.LookDirection, _camera.UpDirection);
+                if (_keysPressed.Contains(Key.D))
+                    movement += Vector3D.CrossProduct(_camera.LookDirection, _camera.UpDirection);
+                if (_keysPressed.Contains(Key.Q))
+                    movement += _camera.UpDirection;
+                if (_keysPressed.Contains(Key.E))
+                    movement -= _camera.UpDirection;
+
+                var multiplier = (Keyboard.IsKeyDown(Key.LeftShift) || Keyboard.IsKeyDown(Key.RightShift)) ? 3 : 1;
+                multiplier *= (Keyboard.IsKeyDown(Key.LeftCtrl) || Keyboard.IsKeyDown(Key.RightCtrl)) ? 3 : 1;
+
+                if (movement.Length > 0)
+                {
+                    movement.Normalize();
+                    movement *= _firstPersonSpeed * deltaTime * multiplier;
+                    _camera.Position += movement;
+                }
+            }
+        }
+        private void MainWindow_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.F) // Toggle First-Person Mode
+            {
+                _isFirstPersonMode = !_isFirstPersonMode;
+                Viewport.Cursor = _isFirstPersonMode ? Cursors.Cross : Cursors.Arrow;
+            }
+            else
+            {
+                _keysPressed.Add(e.Key);
+            }
+        }
+
+        private void MainWindow_KeyUp(object sender, KeyEventArgs e)
+        {
+            _keysPressed.Remove(e.Key);
+        }
+
+        private void MainWindow_MouseUp(object sender, MouseButtonEventArgs e)
+        {
+            if (_isFirstPersonMode)
+            {
+                this.ReleaseMouseCapture();
+            }
+        }
+
+        private void MainWindow_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            if (_isFirstPersonMode)
+            {
+                _lastMousePosition = e.GetPosition(this);
+                _yawPitch = DirectionToYawPitch(_camera.LookDirection);                
+                CaptureMouse();
+            }
+        }
+
+        private void MainWindow_MouseMove(object sender, MouseEventArgs e)
+        {
+            const double _pitchLimit = 89.5;
+
+            if (_isFirstPersonMode && e.LeftButton == MouseButtonState.Pressed)
+            {                
+                var delta = (e.GetPosition(this) - _lastMousePosition) * _mouseSensitivity;                
+                var _yaw = _yawPitch.X - delta.X;
+                var _pitch = _yawPitch.Y - delta.Y;
+
+                // Clamp the pitch to prevent looking directly up or down
+                _pitch = Math.Clamp(_pitch, -_pitchLimit, _pitchLimit);
+                _camera.LookDirection = YawPitchToDirection(new Vector2D(_yaw, _pitch));
+                _camera.UpDirection = new Vector3D(0, 0, 1);
+            }
+        }
+
+        public static Vector3D YawPitchToDirection(Vector2D self)
+        {
+            var r = new Vector3D(self.Y.Degrees.Cos * self.X.Degrees.Cos,
+                self.Y.Degrees.Cos * self.X.Degrees.Sin,
+                self.Y.Degrees.Sin);
+            r.Normalize();
+            return r;
+        }
+
+        public static Vector2D DirectionToYawPitch(Vector3D dir)
+        {
+            dir.Normalize();
+            if (dir.LengthSquared < 1e-5)
+                dir = new Vector3D(0, 1, 0);
+
+            // Compute pitch (rotation around X - axis) in degrees
+            var pitch = Math.Atan2(
+                dir.Z,
+                Math.Sqrt(dir.X * dir.X + dir.Y * dir.Y)
+            ).ToDegrees();
+
+            // Compute yaw (rotation around Z-axis) in degrees
+            var yaw = Math.Atan2(dir.Y, dir.X).ToDegrees();
+
+            // Normalize yaw to be within [0, 360) degrees
+            yaw = (yaw + 360.0) % 360.0;
+
+            return new Vector2D(yaw, pitch);
+        }
+
+        private void MainWindow_MouseWheel(object sender, MouseWheelEventArgs e)
+        {
+            if (_isFirstPersonMode)
+            {
+                double delta = e.Delta > 0 ? 1 : -1;
+                _firstPersonSpeed += delta;
+                _firstPersonSpeed = Math.Max(1, _firstPersonSpeed); // Prevent negative speed
+            }
         }
     }
 }

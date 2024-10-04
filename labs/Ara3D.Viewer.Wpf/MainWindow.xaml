@@ -80,7 +80,8 @@
             <MenuItem Header="Open Remote" Click="OpenRemoteMenuItem_Click"/>
             <MenuItem Header="Open Local" Click="OpenLocalMenuItem_Click"/>
             <MenuItem Header="Open IFC" Click="OpenIfcMenuItem_Click"/>
-            <!--
+			<MenuItem Header="Clear" Click="Clear_Click"/>
+			<!--
             <MenuItem Header="Curve"/>
             <MenuItem Header="Surface"/>
             <MenuItem Header="Solid"/>
