@@ -3,7 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" 
         xmlns:h="clr-namespace:HelixToolkit.Wpf;assembly=HelixToolkit.Wpf"
         xmlns:wpf="clr-namespace:Ara3D.Speckle.Wpf"
-        Title="Speckle Desktop Viewer by Ara 3D" Height="750" Width="1000" FontFamily="Arial" Icon="/Icons/ara3d.ico">
+        Title="Ara 3D Windows Viewer 🌐" Height="750" Width="1000" FontFamily="Arial" Icon="/Icons/ara3d.ico">
     <Window.Resources>
         <Style TargetType="h:HelixViewport3D">
             <Setter Property="ShowViewCube" Value="False"/>
@@ -112,7 +112,17 @@
                     <wpf:GridLines/>
 					<ModelVisual3D>
                         <ModelVisual3D.Content >
-                            <AmbientLight Color="#FFFFFF"/>
+	                        <Model3DGroup>
+		                        <!-- Ambient Light: Provides base illumination -->
+		                        <AmbientLight Color="LightGoldenrodYellow"/>
+
+		                        <!-- Directional Light: Simulates sunlight -->
+		                        <DirectionalLight Color="White" Direction="-0.5,-1,-0.5"/>
+
+                                <!-- Point Light: Adds dynamic lighting inside the building -->
+		                        <PointLight Color="LightSkyBlue" Position="0,5,0" Range="30"
+		                                    ConstantAttenuation="1" LinearAttenuation="0.05" QuadraticAttenuation="0.01"/>
+	                        </Model3DGroup>
                         </ModelVisual3D.Content>
                     </ModelVisual3D>
                 </h:HelixViewport3D>

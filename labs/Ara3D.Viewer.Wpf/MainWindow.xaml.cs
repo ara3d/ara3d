@@ -8,23 +8,26 @@
 // --------------------------------------------------------------------------------------------------------------------
 
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Windows;
 using System.Windows.Media;
 using System.Windows.Media.Media3D;
-using Ara3D.Logging;
+using Ara3D.IfcLoader;
 using Ara3D.Speckle.Data;
+using Ara3D.Utils;
 using HelixToolkit.Wpf;
-using Objects.Geometry;
 using Objects.Other;
 using Objects.Utils;
-using Serilog;
+using Plato.Geometry.Ifc;
+using Plato.Geometry.Scenes;
+using Plato.Geometry.Speckle;
+using Plato.Geometry.WPF;
 using Speckle.Core.Api;
 using Speckle.Core.Credentials;
 using Speckle.Core.Models;
 using Speckle.Core.Transports;
 using Color = System.Windows.Media.Color;
 using Mesh = Objects.Geometry.Mesh;
-using NotImplementedException = System.NotImplementedException;
 using SpeckleObject = Ara3D.Speckle.Data.SpeckleObject;
 
 namespace Ara3D.Speckle.Wpf
@@ -95,7 +98,7 @@ namespace Ara3D.Speckle.Wpf
 
             // Default Speckl architecture 
             var streamId = "3247bdd4ee";
-
+                
             // The name of the branch we'll receive data from.
             var branchName = "base design";
 
@@ -129,7 +132,7 @@ namespace Ara3D.Speckle.Wpf
         }
 
         public Color GetRenderMaterialColor(RenderMaterial material)
-        {
+        {   
             if (material == null)
                 return Colors.DarkSlateGray;
             return Color.FromArgb((byte)(material.opacity * 255), material.diffuseColor.R, material.diffuseColor.G,
@@ -140,9 +143,15 @@ namespace Ara3D.Speckle.Wpf
         {
             var parentVisual = new SortingVisual3D();
             Viewport.Children.Add(parentVisual);
-            CreateModels(parentVisual.Children, native);
+
+            var grp = new Model3DGroup();
+            CreateModels(grp, native);
+            grp.Freeze();
+            var vis = new ModelVisual3D() { Content = grp };
+            parentVisual.Children.Add(vis);
         }
 
+        /*
         public void CreateModels(Visual3DCollection parent, SpeckleObject native)
         {
             var m = native.Mesh;
@@ -159,6 +168,31 @@ namespace Ara3D.Speckle.Wpf
 
             foreach (var child in native.Children)
                 CreateModels(parent, child);
+        }
+        */
+
+        public void CreateModels(Model3DGroup grp, SpeckleObject native)
+        {
+            var m = native.Mesh;
+            if (m != null)
+            {
+                var meshGeo = ToMeshGeometry3D(m);
+                var color = GetRenderMaterialColor(native.Material);
+                var mat = new DiffuseMaterial(new SolidColorBrush(color));
+                mat.Freeze();
+                var model = new GeometryModel3D(meshGeo, mat);
+                model.Freeze();
+                grp.Children.Add(model);
+            }
+
+            var children = native.Children.ToList();
+            if (children.Count == 0)
+                return;
+            var childGrp = new Model3DGroup();
+            foreach (var child in children)
+                CreateModels(childGrp, child);
+            grp.Children.Add(childGrp);
+            childGrp.Freeze();
         }
 
         public Point3D GetPoint(Mesh mesh, int i)
@@ -198,9 +232,15 @@ namespace Ara3D.Speckle.Wpf
             var localSql = new SQLiteTransport(filePath);
             var root = Operations.Receive("f0fa094f0c24fba78171bd57816f3797", localSql).Result;
             localSql.Dispose();
+            var newObject = root.ToSpeckleObject();
+            var scene = newObject.ToScene();
+            LoadScene(scene);
+        }
 
-            // Update the UI with the result
-            ConvertToMeshes(root);
+        public void LoadScene(IScene scene)
+        {
+            var vis = scene.ToWpf();
+            Viewport.Children.Add(vis);
         }
 
         public void ConvertToMeshes(Base root)
@@ -209,17 +249,13 @@ namespace Ara3D.Speckle.Wpf
             AddMeshes(newObject);
         }
 
-        private async void OpenIfcMenuItem_Click(object sender, RoutedEventArgs e)
+        private void OpenIfcMenuItem_Click(object sender, RoutedEventArgs e)
         {
-            throw new NotImplementedException();
-            /*
-            var api = new DotNetApi();
-            var logger = new Logger(LogWriter.ConsoleWriter, "");
-            var f = "C:\\Users\\cdigg\\git\\web-ifc-dotnet\\src\\engine_web-ifc\\tests\\ifcfiles\\public\\AC20-FZK-Haus.ifc";
-            var g = ModelGraph.Load(api, logger, f);
-            var b = g.ToSpeckle();
-            var c = await SpeckleConverter.Create(b);
-            await AddMeshes(c.Root);*/
+            var testFilesFolder = PathUtil.GetCallerSourceFolder().RelativeFolder("..", "..", "IFC-toolkit", "test-files");
+            var file = testFilesFolder.RelativeFile("AC20-FZK-Haus.ifc");
+            var ifc = IfcFile.Load(file, true);
+            var scene = ifc.ToScene();
+            LoadScene(scene);
         }
     }
 }
