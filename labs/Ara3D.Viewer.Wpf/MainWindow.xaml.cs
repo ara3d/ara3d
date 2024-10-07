@@ -25,6 +25,7 @@ using Objects.Structural.Loading;
 using Objects.Utils;
 using Plato.DoublePrecision;
 using Plato.Geometry.Ifc;
+using Plato.Geometry.IO;
 using Plato.Geometry.Scenes;
 using Plato.Geometry.Speckle;
 using Plato.Geometry.WPF;
@@ -35,6 +36,8 @@ using Speckle.Core.Transports;
 using SQLitePCL;
 using Color = System.Windows.Media.Color;
 using Mesh = Objects.Geometry.Mesh;
+using Quaternion = Plato.DoublePrecision.Quaternion;
+using Rotation3D = Plato.DoublePrecision.Rotation3D;
 using SpeckleObject = Ara3D.Speckle.Data.SpeckleObject;
 using Vector3D = System.Windows.Media.Media3D.Vector3D;
 
@@ -158,7 +161,7 @@ namespace Ara3D.Speckle.Wpf
             Viewport.Children.Add(vis);
         }
 
-        public OpenFileDialog OpenFileDialog = new OpenFileDialog()
+        public OpenFileDialog IfcOpenFileDialog = new OpenFileDialog()
         {
             DefaultDirectory = PathUtil.GetCallerSourceFolder().RelativeFolder("..", "..", "IFC-toolkit", "test-files").GetFullPath(),
             DefaultExt = ".ifc",
@@ -168,9 +171,9 @@ namespace Ara3D.Speckle.Wpf
 
         private void OpenIfcMenuItem_Click(object sender, RoutedEventArgs e)
         {
-            if (OpenFileDialog.ShowDialog() != true)
+            if (IfcOpenFileDialog.ShowDialog() != true)
                 return;
-            var file = OpenFileDialog.FileName;
+            var file = IfcOpenFileDialog.FileName;
             
             //var testFilesFolder = PathUtil.GetCallerSourceFolder().RelativeFolder("..", "..", "IFC-toolkit", "test-files");
             //var file = testFilesFolder.RelativeFile("AC20-FZK-Haus.ifc");
@@ -230,9 +233,9 @@ namespace Ara3D.Speckle.Wpf
                     movement -= Vector3D.CrossProduct(_camera.LookDirection, _camera.UpDirection);
                 if (_keysPressed.Contains(Key.D))
                     movement += Vector3D.CrossProduct(_camera.LookDirection, _camera.UpDirection);
-                if (_keysPressed.Contains(Key.Q))
-                    movement += _camera.UpDirection;
                 if (_keysPressed.Contains(Key.E))
+                    movement += _camera.UpDirection;
+                if (_keysPressed.Contains(Key.Q))
                     movement -= _camera.UpDirection;
 
                 var multiplier = (Keyboard.IsKeyDown(Key.LeftShift) || Keyboard.IsKeyDown(Key.RightShift)) ? 3 : 1;
@@ -337,6 +340,48 @@ namespace Ara3D.Speckle.Wpf
                 _firstPersonSpeed += delta;
                 _firstPersonSpeed = Math.Max(1, _firstPersonSpeed); // Prevent negative speed
             }
+        }
+
+        public OpenFileDialog PlyOpenFileDialog = new OpenFileDialog()
+        {
+            DefaultDirectory = "C:\\Users\\cdigg\\git\\3d-format-shootout\\data\\big\\ply",
+            DefaultExt = ".ply",
+            Filter = "PLY Files (*.ply)|*.ply|All Files (*.*)|*.*",
+            Title = "Open PLY File"
+        };
+
+        private void OpenPlyMenuItem_Click(object sender, RoutedEventArgs e)
+        {
+            if (PlyOpenFileDialog.ShowDialog() != true)
+                return;
+            var file = PlyOpenFileDialog.FileName;
+            var buffers = PlyImporter.LoadBuffers(file);
+            var mesh = buffers.ToMesh();
+            var geometry = mesh.ToWpf();
+            
+            var diffuse = new DiffuseMaterial(new SolidColorBrush(Colors.DarkSlateBlue));
+            var specular = new SpecularMaterial(new SolidColorBrush(Colors.LightSeaGreen), 85); // Higher specular power = smaller, sharper highlights
+            var emissive = new EmissiveMaterial(new SolidColorBrush(Colors.Red));
+
+            // Create the material group
+            var material = new MaterialGroup();
+            material.Children.Add(diffuse); // More detailed diffuse texture
+            material.Children.Add(specular); // Sharper specular highlights
+            material.Children.Add(emissive); // Subtle glow or emission
+
+            // Create a 90-degree rotation around the X-axis to convert Y-Up to Z-Up
+            var axis = new Vector3D(1, 0, 0); // Rotation axis (X-axis)
+            var angle = 90; // Angle in degrees
+            var rotation = new AxisAngleRotation3D(axis, angle);
+            var rotateTransform = new RotateTransform3D(rotation);
+
+            var model = new GeometryModel3D { 
+                Geometry = geometry, 
+                Material = material, 
+                Transform = rotateTransform
+            }; 
+            var visual = new ModelVisual3D { Content = model };
+            Viewport.Children.Add(visual);
         }
     }
 }

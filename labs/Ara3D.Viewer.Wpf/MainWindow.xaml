@@ -80,6 +80,7 @@
             <MenuItem Header="Open Remote" Click="OpenRemoteMenuItem_Click"/>
             <MenuItem Header="Open Local" Click="OpenLocalMenuItem_Click"/>
             <MenuItem Header="Open IFC" Click="OpenIfcMenuItem_Click"/>
+            <MenuItem Header="Open PLY" Click="OpenPlyMenuItem_Click"/>
 			<MenuItem Header="Clear" Click="Clear_Click"/>
 			<!--
             <MenuItem Header="Curve"/>
@@ -122,7 +123,7 @@
 
                                 <!-- Point Light: Adds dynamic lighting inside the building -->
 		                        <PointLight Color="LightSkyBlue" Position="0,5,0" Range="30"
-		                                    ConstantAttenuation="1" LinearAttenuation="0.05" QuadraticAttenuation="0.01"/>
+		                                    ConstantAttenuation="0.3" LinearAttenuation="0.1" QuadraticAttenuation="0.05"/>
 	                        </Model3DGroup>
                         </ModelVisual3D.Content>
                     </ModelVisual3D>
