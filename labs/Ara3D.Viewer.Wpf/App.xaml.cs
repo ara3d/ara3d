@@ -1,9 +1,9 @@
-﻿using System.Configuration;
-using System.Data;
-using System.Windows;
+﻿using System;
 using System.Windows.Threading;
+using Application = System.Windows.Application;
+using MessageBox = System.Windows.MessageBox;
 
-namespace Ara3D.Speckle.Wpf
+namespace Ara3D.Viewer.Wpf
 {
     /// <summary>
     /// Interaction logic for App.xaml

@@ -1,7 +1,6 @@
-﻿<Application x:Class="Ara3D.Speckle.Wpf.App"
+﻿<Application x:Class="Ara3D.Viewer.Wpf.App"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:local="clr-namespace:Ara3D.Speckle.Wpf"
              StartupUri="MainWindow.xaml"
              Activated="App_OnActivated">
     <Application.Resources>

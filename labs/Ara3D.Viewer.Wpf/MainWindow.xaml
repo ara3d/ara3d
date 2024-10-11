@@ -1,8 +1,8 @@
-﻿<Window x:Class="Ara3D.Speckle.Wpf.MainWindow"
+﻿<Window x:Class="Ara3D.Viewer.Wpf.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" 
         xmlns:h="clr-namespace:HelixToolkit.Wpf;assembly=HelixToolkit.Wpf"
-        xmlns:wpf="clr-namespace:Ara3D.Speckle.Wpf"
+        xmlns:wpf="clr-namespace:Ara3D.Viewer.Wpf"
         Title="Ara 3D Windows Viewer 🌐" Height="750" Width="1000" FontFamily="Arial" Icon="/Icons/ara3d.ico">
     <Window.Resources>
         <Style TargetType="h:HelixViewport3D">
@@ -76,9 +76,6 @@
             <RowDefinition/>
         </Grid.RowDefinitions>
         <Menu x:Name="Menu1" DockPanel.Dock="Top">
-            <MenuItem Header="Create Box" Click="CreateBoxMenuItem_Click"/>
-            <MenuItem Header="Open Remote" Click="OpenRemoteMenuItem_Click"/>
-            <MenuItem Header="Open Local" Click="OpenLocalMenuItem_Click"/>
             <MenuItem Header="Open IFC" Click="OpenIfcMenuItem_Click"/>
             <MenuItem Header="Open PLY" Click="OpenPlyMenuItem_Click"/>
 			<MenuItem Header="Clear" Click="Clear_Click"/>

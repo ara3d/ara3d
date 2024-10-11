@@ -7,12 +7,13 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+using System;
 using System.Windows;
-using System.Windows.Media;
 using System.Windows.Media.Media3D;
 using HelixToolkit.Wpf;
+using Color = System.Windows.Media.Color;
 
-namespace Ara3D.Speckle.Wpf
+namespace Ara3D.Viewer.Wpf
 {
     /// <summary>
     /// Represents grid lines.
@@ -127,7 +128,7 @@ namespace Ara3D.Speckle.Wpf
         /// </summary>
         public GridLines()
         {
-            this.CreateGrid();
+            CreateGrid();
         }
 
         /// <summary>
@@ -136,15 +137,8 @@ namespace Ara3D.Speckle.Wpf
         /// <value> The center. </value>
         public Point3D Center
         {
-            get
-            {
-                return (Point3D)this.GetValue(CenterProperty);
-            }
-
-            set
-            {
-                this.SetValue(CenterProperty, value);
-            }
+            get => (Point3D)GetValue(CenterProperty);
+            set => SetValue(CenterProperty, value);
         }
 
         /// <summary>
@@ -153,15 +147,8 @@ namespace Ara3D.Speckle.Wpf
         /// <value> The length. </value>
         public double Length
         {
-            get
-            {
-                return (double)this.GetValue(LengthProperty);
-            }
-
-            set
-            {
-                this.SetValue(LengthProperty, value);
-            }
+            get => (double)GetValue(LengthProperty);
+            set => SetValue(LengthProperty, value);
         }
 
         /// <summary>
@@ -170,15 +157,8 @@ namespace Ara3D.Speckle.Wpf
         /// <value> The length direction. </value>
         public Vector3D LengthDirection
         {
-            get
-            {
-                return (Vector3D)this.GetValue(LengthDirectionProperty);
-            }
-
-            set
-            {
-                this.SetValue(LengthDirectionProperty, value);
-            }
+            get => (Vector3D)GetValue(LengthDirectionProperty);
+            set => SetValue(LengthDirectionProperty, value);
         }
 
         /// <summary>
@@ -187,15 +167,8 @@ namespace Ara3D.Speckle.Wpf
         /// <value> The major distance. </value>
         public double MajorDistance
         {
-            get
-            {
-                return (double)this.GetValue(MajorDistanceProperty);
-            }
-
-            set
-            {
-                this.SetValue(MajorDistanceProperty, value);
-            }
+            get => (double)GetValue(MajorDistanceProperty);
+            set => SetValue(MajorDistanceProperty, value);
         }
 
         /// <summary>
@@ -204,15 +177,8 @@ namespace Ara3D.Speckle.Wpf
         /// <value> The color of the major line. </value>
         public Color MajorLineColor
         {
-            get
-            {
-                return (Color)this.GetValue(MajorLineColorProperty);
-            }
-
-            set
-            {
-                this.SetValue(MajorLineColorProperty, value);
-            }
+            get => (Color)GetValue(MajorLineColorProperty);
+            set => SetValue(MajorLineColorProperty, value);
         }
 
         /// <summary>
@@ -221,15 +187,8 @@ namespace Ara3D.Speckle.Wpf
         /// <value> The major line thickness. </value>
         public double MajorLineThickness
         {
-            get
-            {
-                return (double)this.GetValue(MajorLineThicknessProperty);
-            }
-
-            set
-            {
-                this.SetValue(MajorLineThicknessProperty, value);
-            }
+            get => (double)GetValue(MajorLineThicknessProperty);
+            set => SetValue(MajorLineThicknessProperty, value);
         }
 
         /// <summary>
@@ -238,15 +197,8 @@ namespace Ara3D.Speckle.Wpf
         /// <value> The minor distance. </value>
         public double MinorDistance
         {
-            get
-            {
-                return (double)this.GetValue(DistanceProperty);
-            }
-
-            set
-            {
-                this.SetValue(DistanceProperty, value);
-            }
+            get => (double)GetValue(DistanceProperty);
+            set => SetValue(DistanceProperty, value);
         }
 
         /// <summary>
@@ -255,15 +207,8 @@ namespace Ara3D.Speckle.Wpf
         /// <value> The color of the minor line. </value>
         public Color MinorLineColor
         {
-            get
-            {
-                return (Color)this.GetValue(MinorLineColorProperty);
-            }
-
-            set
-            {
-                this.SetValue(MinorLineColorProperty, value);
-            }
+            get => (Color)GetValue(MinorLineColorProperty);
+            set => SetValue(MinorLineColorProperty, value);
         }
 
         /// <summary>
@@ -272,15 +217,8 @@ namespace Ara3D.Speckle.Wpf
         /// <value> The minor line thickness. </value>
         public double MinorLineThickness
         {
-            get
-            {
-                return (double)this.GetValue(MinorLineThicknessProperty);
-            }
-
-            set
-            {
-                this.SetValue(MinorLineThicknessProperty, value);
-            }
+            get => (double)GetValue(MinorLineThicknessProperty);
+            set => SetValue(MinorLineThicknessProperty, value);
         }
 
         /// <summary>
@@ -289,15 +227,8 @@ namespace Ara3D.Speckle.Wpf
         /// <value> The normal. </value>
         public Vector3D Normal
         {
-            get
-            {
-                return (Vector3D)this.GetValue(NormalProperty);
-            }
-
-            set
-            {
-                this.SetValue(NormalProperty, value);
-            }
+            get => (Vector3D)GetValue(NormalProperty);
+            set => SetValue(NormalProperty, value);
         }
 
         /// <summary>
@@ -306,15 +237,8 @@ namespace Ara3D.Speckle.Wpf
         /// <value> The width. </value>
         public double Width
         {
-            get
-            {
-                return (double)this.GetValue(WidthProperty);
-            }
-
-            set
-            {
-                this.SetValue(WidthProperty, value);
-            }
+            get => (double)GetValue(WidthProperty);
+            set => SetValue(WidthProperty, value);
         }
 
         /// <summary>
@@ -323,15 +247,8 @@ namespace Ara3D.Speckle.Wpf
         /// <value> The color of the X axis line. </value>
         public Color XAxisLineColor
         {
-            get
-            {
-                return (Color)this.GetValue(XAxisLineColorProperty);
-            }
-
-            set
-            {
-                this.SetValue(XAxisLineColorProperty, value);
-            }
+            get => (Color)GetValue(XAxisLineColorProperty);
+            set => SetValue(XAxisLineColorProperty, value);
         }
 
         /// <summary>
@@ -340,15 +257,8 @@ namespace Ara3D.Speckle.Wpf
         /// <value> The color of the Y axis line. </value>
         public Color YAxisLineColor
         {
-            get
-            {
-                return (Color)this.GetValue(YAxisLineColorProperty);
-            }
-
-            set
-            {
-                this.SetValue(YAxisLineColorProperty, value);
-            }
+            get => (Color)GetValue(YAxisLineColorProperty);
+            set => SetValue(YAxisLineColorProperty, value);
         }
 
         /// <summary>
@@ -357,15 +267,8 @@ namespace Ara3D.Speckle.Wpf
         /// <value> The color of the Z axis line. </value>
         public Color ZAxisLineColor
         {
-            get
-            {
-                return (Color)this.GetValue(ZAxisLineColorProperty);
-            }
-
-            set
-            {
-                this.SetValue(ZAxisLineColorProperty, value);
-            }
+            get => (Color)GetValue(ZAxisLineColorProperty);
+            set => SetValue(ZAxisLineColorProperty, value);
         }
 
         /// <summary>
@@ -378,88 +281,88 @@ namespace Ara3D.Speckle.Wpf
             var xlinePoints = new Point3DCollection();
             var ylinePoints = new Point3DCollection();
 
-            this.lengthDirection = this.LengthDirection;
-            this.lengthDirection.Normalize();
-            this.widthDirection = Vector3D.CrossProduct(this.Normal, this.lengthDirection);
-            this.widthDirection.Normalize();
+            lengthDirection = LengthDirection;
+            lengthDirection.Normalize();
+            widthDirection = Vector3D.CrossProduct(Normal, lengthDirection);
+            widthDirection.Normalize();
 
-            double minX = -this.Width / 2;
-            double minY = -this.Length / 2;
-            double maxX = this.Width / 2;
-            double maxY = this.Length / 2;
+            var minX = -Width / 2;
+            var minY = -Length / 2;
+            var maxX = Width / 2;
+            var maxY = Length / 2;
 
-            double z = this.MajorDistance * 1e-4;
+            var z = MajorDistance * 1e-4;
 
-            double x = minX;
-            double eps = this.MinorDistance / 10;
+            var x = minX;
+            var eps = MinorDistance / 10;
             while (x <= maxX + eps)
             {
-                var pc = IsMultipleOf(x, this.MajorDistance) ? majorLinePoints : minorLinePoints;
+                var pc = IsMultipleOf(x, MajorDistance) ? majorLinePoints : minorLinePoints;
                 if (Math.Abs(x) < double.Epsilon)
                 {
-                    this.AddLine(pc, this.GetPoint(x, minY, z), this.GetPoint(x, 0, z));
-                    this.AddLine(ylinePoints, this.GetPoint(x, 0, 2 * z), this.GetPoint(x, maxY, 2 * z));
+                    AddLine(pc, GetPoint(x, minY, z), GetPoint(x, 0, z));
+                    AddLine(ylinePoints, GetPoint(x, 0, 2 * z), GetPoint(x, maxY, 2 * z));
                 }
                 else
                 {
-                    this.AddLine(pc, this.GetPoint(x, minY, z), this.GetPoint(x, maxY, z));
+                    AddLine(pc, GetPoint(x, minY, z), GetPoint(x, maxY, z));
                 }
 
-                x += this.MinorDistance;
+                x += MinorDistance;
             }
 
-            double y = minY;
+            var y = minY;
             while (y <= maxY + eps)
             {
-                var pc = IsMultipleOf(y, this.MajorDistance) ? majorLinePoints : minorLinePoints;
+                var pc = IsMultipleOf(y, MajorDistance) ? majorLinePoints : minorLinePoints;
                 if (Math.Abs(y) < double.Epsilon)
                 {
-                    this.AddLine(pc, this.GetPoint(minX, y), this.GetPoint(0, y));
-                    this.AddLine(xlinePoints, this.GetPoint(0, y, 2 * z), this.GetPoint(maxX, y, 2 * z));
+                    AddLine(pc, GetPoint(minX, y), GetPoint(0, y));
+                    AddLine(xlinePoints, GetPoint(0, y, 2 * z), GetPoint(maxX, y, 2 * z));
                 }
                 else
                 {
-                    this.AddLine(pc, this.GetPoint(minX, y), this.GetPoint(maxY, y));
+                    AddLine(pc, GetPoint(minX, y), GetPoint(maxY, y));
                 }
 
-                y += this.MinorDistance;
+                y += MinorDistance;
             }
 
             var majorLines = new LinesVisual3D
                 {
-                    Color = this.MajorLineColor,
-                    Thickness = this.MajorLineThickness,
+                    Color = MajorLineColor,
+                    Thickness = MajorLineThickness,
                     Points = majorLinePoints,
                     IsRendering = true
                 };
 
             var minorLines = new LinesVisual3D
                 {
-                    Color = this.MinorLineColor,
-                    Thickness = this.MinorLineThickness,
+                    Color = MinorLineColor,
+                    Thickness = MinorLineThickness,
                     Points = minorLinePoints,
                     IsRendering = true
                 };
 
             var xlines = new LinesVisual3D
                 {
-                    Color = this.YAxisLineColor,
-                    Thickness = this.MajorLineThickness,
+                    Color = YAxisLineColor,
+                    Thickness = MajorLineThickness,
                     Points = xlinePoints,
                     IsRendering = true
                 };
 
             var ylines = new LinesVisual3D
                 {
-                    Color = this.XAxisLineColor,
-                    Thickness = this.MajorLineThickness,
+                    Color = XAxisLineColor,
+                    Thickness = MajorLineThickness,
                     Points = ylinePoints,
                     IsRendering = true
                 };
-            this.Children.Add(majorLines);
-            this.Children.Add(minorLines);
-            this.Children.Add(xlines);
-            this.Children.Add(ylines);
+            Children.Add(majorLines);
+            Children.Add(minorLines);
+            Children.Add(xlines);
+            Children.Add(ylines);
         }
 
         /// <summary>
@@ -490,7 +393,7 @@ namespace Ara3D.Speckle.Wpf
         /// </returns>
         private static bool IsMultipleOf(double value, double x)
         {
-            double y2 = x * (int)(value / x);
+            var y2 = x * (int)(value / x);
             return Math.Abs(value - y2) < 1e-3;
         }
 
@@ -512,7 +415,7 @@ namespace Ara3D.Speckle.Wpf
         private void AddLine(Point3DCollection pc, Point3D p0, Point3D p1, int divisions = 10)
         {
             var v = p1 - p0;
-            for (int i = 0; i < divisions; i++)
+            for (var i = 0; i < divisions; i++)
             {
                 pc.Add(p0 + v * i / divisions);
                 pc.Add(p0 + v * (i + 1) / divisions);
@@ -536,7 +439,7 @@ namespace Ara3D.Speckle.Wpf
         /// </returns>
         private Point3D GetPoint(double x, double y, double z = 0)
         {
-            return this.Center + this.widthDirection * x + this.lengthDirection * y + this.Normal * z;
+            return Center + widthDirection * x + lengthDirection * y + Normal * z;
         }
 
         /// <summary>
@@ -544,13 +447,13 @@ namespace Ara3D.Speckle.Wpf
         /// </summary>
         private void OnGeometryChanged()
         {
-            foreach (LinesVisual3D lines in this.Children)
+            foreach (LinesVisual3D lines in Children)
             {
                 lines.IsRendering = false;
             }
 
-            this.Children.Clear();
-            this.CreateGrid();
+            Children.Clear();
+            CreateGrid();
         }
 
     }

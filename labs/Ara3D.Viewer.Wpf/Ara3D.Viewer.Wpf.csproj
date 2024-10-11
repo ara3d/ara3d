@@ -4,8 +4,9 @@
     <OutputType>WinExe</OutputType>
     <TargetFramework>net8.0-windows</TargetFramework>
     <Nullable>enable</Nullable>
-    <ImplicitUsings>enable</ImplicitUsings>
+    <ImplicitUsings>disable</ImplicitUsings>
     <UseWPF>true</UseWPF>
+    <UseWindowsForms>true</UseWindowsForms>
   </PropertyGroup>
 
   <ItemGroup>
@@ -15,12 +16,11 @@
  
   <ItemGroup>
     <PackageReference Include="HelixToolkit.Wpf" Version="2.25.0" />
-    <PackageReference Include="Speckle.Core" Version="2.20.1" />
-    <PackageReference Include="Speckle.Objects" Version="2.20.1" />
   </ItemGroup>
 
  
   <ItemGroup>
+    <ProjectReference Include="..\..\bowerbird\Ara3D.Bowerbird.WinForms.Net48\Ara3D.Bowerbird.WinForms.Net80.csproj" />
     <ProjectReference Include="..\..\IFC-toolkit\Ara3D.Speckle.Data\Ara3D.Speckle.Data.csproj" />
     <ProjectReference Include="..\..\IFC-toolkit\Ara3D.Speckle.IfcLoader\Ara3D.Speckle.IfcLoader.csproj" />
     <ProjectReference Include="..\..\Plato.Geometry\Plato.Geometry.CSharp\Plato.Geometry.csproj" />
@@ -45,6 +45,12 @@
   <ItemGroup>
     <Folder Include="Icons\Toolbars\" />
     <Folder Include="Resources\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="System.Windows.Forms">
+      <HintPath>..\..\..\..\..\..\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.7.1\System.Windows.Forms.dll</HintPath>
+    </Reference>
   </ItemGroup>
 
   <ItemGroup>
