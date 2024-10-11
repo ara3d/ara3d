@@ -27,6 +27,7 @@
     <ProjectReference Include="..\..\Plato.Geometry\Plato.Geometry.Ifc\Plato.Geometry.Ifc.csproj" />
     <ProjectReference Include="..\..\Plato.Geometry\Plato.Geometry.Speckle\Plato.Geometry.Speckle.csproj" />
     <ProjectReference Include="..\..\Plato.Geometry\Plato.Geometry.WPF\Plato.Geometry.WPF.csproj" />
+    <ProjectReference Include="..\Ara3D.Viewer.Api\Ara3D.Viewer.Api.csproj" />
   </ItemGroup>
 
   <ItemGroup>

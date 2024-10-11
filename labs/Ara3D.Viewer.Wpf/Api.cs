@@ -3,6 +3,7 @@ using System.IO;
 using System.Windows.Media.Media3D;
 using System.Windows.Media;
 using Ara3D.IfcLoader;
+using Ara3D.Viewer.Api;
 using Plato.Geometry.Ifc;
 using Plato.Geometry.IO;
 using Plato.Geometry.Scenes;
@@ -10,7 +11,7 @@ using Plato.Geometry.WPF;
 
 namespace Ara3D.Viewer.Wpf
 {
-    public class Api
+    public class Api : IApi
     {
         public Api(MainWindow mainWindow)
         {

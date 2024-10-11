@@ -1,0 +1,44 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0-windows</TargetFramework>
+    <UseWPF>true</UseWPF>
+    <Nullable>disable</Nullable>
+    <ImplicitUsings>disable</ImplicitUsings>
+    <UseWindowsForms>true</UseWindowsForms>
+    <LangVersion>7.3</LangVersion>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\bowerbird\Ara3D.Bowerbird.Interfaces\Ara3D.Bowerbird.Interfaces.csproj" />
+    <ProjectReference Include="..\Ara3D.Viewer.Api\Ara3D.Viewer.Api.csproj" />
+  </ItemGroup>
+
+  <!-- Define the destination directory using the correct MSBuild property -->
+  <PropertyGroup>
+    <ScriptsDestination>$(LocalAppData)\Ara 3D\Ara 3D Studio\Scripts</ScriptsDestination>
+  </PropertyGroup>
+
+  <!-- Specify the files you want to copy relative to the project directory -->
+  <ItemGroup>
+    <!-- Assuming your scripts are located in a 'Scripts' folder within the project -->
+    <ScriptsToCopy Include="*.cs;*.txt" Exclude="obj\**\*" />
+  </ItemGroup>
+
+  <!-- Define a custom target that runs after the Build target -->
+  <Target Name="CopyScriptsAfterBuild" AfterTargets="Build">
+    <!-- Ensure the destination directory exists -->
+    <MakeDir Directories="$(ScriptsDestination)" Condition="!Exists('$(ScriptsDestination)')" />
+
+    <!-- Copy the specified files to the destination directory while preserving directory structure -->
+    <Copy
+      SourceFiles="@(ScriptsToCopy)"
+      DestinationFolder="$(ScriptsDestination)\%(RecursiveDir)"
+      SkipUnchangedFiles="true"
+      Retries="3"
+      RetryDelayMilliseconds="1000" />
+
+    <!-- Log each file being copied for better visibility -->
+    <Message Importance="high" Text="Copied %(ScriptsToCopy.Identity) to $(ScriptsDestination)\%(RecursiveDir)" />
+  </Target>
+</Project>

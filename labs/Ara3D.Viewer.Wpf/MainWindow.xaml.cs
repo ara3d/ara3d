@@ -69,9 +69,9 @@ namespace Ara3D.Viewer.Wpf
             return Window;
         }
 
-        public static void ExecuteCommand(IBowerbirdCommand command)
+        public void ExecuteCommand(IBowerbirdCommand command)
         {
-            command.Execute(null);
+            command.Execute(Api);
         }
 
         public static BowerbirdHost Host { get; private set; }
