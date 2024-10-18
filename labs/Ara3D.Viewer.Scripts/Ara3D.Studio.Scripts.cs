@@ -1,6 +1,7 @@
 using System.Windows.Forms;
 using Ara3D.Bowerbird.Interfaces;
 using Ara3D.Viewer.Api;
+using Plato.DoublePrecision;
 using Plato.Geometry;
 using Plato.Geometry.Graphics;
 using Plato.Geometry.Scenes;
@@ -27,9 +28,9 @@ namespace Ara3D.Viewer.Scripts
         public void Execute(object arg)
         {
             var api = (IApi)arg;
-            var torus = Surfaces.Torus(20);
+            var torus = Shapes.Torus(20);
             var scene = new Scene(); 
-            scene.Root.AddMesh(torus.TriangleMesh, null, Colors.BurlyWood);
+            scene.Root.AddMesh(torus, null, Colors.BurlyWood);
             api.Scene = scene;
         }
     }
@@ -40,9 +41,9 @@ namespace Ara3D.Viewer.Scripts
         public void Execute(object arg)
         {
             var api = (IApi)arg;
-            var torus = Surfaces.Cylinder(20);
+            var torus = Shapes.Cylinder(20);
             var scene = new Scene();
-            scene.Root.AddMesh(torus.TriangleMesh, null, Colors.BlanchedAlmond);
+            scene.Root.AddMesh(torus, null, Colors.BlanchedAlmond);
             api.Scene = scene;
         }
     }
