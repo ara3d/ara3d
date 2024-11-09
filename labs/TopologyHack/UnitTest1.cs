@@ -2,11 +2,6 @@ using Plato.DoublePrecision;
 
 namespace TopologyHack
 {
-    public void TestJsonLoader()
-    {
-        var json = 
-    }
-
     /*
     public class Site
     {
