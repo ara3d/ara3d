@@ -22,7 +22,6 @@
   <ItemGroup>
     <ProjectReference Include="..\..\bowerbird\Ara3D.Bowerbird.WinForms.Net48\Ara3D.Bowerbird.WinForms.Net80.csproj" />
     <ProjectReference Include="..\..\IFC-toolkit\Ara3D.Speckle.Data\Ara3D.Speckle.Data.csproj" />
-    <ProjectReference Include="..\..\IFC-toolkit\Ara3D.Speckle.IfcLoader\Ara3D.Speckle.IfcLoader.csproj" />
     <ProjectReference Include="..\..\Plato.Geometry\Plato.Geometry.CSharp\Plato.Geometry.csproj" />
     <ProjectReference Include="..\..\Plato.Geometry\Plato.Geometry.Ifc\Plato.Geometry.Ifc.csproj" />
     <ProjectReference Include="..\..\Plato.Geometry\Plato.Geometry.Speckle\Plato.Geometry.Speckle.csproj" />
