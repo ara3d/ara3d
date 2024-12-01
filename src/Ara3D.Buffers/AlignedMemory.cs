@@ -14,6 +14,7 @@ namespace Ara3D.Buffers
         public readonly int NumBytes;
         public readonly int NumVectors;
         public const int Width = 32;
+        public byte* End => BytePtr + NumBytes;
 
         public AlignedMemory(int numBytes)
         {
