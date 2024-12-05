@@ -34,3 +34,6 @@
 [submodule "IFC-toolkit"]
 	path = IFC-toolkit
 	url = https://github.com/ara3d/IFC-toolkit
+[submodule "revit-utils"]
+	path = revit-utils
+	url = https://github.com/ara3d/revit-utils
