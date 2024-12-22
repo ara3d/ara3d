@@ -3,8 +3,8 @@ using System.Linq;
 using Ara3D.Serialization.G3D;
 using Assimp;
 using Ara3D.Collections;
-using Ara3D.Mathematics;
-using Matrix4x4 = Ara3D.Mathematics.Matrix4x4;
+using System.Numerics;
+using Matrix4x4 = System.Numerics.Matrix4x4;
 
 namespace Ara3D.Bindings.Assimp
 {
@@ -77,12 +77,6 @@ namespace Ara3D.Bindings.Assimp
 
             bldr.AddVertices(mesh.Vertices.ToIArray().Select(ToMath3D));
             bldr.AddIndices(indices);
-
-            if (mesh.HasTangentBasis)
-                bldr.Add(mesh.BiTangents.ToIArray().Select(ToMath3D).ToVertexBitangentAttribute());
-
-            if (mesh.HasTangentBasis)
-                bldr.Add(mesh.Tangents.ToIArray().Select(x => ToMath3D(x).ToVector4()).ToVertexTangentAttribute());
 
             if (mesh.HasNormals)
                 bldr.Add(mesh.Normals.ToIArray().Select(ToMath3D).ToVertexNormalAttribute());

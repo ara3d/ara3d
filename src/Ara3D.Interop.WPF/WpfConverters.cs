@@ -71,17 +71,6 @@ public static class WpfConverters
     public static Int32Collection ToIntCollection(this IArray<int> xs)
         => new Int32Collection(xs.ToEnumerable());
 
-    public static MeshGeometry3D ToMeshGeometry3D(this G3dMesh mesh)
-    {
-        var r = new MeshGeometry3D();
-        if (mesh.VertexNormals?.Count > 0)
-            r.Normals = ToVectorCollection(mesh.VertexNormals);
-        r.Positions = mesh.Vertices.ToPointCollection();
-        if (mesh.VertexUvs?.Count > 0)
-            r.TextureCoordinates = mesh.VertexUvs.ToPointCollection();
-        r.TriangleIndices = ToIntCollection(mesh.Indices);
-        return r;
-    }
 
     public static MeshGeometry3D ToMeshGeometry3D(this IQuadMesh quadMesh)
         => quadMesh.Triangulate().ToMeshGeometry3D();

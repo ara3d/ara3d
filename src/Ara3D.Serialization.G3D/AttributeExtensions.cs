@@ -2,8 +2,8 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Numerics;
 using Ara3D.Collections;
-using Ara3D.Mathematics;
 
 namespace Ara3D.Serialization.G3D
 {
@@ -47,17 +47,6 @@ namespace Ara3D.Serialization.G3D
                 if (desc.DataArity == 1)
                     return attr.AsType<float>().Data.Select(vc => new Vector4(vc, vc, vc, 1f));
             }
-            if (desc.DataType == DataType.dt_int8)
-            {
-                if (desc.DataArity == 4)
-                    return attr.AsType<Byte4>().Data.Select(b => new Vector4(b.X / 255f, b.Y / 255f, b.Z / 255f, b.W / 255f));
-                if (desc.DataArity == 3)
-                    return attr.AsType<Byte3>().Data.Select(b => new Vector4(b.X / 255f, b.Y / 255f, b.Z / 255f, 1f));
-                if (desc.DataArity == 2)
-                    return attr.AsType<Byte2>().Data.Select(b => new Vector4(b.X / 255f, b.Y / 255f, 0f, 1f));
-                if (desc.DataArity == 1)
-                    return attr.AsType<byte>().Data.Select(b => new Vector4(b / 255f, b / 255f, b / 255f, 1f));
-            }
             Debug.WriteLine($"Failed to recognize color format {attr.Descriptor}");
             return null;
         }
@@ -70,16 +59,6 @@ namespace Ara3D.Serialization.G3D
                 case DataType.dt_uint8:
                     if (desc.DataArity == 1)
                         return default(byte).Repeat(count).ToAttribute(desc);
-                    break;
-                case DataType.dt_int8:
-                    if (desc.DataArity == 1)
-                        return default(byte).Repeat(count).ToAttribute(desc);
-                    if (desc.DataArity == 2)
-                        return default(Byte2).Repeat(count).ToAttribute(desc);
-                    if (desc.DataArity == 3)
-                        return default(Byte3).Repeat(count).ToAttribute(desc);
-                    if (desc.DataArity == 4)
-                        return default(Byte4).Repeat(count).ToAttribute(desc);
                     break;
                 case DataType.dt_uint16:
                     if (desc.DataArity == 1)
@@ -96,12 +75,6 @@ namespace Ara3D.Serialization.G3D
                 case DataType.dt_int32:
                     if (desc.DataArity == 1)
                         return default(int).Repeat(count).ToAttribute(desc);
-                    if (desc.DataArity == 2)
-                        return default(Int2).Repeat(count).ToAttribute(desc);
-                    if (desc.DataArity == 3)
-                        return default(Int3).Repeat(count).ToAttribute(desc);
-                    if (desc.DataArity == 4)
-                        return default(Int4).Repeat(count).ToAttribute(desc);
                     break;
                 case DataType.dt_uint64:
                     if (desc.DataArity == 1)

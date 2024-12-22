@@ -21,7 +21,8 @@ namespace FBXtoG3D
         {
             var scene = DotNetFbxScene.Load(inputFile);
             var builder = FbxSceneToG3DBuilder(scene);
-            builder.ToG3D().Write(outputFile);
+            throw new NotImplementedException();
+            // builder.ToG3D().Write(outputFile);
         }
 
         public static G3DBuilder FbxSceneToG3DBuilder(DotNetFbxScene scene)

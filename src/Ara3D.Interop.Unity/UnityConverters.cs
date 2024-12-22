@@ -257,6 +257,14 @@ namespace Ara3D.UnityBridge
                 new UVector4(matrix.M41, matrix.M42, matrix.M43, matrix.M44)
             );
 
+        public static UnityEngine.Matrix4x4 ToUnity(this System.Numerics.Matrix4x4 matrix)
+            => new UnityEngine.Matrix4x4(
+                new UVector4(matrix.M11, matrix.M12, matrix.M13, matrix.M14),
+                new UVector4(matrix.M21, matrix.M22, matrix.M23, matrix.M24),
+                new UVector4(matrix.M31, matrix.M32, matrix.M33, matrix.M34),
+                new UVector4(matrix.M41, matrix.M42, matrix.M43, matrix.M44)
+            );
+
         private const float ftm = 0.3408f;
         public static UnityEngine.Matrix4x4 ConversionMatrix = new UnityEngine.Matrix4x4(
             new UVector4(-ftm, 0, 0, 0),
@@ -292,11 +300,17 @@ namespace Ara3D.UnityBridge
         public static IArray<Quaternion> ToAra3D(this UQuaternion[] xs)
             => xs.ToIArray().Select(x => x.ToAra3D());
 
+        public static UVector3 ToUnity(this System.Numerics.Vector3 v)
+            => new UVector3(v.X, v.Y, v.Z);
+
         public static UVector4 ToUnity(this Vector4 v)
             => new UVector4(v.X, v.Y, v.Z, v.W);
 
         public static Color ToUnityColor(this Vector4 v)
             => v.ToUnity();
+
+        public static Color ToUnityColor(this System.Numerics.Vector4 v)
+            => new Color(v.X, v.Y, v.Z, v.W);
 
         public static UnityTriMesh ToUnity(this G3dMesh mesh)
         {

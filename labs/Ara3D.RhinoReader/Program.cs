@@ -60,8 +60,8 @@ namespace Ara3D.RhinoReader
                 }
             }
 
-            var v = mesh.Vertices[0];
-            bldr.AddVertices(mesh.Vertices.ToIArray().Select(ToMath3D));
+            bldr.AddVertices(mesh.Vertices.ToIArray()
+                .Select(v => new System.Numerics.Vector3(v.X, v.Y, v.Z)));
             bldr.AddIndices(indices.ToIArray());
 
             /*
@@ -150,7 +150,7 @@ namespace Ara3D.RhinoReader
             var indices = new List<int>();
             foreach (var m in meshes)
             {
-                vertices.AddRange(m.Vertices.ToEnumerable());
+                vertices.AddRange(m.Vertices.Select(v => new Vector3(v.X, v.Y,v.Z)).ToEnumerable());
                 foreach (var i in m.Indices.ToEnumerable())
                     indices.Add(i + offset);
                 offset += m.Vertices.Count;
@@ -158,7 +158,7 @@ namespace Ara3D.RhinoReader
 
             var bldr = new G3DBuilder();
             bldr.AddIndices(indices.ToIArray());
-            bldr.AddVertices(vertices.ToIArray());
+            bldr.AddVertices(vertices.Select(v => new System.Numerics.Vector3(v.X, v.Y, v.Z)).ToIArray());
             return bldr.ToG3D();
         }
     }
@@ -235,7 +235,8 @@ namespace Ara3D.RhinoReader
 
             var merged = GeometryTools.MergeMeshes(meshes);
             var outputFile = Path.Combine(outputFolder, $"Merged.obj");
-            merged.WriteObj(outputFile);
+            
+            //merged.WriteObj(outputFile);
         }
 
     }

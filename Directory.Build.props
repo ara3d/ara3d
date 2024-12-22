@@ -8,7 +8,9 @@
       <Exec IgnoreStandardErrorWarningFormat="true" IgnoreExitCode="true" Command="$(SolutionDir)devops\nuget.exe delete $(PackageId) $(PackageVersion) -Source &quot;$(SolutionDir)nuget-feed&quot; -NonInteractive"/>  
       
       <!-- Add this package to the nuget-feed for consumption by other packages -->
+    <!--
       <Exec Command="$(SolutionDir)devops\nuget.exe add &quot;$(TargetDir)..\$(PackageId).$(PackageVersion).nupkg&quot; -Source &quot;$(SolutionDir)nuget-feed&quot;"/>  
+    -->
   </Target>
   <PropertyGroup>
     <Version>1.4.5</Version>

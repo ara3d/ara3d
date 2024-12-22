@@ -491,8 +491,15 @@ namespace Ara3D.Serialization.BFAST
             }
         }
 
-        public static void WriteBFastToFile(string filePath, IEnumerable<string> bufferNames, IEnumerable<long> bufferSizes, BFastWriterFn onBuffer)
-            => File.OpenWrite(filePath).WriteBFast(bufferNames, bufferSizes, onBuffer);
+        public static void WriteBFastToFile(string filePath, IEnumerable<string> bufferNames,
+            IEnumerable<long> bufferSizes, BFastWriterFn onBuffer)
+        {
+            using (var fp = File.OpenWrite(filePath))
+            {
+                fp.WriteBFast(bufferNames, bufferSizes, onBuffer);
+                fp.Flush();
+            }
+        }
 
         public static unsafe byte[] WriteBFastToBytes<T>(this (string Name, T[] Data)[] buffers) where T : unmanaged
             => WriteBFastToBytes(

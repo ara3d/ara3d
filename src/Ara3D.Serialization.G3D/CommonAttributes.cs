@@ -1,5 +1,5 @@
-﻿using Ara3D.Collections;
-using Ara3D.Mathematics;
+﻿using System.Numerics;
+using Ara3D.Collections;
 
 namespace Ara3D.Serialization.G3D
 {
@@ -83,12 +83,6 @@ namespace Ara3D.Serialization.G3D
         public static GeometryAttribute<Vector4> ToVertexColorAttribute(this Vector4[] xs) => xs.ToIArray().ToVertexColorAttribute();
         public static GeometryAttribute<Vector4> GetAttributeVertexColor(this IGeometryAttributes self) => self.GetAttribute<Vector4>(CommonAttributes.VertexColor);
         public static IArray<Vector4> GetAttributeDataVertexColor(this IGeometryAttributes self) => self.GetAttributeVertexColor()?.Data;
-        public static GeometryAttribute<Byte4> ToVertexColor8BitAttribute(this IArray<Byte4> xs, int index) => xs.ToAttribute(CommonAttributes.VertexColor8Bit, index);
-        public static GeometryAttribute<Byte4> ToVertexColor8BitAttribute(this IArray<Byte4> xs) => xs.ToAttribute(CommonAttributes.VertexColor8Bit);
-        public static GeometryAttribute<Byte4> ToVertexColor8BitAttribute(this Byte4[] xs, int index) => xs.ToIArray().ToVertexColor8BitAttribute(index);
-        public static GeometryAttribute<Byte4> ToVertexColor8BitAttribute(this Byte4[] xs) => xs.ToIArray().ToVertexColor8BitAttribute();
-        public static GeometryAttribute<Byte4> GetAttributeVertexColor8Bit(this IGeometryAttributes self) => self.GetAttribute<Byte4>(CommonAttributes.VertexColor8Bit);
-        public static IArray<Byte4> GetAttributeDataVertexColor8Bit(this IGeometryAttributes self) => self.GetAttributeVertexColor8Bit()?.Data;
         public static GeometryAttribute<Vector3> ToVertexBitangentAttribute(this IArray<Vector3> xs, int index) => xs.ToAttribute(CommonAttributes.VertexBitangent, index);
         public static GeometryAttribute<Vector3> ToVertexBitangentAttribute(this IArray<Vector3> xs) => xs.ToAttribute(CommonAttributes.VertexBitangent);
         public static GeometryAttribute<Vector3> ToVertexBitangentAttribute(this Vector3[] xs, int index) => xs.ToIArray().ToVertexBitangentAttribute(index);

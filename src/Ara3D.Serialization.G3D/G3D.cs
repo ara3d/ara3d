@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Numerics;
 using Ara3D.Serialization.BFAST;
 using Ara3D.Collections;
-using Ara3D.Mathematics;
 
 namespace Ara3D.Serialization.G3D
 {
@@ -181,23 +181,10 @@ namespace Ara3D.Serialization.G3D
                             Vertices = Vertices ?? attr.AsType<Vector3>().Data; // TODO: is this used?
                         break;
 
-                    case Semantic.Tangent:
-                        if (attr.IsTypeAndAssociation<Vector3>(Association.assoc_vertex))
-                            VertexTangents = VertexTangents ?? attr.AsType<Vector3>().Data.Select(v => v.ToVector4());
-                        if (attr.IsTypeAndAssociation<Vector4>(Association.assoc_vertex))
-                            VertexTangents = VertexTangents ?? attr.AsType<Vector4>().Data;
-                        break;
-
-                    case Semantic.Uv:
-                        if (attr.IsTypeAndAssociation<Vector3>(Association.assoc_vertex))
-                            AllVertexUvs.Add(attr.AsType<Vector3>().Data.Select(uv => uv.ToVector2()));
-                        if (attr.IsTypeAndAssociation<Vector2>(Association.assoc_vertex))
-                            AllVertexUvs.Add(attr.AsType<Vector2>().Data);
-                        break;
-
                     case Semantic.Color:
                         if (desc.Association == Association.assoc_vertex)
-                            AllVertexColors.Add(attr.AttributeToColors());
+                            throw new Exception("Per-vertex color not supported");
+
                         if (desc.Association == Association.assoc_material)
                             MaterialColors = MaterialColors ?? attr.AttributeToColors().ToArray();
                         break;

@@ -1,4 +1,4 @@
-﻿using Ara3D.Mathematics;
+﻿using System.Numerics;
 
 namespace Ara3D.Serialization.G3D
 {

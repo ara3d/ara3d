@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Numerics;
 using Ara3D.Collections;
-using Ara3D.Mathematics;
 
 namespace Ara3D.Serialization.G3D
 {
@@ -274,15 +274,7 @@ namespace Ara3D.Serialization.G3D
                     a)
             .ToGeometryAttributes();
 
-        /// <summary>
-        /// Applies a transformation matrix
-        /// </summary>
-        public static IGeometryAttributes Transform(this IGeometryAttributes g, Matrix4x4 matrix)
-            => g.Deform(v => v.Transform(matrix), v => v.TransformNormal(matrix));
-
-        public static IGeometryAttributes SetPosition(this IGeometryAttributes g, IArray<Vector3> points)
-            => g.SetAttribute(points.ToPositionAttribute());
-
+     
         public static IGeometryAttributes SetAttribute(this IGeometryAttributes self, GeometryAttribute attr)
             => self.Attributes.Where(a => !a.Descriptor.Equals(attr.Descriptor)).Append(attr).ToGeometryAttributes();
 
@@ -480,24 +472,6 @@ namespace Ara3D.Serialization.G3D
 
         public static bool IsNormalAttribute(this GeometryAttribute attr)
             => attr.IsType<Vector3>() && attr.Descriptor.Semantic == "normal";
-
-        public static IEnumerable<GeometryAttribute> FlipNormalAttributes(this IEnumerable<GeometryAttribute> self)
-            => self.Select(attr => attr.IsNormalAttribute()
-                ? attr.AsType<Vector3>().Data.Select(v => v.Inverse()).ToAttribute(attr.Descriptor)
-                : attr);
-
-        public static IGeometryAttributes FlipWindingOrder(this IGeometryAttributes g)
-            => g.VertexAttributes()
-                .Concat(g.NoneAttributes())
-                .Concat(g.FaceAttributes())
-                .Concat(g.EdgeAttributes().Select(attr => attr.Remap(g.IndexFlippedRemapping())))
-                .Concat(g.CornerAttributes().Select(attr => attr.Remap(g.IndexFlippedRemapping())))
-                .Concat(g.WholeGeometryAttributes())
-                .FlipNormalAttributes()
-                .ToGeometryAttributes();
-
-        public static IGeometryAttributes DoubleSided(this IGeometryAttributes g)
-            => g.Merge(g.FlipWindingOrder());
 
         public static IArray<int> DefaultMaterials(this IGeometryAttributes self)
             => (-1).Repeat(self.NumFaces);

@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Numerics;
 using Ara3D.Serialization.BFAST;
 using Ara3D.Collections;
-using Ara3D.Mathematics;
 
 namespace Ara3D.Serialization.G3D
 {
@@ -105,12 +105,6 @@ namespace Ara3D.Serialization.G3D
                 (arity, dataType) = (1, DataType.dt_uint8);
             else if (typeof(T) == typeof(sbyte))
                 (arity, dataType) = (1, DataType.dt_int8);
-            else if (typeof(T) == typeof(Byte2))
-                (arity, dataType) = (2, DataType.dt_int8);
-            else if (typeof(T) == typeof(Byte3))
-                (arity, dataType) = (3, DataType.dt_int8);
-            else if (typeof(T) == typeof(Byte4))
-                (arity, dataType) = (4, DataType.dt_int8);
             else if (typeof(T) == typeof(ushort))
                 (arity, dataType) = (1, DataType.dt_uint16);
             else if (typeof(T) == typeof(short))
@@ -119,12 +113,6 @@ namespace Ara3D.Serialization.G3D
                 (arity, dataType) = (1, DataType.dt_uint32);
             else if (typeof(T) == typeof(int))
                 (arity, dataType) = (1, DataType.dt_int32);
-            else if (typeof(T) == typeof(Int2))
-                (arity, dataType) = (2, DataType.dt_int32);
-            else if (typeof(T) == typeof(Int3))
-                (arity, dataType) = (3, DataType.dt_int32);
-            else if (typeof(T) == typeof(Int4))
-                (arity, dataType) = (4, DataType.dt_int32);
             else if (typeof(T) == typeof(ulong))
                 (arity, dataType) = (1, DataType.dt_uint64);
             else if (typeof(T) == typeof(long))

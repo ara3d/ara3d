@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
+using System.Numerics;
 using Ara3D.Collections;
-using Ara3D.Mathematics;
 
 namespace Ara3D.Serialization.G3D
 {
