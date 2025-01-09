@@ -37,3 +37,6 @@
 [submodule "revit-utils"]
 	path = revit-utils
 	url = https://github.com/ara3d/revit-utils
+[submodule "f8"]
+	path = f8
+	url = https://github.com/ara3d/f8
