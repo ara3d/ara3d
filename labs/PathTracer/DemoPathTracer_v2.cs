@@ -1,10 +1,52 @@
-﻿using Ara3D.Graphics;
-using Ara3D.Mathematics;
+﻿using System.Runtime.CompilerServices;
+using static System.Runtime.CompilerServices.MethodImplOptions;
+using System.Numerics;
 
 namespace PathTracer
 {
-    public class DemoPathTracer : IProgressiveRenderer
+    public static class LocalExtensions2
     {
+        [MethodImpl(AggressiveInlining)] public static Vector3 SetX(this Vector3 v, float n) => new(n, v.Y, v.Z);
+        [MethodImpl(AggressiveInlining)] public static Vector3 SetY(this Vector3 v, float n) => new(v.X, n, v.Y);
+        [MethodImpl(AggressiveInlining)] public static Vector3 SetZ(this Vector3 v, float n) => new(v.X, v.Y, n);
+        [MethodImpl(AggressiveInlining)] public static Vector2 XY(this Vector3 v) => new(v.X, v.Y);
+        [MethodImpl(AggressiveInlining)] public static Vector3 Normalize(this Vector3 v) => Vector3.Normalize(v);
+        [MethodImpl(AggressiveInlining)] public static Vector3 Cross(this Vector3 v, Vector3 o) => Vector3.Cross(v, o);
+        [MethodImpl(AggressiveInlining)] public static float Dot(this Vector3 v, Vector3 o) => Vector3.Dot(v, o);
+        [MethodImpl(AggressiveInlining)] public static float Dot(this Vector2 v, Vector2 o) => Vector2.Dot(v, o);
+        [MethodImpl(AggressiveInlining)] public static float Abs(this float n) => MathF.Abs(n);
+        [MethodImpl(AggressiveInlining)] public static float Pow(this float n, float e) => MathF.Pow(n, e);
+        [MethodImpl(AggressiveInlining)] public static float Sqrt(this float n) => MathF.Sqrt(n);
+        [MethodImpl(AggressiveInlining)] public static float Clamp(this float n, float min, float max) => Math.Clamp(n, min, max);
+    }
+
+    public class DemoPathTracer_v2
+    {
+        public readonly struct AABox
+        {
+            public readonly Vector3 Min;
+            public readonly Vector3 Max;
+
+            [MethodImpl(AggressiveInlining)]
+            public AABox(Vector3 min, Vector3 max)
+            {
+                Min = min;
+                Max = max;
+            }
+        }
+
+        public readonly struct Line2D
+        {
+            public readonly Vector2 A;
+            public readonly Vector2 B;
+            [MethodImpl(AggressiveInlining)]
+            public Line2D(Vector2 a, Vector2 b)
+            {
+                A = a;
+                B = b;
+            }
+        }
+
         // https://fabiensanglard.net/postcard_pathtracer/index.html
         // 2 minutes, 58 seconds in C++.
         // divisor = 1, samplesCount = 16;
@@ -14,16 +56,16 @@ namespace PathTracer
         public int Iteration;
         public int SamplesCount => 1 << Iteration;
 
-        public DemoPathTracer()
+        public DemoPathTracer_v2()
             : this(0)
         { }
 
-        public DemoPathTracer(int iteration)
+        public DemoPathTracer_v2(int iteration)
             => Iteration = Math.Clamp(iteration, 0, MaxIterations); 
 
         public int MaxIterations => 16;
-        public IBitmap GetIteration(int iteration)
-            => new DemoPathTracer(iteration);
+        public DemoPathTracer_v2 GetIteration(int iteration)
+            => new DemoPathTracer_v2(iteration);
 
         public const int ConstWidth = 960 / Divisor;
         public const int ConstHeight = 540 / Divisor;
@@ -39,16 +81,16 @@ namespace PathTracer
         public const float PlankDistance = 8;
         public const float MaxDistance = 100; // 50 makes an interesting effect. Can't see the walls.
 
-        public static readonly Vector3 SunColor = (50, 80, 100);
-        public static readonly Vector3 Position = (-22, 5, 25);
+        public static readonly Vector3 SunColor = new(50, 80, 100);
+        public static readonly Vector3 Position = new(-22, 5, 25);
         public static readonly Vector3 Goal = (new Vector3(-3, 4, 0) + Position * -1).Normalize();
         public static readonly Vector3 Left = new Vector3(Goal.Z, 0, -Goal.X).Normalize() * (1.0f / ConstWidth);
         public static readonly Vector3 Up = Goal.Cross(Left);
-        public static readonly Vector3 WallHitColor = (500, 400, 100);
+        public static readonly Vector3 WallHitColor = new(500, 400, 100);
 
-        public static readonly AABox LowerRoomBounds = (MakeVector(-30, -0.5f, -30), MakeVector(30, 18, 30));
-        public static readonly AABox UpperRoomBounds = (MakeVector(-25, 17, -25), MakeVector(25, 20, 25));
-        public static readonly AABox CeilingBounds = (MakeVector(1.5f, 18.5f, -25), MakeVector(6.5f, 20, 25));
+        public static readonly AABox LowerRoomBounds = new(MakeVector(-30, -0.5f, -30), MakeVector(30, 18, 30));
+        public static readonly AABox UpperRoomBounds = new(MakeVector(-25, 17, -25), MakeVector(25, 20, 25));
+        public static readonly AABox CeilingBounds = new(MakeVector(1.5f, 18.5f, -25), MakeVector(6.5f, 20, 25));
 
         public static readonly Vector3 LightDirection = MakeVector(.6f, .6f, 1f).Normalize();
 
@@ -80,25 +122,25 @@ namespace PathTracer
         public static Line2D[] Lines = 
         {
             // P without curve
-            ((-26, 0), (-26, 16)),
-            ((-26, 8), (-22, 8)),
-            ((-26, 16), (-22, 16)),
+            new(new(-26, 0), new(-26, 16)),
+            new(new(-26, 8), new(-22, 8)),
+            new(new(-26, 16), new(-22, 16)),
             // I 
-            ((-14, 0), (-10, 0)),
-            ((-12, 0), (-12, 16)),
-            ((-14, 16), (-10, 16)),
+            new(new(-14, 0), new(-10, 0)),
+            new(new(-12, 0), new(-12, 16)),
+            new(new(-14, 16), new(-10, 16)),
             // X 
-            ((-6, 0), (2, 16)),
-            ((-6, 16), (2, 0)),
+             new(new(-6, 0), new(2, 16)),
+            new(new(-6, 16), new(2, 0)),
             // A 
-            ((6, 0), (10, 16)),
-            ((10, 16), (14, 0)),
-            ((8, 8), (12, 8)),
+            new(new(6, 0), new(10, 16)),
+            new(new(10, 16), new(14, 0)),
+            new(new(8, 8), new(12, 8)),
             // R without curve
-            ((18, 0), (18, 16)),
-            ((18, 8), (22, 8)),
-            ((18, 16), (22, 16)),
-            ((20, 8), (26, 0)),
+            new(new(18, 0), new(18, 16)),
+            new(new(18, 8), new(22, 8)),
+            new(new(18, 16), new(22, 16)),
+            new(new(20, 8), new(26, 0)),
         };
 
         public enum HitType
@@ -122,7 +164,7 @@ namespace PathTracer
             {
                 var a = line.A * 0.5f;
                 var b = line.B * 0.5f - a;
-                var o = f - (a + b * Min(-Min((a - f).Dot(b) / b.Dot(b), 0), 1));
+                var o = f.XY() - (a + b * Min(-Min((a - f.XY()).Dot(b) / b.Dot(b), 0), 1));
                 distance2 = Min(distance2, o.Dot(o));
             }
 
@@ -231,8 +273,8 @@ namespace PathTracer
                     var g = normal.Z < 0 ? -1f : 1f;
                     var u = -1 / (g + normal.Z);
                     var v = normal.X * normal.Y * u;
-                    direction = MakeVector(v, g + normal.Y.Sqr() * u, -normal.Y) * (p.Cos() * s) +
-                                MakeVector(1 + g * normal.X * normal.X * u, g * v, -g * normal.X) * (p.Sin() * s) +
+                    direction = MakeVector(v, g + normal.Y.Sqr() * u, -normal.Y) * (MathF.Cos(p) * s) +
+                                MakeVector(1 + g * normal.X * normal.X * u, g * v, -g * normal.X) * (MathF.Sin(p) * s) +
                                 normal * c.Sqrt();
                     origin = sampledPosition + direction * .1f;
                     attenuation *= AttenuationFactor;
@@ -260,9 +302,9 @@ namespace PathTracer
         /// https://en.wikipedia.org/wiki/Tone_mapping
         /// </summary>
         public static Vector3 ReinhardToneMapping(Vector3 v)
-            => v / (v + 1);
+            => v / (v + new Vector3(1));
 
-        public ColorRGBA Eval(int x, int y)
+        public Vector3 Eval(int x, int y)
         {
             var color = Vector3.Zero;
         
@@ -277,8 +319,8 @@ namespace PathTracer
                         (y - Height / 2 + RandomVal())).Normalize());
             }
 
-            color = color * (1.0f / SamplesCount) + 14.0f / 241;
-            return ColorRGBA.FromVector(ReinhardToneMapping(color));
+            color = color * (1.0f / SamplesCount) + new Vector3(14.0f / 241);
+            return ReinhardToneMapping(color);
         }
     }
 }

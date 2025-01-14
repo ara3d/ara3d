@@ -1,7 +1,7 @@
 using System.Windows.Forms;
 using Ara3D.Bowerbird.Interfaces;
 using Ara3D.Viewer.Api;
-using Plato.DoublePrecision;
+using Plato.SinglePrecision;
 using Plato.Geometry;
 using Plato.Geometry.Graphics;
 using Plato.Geometry.Scenes;
