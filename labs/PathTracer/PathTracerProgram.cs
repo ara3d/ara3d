@@ -3,6 +3,9 @@ using Ara3D.Utils;
 using Ara3D.Graphics;
 using Ara3D.Buffers;
 using Ara3D.Mathematics;
+using Vim.Math3d;
+using ColorRGBA = Ara3D.Mathematics.ColorRGBA;
+using Vector3 = Ara3D.Mathematics.Vector3;
 
 // https://gist.github.com/mattwarren/d17a0c356bd6fdb9f596bee6b9a5e63c
 // https://fabiensanglard.net/postcard_pathtracer/index.html
@@ -38,62 +41,86 @@ namespace PathTracer
             Debug.Assert(dibHeader.biSizeImage == n);
             Debug.Assert(bmpHeader.Size == 54 + n);
             writer.Close();
-        }
-
-        public static Bitmap EvaluateInParallel(this DemoPathTracer_v1 source)
-        {
-            var target = new Bitmap(source.Width, source.Height);
-            Parallel.For(0, source.Width * source.Height, i =>
-            {
-                var x = i % source.Width;
-                var y = i / source.Width;
-                var rgb = source.Eval(x, y);
-                target.SetPixel(x, (source.Height - y - 1), rgb);
-            });
-
-            return target;
-        }
-
-
-        public static Bitmap EvaluateInParallel(this DemoPathTracer_v2 source)
-        {
+        } 
+         public static Bitmap EvaluateInParallel(this IPathTracer source)
+         {
             var target = new Bitmap(source.Width, source.Height);
             Parallel.For(0, source.Width * source.Height, i =>
             {
                 var x = i % source.Width;
                 var y = i / source.Width;
                 var v = source.Eval(x, y);
-                var rgb = ColorRGBA.FromVector(new Vector3(v.X, v.Y, v.Z));
+                var rgb = ColorRGBA.FromVector(new Vector3(v.Item1, v.Item2, v.Item3));
                 target.SetPixel(x, (source.Height - y - 1), rgb);
             });
-
             return target;
-        }
-        public static Bitmap EvaluateInParallel(this DemoPathTracer_v3 source)
+         }
+         
+         public static Bitmap EvaluateInSerial(this IPathTracer source)
+         {
+             var target = new Bitmap(source.Width, source.Height);
+             for (var i = 0; i < source.Width * source.Height; i++)
+             {
+                 var x = i % source.Width;
+                 var y = i / source.Width;
+                 var v = source.Eval(x, y);
+                 var rgb = ColorRGBA.FromVector(new Vector3(v.Item1, v.Item2, v.Item3));
+                 target.SetPixel(x, (source.Height - y - 1), rgb);
+             }
+             return target;
+         }
+
+
+        public static void CreateBitmap(IPathTracer pathTracer, bool show = false, int iterations = 3)
         {
-            var target = new Bitmap(source.Width, source.Height);
-            Parallel.For(0, source.Width * source.Height, i =>
-            {
-                var x = i % source.Width;
-                var y = i / source.Width;
-                var v = source.Eval(x, y);
-                var rgb = ColorRGBA.FromVector(new Vector3(v.X, v.Y, v.Z));
-                target.SetPixel(x, (source.Height - y - 1), rgb);
-            });
+            var t = pathTracer.GetType().Name;
+            const int divisor = 2;
+            pathTracer.Width = 960 / divisor;
+            pathTracer.Height = 540 / divisor;
+            pathTracer.BounceCount = 4;
+            pathTracer.SamplesCount = 1 << iterations;
 
-            return target;
+            var sw = Stopwatch.StartNew();
+            
+            //var bmp = pathTracer.EvaluateInParallel();
+            var bmp = pathTracer.EvaluateInSerial();
+
+            sw.OutputTimeElapsed($"Evaluated {t} with {pathTracer.SamplesCount}");
+
+            if (show)
+            {
+                var file = new FilePath(Path.GetTempFileName());
+                file = file.ChangeExtension("bmp");
+                bmp.Save(file);
+                file.ShellExecute();
+            }
         }
 
         public static void Main(string[] args)
         {
-            var sw = Stopwatch.StartNew();
-            var img = new DemoPathTracer_v3(6);
-            var bmp = img.EvaluateInParallel();
-            sw.OutputTimeElapsed("Creating bitmap");
-            var file = new FilePath(Path.GetTempFileName());
-            file = file.ChangeExtension("bmp");
-            bmp.Save(file); 
-            file.OpenFile();
+
+            /*
+            for (var i = 3; i < 7; i++)
+            {
+                //CreateBitmap(new PathTracerVim());
+                CreateBitmap(new PathTracerSystem(), true, i);
+                //CreateBitmap(new PathTracerPlato()); 
+                CreateBitmap(new PathTracerPlato_v2(), true, i);
+            }*/
+            //CreateBitmap(new PathTracerPlato_v2(), true, 4);
+            //CreateBitmap(new PathTracerPlatoSIMD(), true, 2);
+            CreateBitmap(new WavefrontPathTracer(), true, 3);
+
+            //CreateBitmap(new PathTracerPlato(), true);
+            //CreateBitmap(new PathTracerPlato_v2(), true);
+            //CreateBitmap(new PathTracerSystem(), true);
+
+            /*
+            CreateBitmap(new PathTracerVim());
+            CreateBitmap(new PathTracerSystem());
+            CreateBitmap(new PathTracerPlato()); ;
+            CreateBitmap(new PathTracerPlato_v2());
+            */
         }
     }
 }

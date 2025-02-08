@@ -26,7 +26,7 @@ namespace Ara3D.Services
     public class SingletonModelBackedService<TModel> : BaseService, ISingletonModelBackedService<TModel>
         where TModel : new()
     {
-        public SingletonModelBackedService(IApplication app)
+        public SingletonModelBackedService(IServiceManager app)
             : base(app)
         {
             Repository = new SingletonRepository<TModel>();
@@ -58,7 +58,7 @@ namespace Ara3D.Services
     public class AggregateModelBackedService<TModel> : BaseService, IAggregateModelBackedService<TModel>
         where TModel : new()
     {
-        public AggregateModelBackedService(IApplication app)
+        public AggregateModelBackedService(IServiceManager app)
             : base(app)
         {
             Repository = new AggregateRepository<TModel>();
@@ -99,13 +99,13 @@ namespace Ara3D.Services
         public IReadOnlyList<INamedCommand> Commands 
             => CommandDictionary.Values.ToList();
 
-        protected BaseService(IApplication app)
+        protected BaseService(IServiceManager app)
         {
             App = app;
             app.AddService(this);
         }
 
-        public IApplication App { get; }
+        public IServiceManager App { get; }
 
         public virtual void Dispose()
         {

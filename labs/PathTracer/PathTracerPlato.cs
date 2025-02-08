@@ -1,26 +1,22 @@
-﻿using System.Runtime.CompilerServices;
+﻿using System.Diagnostics;
+using System.Runtime.CompilerServices;
+using Plato;
 using static System.Runtime.CompilerServices.MethodImplOptions;
-using System.Numerics;
 
 namespace PathTracer
 {
-    public static class LocalExtensions2
+
+    public static class LocalExtensions
     {
+        [MethodImpl(AggressiveInlining)] public static float Sqr(this float n) => n * n;
+        [MethodImpl(AggressiveInlining)] public static Number Sqr(this Number n) => n * n;
         [MethodImpl(AggressiveInlining)] public static Vector3 SetX(this Vector3 v, float n) => new(n, v.Y, v.Z);
-        [MethodImpl(AggressiveInlining)] public static Vector3 SetY(this Vector3 v, float n) => new(v.X, n, v.Y);
+        [MethodImpl(AggressiveInlining)] public static Vector3 SetY(this Vector3 v, float n) => new(v.X, n, v.Z);
         [MethodImpl(AggressiveInlining)] public static Vector3 SetZ(this Vector3 v, float n) => new(v.X, v.Y, n);
         [MethodImpl(AggressiveInlining)] public static Vector2 XY(this Vector3 v) => new(v.X, v.Y);
-        [MethodImpl(AggressiveInlining)] public static Vector3 Normalize(this Vector3 v) => Vector3.Normalize(v);
-        [MethodImpl(AggressiveInlining)] public static Vector3 Cross(this Vector3 v, Vector3 o) => Vector3.Cross(v, o);
-        [MethodImpl(AggressiveInlining)] public static float Dot(this Vector3 v, Vector3 o) => Vector3.Dot(v, o);
-        [MethodImpl(AggressiveInlining)] public static float Dot(this Vector2 v, Vector2 o) => Vector2.Dot(v, o);
-        [MethodImpl(AggressiveInlining)] public static float Abs(this float n) => MathF.Abs(n);
-        [MethodImpl(AggressiveInlining)] public static float Pow(this float n, float e) => MathF.Pow(n, e);
-        [MethodImpl(AggressiveInlining)] public static float Sqrt(this float n) => MathF.Sqrt(n);
-        [MethodImpl(AggressiveInlining)] public static float Clamp(this float n, float min, float max) => Math.Clamp(n, min, max);
     }
 
-    public class DemoPathTracer_v2
+    public class PathTracerPlato : IPathTracer
     {
         public readonly struct AABox
         {
@@ -51,29 +47,6 @@ namespace PathTracer
         // 2 minutes, 58 seconds in C++.
         // divisor = 1, samplesCount = 16;
 
-        public const int Divisor = 4;
-
-        public int Iteration;
-        public int SamplesCount => 1 << Iteration;
-
-        public DemoPathTracer_v2()
-            : this(0)
-        { }
-
-        public DemoPathTracer_v2(int iteration)
-            => Iteration = Math.Clamp(iteration, 0, MaxIterations); 
-
-        public int MaxIterations => 16;
-        public DemoPathTracer_v2 GetIteration(int iteration)
-            => new DemoPathTracer_v2(iteration);
-
-        public const int ConstWidth = 960 / Divisor;
-        public const int ConstHeight = 540 / Divisor;
-    
-        public int Width => ConstWidth;
-        public int Height => ConstHeight;
-        
-        public const int BounceCount = 4; // 
         public const int MinNoHitCount = 99;
         public const float SkyHeight = 19.9f;
         public const float AttenuationFactor = 0.2f;
@@ -83,18 +56,18 @@ namespace PathTracer
 
         public static readonly Vector3 SunColor = new(50, 80, 100);
         public static readonly Vector3 Position = new(-22, 5, 25);
-        public static readonly Vector3 Goal = (new Vector3(-3, 4, 0) + Position * -1).Normalize();
-        public static readonly Vector3 Left = new Vector3(Goal.Z, 0, -Goal.X).Normalize() * (1.0f / ConstWidth);
-        public static readonly Vector3 Up = Goal.Cross(Left);
+        public static readonly Vector3 Goal = (new Vector3(-3, 4, 0) + Position * -1).Normalize;
+        public Vector3 Left => new Vector3(Goal.Z, 0, -Goal.X).Normalize * (1.0f / Width);
+        public Vector3 Up => Goal.Cross(Left);
         public static readonly Vector3 WallHitColor = new(500, 400, 100);
 
         public static readonly AABox LowerRoomBounds = new(MakeVector(-30, -0.5f, -30), MakeVector(30, 18, 30));
         public static readonly AABox UpperRoomBounds = new(MakeVector(-25, 17, -25), MakeVector(25, 20, 25));
         public static readonly AABox CeilingBounds = new(MakeVector(1.5f, 18.5f, -25), MakeVector(6.5f, 20, 25));
 
-        public static readonly Vector3 LightDirection = MakeVector(.6f, .6f, 1f).Normalize();
+        public static readonly Vector3 LightDirection = MakeVector(.6f, .6f, 1f).Normalize;
 
-        private static readonly Random _random = new Random();
+        private static readonly Random _random = new Random(99);
 
         public static Vector3 MakeVector(float a, float b, float c = 0) => new Vector3(a, b, c);
         public static float Min(float l, float r) => Math.Min(l, r);
@@ -177,12 +150,12 @@ namespace PathTracer
                 var o = f - Curves[i];
                 if (o.X > 0)
                 {
-                    distance = Min(distance, (o.Dot(o).Sqrt() - 2).Abs());
+                    distance = Min(distance, (o.Dot(o).SquareRoot - 2).Abs);
                 }
                 else
                 {
                     o = o.SetY(o.Y > 0 ? o.Y - 2 : o.Y + 2);
-                    distance = Min(distance, o.Dot(o).Sqrt());
+                    distance = Min(distance, o.Dot(o).SquareRoot);
                 }
             }
 
@@ -199,7 +172,7 @@ namespace PathTracer
                     ),
                     BoxTest(
                         // Ceiling "planks" spaced 8 units apart.
-                        MakeVector(position.X.Abs() % PlankDistance,
+                        MakeVector(position.X.Abs % PlankDistance,
                             position.Y,
                             position.Z),
                         CeilingBounds));
@@ -236,19 +209,22 @@ namespace PathTracer
                         MakeVector(QuerySDF(hitPos + MakeVector(.01f, 0), out _) - d,
                                 QuerySDF(hitPos + MakeVector(0, .01f), out _) - d,
                                 QuerySDF(hitPos + MakeVector(0, 0, .01f), out _) - d)
-                            .Normalize();
+                            .Normalize;
                     return hitType;
                 }
 
             return 0;
         }
 
-        public static Vector3 Trace(Vector3 origin, Vector3 direction)
+        public static readonly Vector3 Zero = new(0);
+        public static readonly Vector3 One = new(1);
+
+        public Vector3 Trace(Vector3 origin, Vector3 direction)
         {
-            var sampledPosition = Vector3.Zero;
-            var normal = Vector3.Zero;
-            var color = Vector3.Zero;
-            var attenuation = Vector3.One;
+            var sampledPosition = Zero;
+            var normal = Zero;
+            var color = Zero;
+            var attenuation = One;
 
             for (var bounceCount = BounceCount; bounceCount > 0; bounceCount--)
             {
@@ -302,11 +278,17 @@ namespace PathTracer
         /// https://en.wikipedia.org/wiki/Tone_mapping
         /// </summary>
         public static Vector3 ReinhardToneMapping(Vector3 v)
-            => v / (v + new Vector3(1));
+            => v / (v + One);
 
-        public Vector3 Eval(int x, int y)
+
+        public int Width { get; set; }
+        public int Height { get; set; }
+        public int SamplesCount { get; set; }
+        public int BounceCount { get; set; }
+
+        public (float, float, float) Eval(int x, int y)
         {
-            var color = Vector3.Zero;
+            var color = Zero;
         
             x = Width - 1 - x;
             y = Height - 1 - y;
@@ -316,7 +298,7 @@ namespace PathTracer
                 color += Trace(Position,
                     (Goal + Left *
                         (x - Width / 2 + RandomVal()) + Up *
-                        (y - Height / 2 + RandomVal())).Normalize());
+                        (y - Height / 2 + RandomVal())).Normalize);
             }
 
             color = color * (1.0f / SamplesCount) + new Vector3(14.0f / 241);

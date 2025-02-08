@@ -1,38 +1,18 @@
-﻿using Ara3D.Graphics;
-using Ara3D.Mathematics;
+﻿using Vim.Math3d;
 
 namespace PathTracer
 {
-    public class DemoPathTracer_v1
+    public class PathTracerVim : IPathTracer
     {
         // https://fabiensanglard.net/postcard_pathtracer/index.html
         // 2 minutes, 58 seconds in C++.
         // divisor = 1, samplesCount = 16;
 
-        public const int Divisor = 4;
+        public int Width { get; set; }
+        public int Height { get; set; }
+        public int SamplesCount { get; set; }
+        public int BounceCount { get; set; }
 
-        public int Iteration;
-        public int SamplesCount => 1 << Iteration;
-
-        public DemoPathTracer_v1()
-            : this(0)
-        { }
-
-        public DemoPathTracer_v1(int iteration)
-            => Iteration = Math.Clamp(iteration, 0, MaxIterations); 
-
-        public int MaxIterations => 16;
-        
-        public DemoPathTracer_v1 GetIteration(int iteration)
-            => new DemoPathTracer_v1(iteration);
-
-        public const int ConstWidth = 960 / Divisor;
-        public const int ConstHeight = 540 / Divisor;
-    
-        public int Width => ConstWidth;
-        public int Height => ConstHeight;
-        
-        public const int BounceCount = 4; // 
         public const int MinNoHitCount = 99;
         public const float SkyHeight = 19.9f;
         public const float AttenuationFactor = 0.2f;
@@ -43,8 +23,8 @@ namespace PathTracer
         public static readonly Vector3 SunColor = (50, 80, 100);
         public static readonly Vector3 Position = (-22, 5, 25);
         public static readonly Vector3 Goal = (new Vector3(-3, 4, 0) + Position * -1).Normalize();
-        public static readonly Vector3 Left = new Vector3(Goal.Z, 0, -Goal.X).Normalize() * (1.0f / ConstWidth);
-        public static readonly Vector3 Up = Goal.Cross(Left);
+        public Vector3 Left => new Vector3(Goal.Z, 0, -Goal.X).Normalize() * (1.0f / Width);
+        public Vector3 Up => Goal.Cross(Left);
         public static readonly Vector3 WallHitColor = (500, 400, 100);
 
         public static readonly AABox LowerRoomBounds = (MakeVector(-30, -0.5f, -30), MakeVector(30, 18, 30));
@@ -53,7 +33,7 @@ namespace PathTracer
 
         public static readonly Vector3 LightDirection = MakeVector(.6f, .6f, 1f).Normalize();
 
-        private static readonly Random _random = new Random();
+        private static readonly Random _random = new Random(99);
 
         public static Vector3 MakeVector(float a, float b, float c = 0) => new Vector3(a, b, c);
         public static float Min(float l, float r) => Math.Min(l, r);
@@ -202,7 +182,7 @@ namespace PathTracer
             return 0;
         }
 
-        public static Vector3 Trace(Vector3 origin, Vector3 direction)
+        public Vector3 Trace(Vector3 origin, Vector3 direction)
         {
             var sampledPosition = Vector3.Zero;
             var normal = Vector3.Zero;
@@ -261,9 +241,9 @@ namespace PathTracer
         /// https://en.wikipedia.org/wiki/Tone_mapping
         /// </summary>
         public static Vector3 ReinhardToneMapping(Vector3 v)
-            => v / (v + 1);
+            => v / (v + new Vector3(1));
 
-        public ColorRGBA Eval(int x, int y)
+        public (float, float, float) Eval(int x, int y)
         {
             var color = Vector3.Zero;
         
@@ -279,7 +259,7 @@ namespace PathTracer
             }
 
             color = color * (1.0f / SamplesCount) + 14.0f / 241;
-            return ColorRGBA.FromVector(ReinhardToneMapping(color));
+            return ReinhardToneMapping(color);
         }
     }
 }

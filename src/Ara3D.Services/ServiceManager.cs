@@ -15,7 +15,7 @@ namespace Ara3D.Services
     /// Applications needs a Synchronization Context to work. 
     /// This means that it has to be hosted in a Window: The synchronization context is null otherwise.  
     /// </summary>
-    public sealed class Application : IApplication
+    public sealed class ServiceManager : IServiceManager
     {
         private readonly List<IService> _services = new List<IService>();
         private readonly List<IRepository> _repositories = new List<IRepository>();
@@ -26,7 +26,7 @@ namespace Ara3D.Services
         public IEventBus EventBus { get; } 
         public Synchronizer Synchronizer { get; } 
 
-        public Application()
+        public ServiceManager()
         {
             Synchronizer = Synchronizer.Create();
             EventBus = new EventBus(Synchronizer);

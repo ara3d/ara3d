@@ -23,7 +23,7 @@ namespace Ara3D.Services
     {
         public Stopwatch Stopwatch { get; } = Stopwatch.StartNew();
 
-        public LoggingService(string name, IApplication app)
+        public LoggingService(string name, IServiceManager app)
             : base(app)
         {
             Name = name;

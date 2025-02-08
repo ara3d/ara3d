@@ -5,16 +5,18 @@
     <TargetFramework>net9.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="System.Drawing.Common" Version="6.0.0" />
+    <PackageReference Include="Vim.Math3D" Version="1.7.0" />
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\..\studio\src\Ara3D.Studio\Ara3D.DataFormat\Ara3D.DataFormat.csproj" />
     <ProjectReference Include="..\..\Plato.Geometry\Plato.Core\Plato.Core.csproj" />
     <ProjectReference Include="..\..\src\Ara3D.Graphics\Ara3D.Graphics.csproj" />
-    <ProjectReference Include="..\..\Mathematics\Ara3D.Mathematics\Ara3D.Mathematics.csproj" />
     <ProjectReference Include="..\..\Utils\Ara3D.Utils\Ara3D.Utils.csproj" />
   </ItemGroup>
 
