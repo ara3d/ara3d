@@ -14,7 +14,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\..\studio\src\Ara3D.Studio\Ara3D.DataFormat\Ara3D.DataFormat.csproj" />
+    <ProjectReference Include="..\..\..\studio\src\Ara3D.Studio\Ara3D.DataFormat\Ara3D.Studio.Data.csproj" />
     <ProjectReference Include="..\..\Plato.Geometry\Plato.Core\Plato.Core.csproj" />
     <ProjectReference Include="..\..\src\Ara3D.Graphics\Ara3D.Graphics.csproj" />
     <ProjectReference Include="..\..\Utils\Ara3D.Utils\Ara3D.Utils.csproj" />

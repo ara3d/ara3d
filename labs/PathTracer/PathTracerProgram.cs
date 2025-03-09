@@ -107,9 +107,9 @@ namespace PathTracer
                 //CreateBitmap(new PathTracerPlato()); 
                 CreateBitmap(new PathTracerPlato_v2(), true, i);
             }*/
-            CreateBitmap(new PathTracerPlato_v2(), true, 4);
-            //CreateBitmap(new PathTracerPlatoSIMD(), true, 2);
-            //CreateBitmap(new WavefrontPathTracer(), true, 3);
+            //CreateBitmap(new PathTracerPlato_v2(), true, 3);
+            //CreateBitmap(new PathTracerPlatoSIMD(), true, 3);
+            CreateBitmap(new WavefrontPathTracer(), true, 3);
 
             //CreateBitmap(new PathTracerPlato(), true);
             //CreateBitmap(new PathTracerPlato_v2(), true);
