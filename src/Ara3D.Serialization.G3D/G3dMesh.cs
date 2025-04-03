@@ -66,15 +66,15 @@ namespace Ara3D.Serialization.G3D
             VertexOffset = lowestIndex;
             NumVertices = highestIndex - lowestIndex + 1;
             var offset = VertexOffset;
-            Indices = g3d.Indices.SubArray(IndexOffset, NumCorners).Select(i => i - offset);
+            Indices = g3d.Indices.ToIArray().SubArray(IndexOffset, NumCorners).Select(i => i - offset);
 
             // Compute a subset of the vertices
-            Vertices = g3d.Vertices?.SubArray(VertexOffset, NumVertices);
-            VertexUvs = g3d.VertexUvs?.SubArray(VertexOffset, NumVertices);
-            VertexNormals = g3d.VertexNormals?.SubArray(VertexOffset, NumVertices);
-            VertexColors = g3d.VertexColors?.SubArray(VertexOffset, NumVertices);
-            VertexTangents = g3d.VertexTangents?.SubArray(VertexOffset, NumVertices);
-            FaceNormals = g3d.FaceNormals?.SubArray(FaceOffset, NumFaces);
+            Vertices = g3d.Vertices?.ToIArray().SubArray(VertexOffset, NumVertices);
+            VertexUvs = g3d.VertexUvs?.ToIArray().SubArray(VertexOffset, NumVertices);
+            VertexNormals = g3d.VertexNormals?.ToIArray().SubArray(VertexOffset, NumVertices);
+            VertexColors = g3d.VertexColors?.ToIArray().SubArray(VertexOffset, NumVertices);
+            VertexTangents = g3d.VertexTangents?.ToIArray().SubArray(VertexOffset, NumVertices);
+            FaceNormals = g3d.FaceNormals?.ToIArray().SubArray(FaceOffset, NumFaces);
         }
     }
 }

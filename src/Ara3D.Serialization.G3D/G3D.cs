@@ -25,52 +25,52 @@ namespace Ara3D.Serialization.G3D
         /// <summary>
         /// Vertex buffer. Required to be present. 
         /// </summary>
-        public IArray<Vector3> Vertices { get; }
+        public Vector3[] Vertices { get; }
 
         /// <summary>
         /// Index buffer (one index per corner, and per half-edge). Computed if absent. 
         /// </summary>
-        public IArray<int> Indices { get; }
+        public int[] Indices { get; }
 
         /// <summary>
         /// Arbitrary number of UV channels. Ordered as they appear in the file. 
         /// </summary>
-        public List<IArray<Vector2>> AllVertexUvs { get; } = new List<IArray<Vector2>>();
+        public List<Vector2[]> AllVertexUvs { get; } = new List<Vector2[]>();
 
         /// <summary>
         /// Arbitrary number of vertex color channels. Ordered as they appear in the file.
         /// </summary>
-        public List<IArray<Vector4>> AllVertexColors { get; } = new List<IArray<Vector4>>();
+        public List<Vector4[]> AllVertexColors { get; } = new List<Vector4[]>();
 
         /// <summary>
         /// The first UV channel is the default UV channel.
         /// </summary>
-        public IArray<Vector2> VertexUvs => AllVertexUvs?.ElementAtOrDefault(0);
+        public Vector2[] VertexUvs => AllVertexUvs?.ElementAtOrDefault(0);
 
         /// <summary>
         /// The default vertex color channel is the first one. 
         /// </summary>
-        public IArray<Vector4> VertexColors => AllVertexColors?.ElementAtOrDefault(0);
+        public Vector4[] VertexColors => AllVertexColors?.ElementAtOrDefault(0);
         
         /// <summary>
         /// Vertex normals channel. 
         /// </summary>
-        public IArray<Vector3> VertexNormals { get; }
+        public Vector3[] VertexNormals { get; }
 
         /// <summary>
         /// Vertex tangents channel. 
         /// </summary>
-        public IArray<Vector4> VertexTangents { get; }
+        public Vector4[] VertexTangents { get; }
 
         /// <summary>
         /// Material indices per face. 
         /// </summary>
-        public IArray<int> FaceMaterials { get; }
+        public int[] FaceMaterials { get; }
 
         /// <summary>
         /// The normal of each face, if not provided, are computed dynamically as the average of all vertex normals,
         /// </summary>
-        public IArray<Vector3> FaceNormals { get; } 
+        public Vector3[] FaceNormals { get; } 
 
         /// <summary>
         /// Offset into the index buffer for each Mesh.
@@ -170,8 +170,6 @@ namespace Ara3D.Serialization.G3D
                     case Semantic.Index:
                         if (attr.IsTypeAndAssociation<int>(Association.assoc_corner))
                             Indices = Indices ?? attr.AsType<int>().Data;
-                        if (attr.IsTypeAndAssociation<short>(Association.assoc_corner))
-                            Indices = Indices ?? attr.AsType<short>().Data.Select(x => (int)x);
                         break;
 
                     case Semantic.Position:
@@ -246,18 +244,6 @@ namespace Ara3D.Serialization.G3D
                         break;
                 }
             }
-
-            // If no vertices are provided, we are going to generate a list of zero vertices.
-            if (Vertices == null)
-                Vertices = Vector3.Zero.Repeat(0);
-
-            // If no indices are provided then we are going to have to treat the index buffer as indices
-            if (Indices == null)
-                Indices = Vertices.Indices();
-
-            // Compute face normals if possible
-            if (FaceNormals == null && VertexNormals != null)
-                FaceNormals = NumFaces.Select(ComputeFaceNormal);
 
             if (NumMeshes > 0)
             {

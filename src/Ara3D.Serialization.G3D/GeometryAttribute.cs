@@ -46,17 +46,6 @@ namespace Ara3D.Serialization.G3D
             => (Descriptor, ElementCount) = (descriptor, count);
 
         /// <summary>
-        /// Multiple mesh attributes can be merged together if they have the same
-        /// underlying descriptor and data type. 
-        /// </summary>
-        public abstract GeometryAttribute Merge(IEnumerable<GeometryAttribute> others);
-
-        /// <summary>
-        /// A mesh attribute can be remapped, using the given indices. 
-        /// </summary>
-        public abstract GeometryAttribute Remap(IArray<int> indices);
-
-        /// <summary>
         /// Convenience function to check if this object is a mesh attribute of the given type.
         /// </summary>
         public bool IsType<T>() where T : unmanaged
@@ -92,10 +81,10 @@ namespace Ara3D.Serialization.G3D
     /// </summary>
     public class GeometryAttribute<T> : GeometryAttribute where T : unmanaged
     {
-        public IArray<T> Data;
+        public T[] Data;
 
-        public GeometryAttribute(IArray<T> data, AttributeDescriptor descriptor)
-            : base(descriptor, data.Count)
+        public GeometryAttribute(T[] data, AttributeDescriptor descriptor)
+            : base(descriptor, data.Length)
         {
             Data = data;
             int arity;
@@ -141,52 +130,10 @@ namespace Ara3D.Serialization.G3D
                 throw new Exception($"DatArity was {arity} but expected {Descriptor.DataArity}");
         }
 
-        public override GeometryAttribute Merge(IEnumerable<GeometryAttribute> others)
-        {
-            if (!others.Any())
-                return this;
-
-            // Check that all attributes have the same descriptor 
-            if (!others.All(ma => ma.Descriptor.Equals(Descriptor)))
-                throw new Exception($"All attributes have to have same descriptor {Descriptor} to be concatenated");
-
-            // Check that all attributes have the same type 
-            if (!others.All(ma => ma is GeometryAttribute<T>))
-                throw new Exception($"All attributes have to have the same type {typeof(T)} to be concatenated");
-
-            // Given multiple attributes associated with "all" or with "nothing", the first one takes precedence	
-            if (Descriptor.Association == Association.assoc_all || Descriptor.Association == Association.assoc_none)
-                return this;
-
-            // Sub-geometry attributes can't be merged 
-            if (Descriptor.Association == Association.assoc_mesh)
-                throw new Exception("Can't merge sub-geometry attributes");
-
-            // Instance attributes can't be merged 
-            if (Descriptor.Association == Association.assoc_instance)
-                throw new Exception("Can't merge instance attributes");
-
-            // Index attributes can't be merged 
-            if (Descriptor.Semantic == Semantic.Index)
-                throw new Exception("Can't merge index attributes");
-
-            return others
-                .Select(ma => ma as GeometryAttribute<T>)
-                .Prepend(this)
-                .ToIArray()
-                .Select(attr => attr.Data)
-                .Flatten()
-                .ToAttribute(Descriptor);
-        }
-
-        public override GeometryAttribute Remap(IArray<int> indices)
-            => Data.SelectByIndex(indices).ToAttribute(Descriptor);
-        
         public override GeometryAttribute Read(MemoryMappedView view)
         {
-            // TODO: make this a buffer 
             var data = view.ReadArray<T>();
-            return new GeometryAttribute<T>(data.ToIArray(), Descriptor);
+            return new GeometryAttribute<T>(data, Descriptor);
         }
 
         public override GeometryAttribute SetIndex(int index)

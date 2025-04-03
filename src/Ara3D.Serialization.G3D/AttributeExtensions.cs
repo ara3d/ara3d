@@ -18,14 +18,8 @@ namespace Ara3D.Serialization.G3D
         public static GeometryAttribute<T> CheckArityAndAssociation<T>(this GeometryAttribute<T> self, int arity, Association assoc) where T : unmanaged
             => self?.CheckArity(arity)?.CheckAssociation(assoc);
 
-        public static GeometryAttribute<T> ToAttribute<T>(this IList<T> self, string desc) where T : unmanaged
-            => self.ToIArray().ToAttribute(desc);
-
-        public static GeometryAttribute<T> ToAttribute<T>(this IList<T> self, AttributeDescriptor desc) where T : unmanaged
-            => self.ToIArray().ToAttribute(desc);
-
         public static GeometryAttribute<T> ToAttribute<T>(this IArray<T> self, AttributeDescriptor desc) where T : unmanaged
-            => new GeometryAttribute<T>(self, desc);
+            => new GeometryAttribute<T>(self.ToArray(), desc);
 
         public static GeometryAttribute<T> ToAttribute<T>(this IArray<T> self, string desc) where T : unmanaged
             => self.ToAttribute(AttributeDescriptor.Parse(desc));
@@ -33,19 +27,21 @@ namespace Ara3D.Serialization.G3D
         public static GeometryAttribute<T> ToAttribute<T>(this IArray<T> self, string desc, int index) where T : unmanaged
             => self.ToAttribute(AttributeDescriptor.Parse(desc).SetIndex(index));
 
-        public static IArray<Vector4> AttributeToColors(this GeometryAttribute attr)
+        public static Vector4[] AttributeToColors(this GeometryAttribute attr)
         {
             var desc = attr.Descriptor;
             if (desc.DataType == DataType.dt_float32)
             {
                 if (desc.DataArity == 4)
                     return attr.AsType<Vector4>().Data;
+                /*
                 if (desc.DataArity == 3)
                     return attr.AsType<Vector3>().Data.Select(vc => new Vector4(vc, 1f));
                 if (desc.DataArity == 2)
                     return attr.AsType<Vector2>().Data.Select(vc => new Vector4(vc.X, vc.Y, 0, 1f));
                 if (desc.DataArity == 1)
                     return attr.AsType<float>().Data.Select(vc => new Vector4(vc, vc, vc, 1f));
+                */
             }
             Debug.WriteLine($"Failed to recognize color format {attr.Descriptor}");
             return null;
@@ -113,11 +109,5 @@ namespace Ara3D.Serialization.G3D
 
         public static long GetByteSize(this GeometryAttribute attribute)
             => (long)attribute.ElementCount * attribute.Descriptor.DataElementSize;
-
-        public static GeometryAttribute Merge(this IEnumerable<GeometryAttribute> attributes)
-            => attributes.FirstOrDefault()?.Merge(attributes.Skip(1));
-
-        public static GeometryAttribute Merge(this IArray<GeometryAttribute> attributes)
-            => attributes.ToEnumerable().Merge();
     }
 }

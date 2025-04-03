@@ -1,11 +1,16 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Text;
 using System.Text.RegularExpressions;
 using Ara3D.Buffers;
 using Ara3D.Serialization.BFAST;
+using Ara3D.Serialization.G3D;
 
 namespace Ara3D.Serialization.VIM
 {
+
     public static class Serializer
     {
         public static List<INamedBuffer> ToBuffers(this SerializableEntityTable table)
@@ -89,15 +94,9 @@ namespace Ara3D.Serialization.VIM
             switch (name)
             {
                 case BufferNames.Header:
-                    // TODO:
-                    //SerializableHeader.Parse(view.ReadString());
                     break;
 
                 case BufferNames.Assets:
-                    if (doc.Options?.SkipAssets == true)
-                        break;
-                    // TODO: 
-                    //doc.Assets = stream.ReadBFast().ToArray();
                     break;
 
                 case BufferNames.Strings:
@@ -105,9 +104,6 @@ namespace Ara3D.Serialization.VIM
                     break;
 
                 case BufferNames.Geometry:
-                    if (doc.Options?.SkipGeometry == true)
-                        break;
-
                     doc.Geometry = G3D.G3D.Read(view);
                     break;
 

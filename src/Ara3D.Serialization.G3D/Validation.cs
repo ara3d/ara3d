@@ -40,7 +40,7 @@ namespace Ara3D.Serialization.G3D
             }
 
             //Indices
-            Validate(g3d.Indices.Count % 3 == 0, G3dErrors.IndicesInvalidCount);
+            Validate(g3d.Indices.Length % 3 == 0, G3dErrors.IndicesInvalidCount);
             Validate(g3d.Indices.All(i => i >= 0  && i < g3d.NumVertices), G3dErrors.IndicesOutOfRange);
             //Triangle should have 3 distinct vertices
             //Assert.That(g3d.Indices.SubArrays(3).Select(face => face.ToEnumerable().Distinct().Count()).All(c => c == 3));
