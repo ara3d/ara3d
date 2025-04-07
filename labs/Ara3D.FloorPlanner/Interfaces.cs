@@ -1,5 +1,5 @@
 ﻿using System.Windows;
-using Plato.DoublePrecision;
+using Plato;
 
 namespace Ara3D.FloorPlanner
 {

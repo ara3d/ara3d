@@ -2,7 +2,7 @@
 using System.Windows;
 using System.Windows.Media;
 using Ara2D.FloorPlanner;
-using Plato.DoublePrecision;
+using Plato;
 using Geometry = System.Windows.Media.Geometry;
 
 namespace Ara3D.FloorPlanner
@@ -53,8 +53,8 @@ namespace Ara3D.FloorPlanner
                 GetBrush(ellipse.Style.BrushStyle),
                 GetPen(ellipse.Style.PenStyle),
                 ellipse.Ellipse.Center.ToWindows(),
-                ellipse.Ellipse.Size.Width.Half,
-                ellipse.Ellipse.Size.Height.Half));
+                ellipse.Ellipse.Size.X.Half,
+                ellipse.Ellipse.Size.Y.Half));
 
         public ICanvas Draw(StyledRect rect)
             => WithContext(context => context.DrawRectangle(

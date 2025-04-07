@@ -1,7 +1,7 @@
 ﻿using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media;
-using Plato.DoublePrecision;
+using Plato;
 using Color = System.Windows.Media.Color;
 
 namespace Ara3D.FloorPlanner;
@@ -33,14 +33,14 @@ public record BrushStyle(Color Color)
     public static BrushStyle Empty = Colors.Transparent;
 }
 
-public record PenStyle(BrushStyle BrushStyle, double Width) 
+public record PenStyle(BrushStyle BrushStyle, float Width) 
 {
     public static implicit operator PenStyle(Color color) => new(color, 1);
     public static implicit operator PenStyle(BrushStyle brush) => new(brush, 1);
     public static PenStyle Empty = Colors.Transparent;
 }
 
-public record TextStyle(BrushStyle BrushStyle, string FontFamily, FontWeight Weight, double FontSize, Alignment Alignment);
+public record TextStyle(BrushStyle BrushStyle, string FontFamily, FontWeight Weight, float FontSize, Alignment Alignment);
 public record ShapeStyle(BrushStyle BrushStyle, PenStyle PenStyle) ;
 public record StyledText(TextStyle Style, Rect2D Rect, string Text);    
 public record StyledLine(PenStyle PenStyle, Line2D Line);

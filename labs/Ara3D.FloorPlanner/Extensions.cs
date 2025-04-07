@@ -2,7 +2,7 @@
 using System.Windows.Input;
 using System.Windows.Media;
 using Ara3D.FloorPlanner;
-using Plato.DoublePrecision;
+using Plato;
 
 namespace Ara2D.FloorPlanner;
 
@@ -11,10 +11,10 @@ public static class Extensions
     public static Rect2D Shrink(this Rect2D r, Rect2D padding)
         => Shrink(r, padding.Left, padding.Top, padding.Right, padding.Bottom);
 
-    public static Rect2D Shrink(this Rect2D r, double left, double top, double right, double bottom) 
+    public static Rect2D Shrink(this Rect2D r, float left, float top, float right, float bottom) 
         => new((r.Left + left, r.Top + top), (r.Width - left - right, r.Height - top - bottom));
 
-    public static Rect2D Shrink(this Rect2D r, double padding)
+    public static Rect2D Shrink(this Rect2D r, float padding)
         => Shrink(r, padding, padding, padding, padding);
 
     public static Rect2D GetRow(this Rect2D r, int row, int rowCount)
@@ -74,7 +74,7 @@ public static class Extensions
     */
 
     public static Rect2D GetRect(this Window window)
-        => new((0, 0), (window.Width, window.Height));
+        => new((0, 0), ((float)window.Width, (float)window.Height));
 
     public static WindowProps GetProps(this Window window)
         => new(GetRect(window), window.Title, window.Cursor);
@@ -103,7 +103,7 @@ public static class Extensions
     public static Rect2D MoveTo(this Rect2D rect, Point2D point)
         => new(point, rect.Size);
 
-    public static Point2D Add(this Point2D self, Vector v)
+    public static Point2D Add(this Point2D self, Vector2 v)
         => new(self.X + v.X, self.Y + v.Y);
 
     public static Point2D Add(this Point2D self, Point2D point)
@@ -121,17 +121,17 @@ public static class Extensions
     public static Point2D GetScreenPosition(this MouseEventArgs args, Window window)
         => window.PointToScreen(args.GetPosition(window)).ToPlato();
 
-    public static double HalfHeight(this Rect2D rect)
-        => rect.Size.HalfHeight();
+    public static float HalfHeight(this Rect2D rect)
+        => rect.Height.Half;
 
-    public static double HalfHeight(this Size2D size)
-        => size.Height / 2.0;
+    public static float HalfHeight(this Size2D size)
+        => size.Height.Half;
 
-    public static double HalfWidth(this Rect2D rect)
-        => rect.Size.HalfWidth();
+    public static float HalfWidth(this Rect2D rect)
+        => rect.Width.Half;
 
-    public static double HalfWidth(this Size2D size)
-        => size.Width / 2.0;
+    public static float HalfWidth(this Size2D size)
+        => size.Width.Half;
 
     public static Point2D Center(this Rect2D r)
         => new(r.Left + r.HalfWidth(), r.Top + r.HalfHeight());
@@ -177,7 +177,7 @@ public static class Extensions
         => self.Width > 0 && self.Height > 0;
 
     public static Size2D GetSize(this FormattedText Text)
-        => new(Text.Width, Text.Height);
+        => new((float)Text.Width, (float)Text.Height);
 
     public static IEnumerable<T> WhereNotNull<T>(this IEnumerable<T?> self) where T : class
         => self.Where(x => x != null);
@@ -188,10 +188,10 @@ public static class Extensions
     public static Rect2D SetSize(this Rect2D rect, Size2D size)
         => new(rect.TopLeft, size);
 
-    public static Rect2D SetHeight(this Rect2D rect, double height)
+    public static Rect2D SetHeight(this Rect2D rect, float height)
         => rect.SetSize(new(rect.Width, height));
     
-    public static Rect2D SetWidth(this Rect2D rect, double width)
+    public static Rect2D SetWidth(this Rect2D rect, float width)
         => rect.SetSize(new(width, rect.Height));
 
     public static Size2D Subtract(this Size2D size, Size2D amount)
@@ -212,7 +212,7 @@ public static class Extensions
     public static Rect2D ShrinkAndOffset(this Rect2D rect, Size2D size)
         => new(rect.TopLeft.Add(size), rect.Size.Subtract(size));
 
-    public static Point2D Multiply(this Point2D point, double factor)
+    public static Point2D Multiply(this Point2D point, float factor)
         => new(point.X * factor, point.Y * factor);
 
     public static IReadOnlyList<T> Add<T>(this IReadOnlyList<T> self, T item)
@@ -221,7 +221,7 @@ public static class Extensions
     public static IReadOnlyList<T> Remove<T>(this IReadOnlyList<T> self, T item)
         => self.Where(x => x != null && !ReferenceEquals(x, item) && !x.Equals(item)).ToList();
 
-    public static Rect2D ToSquareWithCenter(this Point2D point, double side)
+    public static Rect2D ToSquareWithCenter(this Point2D point, float side)
         => new((point.X - side / 2, point.Y - side / 2), (side, side));
 
     public static Rect2D ToRect(this Point2D point, Size2D size)

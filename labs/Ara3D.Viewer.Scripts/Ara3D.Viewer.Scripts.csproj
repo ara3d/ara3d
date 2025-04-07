@@ -11,7 +11,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\bowerbird\Ara3D.Bowerbird.Interfaces\Ara3D.Bowerbird.Interfaces.csproj" />
-    <ProjectReference Include="..\Ara3D.Viewer.Api\Ara3D.Viewer.Api.csproj" />
   </ItemGroup>
 
   <!-- Define the destination directory using the correct MSBuild property -->
@@ -31,12 +30,7 @@
     <MakeDir Directories="$(ScriptsDestination)" Condition="!Exists('$(ScriptsDestination)')" />
 
     <!-- Copy the specified files to the destination directory while preserving directory structure -->
-    <Copy
-      SourceFiles="@(ScriptsToCopy)"
-      DestinationFolder="$(ScriptsDestination)\%(RecursiveDir)"
-      SkipUnchangedFiles="true"
-      Retries="3"
-      RetryDelayMilliseconds="1000" />
+    <Copy SourceFiles="@(ScriptsToCopy)" DestinationFolder="$(ScriptsDestination)\%(RecursiveDir)" SkipUnchangedFiles="true" Retries="3" RetryDelayMilliseconds="1000" />
 
     <!-- Log each file being copied for better visibility -->
     <Message Importance="high" Text="Copied %(ScriptsToCopy.Identity) to $(ScriptsDestination)\%(RecursiveDir)" />

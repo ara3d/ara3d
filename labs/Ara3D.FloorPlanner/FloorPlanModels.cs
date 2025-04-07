@@ -1,4 +1,4 @@
-﻿using Plato.DoublePrecision;
+﻿using Plato;
 
 namespace Ara3D.FloorPlanner
 {
@@ -13,7 +13,7 @@ namespace Ara3D.FloorPlanner
             get
             {
                 for (var i = 0; i < Corners.Count - 1; ++i)
-                    yield return new WallSegment((Corners[i].Position, Corners[i + 1].Position));
+                    yield return new WallSegment(new Line2D(Corners[i].Position.Vector2, Corners[i + 1].Position.Vector2));
                 if (Corners.Count <= 1)
                     yield break;
                 if (Closed)
