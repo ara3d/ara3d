@@ -2,7 +2,7 @@
   "profiles": {
     "Vim.TableExplorer": {
       "commandName": "Project",
-      "commandLineArgs": "\"C:\\Users\\cdigg\\Documents\\VIM\\Snowdon Towers Sample Electrical.vim\""
+      "commandLineArgs": "\"C:\\Users\\cdigg\\OneDrive\\Documents\\VIM\\Snowdon Towers Sample Electrical.vim\""
     }
   }
 }

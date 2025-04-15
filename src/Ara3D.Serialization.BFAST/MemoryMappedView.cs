@@ -6,7 +6,7 @@ namespace Ara3D.Serialization.BFAST
 {
     /// <summary>
     /// This address a limitation of memory mapped view accessor,
-    /// in that you can't create sub-views from it. You need access to
+    /// in that you can't create sub-views from it. You need access 
     /// to the original memory mapped file. 
     /// </summary>
     public class MemoryMappedView : IDisposable

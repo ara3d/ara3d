@@ -52,7 +52,7 @@ namespace Ara3D.Serialization.VIM
 
             void ReadColumn(string columnName, MemoryMappedView columnView, int index) 
             {
-                var typePrefix = name.GetTypePrefix();
+                var typePrefix = columnName.GetTypePrefix();
 
                 switch (typePrefix)
                 {

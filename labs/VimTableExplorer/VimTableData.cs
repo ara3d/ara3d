@@ -17,8 +17,8 @@ namespace VimTableExplorer
         {
             (Document, Table) = (document, table);
             var buffers = table.DataColumns.Concat(table.StringColumns).Concat(table.IndexColumns).ToArray();
-            Count = buffers.FirstOrDefault()?.NumElements() ?? 0;
-            if (buffers.Any(b => b.NumElements() != Count))
+            Count = buffers.FirstOrDefault()?.Count ?? 0;
+            if (buffers.Any(b => b.Count != Count))
                 throw new Exception("Not all columns are the same length");
             Columns = buffers.Select((c, i) => new VimColumnData(this, c, i)).ToArray();
             ColumnLookup = Columns.Select((column, index) => (column, index)).ToDictionary(pair => pair.column.Name, pair => pair.index);

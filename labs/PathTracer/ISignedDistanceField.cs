@@ -117,7 +117,7 @@ namespace PathTracer
         [MethodImpl(AggressiveInlining)]
         public float Distance(Vector3 p)
         {
-            var lowerLeft = p + (Box.Min * -1.0f);
+            var lowerLeft = p + (Box.Min.Vector3 * -1.0f);
             var upperRight = Box.Max + (p * -1.0f);
             return -MathF.Min(MathF.Min(
                     MathF.Min(lowerLeft.X, upperRight.X),

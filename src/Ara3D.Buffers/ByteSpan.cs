@@ -43,8 +43,8 @@ namespace Ara3D.Buffers
             => End() <= other.Begin();
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public ReadOnlySpan<byte> ToSpan()
-            => new ReadOnlySpan<byte>(Ptr, Length);
+        public Span<byte> ToSpan()
+            => new Span<byte>(Ptr, Length);
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public override string ToString()

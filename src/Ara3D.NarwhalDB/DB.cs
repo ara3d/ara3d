@@ -70,7 +70,7 @@ namespace Ara3D.NarwhalDB
             var stringsBuffer = buffers.Single(b => b.Name == _STRINGS_);
                 
             // TODO: 
-            var strings = stringsBuffer.Span.UnpackStrings().Select(bs => bs.ToString()).ToList();
+            var strings = stringsBuffer.ByteSpan.UnpackStrings().Select(bs => bs.ToString()).ToList();
             
             logger.Log($"Found {strings.Count} strings");
             foreach (var t in types)
@@ -78,7 +78,7 @@ namespace Ara3D.NarwhalDB
                 logger.Log($"Searching for buffer {t.Name}");
                 var buffer = buffers.Single(b => b.Name == t.Name);
                 logger.Log($"Creating table from buffer {buffer.Name}");
-                var table = Table.Create(buffer.Span, t, strings);
+                var table = Table.Create(buffer.ByteSpan, t, strings);
                 db.AddTable(table);
                 logger.Log($"Created table {table.Name} with {table.Objects.Count} objects");
             }

@@ -1,5 +1,3 @@
-using Plato.SinglePrecision;
-
 namespace TopologyHack
 {
     /*

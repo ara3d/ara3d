@@ -27,9 +27,26 @@ namespace Ara3D.Buffers
         /// <summary>
         /// Helper for writing arbitrary large numbers of bytes 
         /// </summary>
-        public static void WriteBytesBuffered(this Stream stream, byte* src, long count, int bufferSize = 4096)
+        public static void Write(this Stream stream, IntPtr ptr, long count, int bufferSize = 4096)
+            => stream.Write((byte*)ptr.ToPointer(), count, bufferSize);
+
+        /// <summary>
+        /// Helper for writing arbitrary large numbers of bytes 
+        /// </summary>
+        public static void Write(this Stream stream, Span<byte> span, int bufferSize = 4096)
+        {
+            fixed (byte* ptr = span)
+                stream.Write(ptr, span.Length, bufferSize);
+        }
+
+        /// <summary>
+        /// Helper for writing arbitrary large numbers of bytes 
+        /// </summary>
+        public static void Write(this Stream stream, byte* src, long count, int bufferSize = 4096)
         {
             var buffer = new byte[bufferSize];
+            if (bufferSize <= 0)
+                throw new Exception("Buffer size must be greater than zero");
             fixed (byte* pBuffer = buffer)
             {
                 while (count > 0)
@@ -62,7 +79,6 @@ namespace Ara3D.Buffers
             var r = new T[count];
             fixed (T* pDest = r)
             {
-
                 var pBytes = (byte*)pDest;
                 stream.ReadBytesBuffered(pBytes, (long)count * sizeof(T));
             }
@@ -98,7 +114,7 @@ namespace Ara3D.Buffers
         public static void WriteValue<T>(this Stream stream, T x) where T : unmanaged
         {
             var p = &x;
-            stream.WriteBytesBuffered((byte*)p, sizeof(T));
+            stream.Write((byte*)p, sizeof(T));
         }
 
         /// <summary>
@@ -107,9 +123,7 @@ namespace Ara3D.Buffers
         public static void Write<T>(this Stream stream, T[] xs) where T : unmanaged
         {
             fixed (T* p = xs)
-            {
-                stream.WriteBytesBuffered((byte*)p, xs.LongLength * sizeof(T));
-            }
+                stream.Write((byte*)p, xs.LongLength * sizeof(T));
         }
     }
 }

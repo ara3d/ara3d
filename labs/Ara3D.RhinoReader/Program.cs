@@ -150,10 +150,10 @@ namespace Ara3D.RhinoReader
             var indices = new List<int>();
             foreach (var m in meshes)
             {
-                vertices.AddRange(m.Vertices.Select(v => new Vector3(v.X, v.Y,v.Z)).ToEnumerable());
-                foreach (var i in m.Indices.ToEnumerable())
+                vertices.AddRange(m.Vertices.Select(v => new Vector3(v.X, v.Y,v.Z)));
+                foreach (var i in m.Indices)
                     indices.Add(i + offset);
-                offset += m.Vertices.Count;
+                offset += m.Vertices.Length;
             }
 
             var bldr = new G3DBuilder();

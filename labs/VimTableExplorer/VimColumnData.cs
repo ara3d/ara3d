@@ -28,6 +28,7 @@ namespace VimTableExplorer
                 VimConstants.DoubleColumnNameTypePrefix => typeof(double),
                 VimConstants.StringColumnNameTypePrefix => typeof(string),
                 VimConstants.IndexColumnNameTypePrefix => typeof(int),             
+                VimConstants.LongColumnNameTypePrefix => typeof(long),
                 _ => throw new ArgumentException($"Unrecognized VIM column type {buffer.Name}")
             };
 
@@ -48,11 +49,12 @@ namespace VimTableExplorer
                     throw new Exception("Row index out of range");
                 if (ColumnType == typeof(string))
                 {
-                    var stringIndex = Buffer.AsArray<int>()[vtr.RowIndex];
+                    var span = Buffer.Span<int>();
+                    var stringIndex = span[vtr.RowIndex];
                     return Table.GetString(stringIndex);
                 }
 
-                return Buffer.Data.GetValue(vtr.RowIndex);
+                return Buffer[vtr.RowIndex];
             }
             throw new ArgumentException("Incorrect component type", nameof(component));
         }
@@ -76,9 +78,9 @@ namespace VimTableExplorer
             => ColumnType;
 
         public int Count 
-            => Buffer.NumElements();
+            => Buffer.Count;
 
         public object this[int n]
-            => Buffer.Data.GetValue(n);
+            => Buffer[n];
     }
 }

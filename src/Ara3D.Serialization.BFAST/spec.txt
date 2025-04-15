@@ -1,13 +1,13 @@
-﻿BFAST Specification Proposal
-June 23rd, 2020
+﻿# BFAST Specification Proposal
+## June 23rd, 2020
 
-Summary
+## Summary
 
 BFAST is a simple high-performance general purpose method of packing and unpacking named
 arrays of binary data for serialization, deserialization, and transport in a cross-platform
 and language agnostic manner.
 
-Introduction
+## Introduction
 
 Of the myriad standardized formats for binary representation of structured data most
 are very general and support nested data and schemas. 
@@ -39,7 +39,7 @@ any compression algorithm. It is appropriate for use as an archive format, or as
 format for other more complex file formats that provide additional semantic requirements
 on the usage and naming of specific buffers. 
 
-Features
+## Features
 
     * The file format can be quickly detected reading the first 8 bytes
     * Endianness of the writer can be detected from first 8 bytes, and compensated for by a reader 
@@ -49,36 +49,50 @@ Features
     * Buffer names can be arbitrarily long sequences of Utf-8 characters
     * Buffers can be over 2GB in length
 
-Header Layout
+# Format
 
+The format consists of a header and the data buffers. The header 
+
+
+### Header - Preamble
+
+The preamble is a fixed size structure that contains the magic number, the start and end of the data buffers, and the number of buffers. 
+The preamble is followed by a series of range structures that define the start and end of each data buffer.
+The pramble is 32 bytes long.
+
+```
     Preamble (bytes 0..32)
-        int64_t Magic;      
+        int64_t Magic;      // The first Magic number is 0xBFA5      
         int64_t DataStart;  // The beginning position of the first data buffer, 64 byte aligned
         int64_t DataEnd;    // The end position of the last data buffer 
         int64_t Count;      // Number of all buffers, including name buffer. There should always be at least 1 buffer.
+```
 
-    Ranges (bytes 32..32 + NumArray*16)
+### Header - Range Buffer 
+
+```    Ranges (bytes 32..32 + NumArray*16)
         int64_t Begin;
         int64_t End;  
+```
 
-Requirements
+Each range struct is 16 bytes long.
+Header.DataStart is equivalent to Range[0].Begin
+Header.DataEnd is equivalent to Range[N-1].End
 
-    * The first eight bytes are 0xBFA5
-    * The file can be encoded as big-endian or little-endian
-    * If the endianness of the reader is different then the writer, the eight bytes will apprea as 0xA5BF << 48; 
-    * Each DataBuffer starts on a 64 byte aligned buffer
-    * Buffer names are stored as null terminated Utf8 strings in the first buffer
-    * There are always exactly n-1 buffer names, where n is the number of buffers
-    * Buffer names can be empty (0 length strings)
-    * Multiple buffers can have the same name
-    * There is no padding between each range structure
-    * There is no padding between the header and the range
-    * The range struct is 16 bytes long
-    * The header struct is 32 bytes
-    * A data buffer could be empty, in which case, the begin and end is the same
-    * If a data buffer is empty, the the next data buffer will point to the data buffer beginning
-    * The DataStart can be computed by align(64, sizeof(Header) + sizeof(Range) * Header.NumArrays)
-    * Header.DataStart is equivalent to Range[0].Begin
-    * Header.DataEnd is equivalent to Range[N-1].End
+### Data Buffers 
 
+There should be N-1 names, where N is the number of buffers. The names are stored in the first buffer, and the data buffers follow
+The first data buffer contains the concatenated names of the other buffers separated by the `NUL` character (0x00). 
+It is possible for data buffers to have a zero-length name. Multiple data buffers may have the same name.
+Names are Utf-8 encoded strings, and can contain any character except for the `NUL` character.
+
+### Data Layout 
+
+The first byte of the data can be found at the `DataStart` position in the file. 
+The `DataStart`` can be computed by `align(64, sizeof(Header) + sizeof(Range) * Header.NumArrays)`.
+    
+The data buffers are specified by the `Begin` and `End` fields of the range structures. 
+The data buffers are assumed to appear in the same order as their associated range structures.
+Each buffer is aligned on a 64 byte boundary.
+A data buffer may be zero-length. 
 

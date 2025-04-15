@@ -1,4 +1,5 @@
 ﻿using Ara3D.Buffers;
+using Ara3D.Utils;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -398,7 +399,7 @@ namespace Ara3D.Serialization.BFAST
         /// The function will receive a BinaryWriter, the index of the buffer, and is expected to return the number of bytes written.
         /// Simplifies the process of creating custom BinaryWriters, or writing extremely large arrays if necessary.
         /// </summary>
-        public static void WriteBFast(this Stream stream, string[] bufferNames, long[] bufferSizes, BFastWriterFn onBuffer)
+        public static void Write(this Stream stream, string[] bufferNames, long[] bufferSizes, BFastWriterFn onBuffer)
         {
             if (bufferSizes.Any(sz => sz < 0))
                 throw new Exception("All buffer sizes must be zero or greater than zero");
@@ -407,14 +408,14 @@ namespace Ara3D.Serialization.BFAST
                 throw new Exception($"The number of buffer names {bufferNames.Length} is not equal to the number of buffer sizes {bufferSizes}");
 
             var header = CreateBFastHeader(bufferSizes, bufferNames);
-            stream.WriteBFast(header, bufferNames, bufferSizes, onBuffer);
+            stream.Write(header, bufferNames, bufferSizes, onBuffer);
         }
 
         /// <summary>
         /// Enables a user to write a BFAST from an array of names, sizes, and a custom writing function.
         /// This is useful when the header is already computed.
         /// </summary>
-        public static void WriteBFast(this Stream stream, BFastHeader header, string[] bufferNames, long[] bufferSizes, BFastWriterFn onBuffer)
+        public static void Write(this Stream stream, BFastHeader header, string[] bufferNames, long[] bufferSizes, BFastWriterFn onBuffer)
         {
             stream.WriteBFastHeader(header);
             CheckAlignment(stream);
@@ -462,7 +463,7 @@ namespace Ara3D.Serialization.BFAST
         public static unsafe long ByteSize<T>(this T[] self) where T : unmanaged
             => self.LongLength * sizeof(T);
 
-        public static unsafe void WriteBFast<T>(this Stream stream, IEnumerable<(string, T[])> buffers) where T : unmanaged
+        public static void Write<T>(this Stream stream, IEnumerable<(string, T[])> buffers) where T : unmanaged
         {
             var xs = buffers.ToArray();
             BFastWriterFn writerFn = (writer, index, name, size) =>
@@ -472,37 +473,61 @@ namespace Ara3D.Serialization.BFAST
                 return writer.Position - initPosition;
             };
 
-            stream.WriteBFast(
+            stream.Write(
                 xs.Select(b => b.Item1),
                 xs.Select(b => b.Item2.ByteSize()),
                 writerFn);
         }
 
-        public static void WriteBFast(this Stream stream, IEnumerable<string> bufferNames, IEnumerable<long> bufferSizes, BFastWriterFn onBuffer)
-            => WriteBFast(stream, bufferNames.ToArray(), bufferSizes.ToArray(), onBuffer);
+        public static void WriteBuffer(this Stream stream, INamedBuffer buffer)
+            => stream.Write(buffer.Span<byte>());
 
-        public static byte[] WriteBFastToBytes(IEnumerable<string> bufferNames, IEnumerable<long> bufferSizes, BFastWriterFn onBuffer)
+        public static void WriteBFast(this FilePath filePath, IEnumerable<INamedBuffer> buffers)
+        {
+            var bs = buffers.ToList();
+            var sizes = bs.Select(b => b.GetNumBytes()).ToArray();
+            var names = bs.Select(b => b.Name).ToArray();
+
+            long OnBuffer(Stream stream, int index, string name, long bytesToWrite)
+            {
+                Debug.Assert(name == names[index]);
+                Debug.Assert(bytesToWrite == sizes[index]);
+                var buffer = bs[index];
+                Debug.Assert(buffer.Name == name);
+                Debug.Assert(buffer.GetNumBytes() == bytesToWrite);
+                WriteBuffer(stream, buffer);
+                stream.Flush();
+                return bytesToWrite;
+            }
+
+            Write(filePath, names, sizes, OnBuffer);
+        }
+
+        public static void Write(this Stream stream, IEnumerable<string> bufferNames, IEnumerable<long> bufferSizes, BFastWriterFn onBuffer)
+            => Write(stream, bufferNames.ToArray(), bufferSizes.ToArray(), onBuffer);
+
+        public static byte[] WriteToBytes(IEnumerable<string> bufferNames, IEnumerable<long> bufferSizes, BFastWriterFn onBuffer)
         {
             // NOTE: we can't call "WriteBFast(Stream ...)" directly because it disposes the stream before we can convert it to an array
             using (var stream = new MemoryStream())
             {
-                WriteBFast(stream, bufferNames.ToArray(), bufferSizes.ToArray(), onBuffer);
+                Write(stream, bufferNames.ToArray(), bufferSizes.ToArray(), onBuffer);
                 return stream.ToArray();
             }
         }
 
-        public static void WriteBFastToFile(string filePath, IEnumerable<string> bufferNames,
+        public static void Write(string filePath, IEnumerable<string> bufferNames,
             IEnumerable<long> bufferSizes, BFastWriterFn onBuffer)
         {
             using (var fp = File.OpenWrite(filePath))
             {
-                fp.WriteBFast(bufferNames, bufferSizes, onBuffer);
+                fp.Write(bufferNames, bufferSizes, onBuffer);
                 fp.Flush();
             }
         }
 
-        public static unsafe byte[] WriteBFastToBytes<T>(this (string Name, T[] Data)[] buffers) where T : unmanaged
-            => WriteBFastToBytes(
+        public static unsafe byte[] WriteToBytes<T>(this (string Name, T[] Data)[] buffers) where T : unmanaged
+            => WriteToBytes(
                 buffers.Select(b => b.Name),
                 buffers.Select(b => b.Data.LongLength * sizeof(T)),
                 (writer, index, name, size) =>

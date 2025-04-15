@@ -1,25 +1,28 @@
 ﻿using System;
+using System.Diagnostics;
+using System.Runtime.InteropServices;
 
 namespace Ara3D.Buffers
 {
     /// <summary>
-    /// Provides an interface to an object that manages a potentially
-    /// large array of elements all of the same unmanaged type.
+    /// Provides an interface to an object that manages an array of unmanaged memory.
     /// </summary>
     public interface IBuffer
     {
-        Array Data { get; }
-        void WithPointer(Action<IntPtr> action);
         int ElementSize { get; }
+        int Count { get; }
+        Type ElementType { get; }
+        object this[int i] { get; set; }
+        Span<T> Span<T>() where T : unmanaged;
     }
 
     /// <summary>
-    /// A version of the IBuffer interface when the element types are known.
+    /// Represents a buffer associated with a string name. 
     /// </summary>
-    public interface IBuffer<out T> : IBuffer
-        where T: unmanaged
+    public interface IBuffer<T> : IBuffer 
     {
-        T[] GetTypedData();
+        new T this[int i] { get; set; }
+        Span<T> Span();
     }
 
     /// <summary>
@@ -31,32 +34,120 @@ namespace Ara3D.Buffers
     }
 
     /// <summary>
-    /// A version of the INamedBuffer interface when the element types are known
+    /// Represents a buffer associated with a string name. 
     /// </summary>
-    public interface INamedBuffer<out T> 
-        : INamedBuffer, IBuffer<T> where T: unmanaged
+    public interface INamedBuffer<T> : IBuffer<T>, INamedBuffer
     {
     }
 
     /// <summary>
     /// A concrete implementation of IBuffer
     /// </summary>
-    public unsafe class Buffer<T> : IBuffer<T> where T : unmanaged
+    public unsafe class Buffer<T> : IBuffer<T>
+        where T : unmanaged
     {
         public Buffer(T[] data) => _data = data;
+        public int ElementSize => sizeof(T);
+        private readonly T[] _data;
+        public int Count => _data.Length;
 
-        public void WithPointer(Action<IntPtr> action)
+        public T this[int i]
         {
-            fixed (T* p = _data)
-            {
-                action((IntPtr)p);
-            }
+            get => _data[i];
+            set => _data[i] = value;
         }
 
+        public Span<T> Span()
+            => Span<T>();
+
+        public Span<T0> Span<T0>() where T0 : unmanaged
+            => MemoryMarshal.Cast<T, T0>(_data);
+
+        public Type ElementType => typeof(T);
+        
+        object IBuffer.this[int i]
+        {
+            get => this[i];
+            set => this[i] = (T)value;
+        }
+    }
+
+    public class SlicedBuffer<T> : IBuffer<T>
+        where T : unmanaged
+    {
+        public IBuffer<T> Original;
+        public int Offset;
+        public int Count { get; }
+        public int ElementSize => Original.ElementSize;
+        public SlicedBuffer(IBuffer<T> original, int offset, int count)
+        {
+            Original = original;
+            Offset = offset;
+            Debug.Assert(count >= 0);
+            Debug.Assert(count <= original.Count);
+            Count = count;
+        }
+
+        public T this[int i]
+        {
+            get => Original[i + Offset];
+            set => Original[i + Offset] = value;
+        }
+
+        public Span<T0> Span<T0>() where T0 : unmanaged
+            => Original.Span<T0>().Slice(Offset, Count);
+
+        public Span<T> Span()
+            => Span<T>();
+
+        public Type ElementType => typeof(T);
+
+        object IBuffer.this[int i]
+        {
+            get => this[i];
+            set => this[i] = (T)value;
+        }
+    }
+
+    public unsafe class CastBuffer<T> : IBuffer<T>
+        where T : unmanaged
+    {
+        public IBuffer Original;
         public int ElementSize => sizeof(T);
-        public Array Data => _data;
-        private readonly T[] _data;
-        public T[] GetTypedData() => _data;
+        public int Count { get; }
+
+        public CastBuffer(IBuffer original)
+        {
+            Original = original;
+            
+            if (ElementSize < original.ElementSize)
+                Count = original.Count / ElementSize;
+            else if (ElementSize > original.ElementSize)
+                Count = (int)(original.GetNumBytes() / ElementSize);
+
+            if (this.GetNumBytes() != original.GetNumBytes())
+                throw new Exception("The original buffer cannot be cast into the new buffer");
+        }
+
+        public Span<T0> Span<T0>() where T0 : unmanaged
+            => Original.Span<T0>();
+
+        public T this[int i]
+        {
+            get => Span()[i];
+            set => Span()[i] = value;
+        }
+
+        public Span<T> Span()
+            => Span<T>();
+
+        public Type ElementType => typeof(T);
+
+        object IBuffer.this[int i]
+        {
+            get => this[i];
+            set => this[i] = (T)value;
+        }
     }
 
     /// <summary>
@@ -67,40 +158,46 @@ namespace Ara3D.Buffers
         public NamedBuffer(IBuffer buffer, string name) => (Buffer, Name) = (buffer, name);
         public IBuffer Buffer { get; }
         public string Name { get; }
-        public void WithPointer(Action<IntPtr> action) => Buffer.WithPointer(action);
         public int ElementSize => Buffer.ElementSize;
-        public Array Data => Buffer.Data;
+        public int Count => Buffer.Count;
+        public Span<T> Span<T>() where T : unmanaged => Buffer.Span<T>();
+
+        public Type ElementType => Buffer.ElementType;
+
+        object IBuffer.this[int i]
+        {
+            get => Buffer[i];
+            set => Buffer[i] = value;
+        }
     }
 
     /// <summary>
     /// A concrete implementation of INamedBuffer with a specific type.
     /// </summary>
-    public class NamedBuffer<T> : Buffer<T>, INamedBuffer<T> where T : unmanaged
+    public class NamedBuffer<T> : Buffer<T>, INamedBuffer where T : unmanaged
     {
         public NamedBuffer(T[] data, string name) : base(data) => Name = name;
         public string Name { get; }
     }
 
-    public unsafe class ByteSpanBuffer : INamedBuffer<byte>
+    // TODO: this needs to be removed, along with ByteSpan 
+    public unsafe class ByteSpanBuffer 
     {
-        public readonly ByteSpan Span;
+        public readonly ByteSpan ByteSpan;
 
-        public ByteSpanBuffer(ByteSpan span, string name)
+        public ByteSpanBuffer(ByteSpan byteSpan, string name)
         {
-            Span = span;
+            ByteSpan = byteSpan;
             Name = name;
         }
 
-        public byte[] GetTypedData()
-            => Span.ToArray();
-
-        public Array Data 
-            => throw new NotImplementedException();
-
         public void WithPointer(Action<IntPtr> action)
-            => action(new IntPtr(Span.Ptr));
+            => action(new IntPtr(ByteSpan.Ptr));
 
         public int ElementSize => 1;
+        public int Count => ByteSpan.Length;
+        public Span<T> Span<T>() where T : unmanaged
+            => MemoryMarshal.Cast<byte, T>(ByteSpan.ToSpan());
 
         public string Name { get; }
 

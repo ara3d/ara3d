@@ -49,7 +49,7 @@ namespace Ara3D.Graphics
 
     public interface IRenderBuffer<T> : IRenderBuffer
     {
-        IArray<T> Array { get; }
+        Span<T> Span();
     }
 
     public interface IRenderMesh 
@@ -168,7 +168,7 @@ namespace Ara3D.Graphics
             UvBuffers = uvs.ToIArray();
             if (PositionBuffer == null)
                 throw new Exception("Required position buffer");
-            NumVertices = PositionBuffer.Array.Count;
+            NumVertices = PositionBuffer.Count;
             if (IndexBuffer == null)
             {
                 Verifier.Assert(NumVertices % 3 == 0, $"Number of vertices {NumVertices} must be divisible by three");
@@ -176,20 +176,20 @@ namespace Ara3D.Graphics
             }
             else
             {
-                NumFaces = IndexBuffer.Array.Count;
+                NumFaces = IndexBuffer.Count;
             }
 
             for (var i = 0; i < UvBuffers.Count; ++i)
             {
-                var n = UvBuffers[i].GetCount();
+                var n = UvBuffers[i].Count;
                 Verifier.AssertEquals(n, NumVertices, $"UvBuffer[{i}].Count");
             }
 
             if (ColorBuffer != null)
-                Verifier.AssertEquals(ColorBuffer.GetCount(), NumVertices, "ColorBuffer.Count");
+                Verifier.AssertEquals(ColorBuffer.Count, NumVertices, "ColorBuffer.Count");
 
             if (NormalBuffer != null)
-                Verifier.AssertEquals(NormalBuffer.GetCount(), NumVertices, "NormalBuffer.Count");
+                Verifier.AssertEquals(NormalBuffer.Count, NumVertices, "NormalBuffer.Count");
         }
     }
 }

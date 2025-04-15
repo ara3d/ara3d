@@ -24,12 +24,12 @@ namespace Ara3D.Graphics
             => SetPixel(x + y * Width, color);
 
         public void SetPixel(int i, ColorRGBA color)
-            => PixelBuffer.GetTypedData()[i] = color;
+            => PixelBuffer[i] = color;
 
         public ColorRGBA Eval(int x, int y)
             => GetPixel(x + y * Width);
 
         public ColorRGBA GetPixel(int i)
-            => PixelBuffer.GetTypedData()[i];
+            => PixelBuffer[i];
     }
 }

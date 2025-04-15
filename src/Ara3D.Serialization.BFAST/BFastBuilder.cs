@@ -39,7 +39,7 @@ namespace Ara3D.Serialization.BFAST
         public List<(string, IBFastComponent)> Children { get; } = new List<(string, IBFastComponent)>();
 
         public void Write(Stream stream)
-            => stream.WriteBFast(GetOrComputeHeader(),
+            => stream.Write(GetOrComputeHeader(),
                 BufferNames().ToArray(),
                 BufferSizes().ToArray(),
                 OnBuffer);

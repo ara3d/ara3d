@@ -9,9 +9,9 @@ namespace Ara3D.Graphics
 {
     public class RenderBuffer<T> : IRenderBuffer<T> where T: unmanaged
     {
-        public IBuffer<T> Buffer { get; }
+        public IBuffer Buffer { get; }
 
-        public RenderBuffer(IBuffer<T> buffer, string semantic)
+        public RenderBuffer(IBuffer buffer, string semantic)
         {
             Buffer = buffer;
             Semantic = semantic;
@@ -52,8 +52,6 @@ namespace Ara3D.Graphics
             }
         }
 
-        public void WithPointer(Action<IntPtr> action)
-            => Buffer.WithPointer(action);
 
         public int PrimitiveSize
         {
@@ -73,18 +71,27 @@ namespace Ara3D.Graphics
         public int ElementSize
             => PrimitiveSize * Arity;
 
-        public void Write(Stream stream)
+        public int Count 
+            => Buffer.Count;
+
+        public Type ElementType => typeof(T);
+
+        public object this[int i]
         {
-            // TODO: this should not be part of the interfaces 
-            throw new NotImplementedException();
+            get => Buffer[i];
+            set => Buffer[i] = value;
         }
 
-        Array IBuffer.Data => Buffer.Data;
+        public Span<T1> Span<T1>() where T1 : unmanaged
+            => Buffer.Span<T1>();
+
+        public Span<T> Span()
+            => Buffer.Span<T>();
+
         public string Name => Semantic;
         public ElementAssociation Association { get; }
         public int Arity { get; }
         public string Semantic { get; }
         public PrimitiveType PrimitiveType { get; }
-        public IArray<T> Array => Buffer.GetTypedData().ToIArray();
     }
 }
