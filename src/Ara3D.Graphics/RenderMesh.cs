@@ -168,7 +168,7 @@ namespace Ara3D.Graphics
             UvBuffers = uvs.ToIArray();
             if (PositionBuffer == null)
                 throw new Exception("Required position buffer");
-            NumVertices = PositionBuffer.Count;
+            NumVertices = PositionBuffer.ElementCount;
             if (IndexBuffer == null)
             {
                 Verifier.Assert(NumVertices % 3 == 0, $"Number of vertices {NumVertices} must be divisible by three");
@@ -176,20 +176,20 @@ namespace Ara3D.Graphics
             }
             else
             {
-                NumFaces = IndexBuffer.Count;
+                NumFaces = IndexBuffer.ElementCount;
             }
 
             for (var i = 0; i < UvBuffers.Count; ++i)
             {
-                var n = UvBuffers[i].Count;
+                var n = UvBuffers[i].ElementCount;
                 Verifier.AssertEquals(n, NumVertices, $"UvBuffer[{i}].Count");
             }
 
             if (ColorBuffer != null)
-                Verifier.AssertEquals(ColorBuffer.Count, NumVertices, "ColorBuffer.Count");
+                Verifier.AssertEquals(ColorBuffer.ElementCount, NumVertices, "ColorBuffer.Count");
 
             if (NormalBuffer != null)
-                Verifier.AssertEquals(NormalBuffer.Count, NumVertices, "NormalBuffer.Count");
+                Verifier.AssertEquals(NormalBuffer.ElementCount, NumVertices, "NormalBuffer.Count");
         }
     }
 }

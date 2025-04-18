@@ -47,7 +47,7 @@ namespace Ara3D.Services.Experimental
         public List<INamedCommand> Commands = new List<INamedCommand>();
         public CommandRepo CommandRepo { get; }
 
-        public CommandService(IApplication app, CommandRepo repo) : base(app)
+        public CommandService(IServiceManager app, CommandRepo repo) : base(app)
         {
             CommandRepo = repo;
         }

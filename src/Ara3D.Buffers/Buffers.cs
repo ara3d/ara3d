@@ -1,5 +1,8 @@
 ﻿using System;
+using System.Collections;
+using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
 using System.Runtime.InteropServices;
 
 namespace Ara3D.Buffers
@@ -10,8 +13,8 @@ namespace Ara3D.Buffers
     public interface IBuffer
     {
         int ElementSize { get; }
-        int Count { get; }
         Type ElementType { get; }
+        int ElementCount { get; }
         object this[int i] { get; set; }
         Span<T> Span<T>() where T : unmanaged;
     }
@@ -19,7 +22,7 @@ namespace Ara3D.Buffers
     /// <summary>
     /// Represents a buffer associated with a string name. 
     /// </summary>
-    public interface IBuffer<T> : IBuffer 
+    public interface IBuffer<T> : IBuffer, IReadOnlyList<T> 
     {
         new T this[int i] { get; set; }
         Span<T> Span();
@@ -49,6 +52,7 @@ namespace Ara3D.Buffers
         public Buffer(T[] data) => _data = data;
         public int ElementSize => sizeof(T);
         private readonly T[] _data;
+        public int ElementCount => _data.Length;
         public int Count => _data.Length;
 
         public T this[int i]
@@ -70,6 +74,15 @@ namespace Ara3D.Buffers
             get => this[i];
             set => this[i] = (T)value;
         }
+
+        public IEnumerator<T> GetEnumerator()
+        {
+            for (var i= 0; i < ElementCount; i++)
+                yield return this[i];
+        }
+
+        IEnumerator IEnumerable.GetEnumerator()
+            => GetEnumerator();
     }
 
     public class SlicedBuffer<T> : IBuffer<T>
@@ -77,7 +90,9 @@ namespace Ara3D.Buffers
     {
         public IBuffer<T> Original;
         public int Offset;
-        public int Count { get; }
+        public int ElementCount { get; }
+        public int Count => ElementCount;
+
         public int ElementSize => Original.ElementSize;
         public SlicedBuffer(IBuffer<T> original, int offset, int count)
         {
@@ -85,7 +100,7 @@ namespace Ara3D.Buffers
             Offset = offset;
             Debug.Assert(count >= 0);
             Debug.Assert(count <= original.Count);
-            Count = count;
+            ElementCount = count;
         }
 
         public T this[int i]
@@ -95,7 +110,7 @@ namespace Ara3D.Buffers
         }
 
         public Span<T0> Span<T0>() where T0 : unmanaged
-            => Original.Span<T0>().Slice(Offset, Count);
+            => Original.Span<T0>().Slice(Offset, ElementCount);
 
         public Span<T> Span()
             => Span<T>();
@@ -107,6 +122,15 @@ namespace Ara3D.Buffers
             get => this[i];
             set => this[i] = (T)value;
         }
+
+        public IEnumerator<T> GetEnumerator()
+        {
+            for (var i=0; i < ElementCount; i++)
+                yield return this[i];
+        }
+
+        IEnumerator IEnumerable.GetEnumerator()
+            => GetEnumerator();
     }
 
     public unsafe class CastBuffer<T> : IBuffer<T>
@@ -114,16 +138,14 @@ namespace Ara3D.Buffers
     {
         public IBuffer Original;
         public int ElementSize => sizeof(T);
-        public int Count { get; }
+        public int ElementCount { get; }
+        public int Count => ElementCount;
 
         public CastBuffer(IBuffer original)
         {
             Original = original;
             
-            if (ElementSize < original.ElementSize)
-                Count = original.Count / ElementSize;
-            else if (ElementSize > original.ElementSize)
-                Count = (int)(original.GetNumBytes() / ElementSize);
+            ElementCount = (int)(original.GetNumBytes() / ElementSize);
 
             if (this.GetNumBytes() != original.GetNumBytes())
                 throw new Exception("The original buffer cannot be cast into the new buffer");
@@ -148,6 +170,15 @@ namespace Ara3D.Buffers
             get => this[i];
             set => this[i] = (T)value;
         }
+
+        public IEnumerator<T> GetEnumerator()
+        {
+            for (var i = 0; i < ElementCount; i++)
+                yield return this[i];
+        }
+
+        IEnumerator IEnumerable.GetEnumerator()
+            => GetEnumerator();
     }
 
     /// <summary>
@@ -159,7 +190,7 @@ namespace Ara3D.Buffers
         public IBuffer Buffer { get; }
         public string Name { get; }
         public int ElementSize => Buffer.ElementSize;
-        public int Count => Buffer.Count;
+        public int ElementCount => Buffer.ElementCount;
         public Span<T> Span<T>() where T : unmanaged => Buffer.Span<T>();
 
         public Type ElementType => Buffer.ElementType;
@@ -174,8 +205,9 @@ namespace Ara3D.Buffers
     /// <summary>
     /// A concrete implementation of INamedBuffer with a specific type.
     /// </summary>
-    public class NamedBuffer<T> : Buffer<T>, INamedBuffer where T : unmanaged
+    public class NamedBuffer<T> : Buffer<T>, INamedBuffer<T> where T : unmanaged
     {
+        public NamedBuffer(IBuffer<T> data, string name) : base(data.ToArray()) => Name = name;
         public NamedBuffer(T[] data, string name) : base(data) => Name = name;
         public string Name { get; }
     }

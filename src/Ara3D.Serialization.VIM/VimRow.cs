@@ -3,17 +3,17 @@ using System.Collections;
 using System.ComponentModel;
 using System.Data;
 
-namespace VimTableExplorer
+namespace Ara3D.Serialization.VIM
 {
     // For reference see:
-// https://referencesource.microsoft.com/#system.data/system/data/DataRowView.cs
+    // https://referencesource.microsoft.com/#system.data/system/data/DataRowView.cs
 
-    public class VimRowData : ICustomTypeDescriptor, IEditableObject, INotifyPropertyChanged, IEnumerator
+    public class VimRow : ICustomTypeDescriptor, IEditableObject, INotifyPropertyChanged, IEnumerator
     {
-        public VimRowData(VimTableData data, int row = -1)
+        public VimRow(VimTable data, int row = -1)
             => (Table, RowIndex) = (data, row);
 
-        public VimTableData Table { get; }
+        public VimTable Table { get; }
 
         public int Count => Table.Columns.Count;
         public int RowIndex { get; private set; }

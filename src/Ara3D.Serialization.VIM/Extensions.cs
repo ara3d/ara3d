@@ -1,7 +1,6 @@
-﻿
-using Ara3D.Buffers;
+﻿using Ara3D.Buffers;
 
-namespace VimTableExplorer
+namespace Ara3D.Serialization.VIM
 {
     public static class Extensions
     {

@@ -13,8 +13,11 @@ namespace Ara3D.Buffers
         public static Buffer<T> ToBuffer<T>(this T[] xs) where T : unmanaged
             => new Buffer<T>(xs);
 
-        public static CastBuffer<T> As<T>(this IBuffer xs) where T : unmanaged
+        public static CastBuffer<T> Cast<T>(this IBuffer xs) where T : unmanaged
             => new CastBuffer<T>(xs);
+
+        public static INamedBuffer<T> Cast<T>(this INamedBuffer xs) where T : unmanaged
+            => (new CastBuffer<T>(xs)).ToNamedBuffer(xs.Name);
 
         public static SlicedBuffer<T> Slice<T>(this IBuffer<T> xs, int start, int count) where T : unmanaged
             => new SlicedBuffer<T>(xs, start, count);
@@ -28,8 +31,14 @@ namespace Ara3D.Buffers
         public static NamedBuffer<T> ToNamedBuffer<T>(this T[] xs, string name = "") where T : unmanaged
             => new NamedBuffer<T>(xs, name);
 
+        public static NamedBuffer<T> ToNamedBuffer<T>(this IEnumerable<T> xs, string name = "") where T : unmanaged
+            => xs.ToArray().ToNamedBuffer(name);
+
         public static NamedBuffer ToNamedBuffer(this IBuffer buffer, string name = "")
             => new NamedBuffer(buffer, name);
+
+        public static NamedBuffer<T> ToNamedBuffer<T>(this IBuffer<T> buffer, string name = "") where T: unmanaged
+            => new NamedBuffer<T>(buffer, name);
 
         public static IEnumerable<INamedBuffer> ToNamedBuffers(this IEnumerable<IBuffer> buffers,
             IEnumerable<string> names = null)
@@ -45,7 +54,7 @@ namespace Ara3D.Buffers
             => d.Select(kv => (INamedBuffer)kv.Value.ToNamedBuffer(kv.Key));
 
         public static long GetNumBytes(this IBuffer buffer)
-            => (long)buffer.Count * buffer.ElementSize;
+            => (long)buffer.ElementCount * buffer.ElementSize;
 
         public static Buffer<T> ReadBufferFromNumberOfBytes<T>(this Stream stream, long numBytes) where T : unmanaged
             => stream.ReadArrayFromNumberOfBytes<T>(numBytes).ToBuffer();

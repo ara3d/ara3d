@@ -3,17 +3,17 @@ using System.ComponentModel;
 using Ara3D.Buffers;
 using Ara3D.Serialization.VIM;
 
-namespace VimTableExplorer
+namespace Ara3D.Serialization.VIM
 {
-    public class VimColumnData : PropertyDescriptor
+    public class VimColumn : PropertyDescriptor
     {
-        public VimTableData Table { get; }
+        public VimTable Table { get; }
         public INamedBuffer Buffer { get; }
         public int ColumnIndex { get; }
         public Type ColumnType { get; }
         public string RelatedTableName { get; }
 
-        public VimColumnData(VimTableData table, INamedBuffer buffer, int index)
+        public VimColumn(VimTable table, INamedBuffer buffer, int index)
             : base(buffer.Name.GetColumnNameFromBufferName(), null)
         {
             Table = table;
@@ -35,7 +35,7 @@ namespace VimTableExplorer
             RelatedTableName = buffer.Name.GetRelatedTableName();
         }
 
-        public VimTableData GetRelatedTable()
+        public VimTable GetRelatedTable()
             => Table.Document.FindTable(RelatedTableName);
 
         public override bool CanResetValue(object component) 
@@ -43,7 +43,7 @@ namespace VimTableExplorer
 
         public override object GetValue(object component)
         {
-            if (component is VimRowData vtr)
+            if (component is VimRow vtr)
             {
                 if (vtr.RowIndex < 0 || vtr.RowIndex >= Count)
                     throw new Exception("Row index out of range");
@@ -69,7 +69,7 @@ namespace VimTableExplorer
             => false;
 
         public override Type ComponentType 
-            => typeof(VimRowData);
+            => typeof(VimRow);
 
         public override bool IsReadOnly 
             => true;
@@ -78,7 +78,7 @@ namespace VimTableExplorer
             => ColumnType;
 
         public int Count 
-            => Buffer.Count;
+            => Buffer.ElementCount;
 
         public object this[int n]
             => Buffer[n];

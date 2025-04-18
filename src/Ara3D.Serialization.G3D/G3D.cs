@@ -8,19 +8,23 @@ using Ara3D.Collections;
 namespace Ara3D.Serialization.G3D
 {
     /// <summary>
-    /// Represents a basic single-precision G3D in memory, with access to common attributes.
-    /// The G3D format can be double precision, but this data structure won't provide access to all of the attributes.
-    /// In the case of G3D formats that are non-conformant to the expected semantics you can use
-    /// GeometryAttributes.
-    /// This class is inspired heavily by the structure of FBX and Assimp.
-    /// Potentially huge arrays are left as "IArray" to avoid copying, while smaller arrays
-    /// are computed as literal arrays and stored in memory using IReadOnlyList references. 
+    /// This is the geometry layout within a VIM file
     /// </summary>
     public class G3D : GeometryAttributes
     {
         public new static readonly G3D Empty = Create();
 
         public G3dHeader Header { get; }
+
+        /// <summary>
+        /// Computed array of mesh data structures for convenience. 
+        /// </summary>
+        public List<G3dMesh> Meshes { get; }
+
+        /// <summary>
+        /// Material structures. 
+        /// </summary>
+        public List<G3dMaterial> Materials { get; }
 
         /// <summary>
         /// Vertex buffer. Required to be present. 
@@ -33,127 +37,67 @@ namespace Ara3D.Serialization.G3D
         public int[] Indices { get; }
 
         /// <summary>
-        /// Arbitrary number of UV channels. Ordered as they appear in the file. 
-        /// </summary>
-        public List<Vector2[]> AllVertexUvs { get; } = new List<Vector2[]>();
-
-        /// <summary>
-        /// Arbitrary number of vertex color channels. Ordered as they appear in the file.
-        /// </summary>
-        public List<Vector4[]> AllVertexColors { get; } = new List<Vector4[]>();
-
-        /// <summary>
-        /// The first UV channel is the default UV channel.
-        /// </summary>
-        public Vector2[] VertexUvs => AllVertexUvs?.ElementAtOrDefault(0);
-
-        /// <summary>
-        /// The default vertex color channel is the first one. 
-        /// </summary>
-        public Vector4[] VertexColors => AllVertexColors?.ElementAtOrDefault(0);
-        
-        /// <summary>
-        /// Vertex normals channel. 
-        /// </summary>
-        public Vector3[] VertexNormals { get; }
-
-        /// <summary>
-        /// Vertex tangents channel. 
-        /// </summary>
-        public Vector4[] VertexTangents { get; }
-
-        /// <summary>
-        /// Material indices per face. 
-        /// </summary>
-        public int[] FaceMaterials { get; }
-
-        /// <summary>
-        /// The normal of each face, if not provided, are computed dynamically as the average of all vertex normals,
-        /// </summary>
-        public Vector3[] FaceNormals { get; } 
-
-        /// <summary>
-        /// Offset into the index buffer for each Mesh.
-        /// </summary>
-        public IReadOnlyList<int> MeshIndexOffsets { get; }
-
-        /// <summary>
-        /// Number of indices for each Mesh. Computed.  
-        /// </summary>
-        public IReadOnlyList<int> MeshIndexCounts { get; }
-
-        /// <summary>
         /// For each mesh, this is the index of the first sub-mesh that it is associated with.
         /// </summary>
-        public IReadOnlyList<int> MeshSubmeshOffset { get; }
-
-        /// <summary>
-        /// For each mesh, this is the number of sub-meshes that it is associated with. Computed.  
-        /// </summary>
-        public IReadOnlyList<int> MeshSubmeshCount { get; } 
-
-        /// <summary>
-        /// Computed array of mesh data structures for convenience. 
-        /// </summary>
-        public IReadOnlyList<G3dMesh> Meshes { get; }
+        public int[] MeshSubmeshOffset { get; }
 
         /// <summary>
         /// Index of the parent transforms. If present. Usually not used. 
         /// </summary>
-        public IReadOnlyList<int> InstanceParents { get; }
+        public int[] InstanceParents { get; }
 
         /// <summary>
         /// // A 4x4 matrix in row-column order defining the transformed mesh.
         /// </summary>
-        public IReadOnlyList<Matrix4x4> InstanceTransforms { get; }
+        public Matrix4x4[] InstanceTransforms { get; }
 
         /// <summary>
         /// The index of the mesh associated with the instance transform.
         /// </summary>
-        public IReadOnlyList<int> InstanceMeshes { get; }
+        public int[] InstanceMeshes { get; }
 
         /// <summary>
         /// Custom data (for example visibility flags) associated with each instance.
         /// </summary>
-        public IReadOnlyList<ushort> InstanceFlags { get; }
+        public ushort[] InstanceFlags { get; }
 
         /// <summary>
         /// Material colors as RGBA
         /// </summary>
-        public IReadOnlyList<Vector4> MaterialColors { get; } 
+        public Vector4[] MaterialColors { get; } 
 
         /// <summary>
         /// Material glossiness 
         /// </summary>
-        public IReadOnlyList<float> MaterialGlossiness { get; }
+        public float[] MaterialGlossiness { get; }
         
         /// <summary>
         /// Material smoothness 
         /// </summary>
-        public IReadOnlyList<float> MaterialSmoothness { get; }
+        public float[] MaterialSmoothness { get; }
         
-        /// <summary>
-        /// Material structures. 
-        /// </summary>
-        public IReadOnlyList<G3dMaterial> Materials { get; }
-
         /// <summary>
         /// The offset into the index buffer for each submesh.
         /// Used to compute the offset into the index buffer for a corresponding mesh as well. 
         /// </summary>
-        public IReadOnlyList<int> SubmeshIndexOffsets { get; }
+        public int[] SubmeshIndexOffsets { get; }
 
         /// <summary>
         /// The number of indices associated with a submesh.
         /// Usually computed. 
         /// </summary>
-        public IReadOnlyList<int> SubmeshIndexCount { get; }
+        public int[] SubmeshIndexCount { get; }
         
         /// <summary>
         /// The index of the material associated with a submesh. 
         /// </summary>
-        public IReadOnlyList<int> SubmeshMaterials { get; }
-
+        public int[] SubmeshMaterials { get; }
+        
+        /// <summary>
+        /// The number of sub-meshes for each mesh. Computed. 
+        /// </summary>
+        public int[] MeshSubmeshCount { get; }
+        
         /// <summary>
         /// Constructor 
         /// </summary>
@@ -175,35 +119,21 @@ namespace Ara3D.Serialization.G3D
                     case Semantic.Position:
                         if (attr.IsTypeAndAssociation<Vector3>(Association.assoc_vertex))
                             Vertices = Vertices ?? attr.AsType<Vector3>().Data;
-                        if (attr.IsTypeAndAssociation<Vector3>(Association.assoc_corner))
-                            Vertices = Vertices ?? attr.AsType<Vector3>().Data; // TODO: is this used?
                         break;
 
                     case Semantic.Color:
-                        if (desc.Association == Association.assoc_vertex)
-                            throw new Exception("Per-vertex color not supported");
-
                         if (desc.Association == Association.assoc_material)
-                            MaterialColors = MaterialColors ?? attr.AttributeToColors().ToArray();
+                            MaterialColors = MaterialColors ?? attr.AsType<Vector4>().Data;
                         break;
 
                     case Semantic.IndexOffset:
                         if (attr.IsTypeAndAssociation<int>(Association.assoc_mesh))
-                            MeshIndexOffsets = MeshIndexOffsets ?? attr.AsType<int>().Data.ToArray();
+                            throw new NotImplementedException("TEMP");
                         if (attr.IsTypeAndAssociation<int>(Association.assoc_submesh))
-                            SubmeshIndexOffsets = SubmeshIndexOffsets ?? attr.AsType<int>().Data.ToArray();
-                        break;
-
-                    case Semantic.Normal:
-                        if (attr.IsTypeAndAssociation<Vector3>(Association.assoc_face))
-                            FaceNormals = FaceNormals ?? attr.AsType<Vector3>().Data;
-                        if (attr.IsTypeAndAssociation<Vector3>(Association.assoc_vertex))
-                            VertexNormals = VertexNormals ?? attr.AsType<Vector3>().Data;
+                            SubmeshIndexOffsets = SubmeshIndexOffsets ?? attr.AsType<int>().Data;
                         break;
 
                     case Semantic.Material:
-                        if (attr.IsTypeAndAssociation<int>(Association.assoc_face))
-                            FaceMaterials = FaceMaterials ?? attr.AsType<int>().Data;
                         if (attr.IsTypeAndAssociation<int>(Association.assoc_submesh))
                             SubmeshMaterials = SubmeshMaterials ?? attr.AsType<int>().Data.ToArray();
                         break;
@@ -250,14 +180,8 @@ namespace Ara3D.Serialization.G3D
                 // Mesh offset is the same as the offset of its first sub-mesh.
                 if (MeshSubmeshOffset != null)
                 {
-                    MeshIndexOffsets = MeshSubmeshOffset.Select(submesh => SubmeshIndexOffsets[submesh]).ToArray();
-                    MeshSubmeshCount = GetSubArrayCounts(MeshSubmeshOffset.Count, MeshSubmeshOffset, NumSubmeshes)
+                    MeshSubmeshCount = GetSubArrayCounts(MeshSubmeshOffset.Length, MeshSubmeshOffset, NumSubmeshes)
                         .ToArray();
-                }
-
-                if (MeshIndexOffsets != null)
-                {
-                    MeshIndexCounts = GetSubArrayCounts(NumMeshes, MeshIndexOffsets, NumCorners);
                 }
             }
             else
@@ -267,7 +191,7 @@ namespace Ara3D.Serialization.G3D
 
             // Compute for each submesh, how many indices does it use. 
             if (SubmeshIndexOffsets != null)
-                SubmeshIndexCount = GetSubArrayCounts(SubmeshIndexOffsets.Count, SubmeshIndexOffsets, NumCorners);
+                SubmeshIndexCount = GetSubArrayCounts(SubmeshIndexOffsets.Length, SubmeshIndexOffsets, NumCorners);
 
             // Compute structures for the meshes and sub-meshes 
             var meshes = new List<G3dMesh>();
@@ -276,45 +200,30 @@ namespace Ara3D.Serialization.G3D
                 var curSubMesh = MeshSubmeshOffset[i];
                 var numSubMeshes = MeshSubmeshCount[i];
 
-                var subMeshes = new G3dSubmesh[numSubMeshes];
+                var subMeshes = new G3dSubMesh[numSubMeshes];
                 for (var j = 0; j < numSubMeshes; ++j)
                 {
-                    subMeshes[j] = new G3dSubmesh(this, curSubMesh + j, i);
+                    subMeshes[j] = new G3dSubMesh(this, curSubMesh + j, i);
                 }
 
-                meshes.Add(new G3dMesh(this, i, subMeshes));
+                meshes.Add(new G3dMesh(i, subMeshes));
             }
             Meshes = meshes;
 
             // Compute all of the materials 
             if (MaterialColors != null)
-                Materials = MaterialColors.Count.Select(i => new G3dMaterial(this, i))
-                    .ToArray();
+                Materials = MaterialColors.Length.Select(i => new G3dMaterial(this, i))
+                    .ToList();
 
             // Update the instance options
             if (InstanceFlags == null)
                 InstanceFlags = ((ushort) 0).Repeat(NumInstances).ToArray();
         }
 
-        private static IReadOnlyList<int> GetSubArrayCounts(int numItems, IReadOnlyList<int> offsets, int totalCount)
+        private static int[] GetSubArrayCounts(int numItems, IReadOnlyList<int> offsets, int totalCount)
             => numItems.Select(i => i < (numItems - 1)
                 ? offsets[i + 1] - offsets[i]
                 : totalCount - offsets[i]).ToArray();
-
-        private static void ValidateSubArrayCounts(IReadOnlyList<int> subArrayCounts, string memberName)
-        {
-            for (var i = 0; i < subArrayCounts.Count; ++i)
-            {
-                if (subArrayCounts[i] < 0)
-                    throw new Exception($"{memberName}[{i}] is a negative sub array count.");
-            }
-        }
-
-        public static Vector3 Average(IArray<Vector3> xs)
-            => xs.Aggregate(Vector3.Zero, (a, b) => a + b) / xs.Count;
-
-        public Vector3 ComputeFaceNormal(int nFace)
-            => Average(NumCornersPerFace.Select(c => VertexNormals[nFace * NumCornersPerFace + c]));
 
         public static G3D Read(string filePath)
         {

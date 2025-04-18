@@ -10,8 +10,7 @@ using Ara3D.Serialization.G3D;
 
 namespace Ara3D.Serialization.VIM
 {
-
-    public static class Serializer
+    public static class VimSerializer
     {
         public static List<INamedBuffer> ToBuffers(this SerializableEntityTable table)
         {

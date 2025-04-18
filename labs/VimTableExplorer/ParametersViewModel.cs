@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using Ara3D.Serialization.VIM;
 
 namespace VimTableExplorer
 {

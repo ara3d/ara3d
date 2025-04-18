@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
+using Ara3D.Serialization.VIM;
 
 namespace VimTableExplorer
 {
@@ -41,15 +42,18 @@ namespace VimTableExplorer
 
                     if (otherTable != null)
                     {
-                        var elementColumn = otherTable.GetColumn("Element");
-                        for (var i=0; i < elementColumn.Count; i++)
+                        if (otherTable.ColumnLookup.ContainsKey("Element"))
                         {
-                            var tmp = (int)elementColumn[i];
-                            if (tmp == Row.RowIndex)
+                            var elementColumn = otherTable.GetColumn("Element");
+                            for (var i = 0; i < elementColumn.Count; i++)
                             {
-                                var row = new VimRowData(otherTable, i);
-                                var model = new RowViewModel(row);
-                                result.Add(model);
+                                var tmp = (int)elementColumn[i];
+                                if (tmp == Row.RowIndex)
+                                {
+                                    var row = new VimRowData(otherTable, i);
+                                    var model = new RowViewModel(row);
+                                    result.Add(model);
+                                }
                             }
                         }
                     }

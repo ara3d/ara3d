@@ -5,7 +5,7 @@
     /// It is defined so that it has one material.
     /// It is created after the G3dMesh is created. 
     /// </summary>
-    public class G3dSubmesh
+    public class G3dSubMesh
     {
         public readonly int Index;
         public readonly int IndexOffset;
@@ -14,7 +14,7 @@
         public readonly int MeshIndex;
         public readonly int NumFaces;
 
-        public G3dSubmesh(G3D g3d, int subMeshIndex, int meshIndex)
+        public G3dSubMesh(G3D g3d, int subMeshIndex, int meshIndex)
         {
             Index = subMeshIndex;
             MeshIndex = meshIndex;

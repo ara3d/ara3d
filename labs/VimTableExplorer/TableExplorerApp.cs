@@ -69,7 +69,8 @@ namespace VimTableExplorer
             var tabControl = new TabControl
             {
                 // Create a set of tabs, each one containing a WPF data-grid bound to one of the tables
-                ItemsSource = doc.Tables.Select(table => new TabItem
+                ItemsSource = doc.Tables.OrderBy(table => table.Name)
+                    .Select(table => new TabItem
                 {
                     Header = table.Name,
                     Content = CreateDataGrid(table, rowViewModel)

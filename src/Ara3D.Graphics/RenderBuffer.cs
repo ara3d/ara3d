@@ -71,8 +71,8 @@ namespace Ara3D.Graphics
         public int ElementSize
             => PrimitiveSize * Arity;
 
-        public int Count 
-            => Buffer.Count;
+        public int ElementCount 
+            => Buffer.ElementCount;
 
         public Type ElementType => typeof(T);
 

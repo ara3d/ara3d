@@ -1,0 +1,33 @@
+﻿<Window x:Class="GeometrySpreadsheet.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Simple Spreadsheet"
+        Width="800" Height="600">
+    <DockPanel>
+
+        <!-- formula bar -->
+        <TextBox x:Name="FormulaBar"
+                 DockPanel.Dock="Top"
+                 Margin="4"
+                 Height="28"
+                 VerticalContentAlignment="Center"
+                 KeyDown="FormulaBar_KeyDown"/>
+
+        <DataGrid x:Name="Grid"
+                  AutoGenerateColumns="False"
+                  SelectionMode="Extended"
+                  SelectionUnit="Cell"
+                  HeadersVisibility="All"
+                  CanUserResizeColumns="True"
+                  CanUserResizeRows="False"
+                  CanUserReorderColumns="False"
+                  CellEditEnding="Grid_CellEditEnding"
+                  SelectionChanged="Grid_SelectionChanged"
+                  LoadingRow="Grid_LoadingRow"             
+                  ScrollViewer.CanContentScroll="True"
+                  HorizontalScrollBarVisibility="Auto"
+                  VerticalScrollBarVisibility="Auto">
+		</DataGrid>
+
+	</DockPanel>
+</Window>

@@ -4,39 +4,38 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Linq;
-using Ara3D.Buffers;
-using Ara3D.Serialization.VIM;
 
-namespace VimTableExplorer
+namespace Ara3D.Serialization.VIM
 {
-    public class VimTableData : IBindingListView,
+    public class VimTable : 
+        IBindingListView,
         ISupportInitializeNotification,
         ITypedList
     {
-        public VimTableData(VimDocumentData document, SerializableEntityTable table)
+        public VimTable(VimDocument document, SerializableEntityTable table)
         {
             (Document, Table) = (document, table);
             var buffers = table.DataColumns.Concat(table.StringColumns).Concat(table.IndexColumns).ToArray();
-            Count = buffers.FirstOrDefault()?.Count ?? 0;
-            if (buffers.Any(b => b.Count != Count))
+            Count = buffers.FirstOrDefault()?.ElementCount ?? 0;
+            if (buffers.Any(b => b.ElementCount != Count))
                 throw new Exception("Not all columns are the same length");
-            Columns = buffers.Select((c, i) => new VimColumnData(this, c, i)).ToArray();
+            Columns = buffers.Select((c, i) => new VimColumn(this, c, i)).ToArray();
             ColumnLookup = Columns.Select((column, index) => (column, index)).ToDictionary(pair => pair.column.Name, pair => pair.index);
             Schema = new DataTable { TableName = Name };
             foreach (var c in Columns)
                 Schema.Columns.Add(c.Name, c.ColumnType);
         }
     
-        public VimDocumentData Document { get; }
+        public VimDocument Document { get; }
         public DataTable Schema;
         public string Name => Table.Name.GetSimplifiedTableName();
         public SerializableEntityTable Table { get; }
         public int Count { get; }
 
         public IReadOnlyDictionary<string, int> ColumnLookup { get; }
-        public IReadOnlyList<VimColumnData> Columns { get; }
+        public IReadOnlyList<VimColumn> Columns { get; }
 
-        public VimRowData GetRow(int row)
+        public VimRow GetRow(int row)
             => new(this, row);
 
         public object GetValue(int row, int col)
@@ -45,7 +44,7 @@ namespace VimTableExplorer
         public object GetValue(int row, string columnName)
             => GetValue(row, GetColumnIndex(columnName));
 
-        public VimColumnData GetColumn(string columnName)
+        public VimColumn GetColumn(string columnName)
         {
             var index = GetColumnIndex(columnName);
             return index >= 0 ? Columns[index] : null;
@@ -55,7 +54,7 @@ namespace VimTableExplorer
             => ColumnLookup[columnName];
 
         public IEnumerator GetEnumerator()
-            => new VimRowData(this);
+            => new VimRow(this);
 
         public void CopyTo(Array array, int index)
         {
@@ -79,7 +78,7 @@ namespace VimTableExplorer
             => throw new NotImplementedException();
 
         public int IndexOf(object value)
-            => value is VimRowData vtr ? vtr.RowIndex : -1;
+            => value is VimRow vtr ? vtr.RowIndex : -1;
 
         public void Insert(int index, object value)
             => throw new NotImplementedException();

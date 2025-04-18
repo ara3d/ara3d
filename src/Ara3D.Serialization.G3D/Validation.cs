@@ -47,8 +47,8 @@ namespace Ara3D.Serialization.G3D
 
             //Submeshes
             Validate(g3d.NumSubmeshes >= g3d.NumMeshes, G3dErrors.SubmeshesCountMismatch);
-            Validate(g3d.NumSubmeshes == g3d.SubmeshMaterials.Count, G3dErrors.SubmeshesCountMismatch);
-            Validate(g3d.NumSubmeshes == g3d.SubmeshIndexOffsets.Count, G3dErrors.SubmeshesCountMismatch);
+            Validate(g3d.NumSubmeshes == g3d.SubmeshMaterials.Length, G3dErrors.SubmeshesCountMismatch);
+            Validate(g3d.NumSubmeshes == g3d.SubmeshIndexOffsets.Length, G3dErrors.SubmeshesCountMismatch);
             Validate(g3d.SubmeshIndexOffsets.All(i => i % 3 == 0), G3dErrors.SubmeshesIndesxOffsetInvalidIndex);
             Validate(g3d.SubmeshIndexOffsets.All(i => i >= 0 && i < g3d.NumCorners), G3dErrors.SubmeshesIndexOffsetOutOfRange);
             Validate(g3d.SubmeshIndexCount.All(i => i > 0), G3dErrors.SubmeshesNonPositive);
@@ -59,17 +59,17 @@ namespace Ara3D.Serialization.G3D
             Validate(g3d.MeshSubmeshCount.All(i => i > 0), G3dErrors.MeshesSubmeshCountNonPositive);
 
             //Instances
-            Validate(g3d.NumInstances == g3d.InstanceParents.Count, G3dErrors.InstancesCountMismatch);
-            Validate(g3d.NumInstances == g3d.InstanceMeshes.Count, G3dErrors.InstancesCountMismatch);
-            Validate(g3d.NumInstances == g3d.InstanceTransforms.Count, G3dErrors.InstancesCountMismatch);
-            Validate(g3d.NumInstances == g3d.InstanceFlags.Count, G3dErrors.InstancesCountMismatch);
+            Validate(g3d.NumInstances == g3d.InstanceParents.Length, G3dErrors.InstancesCountMismatch);
+            Validate(g3d.NumInstances == g3d.InstanceMeshes.Length, G3dErrors.InstancesCountMismatch);
+            Validate(g3d.NumInstances == g3d.InstanceTransforms.Length, G3dErrors.InstancesCountMismatch);
+            Validate(g3d.NumInstances == g3d.InstanceFlags.Length, G3dErrors.InstancesCountMismatch);
             Validate(g3d.InstanceParents.All(i => i < g3d.NumInstances), G3dErrors.InstancesParentOutOfRange);
             Validate(g3d.InstanceMeshes.All(i => i < g3d.NumMeshes), G3dErrors.InstancesMeshOutOfRange);
 
             //Materials
-            Validate(g3d.NumMaterials == g3d.MaterialColors.Count, G3dErrors.MaterialsCountMismatch);
-            Validate(g3d.NumMaterials == g3d.MaterialGlossiness.Count, G3dErrors.MaterialsCountMismatch);
-            Validate(g3d.NumMaterials == g3d.MaterialSmoothness.Count, G3dErrors.MaterialsCountMismatch);
+            Validate(g3d.NumMaterials == g3d.MaterialColors.Length, G3dErrors.MaterialsCountMismatch);
+            Validate(g3d.NumMaterials == g3d.MaterialGlossiness.Length, G3dErrors.MaterialsCountMismatch);
+            Validate(g3d.NumMaterials == g3d.MaterialSmoothness.Length, G3dErrors.MaterialsCountMismatch);
 
             return errors;
         }
