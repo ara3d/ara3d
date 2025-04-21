@@ -31,7 +31,7 @@ namespace PathTracer
 
         [MethodImpl(AggressiveInlining)]
         public static Vector8 Pow(this Vector8 self, float f)
-            => (self.Log * f).Exp;
+            => Vector256.Exp(Vector256.Log(self.Value) * f);
     }
 
 

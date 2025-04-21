@@ -1,7 +1,7 @@
   <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netstandard2.0</TargetFramework>
+    <TargetFramework>net8.0</TargetFramework>
     <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
     <Description>A library for working with and rendering 2D and 3D graphics.</Description>
     <PackageProjectUrl>https://github.com/ara3d/ara3d/tree/main/src/Ara3D.Graphics</PackageProjectUrl>

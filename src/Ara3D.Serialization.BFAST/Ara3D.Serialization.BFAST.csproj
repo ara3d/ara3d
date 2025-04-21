@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netstandard2.0</TargetFramework>
+    <TargetFramework>net8.0</TargetFramework>
     <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
     <Description>A library for reading and writing collections of arrays of binary data (archives).</Description>
     <GeneratePackageOnBuild>True</GeneratePackageOnBuild>

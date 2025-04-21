@@ -13,6 +13,12 @@ namespace Ara3D.Buffers
         public static Buffer<T> ToBuffer<T>(this T[] xs) where T : unmanaged
             => new Buffer<T>(xs);
 
+        public static INamedBuffer<T> Rename<T>(this INamedBuffer<T> xs, string name) where T : unmanaged
+            => new NamedBuffer<T>(xs, name);
+
+        public static INamedBuffer Rename(this INamedBuffer xs, string name) 
+            => new NamedBuffer(xs, name);
+
         public static CastBuffer<T> Cast<T>(this IBuffer xs) where T : unmanaged
             => new CastBuffer<T>(xs);
 
