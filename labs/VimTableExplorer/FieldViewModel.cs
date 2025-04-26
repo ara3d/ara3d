@@ -6,10 +6,10 @@ namespace VimTableExplorer
 {
     public class FieldViewModel : ITreeViewModel
     {
-        public VimRowData Row;
-        public VimColumnData ColumnData;
+        public VimRow Row;
+        public VimColumn ColumnData;
 
-        public FieldViewModel(VimRowData row, VimColumnData columnData)
+        public FieldViewModel(VimRow row, VimColumn columnData)
         {
             Row = row;
             ColumnData = columnData;

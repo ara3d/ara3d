@@ -3,7 +3,7 @@
     public interface IPlugin 
     {
         string Name { get; }
-        void Initialize(IApplication api);
-        IApplication Api { get; }
+        void Initialize(IServiceManager api);
+        IServiceManager Api { get; }
     }
 }

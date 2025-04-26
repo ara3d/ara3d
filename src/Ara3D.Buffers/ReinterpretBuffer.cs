@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace Ara3D.Buffers
 {
-    public unsafe class CastBuffer<T> : IBuffer<T>
+    public unsafe class ReinterpretBuffer<T> : IBuffer<T>
         where T : unmanaged
     {
         public IBuffer Original;
@@ -12,7 +12,7 @@ namespace Ara3D.Buffers
         public int ElementCount { get; }
         public int Count => ElementCount;
 
-        public CastBuffer(IBuffer original)
+        public ReinterpretBuffer(IBuffer original)
         {
             Original = original;
             

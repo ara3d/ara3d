@@ -6,11 +6,11 @@
     /// </summary>
     public class BasePlugin : IPlugin
     {
-        public IApplication Api { get; private set; }
+        public IServiceManager Api { get; private set; }
 
         public virtual string Name => GetType().Name;
 
-        public virtual void Initialize(IApplication api)
+        public virtual void Initialize(IServiceManager api)
         {
             Api = api;
             Api.GetService<LoggingService>().Log($"Initializing plugin {Name}");

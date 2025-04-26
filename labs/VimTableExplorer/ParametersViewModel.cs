@@ -5,13 +5,13 @@ namespace VimTableExplorer
 {
     public class ParametersViewModel : ITreeViewModel
     {
-        public ParametersViewModel(VimDocumentData document, int elementIndex)
+        public ParametersViewModel(VimDocument document, int elementIndex)
         {
             Document = document;
             ElementIndex = elementIndex;
         }
 
-        public VimDocumentData Document { get; }
+        public VimDocument Document { get; }
         public int ElementIndex { get; }
         public string Title => "Parameters";
 
@@ -28,7 +28,7 @@ namespace VimTableExplorer
                     {
                         for (var i=0; i < parameterTable.Count; ++i)
                         {
-                            var row = (VimRowData)parameterTable[i];
+                            var row = (VimRow)parameterTable[i];
                             if ((int)row[2] == ElementIndex)
                             {
                                 var valueIndex = (int)row["Value"];
@@ -36,7 +36,7 @@ namespace VimTableExplorer
                                 var value = Document.GetString(valueIndex);
                                 value = value.Substring(value.IndexOf('|') + 1);
                                 var descriptor = descriptorIndex >= 0 
-                                    ? (VimRowData)descriptorTable[descriptorIndex] 
+                                    ? (VimRow)descriptorTable[descriptorIndex] 
                                     : null;
                                 var nameIndex = descriptor == null ? -1 : (int)descriptor["Name"];
                                 var name = Document.GetString(nameIndex);

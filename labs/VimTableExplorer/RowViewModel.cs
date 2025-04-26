@@ -8,7 +8,7 @@ namespace VimTableExplorer
 {
     public class RowViewModel : ITreeViewModel, INotifyPropertyChanged
     {
-        public RowViewModel(VimRowData row = null)
+        public RowViewModel(VimRow row = null)
             => _row = row;
 
         public string Title 
@@ -50,7 +50,7 @@ namespace VimTableExplorer
                                 var tmp = (int)elementColumn[i];
                                 if (tmp == Row.RowIndex)
                                 {
-                                    var row = new VimRowData(otherTable, i);
+                                    var row = new VimRow(otherTable, i);
                                     var model = new RowViewModel(row);
                                     result.Add(model);
                                 }
@@ -62,12 +62,12 @@ namespace VimTableExplorer
             }
         }
 
-        public static ITreeViewModel ToViewModel(VimRowData row, VimColumnData col)
+        public static ITreeViewModel ToViewModel(VimRow row, VimColumn col)
             => new FieldViewModel(row, col);
 
-        private VimRowData _row;
+        private VimRow _row;
 
-        public VimRowData Row
+        public VimRow Row
         {
             get => _row;
             set

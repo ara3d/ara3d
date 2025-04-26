@@ -13,8 +13,8 @@ namespace BIMDemos
         [Test]
         public void Test1()
         {
-            var vim = Serializer.Deserialize(@"C:\Users\cdigg\OneDrive\Documents\VIM\Snowdon Towers Sample Electrical.vim");
-            var doc = new VimDocumentData(vim);
+            var vim = VimSerializer.Deserialize(@"C:\Users\cdigg\OneDrive\Documents\VIM\Snowdon Towers Sample Electrical.vim");
+            var doc = new VimDocument(vim);
 
             var ga = new VimGeometryAdapter(vim);
             Console.WriteLine($"# Points {ga.Points.Count}");

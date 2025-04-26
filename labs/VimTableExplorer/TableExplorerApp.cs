@@ -20,13 +20,13 @@ namespace VimTableExplorer
             var args = Environment.GetCommandLineArgs();
             if (args.Length < 2) throw new Exception("Pass file name on command-line");
             var file = args[1];
-            var vim = Serializer.Deserialize(file);
+            var vim = VimSerializer.Deserialize(file);
             var window = CreateTableExplorerWindow(vim);
             window.Show();
             new TableExplorerApp().Run();
         }
 
-        public static DataGrid CreateDataGrid(VimTableData table, RowViewModel model)
+        public static DataGrid CreateDataGrid(VimTable table, RowViewModel model)
         {
             var r = new DataGrid
             {
@@ -49,7 +49,7 @@ namespace VimTableExplorer
                 if (cells.Count > 0)
                 {
                     var cell = cells[0];
-                    if (cell.Item is VimRowData row)
+                    if (cell.Item is VimRow row)
                     {
                         model.Row = row;
                     }
@@ -63,7 +63,7 @@ namespace VimTableExplorer
 
         public static Window CreateTableExplorerWindow(SerializableDocument vim)
         {
-            var doc = new VimDocumentData(vim);
+            var doc = new VimDocument(vim);
             var rowViewModel = new RowViewModel();
 
             var tabControl = new TabControl

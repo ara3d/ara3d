@@ -19,11 +19,11 @@ namespace Ara3D.Buffers
         public static INamedBuffer Rename(this INamedBuffer xs, string name) 
             => new NamedBuffer(xs, name);
 
-        public static CastBuffer<T> Cast<T>(this IBuffer xs) where T : unmanaged
-            => new CastBuffer<T>(xs);
+        public static ReinterpretBuffer<T> Reinterpret<T>(this IBuffer xs) where T : unmanaged
+            => new ReinterpretBuffer<T>(xs);
 
-        public static INamedBuffer<T> Cast<T>(this INamedBuffer xs) where T : unmanaged
-            => (new CastBuffer<T>(xs)).ToNamedBuffer(xs.Name);
+        public static INamedBuffer<T> Reinterpret<T>(this INamedBuffer xs) where T : unmanaged
+            => (new ReinterpretBuffer<T>(xs)).ToNamedBuffer(xs.Name);
 
         public static SlicedBuffer<T> Slice<T>(this IBuffer<T> xs, int start, int count) where T : unmanaged
             => new SlicedBuffer<T>(xs, start, count);

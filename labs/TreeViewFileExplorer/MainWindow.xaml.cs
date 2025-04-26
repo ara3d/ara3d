@@ -56,7 +56,7 @@ namespace TreeViewFileExplorer
             {
                 try
                 {
-                    var sd = Serializer.Deserialize(fsi.FullName, new LoadOptions() { SkipGeometry = true });
+                    var sd = VimSerializer.Deserialize(fsi.FullName, new LoadOptions() { SkipGeometry = true });
                     label.Content += $"\nFormat Version = {sd.Header.FileFormatVersion}";
                     label.Content += $"\nSchema Version = {sd.Header.Schema}";
                     label.Content += $"\nGenerator = {sd.Header.Generator}";
