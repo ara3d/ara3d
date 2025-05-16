@@ -7,9 +7,6 @@
 [submodule "domo"]
 	path = domo
 	url = https://github.com/ara3d/domo
-[submodule "bowerbird"]
-	path = bowerbird
-	url = https://github.com/ara3d/bowerbird
 [submodule "geometry"]
 	path = geometry
 	url = https://github.com/ara3d/geometry

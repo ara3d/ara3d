@@ -80,10 +80,6 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\src\Ara3D.Logging\Ara3D.Logging.csproj">
-      <Project>{0C314213-C685-48B9-B2AD-7F80DC015086}</Project>
-      <Name>Ara3D.Logging</Name>
-    </ProjectReference>
     <ProjectReference Include="..\..\src\Ara3D.Parsing.Markdown\Ara3D.Parsing.Markdown.csproj">
       <Project>{41a35a1f-5977-4894-b08d-dc542b75ddc2}</Project>
       <Name>Ara3D.Parsing.Markdown</Name>
@@ -91,10 +87,6 @@
     <ProjectReference Include="..\..\src\Ara3D.Parsing\Ara3D.Parsing.csproj">
       <Project>{38AB9D38-57D8-402C-A379-A7E0E9E70CAB}</Project>
       <Name>Ara3D.Parsing</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Utils\Ara3D.Utils\Ara3D.Utils.csproj">
-      <Project>{6b8ea878-a82d-43af-bfef-0e5106117f55}</Project>
-      <Name>Ara3D.Utils</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

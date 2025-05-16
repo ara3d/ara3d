@@ -57,14 +57,6 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Collections\Ara3D.Collections\Ara3D.Collections.csproj">
-      <Project>{31E7BD94-C662-4A29-8048-9801742E0A9A}</Project>
-      <Name>Ara3D.Collections</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Geometry\Ara3D.Geometry\Ara3D.Geometry.csproj">
-      <Project>{D5AA20AA-79D7-4D58-9CAF-45A07340C354}</Project>
-      <Name>Ara3D.Geometry</Name>
-    </ProjectReference>
     <ProjectReference Include="..\..\Mathematics\Ara3D.Mathematics\Ara3D.Mathematics.csproj">
       <Project>{9DDEB13C-A6D4-49E6-8E50-21A3C5931414}</Project>
       <Name>Ara3D.Mathematics</Name>
