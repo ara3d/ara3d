@@ -1,9 +1,6 @@
 [submodule "plato"]
 	path = plato
 	url = https://github.com/cdiggins/plato
-[submodule "parakeet"]
-	path = parakeet
-	url = https://github.com/ara3d/parakeet
 [submodule "domo"]
 	path = domo
 	url = https://github.com/ara3d/domo
